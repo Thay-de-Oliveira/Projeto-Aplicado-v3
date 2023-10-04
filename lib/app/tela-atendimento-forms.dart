@@ -293,9 +293,7 @@ class _AtendimentoFormsState extends State<AtendimentoForms> {
                             );
                           }).toList(),
                           onChanged: (String? newValue) {
-                            setState(() {
-                              _selectedNumeroProtocoloAtendimento = newValue!;
-                            });
+                            _selectedNumeroProtocoloAtendimento = newValue!;
                           },
                           decoration: _customInputDecoration(
                               //_customInputDecoration == deixar campo com bordas e demais design
@@ -314,9 +312,7 @@ class _AtendimentoFormsState extends State<AtendimentoForms> {
                             );
                           }).toList(),
                           onChanged: (String? newValue) {
-                            setState(() {
-                              _selectedTipoAtendimento = newValue!;
-                            });
+                            _selectedTipoAtendimento = newValue!;
                           },
                           decoration:
                               _customInputDecoration('Tipo de atendimento:'),
@@ -334,9 +330,7 @@ class _AtendimentoFormsState extends State<AtendimentoForms> {
                             );
                           }).toList(),
                           onChanged: (String? newValue) {
-                            setState(() {
-                              _selectedCanalAtendimento = newValue!;
-                            });
+                            _selectedCanalAtendimento = newValue!;
                           },
                           decoration: _customInputDecoration(
                               'Canal da solicitação:'), // Aplicar estilo personalizado
@@ -366,9 +360,7 @@ class _AtendimentoFormsState extends State<AtendimentoForms> {
                                   );
                                 }).toList(),
                                 onChanged: (String? newValue) {
-                                  setState(() {
-                                    _selectedCanalAtendimento = newValue!;
-                                  });
+                                  _selectedCanalAtendimento = newValue!;
                                 },
                                 decoration: _customInputDecoration(
                                     'Vistoria realizada?'), // Aplicar estilo personalizado
@@ -385,9 +377,7 @@ class _AtendimentoFormsState extends State<AtendimentoForms> {
                                   );
                                 }).toList(),
                                 onChanged: (String? newValue) {
-                                  setState(() {
-                                    _selectedCanalAtendimento = newValue!;
-                                  });
+                                  _selectedCanalAtendimento = newValue!;
                                 },
                                 decoration: _customInputDecoration(
                                     'Tipo de vistoria:'), // Aplicar estilo personalizado
@@ -474,9 +464,7 @@ class _AtendimentoFormsState extends State<AtendimentoForms> {
                             );
                           }).toList(),
                           onChanged: (String? newValue) {
-                            setState(() {
-                              _selectedCanalAtendimento = newValue!;
-                            });
+                            _selectedCanalAtendimento = newValue!;
                           },
                           decoration: _customInputDecoration(
                               'Será entregue itens de assistencia humanitaria?'), // Aplicar estilo personalizado
