@@ -84,6 +84,8 @@ flutter:
     - assets/imagens/icon-mapa.png
     - assets/imagens/icon-numero-protocolo.png
     - assets/imagens/icon-pesquisar.png
+    - assets/imagens/icon-concluido.png
+    - assets/imagens/icon-donwload.png
 
   #  - images/a_dot_ham.jpeg
 

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:projetoaplicado/app/tela-atend-hist-detalhes.dart';
 
 import 'components/barra-superior.dart';
 import 'components/menu-inferior.dart';
@@ -431,8 +432,7 @@ class _HistoricoAtendimentoState extends State<HistoricoAtendimento> {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                      builder: (context) =>
-                                          AtendimentoForms(), //ARRUMAR ROTA
+                                      builder: (context) => DetalheHistorico(),
                                     ),
                                   );
                                 },
