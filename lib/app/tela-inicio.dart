@@ -284,7 +284,7 @@ class _HomeState extends State<Home> {
                             ),
                             child: Center(
                               child: Image.asset(
-                                'assets/imagens/relatórios-icone.png', // Insira o caminho da imagem
+                                'assets/imagens/icon-relatorio.png', // Insira o caminho da imagem
                                 width: 30, // Largura da imagem
                                 height: 30, // Altura da imagem
                               ),

@@ -364,7 +364,7 @@ class _AtendimentoPendenteState extends State<AtendimentoPendente> {
                 Center(
                   child: Container(
                     width: 330,
-                    height: 116,
+                    height: 120,
                     child: Stack(
                       children: [
                         Positioned(
@@ -393,7 +393,7 @@ class _AtendimentoPendenteState extends State<AtendimentoPendente> {
                         Positioned(
                           //2 - Titulo do card
                           left: 9,
-                          top: 7,
+                          top: 15,
                           child: SizedBox(
                             width: 189,
                             height: 21,
@@ -601,7 +601,7 @@ class _AtendimentoPendenteState extends State<AtendimentoPendente> {
                                   },
                                   child: Container(
                                     width: 110,
-                                    height: 17,
+                                    height: 18,
                                     decoration: BoxDecoration(
                                       color: Colors
                                           .transparent, // Cor de fundo transparente
@@ -778,7 +778,7 @@ class _AtendimentoPendenteState extends State<AtendimentoPendente> {
                                           top: 3,
                                           child: Container(
                                             width: 6,
-                                            height: 8.73,
+                                            height: 15,
                                             decoration: BoxDecoration(
                                               image: DecorationImage(
                                                 image: AssetImage(

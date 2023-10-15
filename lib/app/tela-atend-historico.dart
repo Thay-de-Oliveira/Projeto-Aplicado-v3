@@ -355,6 +355,314 @@ class _HistoricoAtendimentoState extends State<HistoricoAtendimento> {
                     )
                   ],
                 ),
+
+                SizedBox(height: 25),
+
+                //Card 1
+                Center(
+                    child: Container(
+                  width: 330,
+                  height: 113,
+                  child: Stack(
+                    children: [
+                      Positioned(
+                        left: 0,
+                        top: 0,
+                        child: Container(
+                          width: 330,
+                          height: 113,
+                          decoration: ShapeDecoration(
+                            color: Colors.white,
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(5)),
+                            shadows: [
+                              BoxShadow(
+                                color: Color(0x3F2F2F2F),
+                                blurRadius: 1,
+                                offset: Offset(1, 1),
+                                spreadRadius: 0,
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                      Positioned(
+                        //2 - Titulo do card
+                        left: 9,
+                        top: 15,
+                        child: SizedBox(
+                          width: 189,
+                          height: 21,
+                          child: Text(
+                            'Tempestade - Vendaval',
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 16,
+                              fontFamily: 'Roboto',
+                              fontWeight: FontWeight.w700,
+                              height: 0,
+                            ),
+                          ),
+                        ),
+                      ),
+                      Positioned(
+                        left: 255,
+                        top: 90,
+                        child: Container(
+                          width: 116,
+                          height: 17,
+                          child: Stack(
+                            children: [
+                              Positioned(
+                                left: 0,
+                                top: 0,
+                                child: Container(
+                                  width: 66,
+                                  height: 17,
+                                  decoration: ShapeDecoration(
+                                    color: Color(0xFFCFDDF2),
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(4)),
+                                  ),
+                                ),
+                              ),
+                              InkWell(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          AtendimentoForms(), //ARRUMAR ROTA
+                                    ),
+                                  );
+                                },
+                                child: Container(
+                                  width: 66,
+                                  height: 18,
+                                  decoration: BoxDecoration(
+                                    color: Colors
+                                        .transparent, // Cor de fundo transparente
+                                    borderRadius: BorderRadius.circular(5),
+                                  ),
+                                  child: Center(
+                                    child: Text(
+                                      'Visualizar',
+                                      style: TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 10,
+                                        fontFamily: 'Roboto',
+                                        fontWeight: FontWeight.w600,
+                                        height: 2,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      Positioned(
+                        left: 9,
+                        top: 31,
+                        child: Container(
+                          width: 251,
+                          height: 72,
+                          child: Stack(
+                            children: [
+                              Positioned(
+                                left: 20,
+                                top: 20,
+                                child: SizedBox(
+                                  width: 193,
+                                  height: 14,
+                                  child: Text(
+                                    'Data do atendimento: 05/05/2023',
+                                    style: TextStyle(
+                                      color: Colors.black
+                                          .withOpacity(0.8500000238418579),
+                                      fontSize: 12,
+                                      fontFamily: 'Roboto',
+                                      fontWeight: FontWeight.w400,
+                                      height: 0,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              Positioned(
+                                left: 20,
+                                top: 59,
+                                child: SizedBox(
+                                  width: 199,
+                                  height: 12,
+                                  child: Text(
+                                    'Atendente: Paulo da Silva | ID: 1255',
+                                    style: TextStyle(
+                                      color: Colors.black
+                                          .withOpacity(0.8500000238418579),
+                                      fontSize: 12,
+                                      fontFamily: 'Roboto',
+                                      fontWeight: FontWeight.w400,
+                                      height: 0,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              Positioned(
+                                left: 20,
+                                top: 39,
+                                child: SizedBox(
+                                  width: 193,
+                                  height: 14,
+                                  child: Text(
+                                    'Bairro: Efapi | Cidade: Chapecó/SC',
+                                    style: TextStyle(
+                                      color: Colors.black
+                                          .withOpacity(0.8500000238418579),
+                                      fontSize: 12,
+                                      fontFamily: 'Roboto',
+                                      fontWeight: FontWeight.w400,
+                                      height: 0,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              Positioned(
+                                left: 0,
+                                top: 20,
+                                child: Container(
+                                  width: 14,
+                                  height: 14,
+                                  child: Stack(
+                                    children: [
+                                      Positioned(
+                                        left: 0,
+                                        top: 0,
+                                        child: Container(
+                                          width: 14,
+                                          height: 14,
+                                          decoration: ShapeDecoration(
+                                            color: Color(0xFFCFDDF2),
+                                            shape: OvalBorder(),
+                                          ),
+                                        ),
+                                      ),
+                                      Positioned(
+                                        left: 3,
+                                        top: 3,
+                                        child: Container(
+                                          width: 8,
+                                          height: 8,
+                                          clipBehavior: Clip.antiAlias,
+                                          decoration: BoxDecoration(),
+                                          child: Stack(children: []),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              Positioned(
+                                left: 20,
+                                top: 0,
+                                child: SizedBox(
+                                  width: 231,
+                                  height: 14,
+                                  child: Text(
+                                    'N° do protocolo de acontecimento: 0002',
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 12,
+                                      fontFamily: 'Roboto',
+                                      fontWeight: FontWeight.w400,
+                                      height: 0,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              Positioned(
+                                left: 0,
+                                top: 0,
+                                child: Container(
+                                  width: 14,
+                                  height: 14,
+                                  decoration: ShapeDecoration(
+                                    color: Color(0xFFCFDDF2),
+                                    shape: OvalBorder(),
+                                  ),
+                                ),
+                              ),
+                              Positioned(
+                                left: 0,
+                                top: 58,
+                                child: Container(
+                                  width: 14,
+                                  height: 14,
+                                  child: Stack(
+                                    children: [
+                                      Positioned(
+                                        left: 0,
+                                        top: 0,
+                                        child: Container(
+                                          width: 14,
+                                          height: 14,
+                                          decoration: ShapeDecoration(
+                                            color: Color(0xFFCFDDF2),
+                                            shape: OvalBorder(),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              Positioned(
+                                left: 0,
+                                top: 39,
+                                child: Container(
+                                  width: 14,
+                                  height: 14,
+                                  child: Stack(
+                                    children: [
+                                      Positioned(
+                                        left: 0,
+                                        top: 0,
+                                        child: Container(
+                                          width: 14,
+                                          height: 14,
+                                          decoration: ShapeDecoration(
+                                            color: Color(0xFFCFDDF2),
+                                            shape: OvalBorder(),
+                                          ),
+                                        ),
+                                      ),
+                                      Positioned(
+                                        left: 4,
+                                        top: 3,
+                                        child: Container(
+                                          width: 6,
+                                          height: 8.73,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      Positioned(
+                        left: 12,
+                        top: 34,
+                        child: Container(
+                          width: 8,
+                          height: 8,
+                        ),
+                      ),
+                    ],
+                  ),
+                )),
               ],
             ),
           ),
