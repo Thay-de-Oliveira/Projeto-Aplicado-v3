@@ -91,6 +91,16 @@ flutter:
     - assets/imagens/icon-evento.png
     - assets/imagens/icon-numero-protocolo.png
     - assets/imagens/icon-subgrupo.png
+    - assets/imagens/icon-rg.png
+    - assets/imagens/icon-cpf.png
+    - assets/imagens/icon-pessoas-imovel.png
+    - assets/imagens/icon-telefone.png
+    - assets/imagens/icon-nome-solicitante.png
+    - assets/imagens/icon-cod.png
+    - assets/imagens/icon-data-vistoria.png
+    - assets/imagens/icon-ocorrencia.png
+    - assets/imagens/icon-endereco.png
+    - assets/imagens/icon-atendente-nome.png
 
   #  - images/a_dot_ham.jpeg
 

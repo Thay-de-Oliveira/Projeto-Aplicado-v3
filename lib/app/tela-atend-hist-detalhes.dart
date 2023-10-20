@@ -700,7 +700,7 @@ class _DetalheHistorico extends State<DetalheHistorico> {
                                             width: 18,
                                             height: 18,
                                             child: Image.asset(
-                                                'assets/imagens/icon-subtipo.png'),
+                                                'assets/imagens/icon-cod.png'),
                                           ),
                                         ),
                                         Positioned(
@@ -760,11 +760,11 @@ class _DetalheHistorico extends State<DetalheHistorico> {
                                             width: 20,
                                             height: 20,
                                             child: Image.asset(
-                                                'assets/imagens/icon-subtipo.png'),
+                                                'assets/imagens/icon-data-vistoria.png'),
                                           ),
                                         ),
                                         Positioned(
-                                          //DATA VISTORIA
+                                          //NOME ATENDENTE
                                           left: 7,
                                           top: 38,
                                           child: Container(
@@ -772,7 +772,7 @@ class _DetalheHistorico extends State<DetalheHistorico> {
                                             width: 16,
                                             height: 16,
                                             child: Image.asset(
-                                                'assets/imagens/icon-subtipo.png'),
+                                                'assets/imagens/icon-atendente-nome.png'),
                                           ),
                                         ),
                                         Positioned(
@@ -784,19 +784,19 @@ class _DetalheHistorico extends State<DetalheHistorico> {
                                             width: 16,
                                             height: 16,
                                             child: Image.asset(
-                                                'assets/imagens/icon-subtipo.png'),
+                                                'assets/imagens/icon-ocorrencia.png'),
                                           ),
                                         ),
                                         Positioned(
                                           //ENDEREÇO
-                                          left: 8,
+                                          left: 6,
                                           top: 220,
                                           child: Container(
                                             //Icone
                                             width: 20,
                                             height: 20,
                                             child: Image.asset(
-                                                'assets/imagens/icon-subtipo.png'),
+                                                'assets/imagens/icon-endereco.png'),
                                           ),
                                         ),
                                       ],
@@ -923,7 +923,7 @@ class _DetalheHistorico extends State<DetalheHistorico> {
                                                                     height: 20,
                                                                     child: Image
                                                                         .asset(
-                                                                            'assets/imagens/icon-subtipo.png'),
+                                                                            'assets/imagens/icon-cpf.png'),
                                                                   ),
                                                                 ),
                                                                 Positioned(
@@ -1048,7 +1048,7 @@ class _DetalheHistorico extends State<DetalheHistorico> {
                                                             width: 20,
                                                             height: 20,
                                                             child: Image.asset(
-                                                                'assets/imagens/icon-subtipo.png'),
+                                                                'assets/imagens/icon-telefone.png'),
                                                           ),
                                                         ),
                                                       ],
@@ -1186,7 +1186,7 @@ class _DetalheHistorico extends State<DetalheHistorico> {
                                                             width: 20,
                                                             height: 20,
                                                             child: Image.asset(
-                                                                'assets/imagens/icon-subtipo.png'),
+                                                                'assets/imagens/icon-nome-solicitante.png'),
                                                           ),
                                                         ),
                                                       ],
@@ -1279,7 +1279,7 @@ class _DetalheHistorico extends State<DetalheHistorico> {
                                                                     height: 20,
                                                                     child: Image
                                                                         .asset(
-                                                                            'assets/imagens/icon-subtipo.png'),
+                                                                            'assets/imagens/icon-rg.png'),
                                                                   ),
                                                                 ),
                                                                 Positioned(
@@ -1337,7 +1337,7 @@ class _DetalheHistorico extends State<DetalheHistorico> {
                                                     width: 20,
                                                     height: 20,
                                                     child: Image.asset(
-                                                        'assets/imagens/icon-subtipo.png'),
+                                                        'assets/imagens/icon-pessoas-imovel.png'),
                                                   ),
                                                 ),
                                               ],
