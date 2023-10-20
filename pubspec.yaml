@@ -86,6 +86,11 @@ flutter:
     - assets/imagens/icon-pesquisar.png
     - assets/imagens/icon-concluido.png
     - assets/imagens/icon-donwload.png
+    - assets/imagens/icon-tipo.png
+    - assets/imagens/icon-cobrade.png
+    - assets/imagens/icon-evento.png
+    - assets/imagens/icon-numero-protocolo.png
+    - assets/imagens/icon-subgrupo.png
 
   #  - images/a_dot_ham.jpeg
 

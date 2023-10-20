@@ -259,6 +259,7 @@ class _DetalheHistorico extends State<DetalheHistorico> {
                                                   ),
                                                 ),
                                                 Positioned(
+                                                  //TIPO
                                                   left: 25,
                                                   top: 5,
                                                   child: Transform(
@@ -267,15 +268,11 @@ class _DetalheHistorico extends State<DetalheHistorico> {
                                                           ..translate(0.0, 0.0)
                                                           ..rotateZ(1.57),
                                                     child: Container(
+                                                      //Icone
                                                       width: 20,
                                                       height: 20,
-                                                      decoration: BoxDecoration(
-                                                        image: DecorationImage(
-                                                          image: NetworkImage(
-                                                              "https://via.placeholder.com/20x20"),
-                                                          fit: BoxFit.fill,
-                                                        ),
-                                                      ),
+                                                      child: Image.asset(
+                                                          'assets/imagens/icon-tipo.png'),
                                                     ),
                                                   ),
                                                 ),
@@ -413,18 +410,15 @@ class _DetalheHistorico extends State<DetalheHistorico> {
                                                   ),
                                                 ),
                                                 Positioned(
+                                                  //COBRADE
                                                   left: 5,
                                                   top: 5,
                                                   child: Container(
+                                                    //Icone
                                                     width: 20,
                                                     height: 20,
-                                                    decoration: BoxDecoration(
-                                                      image: DecorationImage(
-                                                        image: NetworkImage(
-                                                            "https://via.placeholder.com/20x20"),
-                                                        fit: BoxFit.fill,
-                                                      ),
-                                                    ),
+                                                    child: Image.asset(
+                                                        'assets/imagens/icon-cobrade.png'),
                                                   ),
                                                 ),
                                               ],
@@ -432,6 +426,7 @@ class _DetalheHistorico extends State<DetalheHistorico> {
                                           ),
                                         ),
                                         Positioned(
+                                          //SUBGRUPO
                                           left: 5,
                                           top: 55,
                                           child: Transform(
@@ -439,31 +434,36 @@ class _DetalheHistorico extends State<DetalheHistorico> {
                                               ..translate(0.0, 0.0)
                                               ..rotateZ(-1.57),
                                             child: Container(
+                                              //Icone
                                               width: 20,
                                               height: 20,
-                                              decoration: BoxDecoration(
-                                                image: DecorationImage(
-                                                  image: NetworkImage(
-                                                      "https://via.placeholder.com/20x20"),
-                                                  fit: BoxFit.fill,
-                                                ),
-                                              ),
+                                              child: Image.asset(
+                                                  'assets/imagens/icon-subgrupo.png'),
                                             ),
                                           ),
                                         ),
                                         Positioned(
+                                          //N. PROTOCOLO
                                           left: 6,
                                           top: 222,
                                           child: Container(
+                                            //Icone
                                             width: 18,
                                             height: 18,
-                                            decoration: BoxDecoration(
-                                              image: DecorationImage(
-                                                image: NetworkImage(
-                                                    "https://via.placeholder.com/18x18"),
-                                                fit: BoxFit.fill,
-                                              ),
-                                            ),
+                                            child: Image.asset(
+                                                'assets/imagens/icon-numero-protocolo.png'),
+                                          ),
+                                        ),
+                                        Positioned(
+                                          //EVENTO
+                                          left: 5,
+                                          top: 127,
+                                          child: Container(
+                                            //Icone
+                                            width: 20,
+                                            height: 20,
+                                            child: Image.asset(
+                                                'assets/imagens/icon-evento.png'),
                                           ),
                                         ),
                                       ],
@@ -692,18 +692,15 @@ class _DetalheHistorico extends State<DetalheHistorico> {
                                           ),
                                         ),
                                         Positioned(
+                                          //CÓDIGO DE IDENTIFICAÇÃO
                                           left: 5,
                                           top: 83,
                                           child: Container(
-                                            width: 20,
-                                            height: 20,
-                                            decoration: BoxDecoration(
-                                              image: DecorationImage(
-                                                image: NetworkImage(
-                                                    "https://via.placeholder.com/20x20"),
-                                                fit: BoxFit.fill,
-                                              ),
-                                            ),
+                                            //Icone
+                                            width: 18,
+                                            height: 18,
+                                            child: Image.asset(
+                                                'assets/imagens/icon-subtipo.png'),
                                           ),
                                         ),
                                         Positioned(
@@ -755,63 +752,51 @@ class _DetalheHistorico extends State<DetalheHistorico> {
                                           ),
                                         ),
                                         Positioned(
+                                          //DATA VISTORIA
                                           left: 6,
                                           top: 130,
                                           child: Container(
-                                            width: 18,
-                                            height: 18,
-                                            decoration: BoxDecoration(
-                                              image: DecorationImage(
-                                                image: NetworkImage(
-                                                    "https://via.placeholder.com/18x18"),
-                                                fit: BoxFit.fill,
-                                              ),
-                                            ),
+                                            //Icone
+                                            width: 20,
+                                            height: 20,
+                                            child: Image.asset(
+                                                'assets/imagens/icon-subtipo.png'),
                                           ),
                                         ),
                                         Positioned(
+                                          //DATA VISTORIA
                                           left: 7,
                                           top: 38,
                                           child: Container(
-                                            width: 18,
-                                            height: 18,
-                                            decoration: BoxDecoration(
-                                              image: DecorationImage(
-                                                image: NetworkImage(
-                                                    "https://via.placeholder.com/18x18"),
-                                                fit: BoxFit.fill,
-                                              ),
-                                            ),
+                                            //Icone
+                                            width: 16,
+                                            height: 16,
+                                            child: Image.asset(
+                                                'assets/imagens/icon-subtipo.png'),
                                           ),
                                         ),
                                         Positioned(
+                                          //OCORRENCIA
                                           left: 7,
                                           top: 177,
                                           child: Container(
+                                            //Icone
                                             width: 16,
                                             height: 16,
-                                            decoration: BoxDecoration(
-                                              image: DecorationImage(
-                                                image: NetworkImage(
-                                                    "https://via.placeholder.com/16x16"),
-                                                fit: BoxFit.cover,
-                                              ),
-                                            ),
+                                            child: Image.asset(
+                                                'assets/imagens/icon-subtipo.png'),
                                           ),
                                         ),
                                         Positioned(
+                                          //ENDEREÇO
                                           left: 8,
                                           top: 220,
                                           child: Container(
-                                            width: 14,
-                                            height: 20.36,
-                                            decoration: BoxDecoration(
-                                              image: DecorationImage(
-                                                image: NetworkImage(
-                                                    "https://via.placeholder.com/14x20"),
-                                                fit: BoxFit.cover,
-                                              ),
-                                            ),
+                                            //Icone
+                                            width: 20,
+                                            height: 20,
+                                            child: Image.asset(
+                                                'assets/imagens/icon-subtipo.png'),
                                           ),
                                         ),
                                       ],
@@ -928,22 +913,17 @@ class _DetalheHistorico extends State<DetalheHistorico> {
                                                             child: Stack(
                                                               children: [
                                                                 Positioned(
+                                                                  //CPF
                                                                   left: 0,
                                                                   top: 0,
                                                                   child:
                                                                       Container(
+                                                                    //Icone
                                                                     width: 20,
                                                                     height: 20,
-                                                                    decoration:
-                                                                        BoxDecoration(
-                                                                      image:
-                                                                          DecorationImage(
-                                                                        image: NetworkImage(
-                                                                            "https://via.placeholder.com/20x20"),
-                                                                        fit: BoxFit
-                                                                            .cover,
-                                                                      ),
-                                                                    ),
+                                                                    child: Image
+                                                                        .asset(
+                                                                            'assets/imagens/icon-subtipo.png'),
                                                                   ),
                                                                 ),
                                                                 Positioned(
@@ -1060,21 +1040,15 @@ class _DetalheHistorico extends State<DetalheHistorico> {
                                                           ),
                                                         ),
                                                         Positioned(
+                                                          //TELEFONE
                                                           left: 7,
                                                           top: 5,
                                                           child: Container(
-                                                            width: 17,
-                                                            height: 20.92,
-                                                            decoration:
-                                                                BoxDecoration(
-                                                              image:
-                                                                  DecorationImage(
-                                                                image: NetworkImage(
-                                                                    "https://via.placeholder.com/17x21"),
-                                                                fit: BoxFit
-                                                                    .cover,
-                                                              ),
-                                                            ),
+                                                            //Icone
+                                                            width: 20,
+                                                            height: 20,
+                                                            child: Image.asset(
+                                                                'assets/imagens/icon-subtipo.png'),
                                                           ),
                                                         ),
                                                       ],
@@ -1204,21 +1178,15 @@ class _DetalheHistorico extends State<DetalheHistorico> {
                                                           ),
                                                         ),
                                                         Positioned(
+                                                          //NOME SOLICITANTE
                                                           left: 5,
                                                           top: 5,
                                                           child: Container(
-                                                            width: 19,
-                                                            height: 19,
-                                                            decoration:
-                                                                BoxDecoration(
-                                                              image:
-                                                                  DecorationImage(
-                                                                image: NetworkImage(
-                                                                    "https://via.placeholder.com/19x19"),
-                                                                fit:
-                                                                    BoxFit.fill,
-                                                              ),
-                                                            ),
+                                                            //Icone
+                                                            width: 20,
+                                                            height: 20,
+                                                            child: Image.asset(
+                                                                'assets/imagens/icon-subtipo.png'),
                                                           ),
                                                         ),
                                                       ],
@@ -1301,22 +1269,17 @@ class _DetalheHistorico extends State<DetalheHistorico> {
                                                             child: Stack(
                                                               children: [
                                                                 Positioned(
+                                                                  //RG SOLICITANTE
                                                                   left: 0,
                                                                   top: 0,
                                                                   child:
                                                                       Container(
+                                                                    //Icone
                                                                     width: 20,
                                                                     height: 20,
-                                                                    decoration:
-                                                                        BoxDecoration(
-                                                                      image:
-                                                                          DecorationImage(
-                                                                        image: NetworkImage(
-                                                                            "https://via.placeholder.com/20x20"),
-                                                                        fit: BoxFit
-                                                                            .cover,
-                                                                      ),
-                                                                    ),
+                                                                    child: Image
+                                                                        .asset(
+                                                                            'assets/imagens/icon-subtipo.png'),
                                                                   ),
                                                                 ),
                                                                 Positioned(
@@ -1366,18 +1329,15 @@ class _DetalheHistorico extends State<DetalheHistorico> {
                                                   ),
                                                 ),
                                                 Positioned(
+                                                  //NUMERO PESSOAS NO IMOVEL
                                                   left: 6,
                                                   top: 190,
                                                   child: Container(
-                                                    width: 18,
-                                                    height: 18,
-                                                    decoration: BoxDecoration(
-                                                      image: DecorationImage(
-                                                        image: NetworkImage(
-                                                            "https://via.placeholder.com/18x18"),
-                                                        fit: BoxFit.fill,
-                                                      ),
-                                                    ),
+                                                    //Icone
+                                                    width: 20,
+                                                    height: 20,
+                                                    child: Image.asset(
+                                                        'assets/imagens/icon-subtipo.png'),
                                                   ),
                                                 ),
                                               ],
@@ -1858,6 +1818,7 @@ class _DetalheHistorico extends State<DetalheHistorico> {
                   ),
                 ),
                 Positioned(
+                  //CARROSSEL - REGISTRO FOTOGRAFICO
                   left: 11,
                   top: 1087,
                   child: Container(
@@ -2058,9 +2019,9 @@ class _DetalheHistorico extends State<DetalheHistorico> {
                                 ),
                                 Positioned(
                                   left: 32,
-                                  top: 47,
+                                  top: 53,
                                   child: SizedBox(
-                                    width: 101,
+                                    width: 110,
                                     height: 10,
                                     child: Text(
                                       'Agente da Defesa Civil',
@@ -2127,7 +2088,7 @@ class _DetalheHistorico extends State<DetalheHistorico> {
                                 ),
                                 Positioned(
                                   left: 56,
-                                  top: 47,
+                                  top: 53,
                                   child: SizedBox(
                                     width: 53,
                                     height: 10,
@@ -2204,15 +2165,11 @@ class _DetalheHistorico extends State<DetalheHistorico> {
                           left: 158,
                           top: 8,
                           child: Container(
-                            width: 45,
-                            height: 42.49,
-                            decoration: BoxDecoration(
-                              image: DecorationImage(
-                                image: NetworkImage(
-                                    "https://via.placeholder.com/45x42"),
-                                fit: BoxFit.fill,
-                              ),
-                            ),
+                            //Icone
+                            width: 20,
+                            height: 20,
+                            child:
+                                Image.asset('assets/imagens/icon-subtipo.png'),
                           ),
                         ),
                         Positioned(
