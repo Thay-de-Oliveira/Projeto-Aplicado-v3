@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:projetoaplicado/app/tela-cadastro-cidadao.dart';
+import 'package:projetoaplicado/app/tela-relatorios-acontecimento.dart';
 
 import 'components/barra-superior.dart';
 import 'components/menu-inferior.dart';
@@ -174,7 +176,7 @@ class _HomeState extends State<Home> {
                       // Navegue para a tela de cadastro do cidadão
                       Navigator.of(context).push(
                         MaterialPageRoute(
-                          builder: (context) => AtendimentoForms(),
+                          builder: (context) => CadastroCidadao(),
                         ),
                       );
                     },
@@ -246,7 +248,7 @@ class _HomeState extends State<Home> {
                       // Navegue para a tela de cadastro do cidadão
                       Navigator.of(context).push(
                         MaterialPageRoute(
-                          builder: (context) => AtendimentoForms(),
+                          builder: (context) => RelatorioAcontecimento(),
                         ),
                       );
                     },

@@ -20,6 +20,8 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_datetime_picker: ^1.5.0
+  google_maps_flutter: ^2.0.5
+  maps_launcher: ^2.2.0
 
 
 dev_dependencies:
@@ -101,6 +103,15 @@ flutter:
     - assets/imagens/icon-ocorrencia.png
     - assets/imagens/icon-endereco.png
     - assets/imagens/icon-atendente-nome.png
+    - assets/imagens/icon-acontecimento-inativo.png
+    - assets/imagens/icon-acontecimento-ativo.png
+    - assets/imagens/icon-atendimento-inativo.png
+    - assets/imagens/icon-atendimento-ativo.png
+    - assets/imagens/icon-recibos-ativo.png
+    - assets/imagens/icon-recibos-inativo.png
+    - assets/imagens/icon-padrao-acontecimento.png
+    - assets/imagens/icon-hora.png
+    - assets/imagens/icon-cidadao.png
 
   #  - images/a_dot_ham.jpeg
 

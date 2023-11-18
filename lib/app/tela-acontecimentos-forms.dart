@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:projetoaplicado/app/tela-inicio.dart';
 
 import 'components/barra-superior.dart';
 import 'components/menu-inferior.dart';
@@ -25,6 +26,7 @@ class _FormularioAcontecimentoState extends State<AcontecimentosForms> {
   String? _selectedTipo;
   String? _selectedSubTipo;
   String? _selectedCobradeAutomatico;
+
   final DateTime dataAtual = DateTime.now();
 
   // Opções para a classe de acontecimento
@@ -624,6 +626,123 @@ class _FormularioAcontecimentoState extends State<AcontecimentosForms> {
                       readOnly: true,
                       decoration: _customInputDecoration('Data e Hora:'),
                     ),
+
+                  SizedBox(height: 20),
+
+                  Align(
+                    //SALVAR + CANCELAR config
+                    alignment: Alignment.centerRight,
+                    child: InkWell(
+                      onTap: () {
+                        Navigator.of(context).pushReplacement(
+                          MaterialPageRoute(
+                              builder: (context) => Home(
+                                title: '',
+                              )),
+                        );
+                      },
+                      child: Container(
+                        width: 160,
+                        height: 28.61,
+                        child: Stack(
+                          children: [
+                            Positioned(
+                              left: 90,
+                              top: 0,
+                              child: Container(
+                                width: 65,
+                                height: 28.61,
+                                child: Stack(
+                                  children: [
+                                    Positioned(
+                                      left: 0,
+                                      top: 0,
+                                      child: Container(
+                                        width: 65,
+                                        height: 28.61,
+                                        decoration: ShapeDecoration(
+                                          color: Color(0xFF30BD4F),
+                                          shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                              BorderRadius.circular(
+                                                  5)),
+                                        ),
+                                      ),
+                                    ),
+                                    Positioned(
+                                      left: 7,
+                                      top: 14,
+                                      child: SizedBox(
+                                        width: 55,
+                                        height: 20,
+                                        child: Text(
+                                          'Salvar',
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 16,
+                                            fontFamily: 'Roboto',
+                                            fontWeight: FontWeight.w600,
+                                            height: 0,
+                                            letterSpacing: 0.64,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                            Positioned(
+                              left: 0,
+                              top: 0,
+                              child: Container(
+                                width: 81,
+                                height: 28.61,
+                                child: Stack(
+                                  children: [
+                                    Positioned(
+                                      left: 0,
+                                      top: 0,
+                                      child: Container(
+                                        width: 81,
+                                        height: 28.61,
+                                        decoration: ShapeDecoration(
+                                          color: Color(0xFFEC6F64),
+                                          shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                              BorderRadius.circular(
+                                                  5)),
+                                        ),
+                                      ),
+                                    ),
+                                    Positioned(
+                                      left: 5,
+                                      top: 14,
+                                      child: SizedBox(
+                                        width: 75,
+                                        height: 20,
+                                        child: Text(
+                                          'Cancelar',
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 16,
+                                            fontFamily: 'Roboto',
+                                            fontWeight: FontWeight.w600,
+                                            height: 0,
+                                            letterSpacing: 0.64,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  )
                 ],
               ),
             ),
@@ -642,3 +761,5 @@ class _FormularioAcontecimentoState extends State<AcontecimentosForms> {
     );
   }
 }
+
+class _selecteddataAtual {}

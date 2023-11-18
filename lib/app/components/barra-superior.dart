@@ -22,7 +22,7 @@ Widget BarraSuperior(BuildContext context) {
             ),
           ),
         ),
-        Positioned(
+        /*Positioned(
           //NOTIFICAÇÃO
           left: 289,
           top: 19,
@@ -41,7 +41,7 @@ Widget BarraSuperior(BuildContext context) {
             height: 20,
             child: Image.asset('assets/imagens/saq.png'),
           ),
-        ),
+        ),*/
         Positioned(
           left: 157,
           top: 8,

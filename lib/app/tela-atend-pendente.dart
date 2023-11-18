@@ -600,8 +600,8 @@ class _AtendimentoPendenteState extends State<AtendimentoPendente> {
                                     );
                                   },
                                   child: Container(
-                                    width: 110,
-                                    height: 18,
+                                    width: 115,
+                                    height: 35,
                                     decoration: BoxDecoration(
                                       color: Colors
                                           .transparent, // Cor de fundo transparente
@@ -615,7 +615,7 @@ class _AtendimentoPendenteState extends State<AtendimentoPendente> {
                                           fontSize: 10,
                                           fontFamily: 'Roboto',
                                           fontWeight: FontWeight.w600,
-                                          height: 2,
+                                          height: 1,
                                         ),
                                       ),
                                     ),

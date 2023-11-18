@@ -452,7 +452,7 @@ class _HistoricoAtendimentoState extends State<HistoricoAtendimento> {
                                         fontSize: 10,
                                         fontFamily: 'Roboto',
                                         fontWeight: FontWeight.w600,
-                                        height: 2,
+                                        height: 1,
                                       ),
                                     ),
                                   ),

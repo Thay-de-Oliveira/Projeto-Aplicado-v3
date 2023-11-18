@@ -15,24 +15,166 @@ class _PerfilState extends State<Perfil> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: null, //Permite a visualização da barra superior
+      appBar: null,
+      backgroundColor: Colors.grey[200], // Cor de fundo cinza claro
       body: Stack(
         children: <Widget>[
           SingleChildScrollView(
-            //Permite descer na tela
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                Image.asset(
-                    'assets/imagens/memeMiranha.jpg'), //USANDO UMA IMAGEM PROVISÓRIA PARA RODAR A HOME
+                SizedBox(
+                  height:
+                      80, // Define o espaço de 20 pixels abaixo do Container
+                ),
+                Center(
+                  child: Container(
+                    margin: EdgeInsets.all(20),
+                    width: 320,
+                    height: 335,
+                    child: Stack(
+                      children: [
+                        Positioned(
+                          left: 23,
+                          top: 117,
+                          child: Container(width: 40, height: 40),
+                        ),
+                        Positioned(
+                          left: 0,
+                          top: 0,
+                          child: Container(
+                            width: 320,
+                            height: 363,
+                            decoration: ShapeDecoration(
+                              color: Colors.white,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              shadows: [
+                                BoxShadow(
+                                  color: Color(0x3F000000),
+                                  blurRadius: 4,
+                                  offset: Offset(0, 4),
+                                  spreadRadius: 0,
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
+                        Positioned(
+                          left: 103,
+                          top: 24,
+                          child: Text(
+                            'Paulo da Silva',
+                            style: TextStyle(
+                              color: Color(0xFF999999),
+                              fontSize: 18,
+                              fontFamily: 'Roboto',
+                              fontWeight: FontWeight.w500,
+                              height: 0,
+                            ),
+                          ),
+                        ),
+                        Positioned(
+                          left: 25,
+                          top: 112,
+                          child: Text(
+                            'Celular: (49) 98800-9704',
+                            style: TextStyle(
+                              color: Color(0xFF999999),
+                              fontSize: 15,
+                              fontFamily: 'Roboto',
+                              fontWeight: FontWeight.w500,
+                              height: 0,
+                            ),
+                          ),
+                        ),
+                        Positioned(
+                          left: 25,
+                          top: 141,
+                          child: Text(
+                            'Email: paulodasilva@gmail.com.br',
+                            style: TextStyle(
+                              color: Color(0xFF999999),
+                              fontSize: 15,
+                              fontFamily: 'Roboto',
+                              fontWeight: FontWeight.w500,
+                              height: 0,
+                            ),
+                          ),
+                        ),
+                        Positioned(
+                          left: 25,
+                          top: 170,
+                          child: Text(
+                            'CPF: 981.025.357-03',
+                            style: TextStyle(
+                              color: Color(0xFF999999),
+                              fontSize: 15,
+                              fontFamily: 'Roboto',
+                              fontWeight: FontWeight.w500,
+                              height: 0,
+                            ),
+                          ),
+                        ),
+                        Positioned(
+                          left: 138,
+                          top: 224,
+                          child: Text(
+                            'Cargo:',
+                            style: TextStyle(
+                              color: Color(0xFF999999),
+                              fontSize: 15,
+                              fontFamily: 'Roboto',
+                              fontWeight: FontWeight.w500,
+                              height: 0,
+                            ),
+                          ),
+                        ),
+                        Positioned(
+                          left: 17,
+                          top: 255,
+                          child: SizedBox(
+                            width: 550,
+                            height: 300,
+                            child: Text(
+                              'Agente de campo da área oeste de SC',
+                              textAlign: TextAlign.justify,
+                              style: TextStyle(
+                                color: Color(0xFF999999),
+                                fontSize: 15,
+                                fontFamily: 'Roboto',
+                                fontWeight: FontWeight.w500,
+                                height: 0,
+                              ),
+                            ),
+                          ),
+                        ),
+                        Positioned(
+                          left: 132,
+                          top: 48,
+                          child: Text(
+                            'ID: 1255',
+                            style: TextStyle(
+                              color: Color(0xFF999999),
+                              fontSize: 15,
+                              fontFamily: 'Roboto',
+                              fontWeight: FontWeight.w500,
+                              height: 0,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
               ],
             ),
           ),
           Positioned(
-            //Adiciona e fixa a BarraSuperior
             left: 0,
             top: 0,
-            right: 0, // 0 para ocupar toda a largura da página
+            right: 0,
             child: BarraSuperior(context),
           ),
         ],
