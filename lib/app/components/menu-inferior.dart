@@ -7,6 +7,7 @@ class MenuInferior extends StatefulWidget {
 
 class _MenuInferiorState extends State<MenuInferior> {
   String telaAtual = 'inicio'; //Inicialmente, a tela de início está ativa
+  Color corAtiva = Colors.grey;
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +22,7 @@ class _MenuInferiorState extends State<MenuInferior> {
             onTap: () {
               setState(() {
                 telaAtual =
-                    'usuario'; // Quando você acessar a tela de perfil, define a tela atual como 'perfil'
+                'usuario'; // Quando você acessar a tela de perfil, define a tela atual como 'perfil'
               });
               Navigator.of(context).pushNamed('/tela-usuario');
             },
@@ -53,7 +54,7 @@ class _MenuInferiorState extends State<MenuInferior> {
             onTap: () {
               setState(() {
                 telaAtual =
-                    'inicio'; // Quando você acessar a tela de início, define a tela atual como 'inicio'
+                'inicio'; // Quando você acessar a tela de início, define a tela atual como 'inicio'
               });
               Navigator.of(context).pushNamed('/tela-inicio');
             },
@@ -61,50 +62,17 @@ class _MenuInferiorState extends State<MenuInferior> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Image.asset(
-                  telaAtual == 'inicio'
-                      ? 'assets/imagens/icon-home.png' // Imagem ativa para o início
-                      : 'assets/imagens/icon-home-normal.png', // Imagem padrão para o início
+                  telaAtual == 'inicio' ? 'assets/imagens/icon-home.png' : 'assets/imagens/icon-home-normal.png',
+                  color: corAtiva,
                 ),
                 SizedBox(height: 4),
                 Text(
                   'Início',
                   style: TextStyle(
-                    color: Color(0xff2987C0),
-                    fontSize: 12,
-                    fontFamily: 'Roboto',
-                    fontWeight: FontWeight.bold,
-                    letterSpacing: -0.30,
-                  ),
-                ),
-              ],
-            ),
-          ),
-
-          // MAPA
-          InkWell(
-            onTap: () {
-              setState(() {
-                telaAtual =
-                    'mapa'; // Quando você acessar a tela de mapa, define a tela atual como 'mapa'
-              });
-              Navigator.of(context).pushNamed('/tela-mapa');
-            },
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Image.asset(
-                  telaAtual == 'mapa'
-                      ? 'assets/imagens/icon-mapa-ativo.png' // Imagem ativa para o mapa
-                      : 'assets/imagens/icon-mapa.png', // Imagem padrão para o mapa
-                ),
-                SizedBox(height: 4),
-                Text(
-                  'Mapa',
-                  style: TextStyle(
                     color: Color(0xff999999),
                     fontSize: 12,
                     fontFamily: 'Roboto',
-                    fontWeight: FontWeight.w400,
+                    fontWeight: FontWeight.bold,
                     letterSpacing: -0.30,
                   ),
                 ),
