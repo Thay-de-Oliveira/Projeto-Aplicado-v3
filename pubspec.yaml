@@ -20,7 +20,9 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_datetime_picker: ^1.5.0
+  get: ^4.6.6
   google_maps_flutter: ^2.0.5
+  http: ^1.1.0
   maps_launcher: ^2.2.0
 
 

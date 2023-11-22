@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:projetoaplicado/app/tela-inicio.dart';
+import 'package:projetoaplicado/backend/controllers/acontecimentoController.dart';
 
 import 'components/barra-superior.dart';
 import 'components/menu-inferior.dart';
@@ -20,6 +21,7 @@ class AcontecimentosForms extends StatefulWidget {
 }
 
 class _FormularioAcontecimentoState extends State<AcontecimentosForms> {
+  AcontecimentoController acontecimento = AcontecimentoController();
   String? _selectedClasseAcontecimento;
   String? _selectedGrupo;
   String? _selectedSubGrupo;

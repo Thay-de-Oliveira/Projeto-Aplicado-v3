@@ -1,13 +1,12 @@
+// ignore_for_file: prefer_const_constructors, sized_box_for_whitespace
+
 import 'package:flutter/material.dart';
-import 'package:projetoaplicado/app/tela-relatorios-acontecimento.dart';
-import 'package:projetoaplicado/app/tela-relatorios-atendimento.dart';
+import '../backend/models/cidadaoModel.dart';
+import '../backend/controllers/cidadaoController.dart';
 
 import 'components/barra-superior.dart';
 import 'components/menu-inferior.dart';
-
-import 'tela-atend-pendente.dart';
 import 'tela-inicio.dart';
-import 'tela-relat-aconte-detalhes.dart';
 
 class CadastroCidadao extends StatefulWidget {
   @override
@@ -33,6 +32,43 @@ InputDecoration _customInputDecoration(String labelText) {
 }
 
 class _CadastroCidadaoState extends State<CadastroCidadao> {
+  final TextEditingController nomeController = TextEditingController();
+  final TextEditingController cpfController = TextEditingController();
+  final TextEditingController rgController = TextEditingController();
+  final TextEditingController cepController = TextEditingController();
+  final TextEditingController numeroCasaController = TextEditingController();
+  final TextEditingController bairroController = TextEditingController();
+  final TextEditingController ruaController = TextEditingController();
+  final TextEditingController cidadeController = TextEditingController();
+  final TextEditingController estadoController = TextEditingController();
+  final TextEditingController enderecoController = TextEditingController();
+
+  void salvarCidadao() async {
+    try {
+      CidadaoModel novoCidadao = CidadaoModel(
+        name: nomeController.text,
+        cpf: int.tryParse(cpfController.text) ?? 0,
+        rg: int.tryParse(rgController.text) ?? 0,
+        cep: cepController.text,
+        rua: ruaController.text,
+        bairro: bairroController.text,
+        cidade: cidadeController.text,
+        estado: estadoController.text,
+        numeroCasa: int.tryParse(numeroCasaController.text) ?? 0,
+      );
+
+      var response = await CidadaoController.cidadaoController.post(novoCidadao);
+
+      if (response != null) {
+        print('Cidadão cadastrado com sucesso!');
+      } else {
+        print('Falha ao cadastrar cidadão.');
+      }
+    } catch (e) {
+      print('Erro ao cadastrar cidadão: $e');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -99,12 +135,14 @@ class _CadastroCidadaoState extends State<CadastroCidadao> {
                       children: <Widget>[
                         //Campo "Nome do responsável no local"
                         TextFormField(
+                          controller: nomeController,
                           decoration: _customInputDecoration('Nome completo:'),
                         ),
 
                         SizedBox(height: 30),
 
                         TextFormField(
+                          controller: cpfController,
                           decoration: _customInputDecoration(
                               'Cadastro de Pessoa Física (CPF):'),
                         ),
@@ -112,6 +150,7 @@ class _CadastroCidadaoState extends State<CadastroCidadao> {
                         SizedBox(height: 30),
 
                         TextFormField(
+                          controller: rgController,
                           decoration:
                               _customInputDecoration('Registro Geral (RG):'),
                         ),
@@ -122,6 +161,7 @@ class _CadastroCidadaoState extends State<CadastroCidadao> {
                           children: [
                             Expanded(
                               child: TextFormField(
+                                controller: cepController,
                                 decoration: _customInputDecoration('CEP:'),
                               ),
                             ),
@@ -130,6 +170,7 @@ class _CadastroCidadaoState extends State<CadastroCidadao> {
                             // Espaço entre os campos
                             Expanded(
                               child: TextFormField(
+                                controller: numeroCasaController,
                                 decoration:
                                     _customInputDecoration('Número da casa:'),
                               ),
@@ -140,141 +181,91 @@ class _CadastroCidadaoState extends State<CadastroCidadao> {
                         SizedBox(height: 30),
 
                         TextFormField(
+                          controller: bairroController,
                           decoration: _customInputDecoration('Bairro:'),
                         ),
 
                         SizedBox(height: 30),
 
                         TextFormField(
+                          controller: ruaController,
                           decoration: _customInputDecoration('Rua:'),
                         ),
 
                         SizedBox(height: 30),
 
                         TextFormField(
+                          controller: cidadeController,
                           decoration: _customInputDecoration('Cidade:'),
                         ),
 
                         SizedBox(height: 30),
 
                         TextFormField(
+                          controller: estadoController,
                           decoration: _customInputDecoration('Estado:'),
                         ),
 
                         SizedBox(height: 20),
 
                         Align(
-                          //SALVAR + CANCELAR
                           alignment: Alignment.centerRight,
-                          child: InkWell(
-                            onTap: () {
-                              Navigator.of(context).pushReplacement(
-                                MaterialPageRoute(
-                                    builder: (context) => Home(
-                                      title: '',
-                                    )),
-                              );
-                            },
-                            child: Container(
-                              width: 160,
-                              height: 28.61,
-                              child: Stack(
-                                children: [
-                                  Positioned(
-                                    left: 90,
-                                    top: 0,
-                                    child: Container(
-                                      width: 65,
-                                      height: 28.61,
-                                      child: Stack(
-                                        children: [
-                                          Positioned(
-                                            left: 0,
-                                            top: 0,
-                                            child: Container(
-                                              width: 65,
-                                              height: 28.61,
-                                              decoration: ShapeDecoration(
-                                                color: Color(0xFF30BD4F),
-                                                shape: RoundedRectangleBorder(
-                                                    borderRadius:
-                                                    BorderRadius.circular(
-                                                        5)),
-                                              ),
-                                            ),
-                                          ),
-                                          Positioned(
-                                            left: 7,
-                                            top: 14,
-                                            child: SizedBox(
-                                              width: 55,
-                                              height: 20,
-                                              child: Text(
-                                                'Salvar',
-                                                style: TextStyle(
-                                                  color: Colors.white,
-                                                  fontSize: 16,
-                                                  fontFamily: 'Roboto',
-                                                  fontWeight: FontWeight.w600,
-                                                  height: 0,
-                                                  letterSpacing: 0.64,
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              ElevatedButton(
+                                onPressed: () async {
+                                  salvarCidadao();
+                                  Navigator.of(context).pushReplacement(
+                                    MaterialPageRoute(
+                                      builder: (context) => Home(title: ''),
                                     ),
+                                  );
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  primary: Color(0xFF30BD4F), // Cor do botão "Salvar"
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(5),
                                   ),
-                                  Positioned(
-                                    left: 0,
-                                    top: 0,
-                                    child: Container(
-                                      width: 81,
-                                      height: 28.61,
-                                      child: Stack(
-                                        children: [
-                                          Positioned(
-                                            left: 0,
-                                            top: 0,
-                                            child: Container(
-                                              width: 81,
-                                              height: 28.61,
-                                              decoration: ShapeDecoration(
-                                                color: Color(0xFFEC6F64),
-                                                shape: RoundedRectangleBorder(
-                                                    borderRadius:
-                                                    BorderRadius.circular(
-                                                        5)),
-                                              ),
-                                            ),
-                                          ),
-                                          Positioned(
-                                            left: 5,
-                                            top: 14,
-                                            child: SizedBox(
-                                              width: 75,
-                                              height: 20,
-                                              child: Text(
-                                                'Cancelar',
-                                                style: TextStyle(
-                                                  color: Colors.white,
-                                                  fontSize: 16,
-                                                  fontFamily: 'Roboto',
-                                                  fontWeight: FontWeight.w600,
-                                                  height: 0,
-                                                  letterSpacing: 0.64,
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
+                                ),
+                                child: Text(
+                                  'Salvar',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 16,
+                                    fontFamily: 'Roboto',
+                                    fontWeight: FontWeight.w600,
+                                    letterSpacing: 0.64,
                                   ),
-                                ],
+                                ),
                               ),
-                            ),
+                              SizedBox(width: 10),
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.of(context).pushReplacement(
+                                    MaterialPageRoute(
+                                      builder: (context) => Home(title: ''),
+                                    ),
+                                  );
+                                },
+                                style: TextButton.styleFrom(
+                                  backgroundColor: Color(0xFFEC6F64), // Cor do botão "Cancelar"
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(5),
+                                  ),
+                                ),
+                                child: Text(
+                                  'Cancelar',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 16,
+                                    fontFamily: 'Roboto',
+                                    fontWeight: FontWeight.w600,
+                                    letterSpacing: 0.64,
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
                         )
                       ],

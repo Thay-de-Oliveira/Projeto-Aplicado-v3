@@ -13,7 +13,14 @@ import 'app/tela-login.dart';
 import 'app/tela-mapa.dart';
 import 'app/tela-usuario.dart';
 
-void main() => runApp(MyApp());
+import 'controllerBinding.dart';
+
+void main() {
+
+  ControllerBinding().dependencies();
+
+  runApp(const MyApp());
+}
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});

@@ -164,6 +164,60 @@ class _PerfilState extends State<Perfil> {
                             ),
                           ),
                         ),
+                        GestureDetector(
+                      child: Ink(
+                        decoration: ShapeDecoration(
+                          //Estilo
+                          color: Color(0xffffffff),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          shadows: [
+                            //Sombras
+                            BoxShadow(
+                              color: Color(0x3F000000),
+                              blurRadius: 2,
+                              offset: Offset(2, 2),
+                              spreadRadius: 0,
+                            )
+                          ],
+                        ),
+                        child: InkWell(
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => LoginApp()));
+                          },
+                          child: Container(
+                            width: 90,
+                            height: 80,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                Container(
+                                  //Icone
+                                  width: 30,
+                                  height: 30,
+                                  child: Image.asset(
+                                      'assets/imagens/icon-cadastro-inativo.png'),
+                                ),
+                                SizedBox(
+                                    height:
+                                        5.0), //Espaço entre o ícone e o texto
+                                Text(
+                                  'Sair',
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.normal,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
                       ],
                     ),
                   ),
