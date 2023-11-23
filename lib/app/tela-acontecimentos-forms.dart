@@ -21,7 +21,6 @@ class AcontecimentosForms extends StatefulWidget {
 }
 
 class _FormularioAcontecimentoState extends State<AcontecimentosForms> {
-  AcontecimentoController acontecimento = AcontecimentoController();
   String? _selectedClasseAcontecimento;
   String? _selectedGrupo;
   String? _selectedSubGrupo;
