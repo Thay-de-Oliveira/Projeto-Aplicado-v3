@@ -1,12 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:projetoaplicado/app/app-state.dart';
 import 'package:projetoaplicado/app/tela-cadastro-cidadao.dart';
 import 'package:projetoaplicado/app/tela-relatorios-acontecimento.dart';
+import 'package:provider/provider.dart';
 
 import 'components/barra-superior.dart';
 import 'components/menu-inferior.dart';
-import 'tela-login.dart';
-import 'tela-inicio.dart';
 import 'tela-atendimento-forms.dart';
 import 'tela-acontecimentos-forms.dart';
 
@@ -20,6 +20,7 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
+    var appState = Provider.of<AppState>(context, listen: false);
     return Scaffold(
       appBar: null,
       backgroundColor: Colors.grey[200], // Cor de fundo cinza claro
@@ -37,6 +38,7 @@ class _HomeState extends State<Home> {
                   // Acontecimentos
                   child: InkWell(
                     onTap: () {
+                      appState.atualizarTela('acontecimentos');
                       // Navegar para a tela de Acontecimentos
                       Navigator.of(context).push(
                         MaterialPageRoute(
@@ -102,6 +104,7 @@ class _HomeState extends State<Home> {
                 Center(
                   child: InkWell(
                     onTap: () {
+                      appState.atualizarTela('atendimento');
                       // Navegue para a tela de Atendimento
                       Navigator.of(context).push(
                         MaterialPageRoute(
@@ -173,6 +176,7 @@ class _HomeState extends State<Home> {
                 Center(
                   child: InkWell(
                     onTap: () {
+                      appState.atualizarTela('cadastro_cidadao');
                       // Navegue para a tela de cadastro do cidadão
                       Navigator.of(context).push(
                         MaterialPageRoute(
@@ -245,7 +249,8 @@ class _HomeState extends State<Home> {
                   // Relatórios
                   child: InkWell(
                     onTap: () {
-                      // Navegue para a tela de cadastro do cidadão
+                      appState.atualizarTela('relatorios');
+                      // Navegue para a tela de relatorios
                       Navigator.of(context).push(
                         MaterialPageRoute(
                           builder: (context) => RelatorioAcontecimento(),

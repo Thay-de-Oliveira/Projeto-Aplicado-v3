@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import 'app/components/menu-inferior.dart';
 import 'app/components/barra-superior.dart';
 
-//import 'app/tela-atend-detalhes-historico';
 import 'app/tela-atendimento-forms.dart';
 import 'app/tela-cadastro.dart';
 import 'app/tela-inicio.dart';
+import 'app/app-state.dart';
 
 import 'app/tela-inicio.dart';
 import 'app/tela-login.dart';
@@ -16,10 +17,16 @@ import 'app/tela-usuario.dart';
 import 'controllerBinding.dart';
 
 void main() {
-
   ControllerBinding().dependencies();
 
-  runApp(const MyApp());
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context) => AppState()),
+      ],
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {

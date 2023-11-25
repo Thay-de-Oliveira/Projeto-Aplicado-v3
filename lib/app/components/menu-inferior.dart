@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:projetoaplicado/app/app-state.dart';
+import 'package:provider/provider.dart';
 
 class MenuInferior extends StatefulWidget {
   @override
@@ -11,6 +13,7 @@ class _MenuInferiorState extends State<MenuInferior> {
 
   @override
   Widget build(BuildContext context) {
+    var appState = Provider.of<AppState>(context, listen: false);
     return Container(
       width: 360,
       height: 71,
@@ -20,17 +23,14 @@ class _MenuInferiorState extends State<MenuInferior> {
         children: [
           InkWell(
             onTap: () {
-              setState(() {
-                telaAtual =
-                'usuario'; // Quando você acessar a tela de perfil, define a tela atual como 'perfil'
-              });
-              Navigator.of(context).pushNamed('/tela-usuario');
+              appState.atualizarTela('usuario');
+              Navigator.of(context).pushReplacementNamed('/tela-usuario');
             },
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Image.asset(
-                  telaAtual == 'usuario'
+                  appState.telaAtual == 'usuario'
                       ? 'assets/imagens/icon-perfil-ativo.png' // Imagem ativa para o perfil
                       : 'assets/imagens/icon-perfil.png', // Imagem padrão para o perfil
                 ),
@@ -38,7 +38,7 @@ class _MenuInferiorState extends State<MenuInferior> {
                 Text(
                   'Usuário',
                   style: TextStyle(
-                    color: Color(0xff999999),
+                    color: appState.telaAtual == 'usuario' ? Colors.blue : Color(0xff999999),
                     fontSize: 12,
                     fontFamily: 'Roboto',
                     fontWeight: FontWeight.w400,
@@ -52,27 +52,23 @@ class _MenuInferiorState extends State<MenuInferior> {
           // INÍCIO
           InkWell(
             onTap: () {
-              setState(() {
-                telaAtual =
-                'inicio'; // Quando você acessar a tela de início, define a tela atual como 'inicio'
-              });
-              Navigator.of(context).pushNamed('/tela-inicio');
+              appState.atualizarTela('inicio');
+              Navigator.of(context).pushReplacementNamed('/tela-inicio');
             },
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Image.asset(
-                  telaAtual == 'inicio' ? 'assets/imagens/icon-home.png' : 'assets/imagens/icon-home-normal.png',
-                  color: corAtiva,
+                  appState.telaAtual == 'inicio' ? 'assets/imagens/icon-home.png' : 'assets/imagens/icon-home-normal.png',
                 ),
                 SizedBox(height: 4),
                 Text(
                   'Início',
                   style: TextStyle(
-                    color: Color(0xff999999),
+                    color: appState.telaAtual == 'inicio' ? Colors.blue : Color(0xff999999),
                     fontSize: 12,
                     fontFamily: 'Roboto',
-                    fontWeight: FontWeight.bold,
+                    fontWeight: FontWeight.w400,
                     letterSpacing: -0.30,
                   ),
                 ),

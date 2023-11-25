@@ -1,8 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:projetoaplicado/app/app-state.dart';
 
 import 'components/barra-superior.dart';
 import 'components/menu-inferior.dart';
+import 'package:provider/provider.dart';
 import 'tela-login.dart';
 import 'tela-inicio.dart';
 import 'tela-mapa.dart';
@@ -14,6 +16,7 @@ class Perfil extends StatefulWidget {
 class _PerfilState extends State<Perfil> {
   @override
   Widget build(BuildContext context) {
+    var appState = Provider.of<AppState>(context);
     return Scaffold(
       appBar: null,
       backgroundColor: Colors.grey[200], // Cor de fundo cinza claro

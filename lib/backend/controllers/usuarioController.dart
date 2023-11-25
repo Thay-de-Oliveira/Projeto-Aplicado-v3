@@ -1,0 +1,60 @@
+import 'package:get/get.dart';
+import 'package:flutter/material.dart';
+import 'package:projetoaplicado/backend/models/usuarioModel.dart';
+import 'package:projetoaplicado/backend/services/usuarioService.dart';
+
+
+class UserController extends GetxController {
+  UserService userService = UserService();
+  var isLoading = false.obs;
+
+  static UserController get userController => Get.find();
+
+  Future<void> registerUser(BuildContext context, UserModel user) async {
+    try {
+      isLoading.value = true;
+      await userService.registerUser(user);
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text("Usuário registrado com sucesso"),
+        duration: Duration(seconds: 3),
+      ));
+    } catch (e) {
+      print("Erro ao cadastrar: $e");
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text("Falha ao cadastrar usuário"),
+        duration: Duration(seconds: 3),
+      ));
+    } finally {
+      isLoading.value = false;
+      update();
+    }
+  }
+
+  Future<void> loginUser(BuildContext context, String email, String password) async {
+    try {
+      isLoading.value = true;
+      bool loginSuccess = await userService.loginUser(email, password);
+
+      if (loginSuccess) {
+        // Login bem-sucedido, você pode navegar para a próxima tela ou fazer outras ações
+        print("Login bem-sucedido");
+        Navigator.of(context).pushReplacementNamed('/tela-inicio');
+      } else {
+        // Login falhou, exibir mensagem
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text("Usuário ou senha incorretos"),
+          duration: Duration(seconds: 3),
+        ));
+      }
+    } catch (e) {
+      print("Erro ao fazer login: $e");
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text("Erro ao fazer login"),
+        duration: Duration(seconds: 3),
+      ));
+    } finally {
+      isLoading.value = false;
+      update();
+    }
+  }
+}

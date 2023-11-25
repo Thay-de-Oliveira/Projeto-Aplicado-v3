@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:projetoaplicado/backend/controllers/usuarioController.dart';
 import 'tela-cadastro.dart';
 import 'tela-usuario.dart';
 
@@ -10,6 +11,8 @@ class LoginApp extends StatefulWidget {
 class _LoginAppState extends State<LoginApp> {
   TextEditingController _usernameController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
+
+  final UserController _userController = UserController.userController;
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +37,7 @@ class _LoginAppState extends State<LoginApp> {
                 alignment: Alignment
                     .centerLeft, // Alinha o texto com o início do campo
                 child: Text(
-                  ' Usuário',
+                  'Email',
                   style: TextStyle(
                       color: Colors.white, fontWeight: FontWeight.bold),
                 ),
@@ -135,19 +138,20 @@ class _LoginAppState extends State<LoginApp> {
                   children: [
                     //BOTÃO LOGIN
                     ElevatedButton(
-                      onPressed: () {
-                        Navigator.pushNamed(
-                            context, '/tela-inicio'); //Acessa home
+                      onPressed: () async {
+                        await _userController.loginUser(
+                          context,
+                          _usernameController.text,
+                          _passwordController.text,
+                        );
                       },
                       style: ElevatedButton.styleFrom(
                         primary: Color(0xff1d3484),
-                        minimumSize:
-                            Size(100, 37), // Largura e altura mínimas do botão
-                        padding: EdgeInsets.all(
-                            17.0), // Espaçamento interno do botão
+                        minimumSize: Size(100, 40),
+                        padding: EdgeInsets.all(20.0),
                       ),
                       child: Text(
-                        'Entrar',
+                        'Login',
                         style: TextStyle(color: Colors.white, fontSize: 15),
                       ),
                     ),

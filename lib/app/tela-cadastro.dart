@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
-import 'tela-usuario.dart';
+import 'package:projetoaplicado/app/app-state.dart';
+import 'package:projetoaplicado/backend/controllers/usuarioController.dart';
+import 'package:projetoaplicado/backend/models/usuarioModel.dart';
+import 'package:provider/provider.dart';
 
 class CadastroApp extends StatefulWidget {
   @override
@@ -8,10 +11,15 @@ class CadastroApp extends StatefulWidget {
 
 class _CadastroAppState extends State<CadastroApp> {
   TextEditingController _usernameController = TextEditingController();
-  TextEditingController _passwordController = TextEditingController();
+  TextEditingController _emailController = TextEditingController();
+  TextEditingController _senhaController = TextEditingController();
+  TextEditingController _confirmarSenhaController = TextEditingController();
+
+  final UserController _userController = UserController.userController;
 
   @override
   Widget build(BuildContext context) {
+    var appState = Provider.of<AppState>(context, listen: false);
     return Scaffold(
       backgroundColor: Colors.blue,
       body: Center(
@@ -21,19 +29,17 @@ class _CadastroAppState extends State<CadastroApp> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              //TEXTO "NOME"
+              // TEXTO "NOME"
               Container(
-                alignment: Alignment
-                    .centerLeft, // Alinha o texto com o início do campo
+                alignment: Alignment.centerLeft,
                 child: Text(
                   ' Nome',
-                  style: TextStyle(
-                      color: Colors.white, fontWeight: FontWeight.bold),
+                  style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
                 ),
               ),
-              SizedBox(height: 5), //Espaçamento entre o texto e o campo
+              SizedBox(height: 5),
 
-              //CAMPO EMAIL
+              // CAMPO NOME
               Container(
                 width: 315,
                 height: 40,
@@ -62,19 +68,17 @@ class _CadastroAppState extends State<CadastroApp> {
               ),
               SizedBox(height: 35),
 
-              //TEXTO "NOME"
+              // TEXTO "EMAIL"
               Container(
-                alignment: Alignment
-                    .centerLeft, // Alinha o texto com o início do campo
+                alignment: Alignment.centerLeft,
                 child: Text(
                   ' Email',
-                  style: TextStyle(
-                      color: Colors.white, fontWeight: FontWeight.bold),
+                  style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
                 ),
               ),
-              SizedBox(height: 5), //Espaçamento entre o texto e o campo
+              SizedBox(height: 5),
 
-              //CAMPO EMAIL
+              // CAMPO EMAIL
               Container(
                 width: 315,
                 height: 40,
@@ -94,7 +98,7 @@ class _CadastroAppState extends State<CadastroApp> {
                   ],
                 ),
                 child: TextField(
-                  controller: _usernameController,
+                  controller: _emailController,
                   decoration: InputDecoration(
                     border: InputBorder.none,
                     contentPadding: EdgeInsets.all(10.0),
@@ -103,19 +107,17 @@ class _CadastroAppState extends State<CadastroApp> {
               ),
               SizedBox(height: 35),
 
-              //Texto "SENHA"
+              // TEXTO "SENHA"
               Container(
-                alignment: Alignment
-                    .centerLeft, // Alinha o texto com o início do campo
+                alignment: Alignment.centerLeft,
                 child: Text(
                   ' Senha',
-                  style: TextStyle(
-                      color: Colors.white, fontWeight: FontWeight.bold),
+                  style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
                 ),
               ),
-              SizedBox(height: 5), //Espaçamento entre o texto e o campo
+              SizedBox(height: 5),
 
-              //CAMPO SENHA
+              // CAMPO SENHA
               Container(
                 width: 315,
                 height: 40,
@@ -135,7 +137,7 @@ class _CadastroAppState extends State<CadastroApp> {
                   ],
                 ),
                 child: TextField(
-                  controller: _passwordController,
+                  controller: _senhaController,
                   obscureText: true,
                   decoration: InputDecoration(
                     border: InputBorder.none,
@@ -145,19 +147,18 @@ class _CadastroAppState extends State<CadastroApp> {
               ),
 
               SizedBox(height: 35),
-              //Texto "CONFIRME SUA SENHA"
+
+              // TEXTO "CONFIRME SUA SENHA"
               Container(
-                alignment: Alignment
-                    .centerLeft, // Alinha o texto com o início do campo
+                alignment: Alignment.centerLeft,
                 child: Text(
                   ' Confirme sua senha',
-                  style: TextStyle(
-                      color: Colors.white, fontWeight: FontWeight.bold),
+                  style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
                 ),
               ),
-              SizedBox(height: 5), //Espaçamento entre o texto e o campo
+              SizedBox(height: 5),
 
-              //CAMPO CONFIRME SUA SENHA
+              // CAMPO CONFIRME SUA SENHA
               Container(
                 width: 315,
                 height: 40,
@@ -177,7 +178,7 @@ class _CadastroAppState extends State<CadastroApp> {
                   ],
                 ),
                 child: TextField(
-                  controller: _passwordController,
+                  controller: _confirmarSenhaController,
                   obscureText: true,
                   decoration: InputDecoration(
                     border: InputBorder.none,
@@ -194,18 +195,37 @@ class _CadastroAppState extends State<CadastroApp> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    //BOTÃO LOGIN
+                    // BOTÃO CADASTRAR
                     ElevatedButton(
-                      onPressed: () {
-                        Navigator.pushNamed(
-                            context, '/tela-inicio'); //Acessa home
+                      onPressed: () async {
+                        // Verificar se as senhas coincidem antes de cadastrar
+                        if (_senhaController.text == _confirmarSenhaController.text) {
+                          try {
+                            // Chamar o método de registro do controlador de usuário
+                            await _userController.registerUser(context, UserModel(
+                                username: _usernameController.text,
+                                email: _emailController.text,
+                                password: _senhaController.text,
+                              ),
+                            );
+                            // Se o registro for bem-sucedido, redirecionar para a tela de início
+                            appState.atualizarTela('inicio');
+                            Navigator.pushNamed(context, '/tela-inicio');
+                          } catch (e) {
+                            // Se houver um erro durante o regix'stro, exibir uma mensagem
+                            print("Erro ao cadastrar: $e");
+                            // Aqui você pode exibir uma mensagem de erro para o usuário
+                          }
+                        } else {
+                          // Senhas não coincidem, exibir mensagem ou tratar conforme necessário
+                          print("As senhas não coincidem");
+                          // Aqui você pode exibir uma mensagem para o usuário
+                        }
                       },
                       style: ElevatedButton.styleFrom(
                         primary: Color(0xff1d3484),
-                        minimumSize:
-                            Size(100, 40), // Largura e altura mínimas do botão
-                        padding: EdgeInsets.all(
-                            20.0), // Espaçamento interno do botão
+                        minimumSize: Size(100, 40),
+                        padding: EdgeInsets.all(20.0),
                       ),
                       child: Text(
                         'Cadastrar',
@@ -213,7 +233,7 @@ class _CadastroAppState extends State<CadastroApp> {
                       ),
                     ),
 
-                    SizedBox(height: 30), // Espaço entre os botões
+                    SizedBox(height: 30),
 
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -230,11 +250,10 @@ class _CadastroAppState extends State<CadastroApp> {
                             "Entrar",
                             style: TextStyle(
                               color: Color(0xff1d3484),
-                              fontWeight: FontWeight.bold, //Negrito
+                              fontWeight: FontWeight.bold,
                             ),
                           ),
-                          onPressed: () =>
-                              {Navigator.of(context).pushNamed("/tela-login")},
+                          onPressed: () => Navigator.of(context).pushNamed("/tela-login"),
                         ),
                       ],
                     )
