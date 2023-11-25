@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:projetoaplicado/app/tela-inicio.dart';
 import 'package:projetoaplicado/backend/controllers/acontecimentoController.dart';
+import 'package:projetoaplicado/backend/models/acontecimentoModel.dart';
 
 import 'components/barra-superior.dart';
 import 'components/menu-inferior.dart';
@@ -21,6 +22,8 @@ class AcontecimentosForms extends StatefulWidget {
 }
 
 class _FormularioAcontecimentoState extends State<AcontecimentosForms> {
+  final AcontecimentoController _acontecimentoController = AcontecimentoController();
+
   String? _selectedClasseAcontecimento;
   String? _selectedGrupo;
   String? _selectedSubGrupo;
@@ -630,120 +633,76 @@ class _FormularioAcontecimentoState extends State<AcontecimentosForms> {
 
                   SizedBox(height: 20),
 
-                  Align(
-                    //SALVAR + CANCELAR config
-                    alignment: Alignment.centerRight,
-                    child: InkWell(
-                      onTap: () {
-                        Navigator.of(context).pushReplacement(
-                          MaterialPageRoute(
-                              builder: (context) => Home(
-                                title: '',
-                              )),
-                        );
-                      },
-                      child: Container(
-                        width: 160,
-                        height: 28.61,
-                        child: Stack(
-                          children: [
-                            Positioned(
-                              left: 90,
-                              top: 0,
-                              child: Container(
-                                width: 65,
-                                height: 28.61,
-                                child: Stack(
-                                  children: [
-                                    Positioned(
-                                      left: 0,
-                                      top: 0,
-                                      child: Container(
-                                        width: 65,
-                                        height: 28.61,
-                                        decoration: ShapeDecoration(
-                                          color: Color(0xFF30BD4F),
-                                          shape: RoundedRectangleBorder(
-                                              borderRadius:
-                                              BorderRadius.circular(
-                                                  5)),
-                                        ),
-                                      ),
-                                    ),
-                                    Positioned(
-                                      left: 7,
-                                      top: 14,
-                                      child: SizedBox(
-                                        width: 55,
-                                        height: 20,
-                                        child: Text(
-                                          'Salvar',
-                                          style: TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 16,
-                                            fontFamily: 'Roboto',
-                                            fontWeight: FontWeight.w600,
-                                            height: 0,
-                                            letterSpacing: 0.64,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      // Botão Salvar
+                      InkWell(
+                        onTap: () {
+                          // Chama a função para salvar os dados
+                          _salvar();
+                        },
+                        child: Container(
+                          width: 80,
+                          height: 28.61,
+                          decoration: ShapeDecoration(
+                            color: Color(0xFF30BD4F),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(5),
+                            ),
+                          ),
+                          child: Center(
+                            child: Text(
+                              'Salvar',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 16,
+                                fontFamily: 'Roboto',
+                                fontWeight: FontWeight.w600,
+                                letterSpacing: 0.64,
                               ),
                             ),
-                            Positioned(
-                              left: 0,
-                              top: 0,
-                              child: Container(
-                                width: 81,
-                                height: 28.61,
-                                child: Stack(
-                                  children: [
-                                    Positioned(
-                                      left: 0,
-                                      top: 0,
-                                      child: Container(
-                                        width: 81,
-                                        height: 28.61,
-                                        decoration: ShapeDecoration(
-                                          color: Color(0xFFEC6F64),
-                                          shape: RoundedRectangleBorder(
-                                              borderRadius:
-                                              BorderRadius.circular(
-                                                  5)),
-                                        ),
-                                      ),
-                                    ),
-                                    Positioned(
-                                      left: 5,
-                                      top: 14,
-                                      child: SizedBox(
-                                        width: 75,
-                                        height: 20,
-                                        child: Text(
-                                          'Cancelar',
-                                          style: TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 16,
-                                            fontFamily: 'Roboto',
-                                            fontWeight: FontWeight.w600,
-                                            height: 0,
-                                            letterSpacing: 0.64,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ],
+                          ),
                         ),
                       ),
-                    ),
-                  )
+
+                      SizedBox(width: 10), // Adiciona um espaçamento entre os botões
+
+                      // Botão Cancelar
+                      InkWell(
+                        onTap: () {
+                          // Navega de volta para a tela Home
+                          Navigator.of(context).pushReplacement(
+                            MaterialPageRoute(
+                              builder: (context) => Home(title: ''),
+                            ),
+                          );
+                        },
+                        child: Container(
+                          width: 80,
+                          height: 28.61,
+                          decoration: ShapeDecoration(
+                            color: Color(0xFFEC6F64),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(5),
+                            ),
+                          ),
+                          child: Center(
+                            child: Text(
+                              'Cancelar',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 16,
+                                fontFamily: 'Roboto',
+                                fontWeight: FontWeight.w600,
+                                letterSpacing: 0.64,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ],
               ),
             ),
@@ -760,6 +719,39 @@ class _FormularioAcontecimentoState extends State<AcontecimentosForms> {
       border: OutlineInputBorder(),
       contentPadding: EdgeInsets.all(10.0),
     );
+  }
+
+  // Obter os valores dos campos ao clicar em salvar
+  void _salvar() async {
+    final String valorCampoClasseAcontecimento = _selectedClasseAcontecimento.toString();
+    final String valorCampoGrupo = _selectedGrupo.toString();
+    final String valorCampoSubGrupo = _selectedSubGrupo.toString();
+    final String valorCampoTipo = _selectedTipo.toString();
+    final String valorCampoSubTipo = _selectedSubTipo.toString();
+    final String valorCampoCobradeAutomatico = _selectedCobradeAutomatico.toString();
+
+    // Cria um objeto AcontecimentoModel com os valores dos campos
+    AcontecimentoModel acontecimento = AcontecimentoModel(
+      classe: valorCampoClasseAcontecimento,
+      grupo: valorCampoGrupo,
+      subgrupo: valorCampoSubGrupo,
+      tipo: valorCampoTipo,
+      subtipo: valorCampoSubTipo,
+      infoCobrade: valorCampoCobradeAutomatico,
+      dataHora: DateTime.now(),
+    );
+
+    // Chama a função post do AcontecimentoController para salvar os dados
+    var response = await _acontecimentoController.post(acontecimento);
+
+    // Exibir um SnackBar
+    if (response != null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Acontecimento criado com sucesso!'),
+        ),
+      );
+    }
   }
 }
 

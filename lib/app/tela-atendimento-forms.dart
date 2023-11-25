@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:projetoaplicado/app/tela-inicio.dart';
+import 'package:projetoaplicado/backend/controllers/acontecimentoController.dart';
+import 'package:projetoaplicado/backend/models/acontecimentoModel.dart';
 
 import 'components/barra-superior.dart';
 import 'components/menu-inferior.dart';
@@ -13,9 +15,24 @@ class AtendimentoForms extends StatefulWidget {
 }
 
 class _AtendimentoFormsState extends State<AtendimentoForms> {
+  AcontecimentoController _acontecimentoController = AcontecimentoController();
+  List<AcontecimentoModel> listAcontecimento = [];
+
+  void _carregarAcontecimentos() async {
+    // Chame a função do controlador para obter a lista de acontecimentos
+    listAcontecimento = await _acontecimentoController.listAcontecimento();
+    setState(() {});
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _carregarAcontecimentos(); // Chame a função para carregar a lista de acontecimentos
+  }
+
   //Cria as váriaveis que serão chamadas no campo Checklist
-//Ao adicionar uma string com conteudo, estamos dizendo que esse conteudo deve ser mostrado como a opção primária
-  String _selectedNumeroProtocoloAtendimento = 'Selecionar protocolo';
+  //Ao adicionar uma string com conteudo, estamos dizendo que esse conteudo deve ser mostrado como a opção primária
+  String? _selectedNumeroProtocoloAtendimento;
   String _selectedTipoAtendimento = 'Selecionar atendimento';
   String _selectedCanalAtendimento = 'Selecionar canal de atendimento';
   String _selectedVistoriaRealizada = 'Selecionar';
@@ -287,18 +304,18 @@ class _AtendimentoFormsState extends State<AtendimentoForms> {
                         //Campo "Número do protocolo de acontecimento"
                         DropdownButtonFormField<String>(
                           value: _selectedNumeroProtocoloAtendimento,
-                          items: numberOptions.map((String option) {
+                          items: listAcontecimento.map((AcontecimentoModel acontecimento) {
                             return DropdownMenuItem<String>(
-                              value: option,
-                              child: Text(option),
+                              value: acontecimento.numeroProtocolo,
+                              child: Text(acontecimento.numeroProtocolo.toString()),
                             );
                           }).toList(),
                           onChanged: (String? newValue) {
                             _selectedNumeroProtocoloAtendimento = newValue!;
                           },
                           decoration: _customInputDecoration(
-                              //_customInputDecoration == deixar campo com bordas e demais design
-                              'Número do protocolo de acontecimento:'),
+                            'Número do protocolo de acontecimento:'
+                          ),
                         ),
 
                         SizedBox(height: 30),

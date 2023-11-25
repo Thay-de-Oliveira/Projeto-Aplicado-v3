@@ -7,7 +7,7 @@ class AcontecimentoModel {
   final String subtipo;
   final String infoCobrade;
   final DateTime dataHora;
-  final String numeroProtocolo;
+  final String? numeroProtocolo;
 
   AcontecimentoModel({
     this.id,
@@ -18,7 +18,7 @@ class AcontecimentoModel {
     required this.subtipo,
     required this.infoCobrade,
     required this.dataHora,
-    required this.numeroProtocolo,
+    this.numeroProtocolo,
   });
 
   factory AcontecimentoModel.fromJson(Map<String, dynamic> json) {
