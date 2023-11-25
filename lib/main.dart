@@ -38,13 +38,13 @@ class MyApp extends StatelessWidget {
       routes: {
         '/': (context) => LoginApp(), //Login
         '/tela-cadastro': (context) => CadastroApp(),
+        '/tela-login': (context) => LoginApp(),
         '/tela-inicio': (context) => const Home(
               title: '',
             ),
         '/tela-mapa': (context) => Mapa(),
         '/tela-usuario': (context) => Perfil(),
         '/tela-atendimento-forms': (context) => AtendimentoForms(),
-        //'/tela-atend-detalhes-historico': (context) => DetalhesHistorico(),
       },
     );
   }

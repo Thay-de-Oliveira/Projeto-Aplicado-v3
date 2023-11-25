@@ -18,6 +18,7 @@ class UserController extends GetxController {
         content: Text("Usuário registrado com sucesso"),
         duration: Duration(seconds: 3),
       ));
+      Navigator.of(context).pushReplacementNamed('/tela-inicio');
     } catch (e) {
       print("Erro ao cadastrar: $e");
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -36,8 +37,11 @@ class UserController extends GetxController {
       bool loginSuccess = await userService.loginUser(email, password);
 
       if (loginSuccess) {
-        // Login bem-sucedido, você pode navegar para a próxima tela ou fazer outras ações
-        print("Login bem-sucedido");
+        // Login bem-sucedido
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text("Login bem sucedido!"),
+          duration: Duration(seconds: 3),
+        ));
         Navigator.of(context).pushReplacementNamed('/tela-inicio');
       } else {
         // Login falhou, exibir mensagem

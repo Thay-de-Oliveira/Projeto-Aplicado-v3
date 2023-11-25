@@ -210,7 +210,6 @@ class _CadastroAppState extends State<CadastroApp> {
                             );
                             // Se o registro for bem-sucedido, redirecionar para a tela de início
                             appState.atualizarTela('inicio');
-                            Navigator.pushNamed(context, '/tela-inicio');
                           } catch (e) {
                             // Se houver um erro durante o regix'stro, exibir uma mensagem
                             print("Erro ao cadastrar: $e");
@@ -253,7 +252,9 @@ class _CadastroAppState extends State<CadastroApp> {
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                          onPressed: () => Navigator.of(context).pushNamed("/tela-login"),
+                          onPressed: () => {
+                            Navigator.of(context).pushNamed("/tela-login")
+                          },
                         ),
                       ],
                     )

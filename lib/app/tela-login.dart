@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:projetoaplicado/backend/controllers/usuarioController.dart';
-import 'tela-cadastro.dart';
-import 'tela-usuario.dart';
 
 class LoginApp extends StatefulWidget {
   @override

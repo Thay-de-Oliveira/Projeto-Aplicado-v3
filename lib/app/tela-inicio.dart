@@ -19,6 +19,13 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   @override
+  void initState() {
+    super.initState();
+    var appState = Provider.of<AppState>(context, listen: false);
+    appState.atualizarTela('inicio');
+  }
+
+  @override
   Widget build(BuildContext context) {
     var appState = Provider.of<AppState>(context, listen: false);
     return Scaffold(
