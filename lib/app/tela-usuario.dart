@@ -1,10 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:projetoaplicado/app/app-state.dart';
 
 import 'components/barra-superior.dart';
 import 'components/menu-inferior.dart';
-import 'package:provider/provider.dart';
 import 'tela-login.dart';
 import 'tela-inicio.dart';
 import 'tela-mapa.dart';
@@ -16,7 +14,6 @@ class Perfil extends StatefulWidget {
 class _PerfilState extends State<Perfil> {
   @override
   Widget build(BuildContext context) {
-    var appState = Provider.of<AppState>(context);
     return Scaffold(
       appBar: null,
       backgroundColor: Colors.grey[200], // Cor de fundo cinza claro
@@ -28,7 +25,7 @@ class _PerfilState extends State<Perfil> {
               children: <Widget>[
                 SizedBox(
                   height:
-                      80, // Define o espaço de 20 pixels abaixo do Container
+                  80, // Define o espaço de 20 pixels abaixo do Container
                 ),
                 Center(
                   child: Container(
@@ -168,63 +165,114 @@ class _PerfilState extends State<Perfil> {
                           ),
                         ),
                         GestureDetector(
-                      child: Ink(
-                        decoration: ShapeDecoration(
-                          //Estilo
-                          color: Color(0xffffffff),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          shadows: [
-                            //Sombras
-                            BoxShadow(
-                              color: Color(0x3F000000),
-                              blurRadius: 2,
-                              offset: Offset(2, 2),
-                              spreadRadius: 0,
-                            )
-                          ],
-                        ),
-                        child: InkWell(
-                          onTap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => LoginApp()));
-                          },
-                          child: Container(
-                            width: 90,
-                            height: 80,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: <Widget>[
-                                Container(
-                                  //Icone
-                                  width: 30,
-                                  height: 30,
-                                  child: Image.asset(
-                                      'assets/imagens/icon-cadastro-inativo.png'),
-                                ),
-                                SizedBox(
-                                    height:
-                                        5.0), //Espaço entre o ícone e o texto
-                                Text(
-                                  'Sair',
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.normal,
-                                  ),
-                                ),
+                          child: Ink(
+                            decoration: ShapeDecoration(
+                              //Estilo
+                              color: Color(0xffffffff),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              shadows: [
+                                //Sombras
+                                BoxShadow(
+                                  color: Color(0x3F000000),
+                                  blurRadius: 2,
+                                  offset: Offset(2, 2),
+                                  spreadRadius: 0,
+                                )
                               ],
                             ),
                           ),
                         ),
-                      ),
-                    ),
                       ],
                     ),
                   ),
                 ),
+                //Botão de sair
+                Positioned(
+                  left: 261,
+                  top: 103,
+                  child: Container(
+                    width: 63,
+                    height: 25,
+                    child: Stack(
+                      children: [
+                        Positioned(
+                          left: 0,
+                          top: 0,
+                          child: Container(
+                            width: 63,
+                            height: 25,
+                            decoration: ShapeDecoration(
+                              color: Color(0xFFCFDDF2),
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(4)),
+                            ),
+                          ),
+                        ),
+
+                        InkWell(
+                          onTap: () {
+
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      LoginApp()),
+                            );
+                          },
+                          child: Positioned(
+                            left: 15,
+                            top: 7,
+                            child: Container(
+                              width: 57,
+                              height: 25,
+                              child: Stack(
+                                children: [
+                                  Positioned(
+                                    left: 15,
+                                    top: 8,
+                                    child: SizedBox(
+                                      width: 50,
+                                      height: 25,
+                                      child: Text(
+                                        'Logout',
+                                        style: TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 10,
+                                          fontFamily: 'Roboto',
+                                          fontWeight: FontWeight.bold,
+                                          height: 0,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  Positioned(
+                                    left: 43,
+                                    top: 0,
+                                    child: Container(
+                                      width: 14,
+                                      height: 14,
+                                      clipBehavior: Clip.antiAlias,
+                                      decoration: ShapeDecoration(
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                          BorderRadius.circular(5),
+                                        ),
+                                      ),
+                                      child: Stack(children: []),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+
               ],
             ),
           ),

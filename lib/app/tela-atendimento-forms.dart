@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:projetoaplicado/app/tela-inicio.dart';
 import 'package:projetoaplicado/backend/controllers/acontecimentoController.dart';
+import 'package:projetoaplicado/backend/controllers/atendimentoController.dart';
 import 'package:projetoaplicado/backend/models/acontecimentoModel.dart';
+import 'package:projetoaplicado/backend/models/atendimentoModel.dart';
+import 'package:intl/intl.dart';
 
 import 'components/barra-superior.dart';
 import 'components/menu-inferior.dart';
@@ -16,10 +19,10 @@ class AtendimentoForms extends StatefulWidget {
 
 class _AtendimentoFormsState extends State<AtendimentoForms> {
   AcontecimentoController _acontecimentoController = AcontecimentoController();
+  AtendimentoController _atendimentoController = AtendimentoController();
   List<AcontecimentoModel> listAcontecimento = [];
 
   void _carregarAcontecimentos() async {
-    // Chame a função do controlador para obter a lista de acontecimentos
     listAcontecimento = await _acontecimentoController.listAcontecimento();
     setState(() {});
   }
@@ -30,15 +33,107 @@ class _AtendimentoFormsState extends State<AtendimentoForms> {
     _carregarAcontecimentos(); // Chame a função para carregar a lista de acontecimentos
   }
 
+
+  Future<void> _selectDate(BuildContext context, TextEditingController controller) async {
+    DateTime? pickedDate = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(2022),
+      lastDate: DateTime(2025),
+    );
+
+    if (pickedDate != null) {
+      // Formatando a data para o formato desejado (dd/MM/yyyy)
+      String formattedDate = DateFormat('dd/MM/yyyy').format(pickedDate);
+      
+      // Atribuindo a data formatada ao controlador
+      controller.text = formattedDate;
+    }
+  }
+
+  Future<void> _salvarAtendimento() async {
+    try {
+      // Verifica se todos os campos obrigatórios foram preenchidos
+      if (_selectedNumeroProtocoloAtendimento == null ||
+          _selectedTipoAtendimento == 'Selecionar atendimento' ||
+          _selectedCanalAtendimento == 'Selecionar canal de atendimento' ||
+          _selectedVistoriaRealizada == 'Selecionar' ||
+          _selectedTipoRealizada == 'Selecionar' ||
+          _dataSolicitacaoController == null ||
+          _dataVistoriaController == null ||
+          _selectedEntregarItens == 'Selecionar' || 
+          _observacoesController == null) {
+        _exibirMensagem('Por favor, preencha todos os campos obrigatórios.');
+        return;
+      }
+
+      // Cria um objeto AtendimentosModel com os dados fornecidos
+      AtendimentosModel novoAtendimento = AtendimentosModel(
+        n_protocolo: _selectedNumeroProtocoloAtendimento!,
+        tipoAtendimento: _selectedTipoAtendimento,
+        canalAtendimento: _selectedCanalAtendimento,
+        nomeResponsavel: nomeResponsavelController.text,
+        vistoriaRealizada: _VistoriaRealizadaController,
+        tipoVistoria: _selectedTipoRealizada,
+        dataSolicitacao: _dataSolicitacaoController.text,
+        dataVistoria: _dataVistoriaController.text,
+        entregueItensAjuda: _selectedEntregarItens == 'Sim' ? true : false,
+        pendente: true, // Por padrão, definimos como pendente
+      );
+
+      // Chama o método no controller para salvar o atendimento
+      var resposta = await _atendimentoController.post(novoAtendimento);
+
+      if (resposta != null && resposta == 'Atendimento criado com sucesso!') {
+        // Atendimento salvo com sucesso
+        _exibirMensagem('Atendimento salvo com sucesso!');
+        _limparCamposFormulario();
+      } else {
+        // Ocorreu um erro ao salvar o atendimento
+        _exibirMensagem('Erro ao salvar o atendimento. Tente novamente.');
+      }
+    } catch (error) {
+      // Trata qualquer erro inesperado
+      print(error.toString());
+      _exibirMensagem(error.toString());
+    }
+  }
+
+  void _exibirMensagem(String mensagem) {
+    // Exibe a mensagem para o usuário (pode ser um snackbar, dialog, etc.)
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(mensagem),
+        duration: Duration(seconds: 3),
+      ),
+    );
+  }
+
+  void _limparCamposFormulario() {
+    // Adicione aqui a lógica para limpar os campos do formulário após o salvamento
+    // Por exemplo, você pode resetar os valores dos campos para os iniciais
+    setState(() {
+      _selectedNumeroProtocoloAtendimento = null;
+      _selectedTipoAtendimento = 'Selecionar atendimento';
+      _selectedCanalAtendimento = 'Selecionar canal de atendimento';
+      // ... Limpar outros campos conforme necessário ...
+    });
+  }
+
+
   //Cria as váriaveis que serão chamadas no campo Checklist
   //Ao adicionar uma string com conteudo, estamos dizendo que esse conteudo deve ser mostrado como a opção primária
   String? _selectedNumeroProtocoloAtendimento;
   String _selectedTipoAtendimento = 'Selecionar atendimento';
   String _selectedCanalAtendimento = 'Selecionar canal de atendimento';
   String _selectedVistoriaRealizada = 'Selecionar';
+  bool _VistoriaRealizadaController = false;
   String _selectedTipoRealizada = 'Selecionar';
-  String _selectedDate = '';
-  String _selectedEntregarItens = 'Selecionar';
+  String? _selectedEntregarItens = 'Selecionar';
+  TextEditingController _dataSolicitacaoController = TextEditingController();
+  TextEditingController _dataVistoriaController = TextEditingController();
+  TextEditingController _observacoesController = TextEditingController();
+  TextEditingController nomeResponsavelController = TextEditingController();
 
 //Ao adicionar uma condição boolean, dizemos que os campos do checklist iniciam vazios (sem seleção)
   bool isAguaSelected = false;
@@ -53,15 +148,9 @@ class _AtendimentoFormsState extends State<AtendimentoForms> {
   bool isReservatorioSelected = false;
   bool isFraldaSelected = false;
 
-//Ao criar "List<String>", estamos passando as opções que devem ser mostradas ao clicar no campo correspondente
-  List<String> numberOptions = [
-    'Selecionar protocolo',
-    '001',
-    '002',
-    '003',
-    '004',
-    '005'
-  ];
+  //Lista de itens entregues
+  bool mostrarItensEntregues = true;
+
   List<String> tipoAtendimentoOptions = [
     'Selecionar atendimento',
     'Presencial - Chapecó',
@@ -358,51 +447,61 @@ class _AtendimentoFormsState extends State<AtendimentoForms> {
 
                         //Campo "Nome do responsável no local"
                         TextFormField(
-                          decoration: _customInputDecoration(
-                              'Nome do responsável no local:'),
+                          controller: nomeResponsavelController, // Adicione esta linha
+                          decoration: _customInputDecoration('Nome do responsável no local:'),
                         ),
 
                         SizedBox(height: 30),
 
-                        //Campos lado a lado "Vistoria"
-                        Row(
-                          children: [
-                            Expanded(
-                              child: DropdownButtonFormField<String>(
-                                value: _selectedVistoriaRealizada,
-                                items: vistoriaRealizadaOptions
-                                    .map((String option) {
-                                  return DropdownMenuItem<String>(
-                                    value: option,
-                                    child: Text(option),
-                                  );
-                                }).toList(),
-                                onChanged: (String? newValue) {
-                                  _selectedCanalAtendimento = newValue!;
-                                },
-                                decoration: _customInputDecoration(
-                                    'Vistoria realizada?'), // Aplicar estilo personalizado
+                          //Campos lado a lado "Vistoria"
+                          Row(
+                            children: [
+                              Expanded(
+                                child: DropdownButtonFormField<String>(
+                                  value: _selectedVistoriaRealizada,
+                                  items: vistoriaRealizadaOptions
+                                      .map((String option) {
+                                    return DropdownMenuItem<String>(
+                                      value: option,
+                                      child: Text(option),
+                                    );
+                                  }).toList(),
+                                  onChanged: (String? newValue) {
+                                    setState(() {
+                                      if(newValue == "Sim"){
+                                        _selectedVistoriaRealizada = 'Sim';
+                                        _VistoriaRealizadaController = true;
+                                      } else {
+                                        _selectedVistoriaRealizada = 'Não';
+                                        _VistoriaRealizadaController = false;
+                                      }
+                                    });
+                                  },
+                                  decoration: _customInputDecoration(
+                                      'Vistoria realizada?'), // Aplicar estilo personalizado
+                                ),
                               ),
-                            ),
-                            SizedBox(width: 16), // Espaçamento entre os campos
-                            Expanded(
-                              child: DropdownButtonFormField<String>(
-                                value: _selectedTipoRealizada,
-                                items: tipoVistoriaOptions.map((String option) {
-                                  return DropdownMenuItem<String>(
-                                    value: option,
-                                    child: Text(option),
-                                  );
-                                }).toList(),
-                                onChanged: (String? newValue) {
-                                  _selectedCanalAtendimento = newValue!;
-                                },
-                                decoration: _customInputDecoration(
-                                    'Tipo de vistoria:'), // Aplicar estilo personalizado
+                              SizedBox(width: 16), // Espaçamento entre os campos
+                              Expanded(
+                                child: DropdownButtonFormField<String>(
+                                  value: _selectedTipoRealizada,
+                                  items: tipoVistoriaOptions.map((String option) {
+                                    return DropdownMenuItem<String>(
+                                      value: option,
+                                      child: Text(option),
+                                    );
+                                  }).toList(),
+                                  onChanged: (String? newValue) {
+                                    setState(() {
+                                      _selectedTipoRealizada = newValue!;
+                                    });
+                                  },
+                                  decoration: _customInputDecoration(
+                                      'Tipo de vistoria:'), // Aplicar estilo personalizado
+                                ),
                               ),
-                            ),
-                          ],
-                        ),
+                            ],
+                          ),
 
                         SizedBox(height: 30),
 
@@ -410,16 +509,26 @@ class _AtendimentoFormsState extends State<AtendimentoForms> {
                         Row(
                           children: [
                             Expanded(
-                              child: TextFormField(
-                                decoration: _customInputDecoration(
-                                    'Data da solicitação:'),
+                              child: GestureDetector(
+                                onTap: () => _selectDate(context, _dataSolicitacaoController),
+                                child: AbsorbPointer(
+                                  child: TextFormField(
+                                    controller: _dataSolicitacaoController,
+                                    decoration: _customInputDecoration('Data da solicitação:'),
+                                  ),
+                                ),
                               ),
                             ),
-                            SizedBox(width: 16), // Espaçamento entre os campos
+                            SizedBox(width: 16),
                             Expanded(
-                              child: TextFormField(
-                                decoration:
-                                    _customInputDecoration('Data da vistoria:'),
+                              child: GestureDetector(
+                                onTap: () => _selectDate(context, _dataVistoriaController),
+                                child: AbsorbPointer(
+                                  child: TextFormField(
+                                    controller: _dataVistoriaController,
+                                    decoration: _customInputDecoration('Data da vistoria:'),
+                                  ),
+                                ),
                               ),
                             ),
                           ],
@@ -459,11 +568,6 @@ class _AtendimentoFormsState extends State<AtendimentoForms> {
                                     child: Image.asset(
                                         'assets/imagens/icon-baixar.png'),
                                   ),
-                                  Container(
-                                    height: 30,
-                                    child: Image.asset(
-                                        'assets/imagens/icon-camera.png'),
-                                  ),
                                 ],
                               ),
                             ),
@@ -482,148 +586,164 @@ class _AtendimentoFormsState extends State<AtendimentoForms> {
                             );
                           }).toList(),
                           onChanged: (String? newValue) {
-                            _selectedCanalAtendimento = newValue!;
+                            if (entragarItensOptions.contains(newValue)) {
+                              setState(() {
+                                _selectedEntregarItens = newValue;
+                              });
+                            } else {
+                              // Trate isso de acordo com a lógica desejada, por exemplo, defina um valor padrão
+                              print("Valor inválido selecionado: $newValue");
+                              
+                              // Defina um valor padrão ou tome outra ação adequada
+                              setState(() {
+                                _selectedEntregarItens = entragarItensOptions.first;
+                              });
+                            }
                           },
                           decoration: _customInputDecoration(
-                              'Será entregue itens de assistencia humanitaria?'), // Aplicar estilo personalizado
+                            'Será entregue itens de assistência humanitária?',
+                          ),
                         ),
 
                         SizedBox(height: 30),
 
-                        //Campo CHECKLIST "Qyaus itens foram entregues?"
-                        Container(
-                          decoration: BoxDecoration(
-                            border: Border.all(
-                                color:
-                                    Colors.grey), // Cor da borda quando inativo
-                            borderRadius: BorderRadius.circular(
-                                10.0), // Borda arredondada
-                          ),
-                          child: ExpansionTile(
-                            title: Row(
+                        //Campo CHECKLIST "Quais itens foram entregues?"
+                        Visibility(
+                          visible: mostrarItensEntregues,
+                          child: Container(
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                  color:
+                                      Colors.grey), // Cor da borda quando inativo
+                              borderRadius: BorderRadius.circular(
+                                  10.0), // Borda arredondada
+                            ),
+                            child: ExpansionTile(
+                              title: Row(
+                                children: [
+                                  Text(
+                                    'Quais itens foram entregues?',
+                                    style: TextStyle(fontSize: 16),
+                                  ),
+                                ],
+                              ),
+                              trailing:
+                                  Icon(Icons.arrow_drop_down), //Ícone de seta
                               children: [
-                                Text(
-                                  'Quais itens foram entregues?',
-                                  style: TextStyle(fontSize: 16),
+                                Padding(
+                                  padding: const EdgeInsets.all(16.0),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      CheckboxListTile(
+                                        title: Text('Água Potável'),
+                                        value: isAguaSelected,
+                                        onChanged: (bool? newValue) {
+                                          setState(() {
+                                            isAguaSelected = newValue ?? false;
+                                          });
+                                        },
+                                      ),
+                                      CheckboxListTile(
+                                        title: Text('Cestas básicas'),
+                                        value: isCestasSelected,
+                                        onChanged: (bool? newValue) {
+                                          setState(() {
+                                            isCestasSelected = newValue ?? false;
+                                          });
+                                        },
+                                      ),
+                                      CheckboxListTile(
+                                        title: Text('Kits'),
+                                        value: isKitsSelected,
+                                        onChanged: (bool? newValue) {
+                                          setState(() {
+                                            isKitsSelected = newValue ?? false;
+                                          });
+                                        },
+                                      ),
+                                      CheckboxListTile(
+                                        title: Text(
+                                            'Pastilha potabilizadora de água'),
+                                        value: isPastilhaSelected,
+                                        onChanged: (bool? newValue) {
+                                          setState(() {
+                                            isPastilhaSelected =
+                                                newValue ?? false;
+                                          });
+                                        },
+                                      ),
+                                      CheckboxListTile(
+                                        title: Text('Colchões'),
+                                        value: isColchaoSelected,
+                                        onChanged: (bool? newValue) {
+                                          setState(() {
+                                            isColchaoSelected = newValue ?? false;
+                                          });
+                                        },
+                                      ),
+                                      CheckboxListTile(
+                                        title: Text('Lonas'),
+                                        value: isLonaSelected,
+                                        onChanged: (bool? newValue) {
+                                          setState(() {
+                                            isLonaSelected = newValue ?? false;
+                                          });
+                                        },
+                                      ),
+                                      CheckboxListTile(
+                                        title: Text('Cumeeiras'),
+                                        value: isCumeeiraSelected,
+                                        onChanged: (bool? newValue) {
+                                          setState(() {
+                                            isCumeeiraSelected =
+                                                newValue ?? false;
+                                          });
+                                        },
+                                      ),
+                                      CheckboxListTile(
+                                        title: Text('Pregos/Parafusos'),
+                                        value: isPregoParafusoSelected,
+                                        onChanged: (bool? newValue) {
+                                          setState(() {
+                                            isPregoParafusoSelected =
+                                                newValue ?? false;
+                                          });
+                                        },
+                                      ),
+                                      CheckboxListTile(
+                                        title: Text('Telhas'),
+                                        value: isTelhaSelected,
+                                        onChanged: (bool? newValue) {
+                                          setState(() {
+                                            isTelhaSelected = newValue ?? false;
+                                          });
+                                        },
+                                      ),
+                                      CheckboxListTile(
+                                        title: Text('Reservatórios'),
+                                        value: isReservatorioSelected,
+                                        onChanged: (bool? newValue) {
+                                          setState(() {
+                                            isReservatorioSelected =
+                                                newValue ?? false;
+                                          });
+                                        },
+                                      ),
+                                      CheckboxListTile(
+                                        title: Text('Fraldas'),
+                                        value: isFraldaSelected,
+                                        onChanged: (bool? newValue) {
+                                          setState(() {
+                                            isFraldaSelected = newValue ?? false;
+                                          });
+                                        },
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ],
                             ),
-                            trailing:
-                                Icon(Icons.arrow_drop_down), //Ícone de seta
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.all(16.0),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    CheckboxListTile(
-                                      title: Text('Água Potável'),
-                                      value: isAguaSelected,
-                                      onChanged: (bool? newValue) {
-                                        setState(() {
-                                          isAguaSelected = newValue ?? false;
-                                        });
-                                      },
-                                    ),
-                                    CheckboxListTile(
-                                      title: Text('Cestas básicas'),
-                                      value: isCestasSelected,
-                                      onChanged: (bool? newValue) {
-                                        setState(() {
-                                          isCestasSelected = newValue ?? false;
-                                        });
-                                      },
-                                    ),
-                                    CheckboxListTile(
-                                      title: Text('Kits'),
-                                      value: isKitsSelected,
-                                      onChanged: (bool? newValue) {
-                                        setState(() {
-                                          isKitsSelected = newValue ?? false;
-                                        });
-                                      },
-                                    ),
-                                    CheckboxListTile(
-                                      title: Text(
-                                          'Pastilha potabilizadora de água'),
-                                      value: isPastilhaSelected,
-                                      onChanged: (bool? newValue) {
-                                        setState(() {
-                                          isPastilhaSelected =
-                                              newValue ?? false;
-                                        });
-                                      },
-                                    ),
-                                    CheckboxListTile(
-                                      title: Text('Colchões'),
-                                      value: isColchaoSelected,
-                                      onChanged: (bool? newValue) {
-                                        setState(() {
-                                          isColchaoSelected = newValue ?? false;
-                                        });
-                                      },
-                                    ),
-                                    CheckboxListTile(
-                                      title: Text('Lonas'),
-                                      value: isLonaSelected,
-                                      onChanged: (bool? newValue) {
-                                        setState(() {
-                                          isLonaSelected = newValue ?? false;
-                                        });
-                                      },
-                                    ),
-                                    CheckboxListTile(
-                                      title: Text('Cumeeiras'),
-                                      value: isCumeeiraSelected,
-                                      onChanged: (bool? newValue) {
-                                        setState(() {
-                                          isCumeeiraSelected =
-                                              newValue ?? false;
-                                        });
-                                      },
-                                    ),
-                                    CheckboxListTile(
-                                      title: Text('Pregos/Parafusos'),
-                                      value: isPregoParafusoSelected,
-                                      onChanged: (bool? newValue) {
-                                        setState(() {
-                                          isPregoParafusoSelected =
-                                              newValue ?? false;
-                                        });
-                                      },
-                                    ),
-                                    CheckboxListTile(
-                                      title: Text('Telhas'),
-                                      value: isTelhaSelected,
-                                      onChanged: (bool? newValue) {
-                                        setState(() {
-                                          isTelhaSelected = newValue ?? false;
-                                        });
-                                      },
-                                    ),
-                                    CheckboxListTile(
-                                      title: Text('Reservatórios'),
-                                      value: isReservatorioSelected,
-                                      onChanged: (bool? newValue) {
-                                        setState(() {
-                                          isReservatorioSelected =
-                                              newValue ?? false;
-                                        });
-                                      },
-                                    ),
-                                    CheckboxListTile(
-                                      title: Text('Fraldas'),
-                                      value: isFraldaSelected,
-                                      onChanged: (bool? newValue) {
-                                        setState(() {
-                                          isFraldaSelected = newValue ?? false;
-                                        });
-                                      },
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
                           ),
                         ),
 
@@ -644,119 +764,76 @@ class _AtendimentoFormsState extends State<AtendimentoForms> {
                         SizedBox(height: 20),
 
                         Align(
-                          //SALVAR + CANCELAR
+                          // SALVAR + CANCELAR
                           alignment: Alignment.centerRight,
-                          child: InkWell(
-                            onTap: () {
-                              Navigator.of(context).pushReplacement(
-                                MaterialPageRoute(
-                                    builder: (context) => Home(
-                                          title: '',
-                                        )),
-                              );
-                            },
-                            child: Container(
-                              width: 160,
-                              height: 28.61,
-                              child: Stack(
-                                children: [
-                                  Positioned(
-                                    left: 90,
-                                    top: 0,
-                                    child: Container(
-                                      width: 65,
-                                      height: 28.61,
-                                      child: Stack(
-                                        children: [
-                                          Positioned(
-                                            left: 0,
-                                            top: 0,
-                                            child: Container(
-                                              width: 65,
-                                              height: 28.61,
-                                              decoration: ShapeDecoration(
-                                                color: Color(0xFF30BD4F),
-                                                shape: RoundedRectangleBorder(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            5)),
-                                              ),
-                                            ),
-                                          ),
-                                          Positioned(
-                                            left: 7,
-                                            top: 14,
-                                            child: SizedBox(
-                                              width: 55,
-                                              height: 20,
-                                              child: Text(
-                                                'Salvar',
-                                                style: TextStyle(
-                                                  color: Colors.white,
-                                                  fontSize: 16,
-                                                  fontFamily: 'Roboto',
-                                                  fontWeight: FontWeight.w600,
-                                                  height: 0,
-                                                  letterSpacing: 0.64,
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                        ],
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              // Botão "Salvar"
+                              InkWell(
+                                onTap: () {
+                                  _salvarAtendimento();
+                                },
+                                child: Container(
+                                  width: 65,
+                                  height: 28.61,
+                                  decoration: BoxDecoration(
+                                    color: Color(0xFF30BD4F),
+                                    borderRadius: BorderRadius.circular(5),
+                                  ),
+                                  child: Center(
+                                    child: Text(
+                                      'Salvar',
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 16,
+                                        fontFamily: 'Roboto',
+                                        fontWeight: FontWeight.w600,
+                                        height: 0,
+                                        letterSpacing: 0.64,
                                       ),
                                     ),
                                   ),
-                                  Positioned(
-                                    left: 0,
-                                    top: 0,
-                                    child: Container(
-                                      width: 81,
-                                      height: 28.61,
-                                      child: Stack(
-                                        children: [
-                                          Positioned(
-                                            left: 0,
-                                            top: 0,
-                                            child: Container(
-                                              width: 81,
-                                              height: 28.61,
-                                              decoration: ShapeDecoration(
-                                                color: Color(0xFFEC6F64),
-                                                shape: RoundedRectangleBorder(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            5)),
-                                              ),
-                                            ),
-                                          ),
-                                          Positioned(
-                                            left: 5,
-                                            top: 14,
-                                            child: SizedBox(
-                                              width: 75,
-                                              height: 20,
-                                              child: Text(
-                                                'Cancelar',
-                                                style: TextStyle(
-                                                  color: Colors.white,
-                                                  fontSize: 16,
-                                                  fontFamily: 'Roboto',
-                                                  fontWeight: FontWeight.w600,
-                                                  height: 0,
-                                                  letterSpacing: 0.64,
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                ],
+                                ),
                               ),
-                            ),
+
+                              SizedBox(width: 16), // Espaçamento entre os botões
+
+                              // Botão "Cancelar"
+                              InkWell(
+                                onTap: () {
+                                  Navigator.of(context).pushReplacement(
+                                    MaterialPageRoute(
+                                      builder: (context) => Home(title: ''),
+                                    ),
+                                  );
+                                },
+                                child: Container(
+                                  width: 75,
+                                  height: 28.61,
+                                  decoration: BoxDecoration(
+                                    color: Color(0xFFEC6F64),
+                                    borderRadius: BorderRadius.circular(5),
+                                  ),
+                                  child: Center(
+                                    child: Text(
+                                      'Cancelar',
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 16,
+                                        fontFamily: 'Roboto',
+                                        fontWeight: FontWeight.w600,
+                                        height: 0,
+                                        letterSpacing: 0.64,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
-                        )
+                        ),
+
                       ],
                     ),
                   ),

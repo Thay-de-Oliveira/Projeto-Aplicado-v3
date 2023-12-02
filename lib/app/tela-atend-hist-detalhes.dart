@@ -1,12 +1,9 @@
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'components/barra-superior.dart';
 import 'components/menu-inferior.dart';
-
-import 'tela-atend-pendente.dart';
-import 'tela-atendimento-forms.dart';
-import 'tela-atend-historico.dart';
 
 class DetalheHistorico extends StatefulWidget {
   State<DetalheHistorico> createState() => _DetalheHistorico();
@@ -567,7 +564,7 @@ class _DetalheHistorico extends State<DetalheHistorico> {
                                                   ),
                                                   TextSpan(
                                                     text:
-                                                        ' Av. São Pedro, 123E - Efapi',
+                                                        ' R. Frei Bruno, 201 - Efapi',
                                                     style: TextStyle(
                                                       color: Colors.black,
                                                       fontSize: 14,
@@ -582,6 +579,9 @@ class _DetalheHistorico extends State<DetalheHistorico> {
                                             ),
                                           ),
                                         ),
+
+
+
                                         Positioned(
                                           left: 0,
                                           top: 170,
@@ -799,7 +799,9 @@ class _DetalheHistorico extends State<DetalheHistorico> {
                                                 'assets/imagens/icon-endereco.png'),
                                           ),
                                         ),
+
                                       ],
+
                                     ),
                                   ),
                                 ),
@@ -1817,121 +1819,7 @@ class _DetalheHistorico extends State<DetalheHistorico> {
                     ),
                   ),
                 ),
-                Positioned(
-                  //CARROSSEL - REGISTRO FOTOGRAFICO
-                  left: 11,
-                  top: 1087,
-                  child: Container(
-                    width: 338,
-                    height: 214,
-                    child: Stack(
-                      children: [
-                        Positioned(
-                          left: 0,
-                          top: 0,
-                          child: Container(
-                            width: 331,
-                            height: 16,
-                            child: Stack(
-                              children: [
-                                Positioned(
-                                  left: 0,
-                                  top: 0,
-                                  child: SizedBox(
-                                    width: 130,
-                                    height: 16,
-                                    child: Text(
-                                      'Registro fotográfico',
-                                      style: TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 14,
-                                        fontFamily: 'Roboto',
-                                        fontWeight: FontWeight.w500,
-                                        height: 0,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                        Positioned(
-                          left: 0,
-                          top: 32,
-                          child: Container(
-                            width: 338,
-                            height: 182,
-                            child: Stack(
-                              children: [
-                                Positioned(
-                                  left: 0,
-                                  top: 0,
-                                  child: Container(
-                                    width: 200,
-                                    height: 178.43,
-                                    decoration: BoxDecoration(
-                                      image: DecorationImage(
-                                        image: NetworkImage(
-                                            "https://via.placeholder.com/200x178"),
-                                        fit: BoxFit.fill,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                Positioned(
-                                  left: 208,
-                                  top: 0,
-                                  child: Container(
-                                    width: 200,
-                                    height: 178,
-                                    decoration: BoxDecoration(
-                                      image: DecorationImage(
-                                        image: NetworkImage(
-                                            "https://via.placeholder.com/200x178"),
-                                        fit: BoxFit.fill,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                Positioned(
-                                  left: 416,
-                                  top: 0,
-                                  child: Container(
-                                    width: 200,
-                                    height: 178.27,
-                                    decoration: BoxDecoration(
-                                      image: DecorationImage(
-                                        image: NetworkImage(
-                                            "https://via.placeholder.com/200x178"),
-                                        fit: BoxFit.fill,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                Positioned(
-                                  left: 624,
-                                  top: 0,
-                                  child: Container(
-                                    width: 200,
-                                    height: 181.76,
-                                    decoration: BoxDecoration(
-                                      image: DecorationImage(
-                                        image: NetworkImage(
-                                            "https://via.placeholder.com/200x182"),
-                                        fit: BoxFit.fill,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
+
                 Positioned(
                   left: 11,
                   top: 1331,
@@ -2112,6 +2000,97 @@ class _DetalheHistorico extends State<DetalheHistorico> {
                     ),
                   ),
                 ),
+
+                //Teste1
+                //Carrossel
+                Positioned(
+                  left: 10,
+                  top: 1070,
+                  child:Container(
+                    width: 338,
+                    height: 214,
+                    child: Stack(
+                      children: [
+                        Positioned(
+                          left: 01,
+                          top: 03,
+                          child: Container(
+                            width: 331,
+                            height: 16,
+                            child: Stack(
+                              children: [
+                                Positioned( //Titulo
+                                  left: 0,
+                                  top: 0,
+                                  child: SizedBox(
+                                    width: 130,
+                                    height: 16,
+                                    child: Text(
+                                      'Registro fotográfico',
+                                      style: TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 14,
+                                        fontFamily: 'Roboto',
+                                        fontWeight: FontWeight.w500,
+                                        height: 0,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        //Fotos
+                        Positioned(
+                          left: 10,
+                          top: 30,
+                          child: Container(
+                            width: 338,
+                            height: 182,
+                            child: CarouselSlider(
+                              options: CarouselOptions(
+                                height: 182,
+                                enlargeCenterPage: true,
+                                autoPlay: true,
+                                aspectRatio: 16 / 9,
+                                autoPlayCurve: Curves.fastOutSlowIn,
+                                enableInfiniteScroll: true,
+                                autoPlayAnimationDuration: Duration(milliseconds: 800),
+                                viewportFraction: 0.8,
+                              ),
+                              items: [
+                                'assets/imagens/imagem-1.png',
+                                'assets/imagens/imagem-2.png',
+                                'assets/imagens/imagem-3.png',
+                                'assets/imagens/imagem-4.png',
+                              ].map((item) {
+                                return Builder(
+                                  builder: (BuildContext context) {
+                                    return Container(
+                                      width: MediaQuery.of(context).size.width,
+                                      margin: EdgeInsets.symmetric(horizontal: 5.0),
+                                      decoration: BoxDecoration(
+                                        color: Colors.amber,
+                                        borderRadius: BorderRadius.circular(8.0),
+                                      ),
+                                      child: Image.network(
+                                        item,
+                                        fit: BoxFit.cover,
+                                      ),
+                                    );
+                                  },
+                                );
+                              }).toList(),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),),
+
+                SizedBox(height: 20),
+
                 Positioned(
                   left: 0,
                   top: 0,
@@ -2172,6 +2151,9 @@ class _DetalheHistorico extends State<DetalheHistorico> {
                                 Image.asset('assets/imagens/icon-subtipo.png'),
                           ),
                         ),
+
+
+
                         Positioned(
                           left: 315,
                           top: 18.27,
@@ -2187,13 +2169,18 @@ class _DetalheHistorico extends State<DetalheHistorico> {
                 ),
               ],
             ),
-          )),
+          )
+          ),
+
+
           Positioned(
             left: 0,
             top: 0,
             right: 0,
             child: BarraSuperior(context),
           ),
+
+
         ],
       ),
       bottomNavigationBar: MenuInferior(),
