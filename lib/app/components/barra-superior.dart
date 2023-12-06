@@ -11,7 +11,7 @@ Widget BarraSuperior(BuildContext context) {
           left: 0,
           top: 0,
           child: Container(
-            width: 360,
+            width: MediaQuery.of(context).size.width,
             height: 57,
             decoration: BoxDecoration(
               gradient: LinearGradient(
@@ -22,28 +22,8 @@ Widget BarraSuperior(BuildContext context) {
             ),
           ),
         ),
-        /*Positioned(
-          //NOTIFICAÇÃO
-          left: 289,
-          top: 19,
-          child: Container(
-            width: 20,
-            height: 20,
-            child: Image.asset('assets/imagens/notificacao1.png'),
-          ),
-        ),
         Positioned(
-          //SAQ
-          left: 322,
-          top: 19,
-          child: Container(
-            width: 20,
-            height: 20,
-            child: Image.asset('assets/imagens/saq.png'),
-          ),
-        ),*/
-        Positioned(
-          left: 157,
+          left: MediaQuery.of(context).size.width / 2 - 22.5, // Posiciona o logo no centro
           top: 8,
           child: Container(
             width: 45,

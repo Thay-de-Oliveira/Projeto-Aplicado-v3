@@ -8,6 +8,8 @@ import 'components/menu-inferior.dart';
 import 'tela-atend-pendente.dart';
 import 'tela-relat-aconte-detalhes.dart';
 
+//Botão leva ao PDF
+
 class RelatorioRecibo extends StatefulWidget {
   @override
   _RelatorioReciboState createState() => _RelatorioReciboState();
@@ -210,12 +212,12 @@ class _RelatorioReciboState extends State<RelatorioRecibo> {
 
                 SizedBox(height: 25),
 
-                //Barra de pesquisa + filtro
+                //Barra de pesquisa
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     //Botão FILTRO
-                    InkWell(
+                    /*InkWell(
                       onTap: () {
                         // Ação a ser executada quando o botão de filtro for pressionado
                       },
@@ -279,14 +281,11 @@ class _RelatorioReciboState extends State<RelatorioRecibo> {
                           ],
                         ),
                       ),
-                    ),
-
-                    // Espaçamento entre a barra de pesquisa e o botão de filtro
-                    SizedBox(width: 10),
+                    ),*/
 
                     //Barra de pesquisa
                     Container(
-                      width: 253,
+                      width: 330,
                       height: 32,
                       child: Stack(
                         children: [
@@ -294,7 +293,7 @@ class _RelatorioReciboState extends State<RelatorioRecibo> {
                             left: 0,
                             top: 0,
                             child: Container(
-                              width: 253,
+                              width: 330,
                               height: 32,
                               decoration: ShapeDecoration(
                                 color: Colors.white,
@@ -328,12 +327,12 @@ class _RelatorioReciboState extends State<RelatorioRecibo> {
                               height: 32,
                               child: Row(
                                 mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
+                                MainAxisAlignment.spaceBetween,
                                 children: [
                                   Padding(
                                     padding: EdgeInsets.only(
                                         right:
-                                            140.0), //Espaçamento à direita do texto
+                                        220.0), //Espaçamento à direita do texto
                                     child: Text(
                                       'Pesquisar',
                                       style: TextStyle(
@@ -412,7 +411,7 @@ class _RelatorioReciboState extends State<RelatorioRecibo> {
                         top: 103,
                         child: Container(
                           width: 63,
-                          height: 17,
+                          height: 25,
                           child: Stack(
                             children: [
                               Positioned(
@@ -420,7 +419,7 @@ class _RelatorioReciboState extends State<RelatorioRecibo> {
                                 top: 0,
                                 child: Container(
                                   width: 63,
-                                  height: 17,
+                                  height: 25,
                                   decoration: ShapeDecoration(
                                     color: Color(0xFFCFDDF2),
                                     shape: RoundedRectangleBorder(
@@ -428,13 +427,16 @@ class _RelatorioReciboState extends State<RelatorioRecibo> {
                                   ),
                                 ),
                               ),
+
+                              //MUDAR PARA PDF
                               InkWell(
                                 onTap: () {
+                                  // Navega para a tela de DetalhesRelatorioAcontecimento quando o botão for pressionado
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
                                         builder: (context) =>
-                                            DetalhesRelatorioAcontecimento()), //MUDAR PARA PDF
+                                            DetalhesRelatorioAcontecimento()),
                                   );
                                 },
                                 child: Positioned(
@@ -442,7 +444,7 @@ class _RelatorioReciboState extends State<RelatorioRecibo> {
                                   top: 7,
                                   child: Container(
                                     width: 57,
-                                    height: 15,
+                                    height: 25,
                                     child: Stack(
                                       children: [
                                         Positioned(
@@ -450,7 +452,7 @@ class _RelatorioReciboState extends State<RelatorioRecibo> {
                                           top: 8,
                                           child: SizedBox(
                                             width: 50,
-                                            height: 11,
+                                            height: 25,
                                             child: Text(
                                               'Relatório',
                                               style: TextStyle(
@@ -473,7 +475,7 @@ class _RelatorioReciboState extends State<RelatorioRecibo> {
                                             decoration: ShapeDecoration(
                                               shape: RoundedRectangleBorder(
                                                 borderRadius:
-                                                    BorderRadius.circular(5),
+                                                BorderRadius.circular(5),
                                               ),
                                             ),
                                             child: Stack(children: []),

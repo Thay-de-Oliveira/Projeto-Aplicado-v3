@@ -4,7 +4,7 @@ import 'package:projetoaplicado/backend/models/atendimentoModel.dart';
 
 
 class AtendimentoService {
-  String baseUrl = "http://localhost:3000/atendimentos";
+  String baseUrl = "http://127.0.0.1:3000/atendimentos";
 
   Future<List<AtendimentosModel>> fetchListAtendimento() async {
     try {

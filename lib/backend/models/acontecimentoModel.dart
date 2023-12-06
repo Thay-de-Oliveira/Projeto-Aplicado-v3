@@ -8,6 +8,7 @@ class AcontecimentoModel {
   final String infoCobrade;
   final DateTime dataHora;
   final String? numeroProtocolo;
+  bool? pendente;
 
   AcontecimentoModel({
     this.id,
@@ -19,11 +20,12 @@ class AcontecimentoModel {
     required this.infoCobrade,
     required this.dataHora,
     this.numeroProtocolo,
+    this.pendente,
   });
 
   factory AcontecimentoModel.fromJson(Map<String, dynamic> json) {
     return AcontecimentoModel(
-      id: json['id'],
+      id: json['_id'],
       classe: json['classe'],
       grupo: json['grupo'],
       subgrupo: json['subgrupo'],
@@ -32,11 +34,12 @@ class AcontecimentoModel {
       infoCobrade: json['infoCobrade'],
       dataHora: DateTime.parse(json['dataHora']),
       numeroProtocolo: json['numeroProtocolo'],
+      pendente: json['pendente'] as bool?,
     );
   }
 
   Map<String, dynamic> toJson() => {
-        'id': id,
+        '_id': id,
         'classe': classe,
         'grupo': grupo,
         'subgrupo': subgrupo,
@@ -45,5 +48,6 @@ class AcontecimentoModel {
         'infoCobrade': infoCobrade,
         'dataHora': dataHora.toIso8601String(),
         'numeroProtocolo': numeroProtocolo,
+        'pendente': pendente,
       };
 }

@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:projetoaplicado/app/tela-inicio.dart';
 import 'package:projetoaplicado/backend/controllers/acontecimentoController.dart';
 import 'package:projetoaplicado/backend/controllers/atendimentoController.dart';
+import 'package:projetoaplicado/backend/controllers/cidadaoController.dart';
 import 'package:projetoaplicado/backend/models/acontecimentoModel.dart';
 import 'package:projetoaplicado/backend/models/atendimentoModel.dart';
 import 'package:intl/intl.dart';
+import 'package:projetoaplicado/backend/models/cidadaoModel.dart';
+import 'package:projetoaplicado/backend/services/cidadaoService.dart';
 
 import 'components/barra-superior.dart';
 import 'components/menu-inferior.dart';
@@ -13,11 +17,20 @@ import 'tela-atend-pendente.dart';
 import 'tela-atend-historico.dart';
 
 class AtendimentoForms extends StatefulWidget {
+  final String? numeroProtocolo;
+
+  AtendimentoForms({Key? key, this.numeroProtocolo}) : super(key: key);
+  
   @override
   _AtendimentoFormsState createState() => _AtendimentoFormsState();
 }
 
 class _AtendimentoFormsState extends State<AtendimentoForms> {
+  TextEditingController nomeResponsavelController = TextEditingController();
+  List<CidadaoModel> suggestions = [];
+
+  CidadaoService cidadaoService = CidadaoService();
+  final CidadaoController cidadaoController = CidadaoController.cidadaoController;
   AcontecimentoController _acontecimentoController = AcontecimentoController();
   AtendimentoController _atendimentoController = AtendimentoController();
   List<AcontecimentoModel> listAcontecimento = [];
@@ -31,8 +44,28 @@ class _AtendimentoFormsState extends State<AtendimentoForms> {
   void initState() {
     super.initState();
     _carregarAcontecimentos(); // Chame a função para carregar a lista de acontecimentos
+    // Preencher o campo de protocolo se estiver disponível
+    if (widget.numeroProtocolo != null) {
+      _selectedNumeroProtocoloAtendimento = widget.numeroProtocolo!;
+    }
   }
 
+AcontecimentoModel? findAcontecimentoByProtocolo(String numeroProtocolo) {
+  return listAcontecimento.firstWhere(
+    (acontecimento) => acontecimento.numeroProtocolo == numeroProtocolo,
+  );
+}
+
+  List<CidadaoModel> getFilteredCidadaoList(String query, List<CidadaoModel> cidadaoList) {
+    List<CidadaoModel> matches = [];
+
+    matches.addAll(cidadaoList);
+
+    matches.retainWhere((cidadao) =>
+        cidadao.name.toLowerCase().contains(query.toLowerCase()));
+
+    return matches;
+  }
 
   Future<void> _selectDate(BuildContext context, TextEditingController controller) async {
     DateTime? pickedDate = await showDatePicker(
@@ -87,6 +120,12 @@ class _AtendimentoFormsState extends State<AtendimentoForms> {
       if (resposta != null && resposta == 'Atendimento criado com sucesso!') {
         // Atendimento salvo com sucesso
         _exibirMensagem('Atendimento salvo com sucesso!');
+
+      var protocoloAtendimentoSalvo = novoAtendimento.n_protocolo;
+      
+      // Chame o método para atualizar o acontecimento correspondente
+      await AcontecimentoController.acontecimentoController.updateAcontecimento(protocoloAtendimentoSalvo, false);
+
         _limparCamposFormulario();
       } else {
         // Ocorreu um erro ao salvar o atendimento
@@ -133,7 +172,6 @@ class _AtendimentoFormsState extends State<AtendimentoForms> {
   TextEditingController _dataSolicitacaoController = TextEditingController();
   TextEditingController _dataVistoriaController = TextEditingController();
   TextEditingController _observacoesController = TextEditingController();
-  TextEditingController nomeResponsavelController = TextEditingController();
 
 //Ao adicionar uma condição boolean, dizemos que os campos do checklist iniciam vazios (sem seleção)
   bool isAguaSelected = false;
@@ -289,7 +327,7 @@ class _AtendimentoFormsState extends State<AtendimentoForms> {
                         ),
                         child: InkWell(
                           onTap: () {
-                            Navigator.push(
+                            Navigator.pushReplacement(
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) =>
@@ -445,10 +483,50 @@ class _AtendimentoFormsState extends State<AtendimentoForms> {
 
                         SizedBox(height: 30),
 
-                        //Campo "Nome do responsável no local"
-                        TextFormField(
-                          controller: nomeResponsavelController, // Adicione esta linha
-                          decoration: _customInputDecoration('Nome do responsável no local:'),
+                        TypeAheadField<CidadaoModel>(
+
+                          controller: nomeResponsavelController,
+                          debounceDuration: Duration(milliseconds: 300),
+                          // Função que será chamada conforme você digita
+                          suggestionsCallback: (search) async {
+                            // Chamada ao seu serviço para buscar cidadãos
+                            var cidadaoService = CidadaoService();
+                            var cidadaoList = await cidadaoService.fetchListCidadao(searchTerm: search.isNotEmpty ? search : '.');
+
+                            // Filtra a lista com base na consulta
+                            return getFilteredCidadaoList(search, cidadaoList);
+                          },
+
+                          builder: (context, controller, focusNode) {
+                            return TextField(
+                              controller: nomeResponsavelController,
+                              focusNode: focusNode,
+                              autofocus: true,
+                              decoration: _customInputDecoration("Nome do responsável no local:"),
+                              onChanged: (text) async {
+                                // Chamada ao seu serviço para buscar cidadãos quando o texto é alterado
+                                var cidadaoService = CidadaoService();
+                                var cidadaoList = await cidadaoService.fetchListCidadao(searchTerm: text.isNotEmpty ? text : '.');
+
+                                // Filtra a lista com base na consulta
+                                var filteredList = getFilteredCidadaoList(text, cidadaoList);
+
+                                // Atualiza as sugestões
+                                SuggestionsController.of<CidadaoModel>(context).suggestions = filteredList;
+                              },
+                            );
+                          },
+                          itemBuilder: (context, cidadao) {
+                            return ListTile(
+                              title: Text(cidadao.name),
+                              subtitle: Text('CPF: ${cidadao.cpf}'),
+                            );
+                          },
+                          onSelected: (cidadao) {
+                            setState(() {
+                              nomeResponsavelController.text = cidadao.name;
+                            });
+                          },
                         ),
 
                         SizedBox(height: 30),
@@ -773,6 +851,9 @@ class _AtendimentoFormsState extends State<AtendimentoForms> {
                               InkWell(
                                 onTap: () {
                                   _salvarAtendimento();
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(builder: (context) => AtendimentoForms()));
                                 },
                                 child: Container(
                                   width: 65,

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:maps_launcher/maps_launcher.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 
 import 'components/barra-superior.dart';
 import 'components/menu-inferior.dart';
@@ -657,7 +659,7 @@ class _DetalhesRelatorioAcontecimentoState
                                                         ),
                                                         TextSpan(
                                                           text:
-                                                              ' Rua Severino Jr., 123E - Bairro: Efapi | Chapecó/SC',
+                                                              ' R. Frei Bruno, 201 - Jardim America | Chapecó/SC',
                                                           style: TextStyle(
                                                             color: Colors.black,
                                                             fontSize: 14,
@@ -904,75 +906,85 @@ class _DetalhesRelatorioAcontecimentoState
                         child: Container(
                           width: 338,
                           height: 182,
-                          child: Stack(
-                            children: [
-                              Positioned(
-                                left: 0,
-                                top: 0,
-                                child: Container(
-                                  width: 200,
-                                  height: 178.43,
-                                  decoration: BoxDecoration(
-                                    image: DecorationImage(
-                                      image: NetworkImage(
-                                          "https://via.placeholder.com/200x178"),
-                                      fit: BoxFit.fill,
+                          child: CarouselSlider(
+                            options: CarouselOptions(
+                              height: 182,
+                              enlargeCenterPage: true,
+                              autoPlay: true,
+                              aspectRatio: 16 / 9,
+                              autoPlayCurve: Curves.fastOutSlowIn,
+                              enableInfiniteScroll: true,
+                              autoPlayAnimationDuration: Duration(milliseconds: 800),
+                              viewportFraction: 0.8,
+                            ),
+                            items: [
+                              'assets/imagens/imagem-1.png',
+                              'assets/imagens/imagem-2.png',
+                              'assets/imagens/imagem-3.png',
+                              'assets/imagens/imagem-4.png',
+                              ].map((item) {
+                              return Builder(
+                                builder: (BuildContext context) {
+                                  return Container(
+                                    width: MediaQuery.of(context).size.width,
+                                    margin: EdgeInsets.symmetric(horizontal: 5.0),
+                                    decoration: BoxDecoration(
+                                      color: Colors.amber,
+                                      borderRadius: BorderRadius.circular(8.0),
                                     ),
-                                  ),
-                                ),
-                              ),
-                              Positioned(
-                                left: 208,
-                                top: 0,
-                                child: Container(
-                                  width: 200,
-                                  height: 178,
-                                  decoration: BoxDecoration(
-                                    image: DecorationImage(
-                                      image: NetworkImage(
-                                          "https://via.placeholder.com/200x178"),
-                                      fit: BoxFit.fill,
+                                    child: Image.network(
+                                      item,
+                                      fit: BoxFit.cover,
                                     ),
-                                  ),
-                                ),
-                              ),
-                              Positioned(
-                                left: 416,
-                                top: 0,
-                                child: Container(
-                                  width: 200,
-                                  height: 178.27,
-                                  decoration: BoxDecoration(
-                                    image: DecorationImage(
-                                      image: NetworkImage(
-                                          "https://via.placeholder.com/200x178"),
-                                      fit: BoxFit.fill,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              Positioned(
-                                left: 624,
-                                top: 0,
-                                child: Container(
-                                  width: 200,
-                                  height: 181.76,
-                                  decoration: BoxDecoration(
-                                    image: DecorationImage(
-                                      image: NetworkImage(
-                                          "https://via.placeholder.com/200x182"),
-                                      fit: BoxFit.fill,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ],
+                                  );
+                                },
+                              );
+                            }).toList(),
                           ),
                         ),
                       ),
                     ],
                   ),
-                )
+                ),
+
+                SizedBox(height: 20),
+
+                //Botão com localização
+                Container(
+                  width: 200,
+                  height: 49,
+                  child: InkWell(
+                    onTap: () {
+                      MapsLauncher.launchQuery('R. Frei Bruno, 201 - Parque das Palmeiras, Chapecó - SC, 89803-785');
+                    },
+                    child: Container(
+                      width: 90,
+                      height: 80,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Container(
+                            //Icone
+                            width: 30,
+                            height: 30,
+                            child: Image.asset(
+                                'assets/imagens/icon-pendente.png'),
+                          ),
+                          SizedBox(
+                              height:
+                              5.0), //Espaço entre o ícone e o texto
+                          Text(
+                            'Pendente',
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.normal,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
               ],
             ),
           ),

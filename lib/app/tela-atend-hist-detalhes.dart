@@ -1,9 +1,15 @@
+// ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors, sized_box_for_whitespace
+
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'components/barra-superior.dart';
 import 'components/menu-inferior.dart';
+
+import 'tela-atend-pendente.dart';
+import 'tela-atendimento-forms.dart';
+import 'tela-atend-historico.dart';
 
 class DetalheHistorico extends StatefulWidget {
   State<DetalheHistorico> createState() => _DetalheHistorico();
@@ -2151,9 +2157,6 @@ class _DetalheHistorico extends State<DetalheHistorico> {
                                 Image.asset('assets/imagens/icon-subtipo.png'),
                           ),
                         ),
-
-
-
                         Positioned(
                           left: 315,
                           top: 18.27,
@@ -2171,16 +2174,12 @@ class _DetalheHistorico extends State<DetalheHistorico> {
             ),
           )
           ),
-
-
           Positioned(
             left: 0,
             top: 0,
             right: 0,
             child: BarraSuperior(context),
           ),
-
-
         ],
       ),
       bottomNavigationBar: MenuInferior(),

@@ -3,10 +3,31 @@ import 'package:http/http.dart' as http;
 import 'package:projetoaplicado/backend/models/cidadaoModel.dart';
 
 class CidadaoService {
-  String baseUrl = "http://24.144.96.178:3000";
+  String baseUrl = "http://127.0.0.1:3000";
 
-  Future<List<CidadaoModel>> fetchListCidadao() async {
-    final response = await http.get(Uri.parse('$baseUrl/cidadaos'));
+  Future<List<CidadaoModel>> find(String search) async {
+    if (search.isEmpty) {
+      search = '.'; // Se a pesquisa estiver vazia, substitua por "."
+    }
+
+    final response = await http.get(Uri.parse('$baseUrl/cidadaos?q=$search'));
+
+    if (response.statusCode == 200) {
+      var list = json.decode(response.body);
+      List<CidadaoModel> listCidadaoModel = [];
+      for (var item in list) {
+        listCidadaoModel.add(CidadaoModel.fromJson(item));
+      }
+
+      return listCidadaoModel;
+    } else {
+      throw Exception('Falha ao carregar lista de cidadãos');
+    }
+  }
+
+  Future<List<CidadaoModel>> fetchListCidadao({String? searchTerm}) async {
+    // Adicione o parâmetro de pesquisa à URL da solicitação, se houver um termo de pesquisa
+    final response = await http.get(Uri.parse('$baseUrl/cidadaos?q=$searchTerm'));
 
     if (response.statusCode == 200) {
       var list = json.decode(response.body);

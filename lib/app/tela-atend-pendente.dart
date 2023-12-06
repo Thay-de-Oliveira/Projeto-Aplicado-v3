@@ -2,8 +2,9 @@
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:projetoaplicado/app/components/atendimento-card.dart';
-import 'package:projetoaplicado/backend/controllers/atendimentoController.dart';
+import 'package:projetoaplicado/app/components/acontecimento-card.dart';
+import 'package:projetoaplicado/backend/controllers/acontecimentoController.dart';
+import 'package:projetoaplicado/backend/models/acontecimentoModel.dart';
 import 'components/barra-superior.dart';
 import 'components/menu-inferior.dart';
 import 'tela-atend-historico.dart';
@@ -15,17 +16,20 @@ class AtendimentoPendente extends StatefulWidget {
 }
 
 class _AtendimentoPendenteState extends State<AtendimentoPendente> {
-  final AtendimentoController atendimentoController = Get.put(AtendimentoController());
+  final AcontecimentoController acontecimentoController = Get.put(AcontecimentoController());
 
-  @override
-  void initState() {
-    super.initState();
-    _loadAtendimentos();
-  }
+// Adicione um tipo de retorno Future<List<AcontecimentoModel>> ao método
+void _loadAcontecimentos() async {
+  await acontecimentoController.listAcontecimento();
+  acontecimentoController.listAcontecimentoObs;
+}
 
-  void _loadAtendimentos() async {
-    await atendimentoController.listAtendimento();
-  }
+// Modifique o initState para utilizar o FutureBuilder para lidar com o carregamento
+@override
+void initState() {
+  super.initState();
+  _loadAcontecimentos();
+}
 
   @override
   Widget build(BuildContext context) {
@@ -229,26 +233,25 @@ class _AtendimentoPendenteState extends State<AtendimentoPendente> {
                     // Lista de Cards de Atendimento
                     child: Obx(
                       () {
-                        // Verifica se a lista está vazia e se o círculo de carregamento está visível
-                        if (atendimentoController.isLoading.value) {
-                          Future.delayed(Duration(seconds: 1), () {
+                        if (acontecimentoController.isLoading.value) {
+                         Future.delayed(Duration(seconds: 1), () {
                             // A cada 1 segundo, verifica se a lista foi carregada
-                            if (atendimentoController.listAtendimentoObs.isNotEmpty) {
-                              atendimentoController.isLoading.value = false; // Oculta o círculo de carregamento
+                            if (acontecimentoController.listAcontecimentoObs.isNotEmpty) {
+                              acontecimentoController.isLoading.value = false; // Oculta o círculo de carregamento
                             }
                           });
                           return Center(child: CircularProgressIndicator());
                         } else {
-                          var atendimentosPendentes = atendimentoController.listAtendimentoObs
-                              .where((atendimento) => atendimento.pendente)
+                          var acontecimentos = acontecimentoController.listAcontecimentoObs
+                              .where((acontecimento) => acontecimento.pendente ?? false)
                               .toList();
 
                           return ListView.builder(
                             shrinkWrap: true,
                             physics: NeverScrollableScrollPhysics(),
-                            itemCount: atendimentosPendentes.length,
+                            itemCount: acontecimentos.length,
                             itemBuilder: (context, index) {
-                              return AtendimentoCard(atendimento: atendimentosPendentes[index]);
+                              return AcontecimentoCard(acontecimento: acontecimentos[index]);
                             },
                           );
                         }

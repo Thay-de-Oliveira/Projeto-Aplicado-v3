@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:projetoaplicado/app/app-state.dart';
+import 'package:projetoaplicado/app/tela-atendimento-forms.dart';
 import 'package:projetoaplicado/app/tela-inicio.dart';
 import 'package:projetoaplicado/backend/controllers/acontecimentoController.dart';
 import 'package:projetoaplicado/backend/models/acontecimentoModel.dart';
+import 'package:provider/provider.dart';
 
 import 'components/barra-superior.dart';
 import 'components/menu-inferior.dart';
@@ -453,6 +456,7 @@ class _FormularioAcontecimentoState extends State<AcontecimentosForms> {
 
   @override
   Widget build(BuildContext context) {
+    var appState = Provider.of<AppState>(context, listen: false);
     return Scaffold(
       appBar: null,
       backgroundColor: Colors.white,
@@ -641,6 +645,8 @@ class _FormularioAcontecimentoState extends State<AcontecimentosForms> {
                         onTap: () {
                           // Chama a função para salvar os dados
                           _salvar();
+                          appState.atualizarTela('inicio');
+                          Navigator.of(context).pushReplacementNamed('/tela-inicio');
                         },
                         child: Container(
                           width: 80,
@@ -739,6 +745,7 @@ class _FormularioAcontecimentoState extends State<AcontecimentosForms> {
       subtipo: valorCampoSubTipo,
       infoCobrade: valorCampoCobradeAutomatico,
       dataHora: DateTime.now(),
+      pendente: true,
     );
 
     // Chama a função post do AcontecimentoController para salvar os dados

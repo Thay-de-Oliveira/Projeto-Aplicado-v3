@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:projetoaplicado/app/app-state.dart';
+import 'package:projetoaplicado/app/tela-atend-hist-detalhes.dart';
 import 'package:projetoaplicado/app/tela-cadastro-cidadao.dart';
 import 'package:projetoaplicado/app/tela-relatorios-acontecimento.dart';
 import 'package:provider/provider.dart';
@@ -260,7 +261,7 @@ class _HomeState extends State<Home> {
                       // Navegue para a tela de relatorios
                       Navigator.of(context).push(
                         MaterialPageRoute(
-                          builder: (context) => RelatorioAcontecimento(),
+                          builder: (context) => DetalheHistorico(),
                         ),
                       );
                     },

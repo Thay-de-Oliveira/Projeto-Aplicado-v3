@@ -141,7 +141,7 @@ class _HistoricoAtendimentoState extends State<HistoricoAtendimento> {
                           return Center(child: CircularProgressIndicator());
                         } else {
                           var atendimentosPendentes = atendimentoController.listAtendimentoObs
-                              .where((atendimento) => !atendimento.pendente)
+                              .where((atendimento) => atendimento.pendente)
                               .toList();
 
                           return ListView.builder(

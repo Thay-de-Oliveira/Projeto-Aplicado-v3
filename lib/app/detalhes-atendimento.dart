@@ -90,6 +90,7 @@ class _DetalhesAtendimentoScreenState extends State<DetalhesAtendimentoScreen> {
                         },
                         child: Text('Salvar Alterações'),
                       ),
+                      SizedBox(height: 16),
                     ],
                   ),
                 ),

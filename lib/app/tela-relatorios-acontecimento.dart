@@ -210,12 +210,12 @@ class _RelatorioAcontecimentoState extends State<RelatorioAcontecimento> {
 
                 SizedBox(height: 25),
 
-                //Barra de pesquisa + filtro
+                //Barra de pesquisa
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     //Botão FILTRO
-                    InkWell(
+                    /*InkWell(
                       onTap: () {
                         // Ação a ser executada quando o botão de filtro for pressionado
                       },
@@ -279,14 +279,11 @@ class _RelatorioAcontecimentoState extends State<RelatorioAcontecimento> {
                           ],
                         ),
                       ),
-                    ),
-
-                    // Espaçamento entre a barra de pesquisa e o botão de filtro
-                    SizedBox(width: 10),
+                    ),*/
 
                     //Barra de pesquisa
                     Container(
-                      width: 253,
+                      width: 330,
                       height: 32,
                       child: Stack(
                         children: [
@@ -294,7 +291,7 @@ class _RelatorioAcontecimentoState extends State<RelatorioAcontecimento> {
                             left: 0,
                             top: 0,
                             child: Container(
-                              width: 253,
+                              width: 330,
                               height: 32,
                               decoration: ShapeDecoration(
                                 color: Colors.white,
@@ -328,12 +325,12 @@ class _RelatorioAcontecimentoState extends State<RelatorioAcontecimento> {
                               height: 32,
                               child: Row(
                                 mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
+                                MainAxisAlignment.spaceBetween,
                                 children: [
                                   Padding(
                                     padding: EdgeInsets.only(
                                         right:
-                                            140.0), //Espaçamento à direita do texto
+                                        220.0), //Espaçamento à direita do texto
                                     child: Text(
                                       'Pesquisar',
                                       style: TextStyle(
@@ -365,7 +362,7 @@ class _RelatorioAcontecimentoState extends State<RelatorioAcontecimento> {
                 Center(
                     child: Container(
                   width: 330,
-                  height: 127,
+                  height: 150,
                   child: Stack(
                     children: [
                       Positioned(
@@ -373,7 +370,7 @@ class _RelatorioAcontecimentoState extends State<RelatorioAcontecimento> {
                         top: 0,
                         child: Container(
                           width: 330,
-                          height: 127,
+                          height: 200,
                           decoration: ShapeDecoration(
                             color: Colors.white,
                             shape: RoundedRectangleBorder(
@@ -409,10 +406,10 @@ class _RelatorioAcontecimentoState extends State<RelatorioAcontecimento> {
                       ),
                       Positioned(
                         left: 261,
-                        top: 103,
+                        top: 120,
                         child: Container(
                           width: 63,
-                          height: 17,
+                          height: 25,
                           child: Stack(
                             children: [
                               Positioned(
@@ -420,7 +417,7 @@ class _RelatorioAcontecimentoState extends State<RelatorioAcontecimento> {
                                 top: 0,
                                 child: Container(
                                   width: 63,
-                                  height: 17,
+                                  height: 25,
                                   decoration: ShapeDecoration(
                                     color: Color(0xFFCFDDF2),
                                     shape: RoundedRectangleBorder(
@@ -443,7 +440,7 @@ class _RelatorioAcontecimentoState extends State<RelatorioAcontecimento> {
                                   top: 7,
                                   child: Container(
                                     width: 57,
-                                    height: 15,
+                                    height: 25,
                                     child: Stack(
                                       children: [
                                         Positioned(
@@ -451,7 +448,7 @@ class _RelatorioAcontecimentoState extends State<RelatorioAcontecimento> {
                                           top: 8,
                                           child: SizedBox(
                                             width: 50,
-                                            height: 11,
+                                            height: 25,
                                             child: Text(
                                               'Relatório',
                                               style: TextStyle(
