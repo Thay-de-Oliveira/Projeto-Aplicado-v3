@@ -11,6 +11,25 @@ class DetalheHistorico extends StatefulWidget {
 
 class _DetalheHistorico extends State<DetalheHistorico> {
   @override
+
+
+  String? _acontecimentoSubgrupo;
+  String? _acontecimentoTipo;
+  String? _acontecimentoEvento;
+  String? _acontecimentoCobrade;
+  String? _acontecimentoProtocoloN;
+
+  String? _cidadaoSolicitante;
+  String? _cidadaoCpf;
+  String? _cidadaoRg;
+  String? _cidadaoTelefone;
+
+  String? _atendimentoNomeAtendente;
+  String? _atendimentoCodigo;
+  String? _atendimentoData;
+  String? _atendimentoOcorrencia;
+
+
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: null,
@@ -101,7 +120,7 @@ class _DetalheHistorico extends State<DetalheHistorico> {
                                     width: 143,
                                     height: 16,
                                     child: Text(
-                                      'N° do protocolo: 0002',
+                                      'N° do protocolo: $_acontecimentoProtocoloN',
                                       style: TextStyle(
                                         color: Colors.black,
                                         fontSize: 14,
@@ -109,7 +128,9 @@ class _DetalheHistorico extends State<DetalheHistorico> {
                                         fontWeight: FontWeight.w500,
                                         height: 0,
                                       ),
+
                                     ),
+                                    
                                   ),
                                 ),
                                 Positioned(
@@ -192,6 +213,7 @@ class _DetalheHistorico extends State<DetalheHistorico> {
                                                           FontWeight.w400,
                                                       height: 0,
                                                     ),
+                                                    recognizer: _acontecimentoSubgrupo,
                                                   ),
                                                 ],
                                               ),
@@ -229,6 +251,7 @@ class _DetalheHistorico extends State<DetalheHistorico> {
                                                           FontWeight.w400,
                                                       height: 0,
                                                     ),
+                                                    recognizer: _acontecimentoTipo,
                                                   ),
                                                 ],
                                               ),
@@ -344,6 +367,7 @@ class _DetalheHistorico extends State<DetalheHistorico> {
                                                           FontWeight.w400,
                                                       height: 0,
                                                     ),
+                                                    recognizer: _acontecimentoEvento,
                                                   ),
                                                 ],
                                               ),
@@ -380,6 +404,7 @@ class _DetalheHistorico extends State<DetalheHistorico> {
                                                           FontWeight.w400,
                                                       height: 0,
                                                     ),
+                                                    recognizer: _acontecimentoCobrade,
                                                   ),
                                                 ],
                                               ),
