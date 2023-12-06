@@ -1,2 +1,5 @@
-2023/11/30-18:48:41.570 1868 Creating DB C:\Users\admin\AppData\Local\Temp\flutter_tools.bfa3fd27\flutter_tools_chrome_device.82b078d2\Default\Asset Store\assets.db since it was missing.
-2023/11/30-18:48:41.606 1868 Reusing MANIFEST C:\Users\admin\AppData\Local\Temp\flutter_tools.bfa3fd27\flutter_tools_chrome_device.82b078d2\Default\Asset Store\assets.db/MANIFEST-000001
+2023/11/30-18:51:38.135 2964 Reusing MANIFEST C:\Users\admin\AppData\Local\Temp\flutter_tools.bfa3fd27\flutter_tools_chrome_device.82b078d2\Default\Asset Store\assets.db/MANIFEST-000001
+2023/11/30-18:51:38.139 2964 Recovering log #3
+2023/11/30-18:51:38.161 2964 Level-0 table #3: started
+2023/11/30-18:51:38.174 2964 Level-0 table #3: 592277 bytes OK
+2023/11/30-18:51:38.180 2964 Delete type=0 #3

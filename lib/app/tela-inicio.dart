@@ -1,6 +1,8 @@
+import 'package:advance_pdf_viewer/advance_pdf_viewer.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:projetoaplicado/app/app-state.dart';
+import 'package:projetoaplicado/app/components/pdfView.dart';
 import 'package:projetoaplicado/app/tela-atend-hist-detalhes.dart';
 import 'package:projetoaplicado/app/tela-cadastro-cidadao.dart';
 import 'package:projetoaplicado/app/tela-relatorios-acontecimento.dart';
@@ -259,9 +261,10 @@ class _HomeState extends State<Home> {
                     onTap: () {
                       appState.atualizarTela('relatorios');
                       // Navegue para a tela de relatorios
-                      Navigator.of(context).push(
+                      Navigator.push(
+                        context,
                         MaterialPageRoute(
-                          builder: (context) => DetalheHistorico(),
+                          builder: (context) => PdfViewerScreen(pdfPath: "assets/pdfs/pdfTeste.pdf"),
                         ),
                       );
                     },

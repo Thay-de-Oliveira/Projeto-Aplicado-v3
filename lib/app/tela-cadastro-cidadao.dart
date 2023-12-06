@@ -43,6 +43,16 @@ class _CadastroCidadaoState extends State<CadastroCidadao> {
   final TextEditingController estadoController = TextEditingController();
   final TextEditingController enderecoController = TextEditingController();
 
+  void _exibirMensagem(String mensagem) {
+    // Exibe a mensagem para o usuário (pode ser um snackbar, dialog, etc.)
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(mensagem),
+        duration: Duration(seconds: 3),
+      ),
+    );
+  }
+
   void salvarCidadao() async {
     try {
       CidadaoModel novoCidadao = CidadaoModel(
@@ -60,9 +70,9 @@ class _CadastroCidadaoState extends State<CadastroCidadao> {
       var response = await CidadaoController.cidadaoController.post(novoCidadao);
 
       if (response != null) {
-        print('Cidadão cadastrado com sucesso!');
+        _exibirMensagem('Cidadão cadastrado com sucesso!');
       } else {
-        print('Falha ao cadastrar cidadão.');
+        _exibirMensagem('Falha ao cadastrar cidadão.');
       }
     } catch (e) {
       print('Erro ao cadastrar cidadão: $e');
@@ -105,7 +115,7 @@ class _CadastroCidadaoState extends State<CadastroCidadao> {
                             child:
                                 Image.asset('assets/imagens/icon-cidadao.png'),
                           ),
-                          SizedBox(height: 10.0),
+                          SizedBox(height: 1.0),
                           Positioned(
                             left: 0,
                             top: 10,
