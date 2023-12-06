@@ -17,7 +17,9 @@ class HistoricoAtendimento extends StatefulWidget {
 }
 
 class _HistoricoAtendimentoState extends State<HistoricoAtendimento> {
+
   final AtendimentoController atendimentoController = Get.put(AtendimentoController());
+
 
   @override
   void initState() {
