@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:projetoaplicado/app/app-state.dart';
 import 'package:projetoaplicado/app/tela-atendimento-forms.dart';
 import 'package:projetoaplicado/app/tela-inicio.dart';
@@ -35,6 +36,7 @@ class _FormularioAcontecimentoState extends State<AcontecimentosForms> {
   String? _selectedCobradeAutomatico;
 
   final DateTime dataAtual = DateTime.now();
+  final f = new DateFormat('dd/MM/yyyy - hh:mm');
 
   // Opções para a classe de acontecimento
   List<String> classeOptions = [
@@ -630,7 +632,7 @@ class _FormularioAcontecimentoState extends State<AcontecimentosForms> {
 
                   if (dataAtual != null) // Verifica se a data não é nula
                     TextFormField(
-                      initialValue: dataAtual.toString(),
+                      initialValue: f.format(dataAtual),
                       readOnly: true,
                       decoration: _customInputDecoration('Data e Hora:'),
                     ),

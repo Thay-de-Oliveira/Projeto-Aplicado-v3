@@ -3,7 +3,9 @@ import 'package:http/http.dart' as http;
 import 'package:projetoaplicado/backend/models/acontecimentoModel.dart';
 
 class AcontecimentoService {
-  String baseUrl = "http://127.0.0.1:3000";
+  // String baseUrl = "http://127.0.0.1:3000";
+  String baseUrl = "http://localhost:3000";
+
 
   Future<List<AcontecimentoModel>> fetchListAcontecimento() async {
     final response = await http.get(Uri.parse('$baseUrl/acontecimentos'));
