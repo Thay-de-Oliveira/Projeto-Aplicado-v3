@@ -1,0 +1,104 @@
+
+.dart_tool/chrome-device/Default/Affiliation Database
+.dart_tool/chrome-device/Default/Affiliation Database
+.dart_tool/chrome-device/Default/BrowsingTopicsSiteData
+.dart_tool/chrome-device/Default/BrowsingTopicsSiteData-journal
+.dart_tool/chrome-device/Default/BrowsingTopicsState
+.dart_tool/chrome-device/Default/chrome_cart_db/LOCK
+.dart_tool/chrome-device/Default/chrome_cart_db/LOG
+.dart_tool/chrome-device/Default/chrome_cart_db/LOG.old
+.dart_tool/chrome-device/Default/DIPS
+.dart_tool/chrome-device/Default/Extension Rules/LOG
+.dart_tool/chrome-device/Default/Extension Rules/LOG.old
+.dart_tool/chrome-device/Default/Extension Scripts/LOG
+.dart_tool/chrome-device/Default/Extension Scripts/LOG.old
+.dart_tool/chrome-device/Default/Extension State/LOG
+.dart_tool/chrome-device/Default/Extension State/LOG.old
+.dart_tool/chrome-device/Default/Favicons
+.dart_tool/chrome-device/Default/Favicons-journal
+.dart_tool/chrome-device/Default/GCM Store/Encryption/LOG
+.dart_tool/chrome-device/Default/GCM Store/Encryption/LOG.old
+.dart_tool/chrome-device/Default/History
+.dart_tool/chrome-device/Default/History-journal
+.dart_tool/chrome-device/Default/Local Storage/leveldb/000003.log
+.dart_tool/chrome-device/Default/Local Storage/leveldb/000004.ldb
+.dart_tool/chrome-device/Default/Local Storage/leveldb/000007.log
+.dart_tool/chrome-device/Default/Local Storage/leveldb/CURRENT
+.dart_tool/chrome-device/Default/Local Storage/leveldb/LOG
+.dart_tool/chrome-device/Default/Local Storage/leveldb/LOG.old
+.dart_tool/chrome-device/Default/Local Storage/leveldb/MANIFEST-000001
+.dart_tool/chrome-device/Default/Login Data
+.dart_tool/chrome-device/Default/Login Data For Account
+.dart_tool/chrome-device/Default/Network Action Predictor
+.dart_tool/chrome-device/Default/Network/Cookies
+.dart_tool/chrome-device/Default/Network/Network Persistent State
+.dart_tool/chrome-device/Default/Network/Reporting and NEL
+.dart_tool/chrome-device/Default/Network/TransportSecurity
+.dart_tool/chrome-device/Default/Preferences
+.dart_tool/chrome-device/Default/Safe Browsing Network/NetworkDataMigrated
+.dart_tool/chrome-device/Default/Safe Browsing Network/Safe Browsing Cookies
+.dart_tool/chrome-device/Default/Safe Browsing Network/Safe Browsing Cookies-journal
+.dart_tool/chrome-device/Default/Secure Preferences
+.dart_tool/chrome-device/Default/Service Worker/Database/000003.log
+.dart_tool/chrome-device/Default/Service Worker/Database/CURRENT
+.dart_tool/chrome-device/Default/Service Worker/Database/LOG
+.dart_tool/chrome-device/Default/Service Worker/ScriptCache/2cc80dabc69f58b6_0
+.dart_tool/chrome-device/Default/Service Worker/ScriptCache/index-dir/the-real-index
+.dart_tool/chrome-device/Default/Session Storage/000003.log
+.dart_tool/chrome-device/Default/Session Storage/CURRENT
+.dart_tool/chrome-device/Default/Session Storage/LOG
+.dart_tool/chrome-device/Default/Session Storage/LOG.old
+.dart_tool/chrome-device/Default/Sessions/Session_13358449771995855
+.dart_tool/chrome-device/Default/Sessions/Session_13358450599192454
+.dart_tool/chrome-device/Default/Sessions/Session_13358799817569377
+.dart_tool/chrome-device/Default/Sessions/Session_13358800047127021
+.dart_tool/chrome-device/Default/Sessions/Session_13358800179848655
+.dart_tool/chrome-device/Default/Sessions/Tabs_13358449772129922
+.dart_tool/chrome-device/Default/Sessions/Tabs_13358450599297622
+.dart_tool/chrome-device/Default/Sessions/Tabs_13358799817689603
+.dart_tool/chrome-device/Default/Sessions/Tabs_13358800047267414
+.dart_tool/chrome-device/Default/Sessions/Tabs_13358800179969995
+.dart_tool/chrome-device/Default/Shared Dictionary/cache/index-dir/the-real-index
+.dart_tool/chrome-device/Default/Shared Dictionary/db
+.dart_tool/chrome-device/Default/shared_proto_db/metadata/LOG
+.dart_tool/chrome-device/Default/shared_proto_db/metadata/LOG.old
+.dart_tool/chrome-device/Default/SharedStorage
+.dart_tool/chrome-device/Default/Site Characteristics Database/000004.ldb
+.dart_tool/chrome-device/Default/Site Characteristics Database/000006.ldb
+.dart_tool/chrome-device/Default/Site Characteristics Database/000006.log
+.dart_tool/chrome-device/Default/Site Characteristics Database/CURRENT
+.dart_tool/chrome-device/Default/Site Characteristics Database/LOG
+.dart_tool/chrome-device/Default/Site Characteristics Database/LOG.old
+.dart_tool/chrome-device/Default/Site Characteristics Database/lost/000003.log
+.dart_tool/chrome-device/Default/Site Characteristics Database/lost/MANIFEST-000001
+.dart_tool/chrome-device/Default/Site Characteristics Database/MANIFEST-000001
+.dart_tool/chrome-device/Default/Sync Data/LevelDB/LOG
+.dart_tool/chrome-device/Default/Sync Data/LevelDB/LOG.old
+.dart_tool/chrome-device/Default/Top Sites
+.dart_tool/chrome-device/Default/Visited Links
+.dart_tool/chrome-device/Default/Web Data
+.dart_tool/chrome-device/Default/WebStorage/QuotaManager
+.dart_tool/dartpad/web_plugin_registrant.dart
+.dart_tool/extension_discovery/vs_code.json
+.dart_tool/package_config.json
+.dart_tool/package_config_subset
+.dart_tool/version
+.flutter-plugins
+.flutter-plugins-dependencies
+android/app/src/main/java/io/flutter/plugins/GeneratedPluginRegistrant.java
+build/2794971a5855e7decd7bb368de5d49d1.cache.dill.track.dill
+build/ddd52684d85bff31bf7f653e3b8bf1b0/_composite.stamp
+build/ddd52684d85bff31bf7f653e3b8bf1b0/gen_dart_plugin_registrant.stamp
+build/ddd52684d85bff31bf7f653e3b8bf1b0/gen_localizations.stamp
+build/flutter_assets/AssetManifest.bin.json
+build/flutter_assets/NOTICES
+build/flutter_assets/shaders/ink_sparkle.frag
+ios/Flutter/flutter_export_environment.sh
+ios/Flutter/Generated.xcconfig
+ios/Runner/GeneratedPluginRegistrant.h
+ios/Runner/GeneratedPluginRegistrant.m
+pubspec.lock
+pubspec.lock
+.dart_tool/chrome-device/Default/Affiliation Database
+pubspec.lock
+*.m
