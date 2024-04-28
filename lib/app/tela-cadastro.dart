@@ -222,7 +222,7 @@ class _CadastroAppState extends State<CadastroApp> {
                         }
                       },
                       style: ElevatedButton.styleFrom(
-                        primary: Color(0xff1d3484),
+                        backgroundColor: Color(0xff1d3484),
                         minimumSize: Size(100, 40),
                         padding: EdgeInsets.all(20.0),
                       ),

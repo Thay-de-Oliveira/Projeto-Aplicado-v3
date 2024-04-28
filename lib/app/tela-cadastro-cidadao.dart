@@ -233,7 +233,7 @@ class _CadastroCidadaoState extends State<CadastroCidadao> {
                                   );
                                 },
                                 style: ElevatedButton.styleFrom(
-                                  primary: Color(0xFF30BD4F), // Cor do botão "Salvar"
+                                  backgroundColor: Color(0xFF30BD4F), // Cor do botão "Salvar"
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(5),
                                   ),
