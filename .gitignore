@@ -29,3 +29,69 @@ Thumbs.db
 *.log
 *.tmp
 *.temp
+.flutter-plugins
+.flutter-plugins-dependencies
+pubspec.lock
+.dart_tool/package_config_subset
+.dart_tool/package_config.json
+.dart_tool/version
+.dart_tool/chrome-device/Default/Affiliation Database
+.dart_tool/chrome-device/Default/DIPS
+.dart_tool/chrome-device/Default/Favicons
+.dart_tool/chrome-device/Default/History
+.dart_tool/chrome-device/Default/History-journal
+.dart_tool/chrome-device/Default/Login Data
+.dart_tool/chrome-device/Default/Login Data For Account
+.dart_tool/chrome-device/Default/Network Action Predictor
+.dart_tool/chrome-device/Default/Preferences
+.dart_tool/chrome-device/Default/Secure Preferences
+.dart_tool/chrome-device/Default/Top Sites
+.dart_tool/chrome-device/Default/Visited Links
+.dart_tool/chrome-device/Default/Web Data
+.dart_tool/chrome-device/Default/Extension Rules/LOG
+.dart_tool/chrome-device/Default/Extension Rules/LOG.old
+.dart_tool/chrome-device/Default/Extension Scripts/LOG
+.dart_tool/chrome-device/Default/Extension Scripts/LOG.old
+.dart_tool/chrome-device/Default/Extension State/LOG
+.dart_tool/chrome-device/Default/Extension State/LOG.old
+.dart_tool/chrome-device/Default/GCM Store/Encryption/LOG
+.dart_tool/chrome-device/Default/GCM Store/Encryption/LOG.old
+.dart_tool/chrome-device/Default/Local Storage/leveldb/000003.log
+.dart_tool/chrome-device/Default/Local Storage/leveldb/000007.log
+.dart_tool/chrome-device/Default/Local Storage/leveldb/CURRENT
+.dart_tool/chrome-device/Default/Local Storage/leveldb/LOG
+.dart_tool/chrome-device/Default/Local Storage/leveldb/LOG.old
+.dart_tool/chrome-device/Default/Local Storage/leveldb/MANIFEST-000001
+.dart_tool/chrome-device/Default/Network/Cookies
+.dart_tool/chrome-device/Default/Network/Network Persistent State
+.dart_tool/chrome-device/Default/Network/Reporting and NEL
+.dart_tool/chrome-device/Default/Network/TransportSecurity
+.dart_tool/chrome-device/Default/Service Worker/Database/000003.log
+.dart_tool/chrome-device/Default/Service Worker/Database/CURRENT
+.dart_tool/chrome-device/Default/Service Worker/Database/LOG
+.dart_tool/chrome-device/Default/Service Worker/ScriptCache/2cc80dabc69f58b6_0
+.dart_tool/chrome-device/Default/Service Worker/ScriptCache/4cb013792b196a35_0
+.dart_tool/chrome-device/Default/Service Worker/ScriptCache/index-dir/the-real-index
+.dart_tool/chrome-device/Default/Session Storage/000003.log
+.dart_tool/chrome-device/Default/Session Storage/CURRENT
+.dart_tool/chrome-device/Default/Session Storage/LOG
+.dart_tool/chrome-device/Default/Session Storage/LOG.old
+.dart_tool/chrome-device/Default/Shared Dictionary/db
+.dart_tool/chrome-device/Default/Shared Dictionary/cache/index-dir/the-real-index
+.dart_tool/chrome-device/Default/shared_proto_db/metadata/LOG
+.dart_tool/chrome-device/Default/shared_proto_db/metadata/LOG.old
+.dart_tool/chrome-device/Default/Site Characteristics Database/CURRENT
+.dart_tool/chrome-device/Default/Site Characteristics Database/LOG
+.dart_tool/chrome-device/Default/Site Characteristics Database/LOG.old
+.dart_tool/chrome-device/Default/Site Characteristics Database/MANIFEST-000001
+.dart_tool/chrome-device/Default/Sync Data/LevelDB/LOG
+.dart_tool/chrome-device/Default/Sync Data/LevelDB/LOG.old
+.dart_tool/chrome-device/Default/WebStorage/QuotaManager
+.dart_tool/dartpad/web_plugin_registrant.dart
+android/app/src/main/java/io/flutter/plugins/GeneratedPluginRegistrant.java
+build/flutter_assets/NOTICES
+build/flutter_assets/shaders/ink_sparkle.frag
+ios/Flutter/flutter_export_environment.sh
+ios/Flutter/Generated.xcconfig
+ios/Runner/GeneratedPluginRegistrant.h
+ios/Runner/GeneratedPluginRegistrant.m
