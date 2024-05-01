@@ -13,6 +13,8 @@ import 'app/tela-inicio.dart';
 import 'app/tela-login.dart';
 import 'app/tela-mapa.dart';
 import 'app/tela-usuario.dart';
+import 'app/camera.dart';
+
 
 import 'controllerBinding.dart';
 
@@ -45,6 +47,7 @@ class MyApp extends StatelessWidget {
         '/tela-mapa': (context) => Mapa(),
         '/tela-usuario': (context) => Perfil(),
         '/tela-atendimento-forms': (context) => AtendimentoForms(),
+        '/camera': (context) => Camera(),
       },
     );
   }

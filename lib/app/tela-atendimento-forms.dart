@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
+import 'package:projetoaplicado/app/camera.dart';
 import 'package:projetoaplicado/app/tela-inicio.dart';
 import 'package:projetoaplicado/backend/controllers/acontecimentoController.dart';
 import 'package:projetoaplicado/backend/controllers/atendimentoController.dart';
@@ -637,17 +638,26 @@ AcontecimentoModel? findAcontecimentoByProtocolo(String numeroProtocolo) {
                             suffixIcon: Padding(
                               padding: EdgeInsets.only(right: 16.0),
                               child: Row(
-                                //Ícones
+                                // Ícones
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
-                                  Container(
-                                    width: 30,
-                                    height: 30,
-                                    child: Image.asset(
-                                        'assets/imagens/icon-baixar.png'),
+                                  GestureDetector(
+                                    onTap: () {
+                                      Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                          builder: (context) => Camera(),
+                                        ),
+                                      );
+                                    },
+                                    child: Container(
+                                      width: 30,
+                                      height: 30,
+                                      child: Image.asset('assets/imagens/icon-baixar.png'),
+                                    ),
                                   ),
                                 ],
                               ),
+
                             ),
                           ),
                         ),
