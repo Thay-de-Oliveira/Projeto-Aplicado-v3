@@ -23,16 +23,25 @@ class _CameraState extends State<Camera> {
   }
 
   Future<void> _takePicture() async {
-    final XFile? picture = await Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => CameraCamera(onFile: (File file) {}),
-      ),
-    );
+  // Abre a tela da câmera e aguarda a captura da imagem
+  final XFile? picture = await Navigator.push(
+    context,
+    MaterialPageRoute(
+      builder: (context) => CameraCamera(onFile: (File file) {}),
+    ),
+  );
+
+  // Verifica se uma imagem foi capturada
+  if (picture != null) {
+    // Atualiza o estado com a imagem capturada
     setState(() {
       _imageFile = picture;
     });
+
+    // Faça qualquer processamento adicional necessário com a imagem capturada aqui
+    // Por exemplo, você pode enviar a imagem para um servidor, salvá-la no dispositivo, etc.
   }
+}
 
   /*Future<void> _uploadImage() async {
     final XFile? image =
@@ -50,9 +59,7 @@ class _CameraState extends State<Camera> {
           title: Text('Camera Widget'),
         ),
         body: Center(
-          // Aqui você pode adicionar qualquer UI adicional, se necessário
-          // Como a tela da câmera já será aberta automaticamente,
-          // Não é necessário ter um campo de texto
+          //Camera abre automaticamente
         ),
       ),
     );
