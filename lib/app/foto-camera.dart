@@ -56,7 +56,7 @@ class _CameraState extends State<Camera> {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
-          title: Text('Camera Widget'),
+          title: Text('Camera'),
         ),
         body: Center(
           //Camera abre automaticamente

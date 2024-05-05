@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
-import 'package:projetoaplicado/app/camera.dart';
+import 'package:projetoaplicado/app/foto-camera.dart';
+import 'package:projetoaplicado/app/foto-upload.dart';
 import 'package:projetoaplicado/app/tela-inicio.dart';
 import 'package:projetoaplicado/backend/controllers/acontecimentoController.dart';
 import 'package:projetoaplicado/backend/controllers/atendimentoController.dart';
@@ -652,12 +653,26 @@ AcontecimentoModel? findAcontecimentoByProtocolo(String numeroProtocolo) {
                                     child: Container(
                                       width: 30,
                                       height: 30,
-                                      child: Image.asset('assets/imagens/icon-baixar.png'),
+                                      child: Icon(Icons.camera_alt),
+                                    ),
+                                  ),
+                                  SizedBox(width: 16), // Espaçamento entre os ícones
+                                  GestureDetector(
+                                    onTap: () {
+                                      Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                          builder: (context) => Upload(),
+                                        ),
+                                      );
+                                    },
+                                    child: Container(
+                                      width: 30,
+                                      height: 30,
+                                      child: Icon(Icons.cloud_upload),
                                     ),
                                   ),
                                 ],
                               ),
-
                             ),
                           ),
                         ),
