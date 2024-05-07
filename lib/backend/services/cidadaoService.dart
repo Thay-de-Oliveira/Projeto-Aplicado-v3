@@ -3,7 +3,7 @@ import 'package:http/http.dart' as http;
 import 'package:projetoaplicado/backend/models/cidadaoModel.dart';
 
 class CidadaoService {
-  String baseUrl = "http://127.0.0.1:3000";
+  String baseUrl = "https://web-production-0b75.up.railway.app";
 
   Future<List<CidadaoModel>> find(String search) async {
     if (search.isEmpty) {
