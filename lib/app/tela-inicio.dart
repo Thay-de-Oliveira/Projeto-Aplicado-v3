@@ -264,7 +264,7 @@ class _HomeState extends State<Home> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => PdfViewerScreen(pdfPath: "assets/pdfs/pdfTeste.pdf"),
+                          builder: (context) => RelatorioAcontecimento(),
                         ),
                       );
                     },

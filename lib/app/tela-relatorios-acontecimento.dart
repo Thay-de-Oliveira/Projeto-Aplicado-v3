@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:projetoaplicado/app/tela-relatorios-atendimento.dart';
 import 'package:projetoaplicado/app/tela-relatorios-recibo.dart';
+import 'package:get/get.dart';
+import 'package:projetoaplicado/app/components/acontecimento-card_relatorio.dart';
+import 'package:projetoaplicado/backend/controllers/acontecimentoController.dart';
 
 import 'components/barra-superior.dart';
 import 'components/menu-inferior.dart';
@@ -11,9 +14,25 @@ import 'tela-relat-aconte-detalhes.dart';
 class RelatorioAcontecimento extends StatefulWidget {
   @override
   _RelatorioAcontecimentoState createState() => _RelatorioAcontecimentoState();
+  
 }
 
 class _RelatorioAcontecimentoState extends State<RelatorioAcontecimento> {
+    final AcontecimentoController acontecimentoController = Get.put(AcontecimentoController());
+
+// Adicione um tipo de retorno Future<List<AcontecimentoModel>> ao método
+void _loadAcontecimentos() async {
+  await acontecimentoController.listAcontecimento();
+  acontecimentoController.listAcontecimentoObs;
+}
+
+// Modifique o initState para utilizar o FutureBuilder para lidar com o carregamento
+@override
+void initState() {
+  super.initState();
+  _loadAcontecimentos();
+}
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -358,346 +377,40 @@ class _RelatorioAcontecimentoState extends State<RelatorioAcontecimento> {
 
                 SizedBox(height: 25),
 
-                //Card 1
+                 // Lista de Cards de Acontecimento
                 Center(
-                    child: Container(
-                  width: 330,
-                  height: 150,
-                  child: Stack(
-                    children: [
-                      Positioned(
-                        left: 0,
-                        top: 0,
-                        child: Container(
-                          width: 330,
-                          height: 200,
-                          decoration: ShapeDecoration(
-                            color: Colors.white,
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(5)),
-                            shadows: [
-                              BoxShadow(
-                                color: Color(0x3F2F2F2F),
-                                blurRadius: 1,
-                                offset: Offset(1, 1),
-                                spreadRadius: 0,
-                              )
-                            ],
-                          ),
-                        ),
-                      ),
-                      Positioned(
-                        left: 9,
-                        top: 14,
-                        child: SizedBox(
-                          width: 189,
-                          height: 21,
-                          child: Text(
-                            'Tempestade - Vendaval',
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 16,
-                              fontFamily: 'Roboto',
-                              fontWeight: FontWeight.w700,
-                              height: 0,
-                            ),
-                          ),
-                        ),
-                      ),
-                      Positioned(
-                        left: 261,
-                        top: 120,
-                        child: Container(
-                          width: 63,
-                          height: 25,
-                          child: Stack(
-                            children: [
-                              Positioned(
-                                left: 0,
-                                top: 0,
-                                child: Container(
-                                  width: 63,
-                                  height: 25,
-                                  decoration: ShapeDecoration(
-                                    color: Color(0xFFCFDDF2),
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(4)),
-                                  ),
-                                ),
-                              ),
-                              InkWell(
-                                onTap: () {
-                                  // Navega para a tela de DetalhesRelatorioAcontecimento quando o botão for pressionado
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            DetalhesRelatorioAcontecimento()),
-                                  );
-                                },
-                                child: Positioned(
-                                  left: 10,
-                                  top: 7,
-                                  child: Container(
-                                    width: 57,
-                                    height: 25,
-                                    child: Stack(
-                                      children: [
-                                        Positioned(
-                                          left: 10,
-                                          top: 8,
-                                          child: SizedBox(
-                                            width: 50,
-                                            height: 25,
-                                            child: Text(
-                                              'Relatório',
-                                              style: TextStyle(
-                                                color: Colors.black,
-                                                fontSize: 10,
-                                                fontFamily: 'Roboto',
-                                                fontWeight: FontWeight.w600,
-                                                height: 0,
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                        Positioned(
-                                          left: 43,
-                                          top: 0,
-                                          child: Container(
-                                            width: 14,
-                                            height: 14,
-                                            clipBehavior: Clip.antiAlias,
-                                            decoration: ShapeDecoration(
-                                              shape: RoundedRectangleBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(5),
-                                              ),
-                                            ),
-                                            child: Stack(children: []),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              )
-                            ],
-                          ),
-                        ),
-                      ),
-                      Positioned(
-                        left: 9,
-                        top: 31,
-                        child: Container(
-                          width: 251,
-                          height: 72,
-                          child: Stack(
-                            children: [
-                              Positioned(
-                                left: 20,
-                                top: 20,
-                                child: SizedBox(
-                                  width: 199,
-                                  height: 14,
-                                  child: Text(
-                                    'Data do acontecimento: 05/05/2023',
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 12,
-                                      fontFamily: 'Roboto',
-                                      fontWeight: FontWeight.w400,
-                                      height: 0,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              Positioned(
-                                left: 20,
-                                top: 39,
-                                child: SizedBox(
-                                  width: 214,
-                                  height: 14,
-                                  child: Text(
-                                    'Bairro: Efapi | Cidade: Chapecó/SC',
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 12,
-                                      fontFamily: 'Roboto',
-                                      fontWeight: FontWeight.w400,
-                                      height: 0,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              Positioned(
-                                left: 20,
-                                top: 58,
-                                child: SizedBox(
-                                  width: 120,
-                                  height: 14,
-                                  child: Text(
-                                    'COBRADE: 1.3.2.1.5',
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 12,
-                                      fontFamily: 'Roboto',
-                                      fontWeight: FontWeight.w400,
-                                      height: 0,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              Positioned(
-                                left: 0,
-                                top: 20,
-                                child: Container(
-                                  width: 14,
-                                  height: 14,
-                                  child: Stack(
-                                    children: [
-                                      Positioned(
-                                        left: 0,
-                                        top: 0,
-                                        child: Container(
-                                          width: 14,
-                                          height: 14,
-                                          decoration: ShapeDecoration(
-                                            color: Color(0xFFCFDDF2),
-                                            shape: OvalBorder(),
-                                          ),
-                                        ),
-                                      ),
-                                      Positioned(
-                                        left: 3,
-                                        top: 3,
-                                        child: Container(
-                                          width: 8,
-                                          height: 8,
-                                          clipBehavior: Clip.antiAlias,
-                                          decoration: BoxDecoration(),
-                                          child: Stack(children: []),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                              Positioned(
-                                left: 20,
-                                top: 0,
-                                child: SizedBox(
-                                  width: 231,
-                                  height: 14,
-                                  child: Text(
-                                    'N° do protocolo de acontecimento: 0002',
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 12,
-                                      fontFamily: 'Roboto',
-                                      fontWeight: FontWeight.w400,
-                                      height: 0,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              Positioned(
-                                left: 0,
-                                top: 0,
-                                child: Container(
-                                  width: 14,
-                                  height: 14,
-                                  decoration: ShapeDecoration(
-                                    color: Color(0xFFCFDDF2),
-                                    shape: OvalBorder(),
-                                  ),
-                                ),
-                              ),
-                              Positioned(
-                                left: 0,
-                                top: 39,
-                                child: Container(
-                                  width: 14,
-                                  height: 14,
-                                  child: Stack(
-                                    children: [
-                                      Positioned(
-                                        left: 0,
-                                        top: 0,
-                                        child: Container(
-                                          width: 14,
-                                          height: 14,
-                                          decoration: ShapeDecoration(
-                                            color: Color(0xFFCFDDF2),
-                                            shape: OvalBorder(),
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                              Positioned(
-                                left: 0,
-                                top: 58,
-                                child: Container(
-                                  width: 14,
-                                  height: 14,
-                                  child: Stack(
-                                    children: [
-                                      Positioned(
-                                        left: 0,
-                                        top: 0,
-                                        child: Container(
-                                          width: 14,
-                                          height: 14,
-                                          decoration: ShapeDecoration(
-                                            color: Color(0xFFCFDDF2),
-                                            shape: OvalBorder(),
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      Positioned(
-                        left: 0,
-                        top: 114,
-                        child: Container(
-                          width: 108,
-                          height: 8,
-                          child: Stack(
-                            children: [
-                              Positioned(
-                                left: 11,
-                                top: 0,
-                                child: SizedBox(
-                                  width: 97,
-                                  height: 8,
-                                  child: Text(
-                                    '09/05/2023', //pegar data do banco de dados
-                                    style: TextStyle(
-                                      color: Color(0xFF082778),
-                                      fontSize: 10,
-                                      fontFamily: 'Roboto',
-                                      fontWeight: FontWeight.w400,
-                                      height: 0,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ],
+                  child: Container(
+                    width: 330,  // Largura desejada dos cards
+                    // Lista de Cards de Atendimento
+                    child: Obx(
+                      () {
+                        if (acontecimentoController.isLoading.value) {
+                         Future.delayed(Duration(seconds: 1), () {
+                            // A cada 1 segundo, verifica se a lista foi carregada
+                            if (acontecimentoController.listAcontecimentoObs.isNotEmpty) {
+                              acontecimentoController.isLoading.value = false; // Oculta o círculo de carregamento
+                            }
+                          });
+                          return Center(child: CircularProgressIndicator());
+                        } else {
+                          var acontecimentos = acontecimentoController.listAcontecimentoObs
+                              .where((acontecimento) => acontecimento.pendente ?? false)
+                              .toList();
+
+                          return ListView.builder(
+                            shrinkWrap: true,
+                            physics: NeverScrollableScrollPhysics(),
+                            itemCount: acontecimentos.length,
+                            itemBuilder: (context, index) {
+                              return AcontecimentoCard(acontecimento: acontecimentos[index]);
+                            },
+                          );
+                        }
+                      },
+                    ),
                   ),
-                )),
+                ),
+                // Fim da Lista de Cards),
               ],
             ),
           ),
