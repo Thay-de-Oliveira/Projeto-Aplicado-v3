@@ -1,5 +1,7 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:projetoaplicado/app/components/acontecimento-card.dart';
@@ -18,253 +20,260 @@ class AtendimentoPendente extends StatefulWidget {
 class _AtendimentoPendenteState extends State<AtendimentoPendente> {
   final AcontecimentoController acontecimentoController = Get.put(AcontecimentoController());
 
-// Adicione um tipo de retorno Future<List<AcontecimentoModel>> ao método
-void _loadAcontecimentos() async {
+  @override
+  void initState() {
+    super.initState();
+    _loadAcontecimentos();
+  }
+
+Future<void> _loadAcontecimentos() async {
   await acontecimentoController.listAcontecimento();
   acontecimentoController.listAcontecimentoObs;
-}
-
-// Modifique o initState para utilizar o FutureBuilder para lidar com o carregamento
-@override
-void initState() {
-  super.initState();
-  _loadAcontecimentos();
 }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: null,
-      body: CustomScrollView(
-        slivers: <Widget>[
-          SliverAppBar(
-            floating: true,
-            pinned: true,
-            snap: false,
-            expandedHeight: 50,
-            flexibleSpace: BarraSuperior(context),
-          ),
-          SliverList(
-            delegate: SliverChildListDelegate(
-              [
-                SizedBox(height: 20),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    //Botão Cadastro
-                    GestureDetector(
-                      child: Ink(
-                        decoration: ShapeDecoration(
-                          //Estilo
-                          color: Color(0xffffffff),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          shadows: [
-                            //Sombras
-                            BoxShadow(
-                              color: Color(0x3F000000),
-                              blurRadius: 2,
-                              offset: Offset(2, 2),
-                              spreadRadius: 0,
-                            )
-                          ],
-                        ),
-                        child: InkWell(
-                          onTap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        AtendimentoForms()));
-                          },
-                          child: Container(
-                            width: 90,
-                            height: 80,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: <Widget>[
-                                Container(
-                                  //Icone
-                                  width: 30,
-                                  height: 30,
-                                  child: Image.asset(
-                                      'assets/imagens/icon-cadastro.png'),
-                                ),
-                                SizedBox(
-                                    height:
-                                        5.0), //Espaço entre o ícone e o texto
-                                Text(
-                                  'Cadastro',
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.normal,
-                                  ),
-                                ),
-                              ],
+      body: RefreshIndicator(
+        onRefresh: () async {
+          await _loadAcontecimentos(); // Função de atualização ao puxar para cima
+        },
+        child: CustomScrollView(
+          slivers: <Widget>[
+            SliverAppBar(
+              floating: true,
+              pinned: true,
+              snap: false,
+              expandedHeight: 50,
+              flexibleSpace: BarraSuperior(context),
+            ),
+            SliverList(
+              delegate: SliverChildListDelegate(
+                [
+                  SizedBox(height: 20),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      //Botão Cadastro
+                      GestureDetector(
+                        child: Ink(
+                          decoration: ShapeDecoration(
+                            //Estilo
+                            color: Color(0xffffffff),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
                             ),
+                            shadows: [
+                              //Sombras
+                              BoxShadow(
+                                color: Color(0x3F000000),
+                                blurRadius: 2,
+                                offset: Offset(2, 2),
+                                spreadRadius: 0,
+                              )
+                            ],
                           ),
-                        ),
-                      ),
-                    ),
-
-                    //Botão PENDENTE
-                    GestureDetector(
-                      child: Ink(
-                        decoration: ShapeDecoration(
-                          //Estilo
-                          color: Color(0xFFBBD8F0),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          shadows: [
-                            //Sombras
-                            BoxShadow(
-                              color: Color(0x3F000000),
-                              blurRadius: 2,
-                              offset: Offset(2, 2),
-                              spreadRadius: 0,
-                            )
-                          ],
-                        ),
-                        child: InkWell(
-                          onTap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => AtendimentoPendente()));
-                          },
-                          child: Container(
-                            width: 90,
-                            height: 80,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: <Widget>[
-                                Container(
-                                  //Icone
-                                  width: 30,
-                                  height: 30,
-                                  child: Image.asset(
-                                      'assets/imagens/icon-pendente-ativo.png'),
-                                ),
-                                SizedBox(
-                                    height:
-                                        5.0), //Espaço entre o ícone e o texto
-                                Text(
-                                  'Pendente',
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-
-                    //Botão HISTÓRICO
-                    GestureDetector(
-                      child: Ink(
-                        decoration: ShapeDecoration(
-                          //Estilo
-                          color: Color(0xffffffff),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          shadows: [
-                            //Sombras
-                            BoxShadow(
-                              color: Color(0x3F000000),
-                              blurRadius: 2,
-                              offset: Offset(2, 2),
-                              spreadRadius: 0,
-                            )
-                          ],
-                        ),
-                        child: InkWell(
-                          onTap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        HistoricoAtendimento()));
-                          },
-                          child: Container(
-                            width: 90,
-                            height: 80,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: <Widget>[
-                                Container(
-                                  //Icone
-                                  width: 30,
-                                  height: 30,
-                                  child: Image.asset(
-                                      'assets/imagens/icon-historico.png'),
-                                ),
-                                SizedBox(
-                                    height:
-                                        5.0), //Espaço entre o ícone e o texto
-                                Text(
-                                  'Histórico',
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.normal,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                SizedBox(height: 25),
-                buildSearchBar(),
-                SizedBox(height: 25),
-
-                // Lista de Cards de Atendimento
-                Center(
-                  child: Container(
-                    width: 330,  // Largura desejada dos cards
-                    // Lista de Cards de Atendimento
-                    child: Obx(
-                      () {
-                        if (acontecimentoController.isLoading.value) {
-                         Future.delayed(Duration(seconds: 1), () {
-                            // A cada 1 segundo, verifica se a lista foi carregada
-                            if (acontecimentoController.listAcontecimentoObs.isNotEmpty) {
-                              acontecimentoController.isLoading.value = false; // Oculta o círculo de carregamento
-                            }
-                          });
-                          return Center(child: CircularProgressIndicator());
-                        } else {
-                          var acontecimentos = acontecimentoController.listAcontecimentoObs
-                              .where((acontecimento) => acontecimento.pendente ?? false)
-                              .toList();
-
-                          return ListView.builder(
-                            shrinkWrap: true,
-                            physics: NeverScrollableScrollPhysics(),
-                            itemCount: acontecimentos.length,
-                            itemBuilder: (context, index) {
-                              return AcontecimentoCard(acontecimento: acontecimentos[index]);
+                          child: InkWell(
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          AtendimentoForms()));
                             },
-                          );
-                        }
-                      },
+                            child: Container(
+                              width: 90,
+                              height: 80,
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: <Widget>[
+                                  Container(
+                                    //Icone
+                                    width: 30,
+                                    height: 30,
+                                    child: Image.asset(
+                                        'assets/imagens/icon-cadastro.png'),
+                                  ),
+                                  SizedBox(
+                                      height:
+                                          5.0), //Espaço entre o ícone e o texto
+                                  Text(
+                                    'Cadastro',
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.normal,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+
+                      //Botão PENDENTE
+                      GestureDetector(
+                        child: Ink(
+                          decoration: ShapeDecoration(
+                            //Estilo
+                            color: Color(0xFFBBD8F0),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            shadows: [
+                              //Sombras
+                              BoxShadow(
+                                color: Color(0x3F000000),
+                                blurRadius: 2,
+                                offset: Offset(2, 2),
+                                spreadRadius: 0,
+                              )
+                            ],
+                          ),
+                          child: InkWell(
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => AtendimentoPendente()));
+                            },
+                            child: Container(
+                              width: 90,
+                              height: 80,
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: <Widget>[
+                                  Container(
+                                    //Icone
+                                    width: 30,
+                                    height: 30,
+                                    child: Image.asset(
+                                        'assets/imagens/icon-pendente-ativo.png'),
+                                  ),
+                                  SizedBox(
+                                      height:
+                                          5.0), //Espaço entre o ícone e o texto
+                                  Text(
+                                    'Pendente',
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+
+                      //Botão HISTÓRICO
+                      GestureDetector(
+                        child: Ink(
+                          decoration: ShapeDecoration(
+                            //Estilo
+                            color: Color(0xffffffff),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            shadows: [
+                              //Sombras
+                              BoxShadow(
+                                color: Color(0x3F000000),
+                                blurRadius: 2,
+                                offset: Offset(2, 2),
+                                spreadRadius: 0,
+                              )
+                            ],
+                          ),
+                          child: InkWell(
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          HistoricoAtendimento()));
+                            },
+                            child: Container(
+                              width: 90,
+                              height: 80,
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: <Widget>[
+                                  Container(
+                                    //Icone
+                                    width: 30,
+                                    height: 30,
+                                    child: Image.asset(
+                                        'assets/imagens/icon-historico.png'),
+                                  ),
+                                  SizedBox(
+                                      height:
+                                          5.0), //Espaço entre o ícone e o texto
+                                  Text(
+                                    'Histórico',
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.normal,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 25),
+                  buildSearchBar(),
+                  SizedBox(height: 25),
+
+                  // Lista de Cards de Atendimento
+                  Center(
+                    child: Container(
+                      width: 330,
+                      child: FutureBuilder(
+                        future: acontecimentoController.listAcontecimento(),
+                        builder: (context, snapshot) {
+                          switch (snapshot.connectionState) {
+                            case ConnectionState.none:
+                            case ConnectionState.waiting:
+                              return Center(
+                                child: CircularProgressIndicator(),
+                              );
+                            case ConnectionState.done:
+                              if (snapshot.hasError) {
+                                return Center(
+                                  child: Text('Erro ao carregar acontecimentos'),
+                                );
+                              } else {
+                                return ListView.builder(
+                                  shrinkWrap: true,
+                                  physics: NeverScrollableScrollPhysics(),
+                                  itemCount: acontecimentoController.listAcontecimentoObs.length,
+                                  itemBuilder: (context, index) {
+                                    AcontecimentoModel acontecimento = acontecimentoController.listAcontecimentoObs[index];
+                                    return AcontecimentoCard(acontecimento: acontecimento);
+                                  },
+                                );
+                              }
+                            default:
+                              return SizedBox();
+                          }
+                        },
+                      ),
                     ),
                   ),
-                ),
-                // Fim da Lista de Cards
-                SizedBox(height: 25),
-              ],
+                  // Fim da Lista de Cards
+
+                  SizedBox(height: 25),
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
       bottomNavigationBar: MenuInferior(),
     );
