@@ -39,6 +39,7 @@ dependencies:
   camera_camera: ^3.0.0
   image_picker: ^1.0.7
   ftpconnect: 2.0.5
+  dotted_border: ^2.0.0
 
 
 dev_dependencies:
