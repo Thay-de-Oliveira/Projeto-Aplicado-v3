@@ -278,6 +278,12 @@
       "languageVersion": "3.0"
     },
     {
+      "name": "ftpconnect",
+      "rootUri": "file:///C:/Users/Thain%C3%A1/AppData/Local/Pub/Cache/hosted/pub.dev/ftpconnect-2.0.5",
+      "packageUri": "lib/",
+      "languageVersion": "2.17"
+    },
+    {
       "name": "get",
       "rootUri": "file:///C:/Users/Thain%C3%A1/AppData/Local/Pub/Cache/hosted/pub.dev/get-4.6.6",
       "packageUri": "lib/",
@@ -842,7 +848,7 @@
       "languageVersion": "2.17"
     }
   ],
-  "generated": "2024-05-05T15:02:34.329202Z",
+  "generated": "2024-05-08T20:15:58.143328Z",
   "generator": "pub",
   "generatorVersion": "3.3.3"
 }
