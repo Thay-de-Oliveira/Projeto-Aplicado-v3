@@ -1,5 +1,7 @@
-import 'dart:io';
+import 'dart:io' show File, Platform;
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'components/barra-superior.dart';
@@ -20,6 +22,42 @@ class _UploadState extends State<Upload> {
       setState(() {
         _imageFiles.add(image);
       });
+      if (!kIsWeb && (Platform.isAndroid || Platform.isIOS)) {
+        await _uploadFileToFirebase(image);
+      } else {
+        await _uploadFileToFirebaseWeb(image);
+      }
+    }
+  }
+
+  Future<void> _uploadFileToFirebase(XFile image) async {
+    try {
+      File file = File(image.path);
+      String fileName = DateTime.now().millisecondsSinceEpoch.toString();
+      Reference ref = FirebaseStorage.instance.ref().child('uploads/$fileName');
+      UploadTask uploadTask = ref.putFile(file);
+
+      await uploadTask.whenComplete(() async {
+        String downloadURL = await ref.getDownloadURL();
+        print('File uploaded: $downloadURL');
+      });
+    } catch (e) {
+      print('Error uploading file: $e');
+    }
+  }
+
+  Future<void> _uploadFileToFirebaseWeb(XFile image) async {
+    try {
+      String fileName = DateTime.now().millisecondsSinceEpoch.toString();
+      Reference ref = FirebaseStorage.instance.ref().child('uploads/$fileName');
+      UploadTask uploadTask = ref.putData(await image.readAsBytes());
+
+      await uploadTask.whenComplete(() async {
+        String downloadURL = await ref.getDownloadURL();
+        print('File uploaded: $downloadURL');
+      });
+    } catch (e) {
+      print('Error uploading file: $e');
     }
   }
 
@@ -86,7 +124,9 @@ class _UploadState extends State<Upload> {
                     itemCount: _imageFiles.length,
                     itemBuilder: (context, index) {
                       return ListTile(
-                        leading: Image.file(File(_imageFiles[index].path)),
+                        leading: kIsWeb
+                            ? Image.network(_imageFiles[index].path)
+                            : Image.file(File(_imageFiles[index].path)),
                         title: Text('Imagem ${index + 1}'),
                       );
                     },
