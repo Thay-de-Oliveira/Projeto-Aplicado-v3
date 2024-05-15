@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "381013195783",
+    "project_id": "servidorimagens-defesacivil",
+    "storage_bucket": "servidorimagens-defesacivil.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:381013195783:android:b06da90f5a023d11c77ea2",
+        "android_client_info": {
+          "package_name": "com.example.projetoaplicado"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAy117H3_yl-9gfTcHhmUvcYb_KYhFnDso"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
