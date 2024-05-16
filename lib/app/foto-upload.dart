@@ -5,6 +5,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'components/barra-superior.dart';
+import 'tela-atendimento-forms.dart';
 
 class Upload extends StatefulWidget {
   const Upload({Key? key}) : super(key: key);
@@ -15,50 +16,57 @@ class Upload extends StatefulWidget {
 
 class _UploadState extends State<Upload> {
   List<XFile> _imageFiles = [];
+  List<String> _uploadedUrls = [];
 
-  Future<void> _uploadImage() async {
+  Future<void> _pickImage() async {
     final XFile? image = await ImagePicker().pickImage(source: ImageSource.gallery);
     if (image != null) {
       setState(() {
         _imageFiles.add(image);
       });
-      if (!kIsWeb && (Platform.isAndroid || Platform.isIOS)) {
-        await _uploadFileToFirebase(image);
-      } else {
-        await _uploadFileToFirebaseWeb(image);
+    }
+  }
+
+  Future<void> _uploadFiles() async {
+    for (var image in _imageFiles) {
+      try {
+        String fileExtension = image.path.split('.').last; // Pegando a extensão do arquivo
+        String fileName = '${DateTime.now().millisecondsSinceEpoch}.$fileExtension'; // Adicionando a extensão ao nome do arquivo
+        Reference ref = FirebaseStorage.instance.ref().child('uploads/$fileName');
+        UploadTask uploadTask;
+
+        if (kIsWeb) {
+          uploadTask = ref.putData(await image.readAsBytes());
+        } else {
+          File file = File(image.path);
+          uploadTask = ref.putFile(file);
+        }
+
+        await uploadTask.whenComplete(() async {
+          String downloadURL = await ref.getDownloadURL();
+          _uploadedUrls.add(downloadURL);
+          print('File uploaded: $downloadURL');
+        });
+      } catch (e) {
+        print('Error uploading file: $e');
       }
     }
+
+    // Exibir uma mensagem de sucesso e limpar a lista de arquivos
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Imagens salvas com sucesso!')));
+    setState(() {
+      _imageFiles.clear();
+    });
   }
 
-  Future<void> _uploadFileToFirebase(XFile image) async {
-    try {
-      File file = File(image.path);
-      String fileName = DateTime.now().millisecondsSinceEpoch.toString();
-      Reference ref = FirebaseStorage.instance.ref().child('uploads/$fileName');
-      UploadTask uploadTask = ref.putFile(file);
-
-      await uploadTask.whenComplete(() async {
-        String downloadURL = await ref.getDownloadURL();
-        print('File uploaded: $downloadURL');
-      });
-    } catch (e) {
-      print('Error uploading file: $e');
-    }
+  void _removeImage(int index) {
+    setState(() {
+      _imageFiles.removeAt(index);
+    });
   }
 
-  Future<void> _uploadFileToFirebaseWeb(XFile image) async {
-    try {
-      String fileName = DateTime.now().millisecondsSinceEpoch.toString();
-      Reference ref = FirebaseStorage.instance.ref().child('uploads/$fileName');
-      UploadTask uploadTask = ref.putData(await image.readAsBytes());
-
-      await uploadTask.whenComplete(() async {
-        String downloadURL = await ref.getDownloadURL();
-        print('File uploaded: $downloadURL');
-      });
-    } catch (e) {
-      print('Error uploading file: $e');
-    }
+  void _cancelUpload() {
+    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => AtendimentoForms()));
   }
 
   @override
@@ -72,7 +80,7 @@ class _UploadState extends State<Upload> {
               children: [
                 Spacer(),
                 GestureDetector(
-                  onTap: _uploadImage,
+                  onTap: _pickImage,
                   child: DottedBorder(
                     borderType: BorderType.RRect,
                     radius: Radius.circular(10),
@@ -123,13 +131,47 @@ class _UploadState extends State<Upload> {
                   child: ListView.builder(
                     itemCount: _imageFiles.length,
                     itemBuilder: (context, index) {
-                      return ListTile(
-                        leading: kIsWeb
-                            ? Image.network(_imageFiles[index].path)
-                            : Image.file(File(_imageFiles[index].path)),
-                        title: Text('Imagem ${index + 1}'),
+                      return Stack(
+                        children: [
+                          ListTile(
+                            leading: kIsWeb
+                                ? Image.network(_imageFiles[index].path)
+                                : Image.file(File(_imageFiles[index].path)),
+                            title: Text('Imagem ${index + 1}'),
+                          ),
+                          Positioned(
+                            right: 0,
+                            bottom: 0,
+                            child: IconButton(
+                              icon: Icon(Icons.cancel, size: 20, color: Colors.red),
+                              onPressed: () => _removeImage(index),
+                            ),
+                          ),
+                        ],
                       );
                     },
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      ElevatedButton(
+                        onPressed: _cancelUpload,
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.grey,
+                        ),
+                        child: Text('Cancelar', style: TextStyle(color: Colors.white)),
+                      ),
+                      ElevatedButton(
+                        onPressed: _uploadFiles,
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Color(0xFF1B7CB3),
+                        ),
+                        child: Text('Salvar', style: TextStyle(color: Colors.white)),
+                      ),
+                    ],
                   ),
                 ),
               ],
