@@ -2,7 +2,6 @@ import 'package:advance_pdf_viewer/advance_pdf_viewer.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:projetoaplicado/app/app-state.dart';
-import 'package:projetoaplicado/app/components/pdfView.dart';
 import 'package:projetoaplicado/app/tela-atend-hist-detalhes.dart';
 import 'package:projetoaplicado/app/tela-cadastro-cidadao.dart';
 import 'package:projetoaplicado/app/tela-relatorios-acontecimento.dart';

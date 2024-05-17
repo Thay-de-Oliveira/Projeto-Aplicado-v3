@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:projetoaplicado/firebase_options.dart';
 import 'package:provider/provider.dart';
+import 'package:firebase_core/firebase_core.dart';
 
 import 'app/components/menu-inferior.dart';
 import 'app/components/barra-superior.dart';
@@ -14,11 +16,14 @@ import 'app/tela-login.dart';
 import 'app/tela-mapa.dart';
 import 'app/tela-usuario.dart';
 import 'app/foto-camera.dart';
-
+import 'app/foto-upload.dart';
 
 import 'controllerBinding.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized(); 
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+
   ControllerBinding().dependencies();
 
   runApp(
@@ -33,12 +38,13 @@ void main() {
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
+  
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      initialRoute: '/', //Rota inicial
+      initialRoute: '/', // Rota inicial
       routes: {
-        '/': (context) => LoginApp(), //Login
+        '/': (context) => LoginApp(), // Login
         '/tela-cadastro': (context) => CadastroApp(),
         '/tela-login': (context) => LoginApp(),
         '/tela-inicio': (context) => const Home(
@@ -48,6 +54,7 @@ class MyApp extends StatelessWidget {
         '/tela-usuario': (context) => Perfil(),
         '/tela-atendimento-forms': (context) => AtendimentoForms(),
         '/camera': (context) => Camera(),
+        '/upload': (context) => Upload(),
       },
     );
   }
