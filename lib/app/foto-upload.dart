@@ -30,16 +30,19 @@ class _UploadState extends State<Upload> {
   Future<void> _uploadFiles() async {
     for (var image in _imageFiles) {
       try {
-        String fileExtension = image.path.split('.').last; // Pegando a extensão do arquivo
-        String fileName = '${DateTime.now().millisecondsSinceEpoch}.$fileExtension'; // Adicionando a extensão ao nome do arquivo
+        String fileExtension = _getFileExtension(image);
+        String fileName = '${DateTime.now().millisecondsSinceEpoch}.$fileExtension';
+        String contentType = _getContentType(fileExtension);
         Reference ref = FirebaseStorage.instance.ref().child('uploads/$fileName');
+        SettableMetadata metadata = SettableMetadata(contentType: contentType);
+
         UploadTask uploadTask;
 
         if (kIsWeb) {
-          uploadTask = ref.putData(await image.readAsBytes());
+          uploadTask = ref.putData(await image.readAsBytes(), metadata);
         } else {
           File file = File(image.path);
-          uploadTask = ref.putFile(file);
+          uploadTask = ref.putFile(file, metadata);
         }
 
         await uploadTask.whenComplete(() async {
@@ -57,6 +60,30 @@ class _UploadState extends State<Upload> {
     setState(() {
       _imageFiles.clear();
     });
+  }
+
+  String _getFileExtension(XFile image) {
+    if (kIsWeb) {
+      // Para a web, extraia a extensão do nome do arquivo original
+      return image.name.split('.').last;
+    } else {
+      // Para dispositivos móveis, extraia a extensão do caminho do arquivo
+      return image.path.split('.').last;
+    }
+  }
+
+  String _getContentType(String fileExtension) {
+    switch (fileExtension.toLowerCase()) {
+      case 'jpg':
+      case 'jpeg':
+        return 'image/jpeg';
+      case 'png':
+        return 'image/png';
+      case 'mp4':
+        return 'video/mp4';
+      default:
+        return 'application/octet-stream';
+    }
   }
 
   void _removeImage(int index) {
