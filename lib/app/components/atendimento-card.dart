@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:projetoaplicado/app/detalhes-atendimento.dart';
+import 'package:projetoaplicado/app/tela-atend-hist-detalhes.dart';
+import 'package:projetoaplicado/backend/models/acontecimentoModel.dart';
 import 'package:projetoaplicado/backend/models/atendimentoModel.dart';
 
 class AtendimentoCard extends StatelessWidget {
   final AtendimentosModel atendimento;
+  //final AcontecimentoModel acontecimento;
 
-  const AtendimentoCard({Key? key, required this.atendimento}) : super(key: key);
+  const AtendimentoCard({Key? key, required this.atendimento})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +18,7 @@ class AtendimentoCard extends StatelessWidget {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => DetalhesAtendimentoScreen(atendimento: atendimento),
+            builder: (context) => DetalheHistorico(atendimento: atendimento),
           ),
         );
       },
@@ -121,7 +124,8 @@ class TempoIcone extends StatelessWidget {
 class ComentariosIcone extends StatelessWidget {
   final int comentarios;
 
-  const ComentariosIcone({Key? key, required this.comentarios}) : super(key: key);
+  const ComentariosIcone({Key? key, required this.comentarios})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {

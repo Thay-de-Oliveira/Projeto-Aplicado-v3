@@ -21,6 +21,23 @@ class AcontecimentoService {
     }
   }
 
+  Future<AcontecimentoModel> fetchAcontecimentoByProtocolo(String numeroProtocolo) async {
+    final response = await http.get(Uri.parse('$baseUrl/acontecimentos/protocolo/$numeroProtocolo'));
+
+    if (response.statusCode == 200) {
+      var list = json.decode(response.body);
+      if (list != null && list.isNotEmpty) {
+        return AcontecimentoModel.fromJson(list);
+      } else {
+        throw Exception('Nenhum acontecimento encontrado');
+      }
+    } else {
+      throw Exception('Falha ao carregar acontecimento');
+    }
+  }
+
+
+
   Future<bool> deleteAcontecimento(String id) async {
     final response = await http.delete(Uri.parse('$baseUrl/acontecimentos/$id'));
 

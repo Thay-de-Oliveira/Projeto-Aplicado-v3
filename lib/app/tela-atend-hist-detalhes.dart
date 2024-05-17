@@ -1,8 +1,10 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors, sized_box_for_whitespace
+import 'package:get/get.dart';
 
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:projetoaplicado/app/components/acontecimento-card.dart';
 
 import 'components/barra-superior.dart';
 import 'components/menu-inferior.dart';
@@ -11,31 +13,51 @@ import 'tela-atend-pendente.dart';
 import 'tela-atendimento-forms.dart';
 import 'tela-atend-historico.dart';
 
+import 'package:projetoaplicado/backend/models/atendimentoModel.dart';
+import 'package:projetoaplicado/backend/controllers/atendimentoController.dart';
+import 'package:projetoaplicado/backend/models/acontecimentoModel.dart';
+import 'package:projetoaplicado/backend/controllers/acontecimentoController.dart';
+
 class DetalheHistorico extends StatefulWidget {
-  State<DetalheHistorico> createState() => _DetalheHistorico();
+  final AtendimentosModel atendimento;
+
+  //final AcontecimentoModel acontecimento;
+
+  const DetalheHistorico({Key? key, required this.atendimento})
+      : super(key: key);
+
+  @override
+  _DetalheHistorico createState() => _DetalheHistorico();
 }
 
 class _DetalheHistorico extends State<DetalheHistorico> {
   @override
+  AtendimentoController atendimentoController = Get.put(AtendimentoController());
+  AcontecimentoController acontecimentoController = Get.put(AcontecimentoController());
 
+  bool isPendente = false;
+  void initState() {
+    super.initState();
+    isPendente = widget.atendimento.pendente;
+    _loadAcontecimento();
+  }
 
-  String? _acontecimentoSubgrupo;
-  String? _acontecimentoTipo;
-  String? _acontecimentoEvento;
-  String? _acontecimentoCobrade;
-  String? _acontecimentoProtocoloN;
+  Future<void> _loadAcontecimento() async {
+    try {
+      AcontecimentoModel acontecimento = await acontecimentoController
+          .getAcontecimentoByProtocolo(widget.atendimento.n_protocolo);
+      setState(() {
+        _acontecimento = acontecimento;
+      });
+    } catch (e) {
+      setState(() {
+        _errorMessage = e.toString();
+      });
+    }
+  }
 
-  String? _cidadaoSolicitante;
-  String? _cidadaoCpf;
-  String? _cidadaoRg;
-  String? _cidadaoTelefone;
-
-  String? _atendimentoNomeAtendente;
-  String? _atendimentoCodigo;
-  String? _atendimentoData;
-  String? _atendimentoOcorrencia;
-
-
+  AcontecimentoModel? _acontecimento;
+  String? _errorMessage;
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: null,
@@ -123,20 +145,35 @@ class _DetalheHistorico extends State<DetalheHistorico> {
                                   left: 56,
                                   top: 238,
                                   child: SizedBox(
-                                    width: 143,
-                                    height: 16,
-                                    child: Text(
-                                      'N° do protocolo: $_acontecimentoProtocoloN',
-                                      style: TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 14,
-                                        fontFamily: 'Roboto',
-                                        fontWeight: FontWeight.w500,
-                                        height: 0,
+                                    width: 200,
+                                    height: 30,
+                                    child: Text.rich(
+                                      TextSpan(
+                                        children: [
+                                          TextSpan(
+                                            text:
+                                                'N° do Protocolo: ',
+                                            style: TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 14,
+                                              fontFamily: 'Roboto',
+                                              fontWeight: FontWeight.w500,
+                                              height: 1.2,
+                                            ),
+                                          ),
+                                          TextSpan(
+                                            text: ' ${widget.atendimento.n_protocolo}',
+                                            style: TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 14,
+                                              fontFamily: 'Roboto',
+                                              fontWeight: FontWeight.w400,
+                                              height: 1.2,
+                                            ),
+                                          ),
+                                        ],
                                       ),
-
                                     ),
-                                    
                                   ),
                                 ),
                                 Positioned(
@@ -193,31 +230,32 @@ class _DetalheHistorico extends State<DetalheHistorico> {
                                           left: 43,
                                           top: 36,
                                           child: SizedBox(
-                                            width: 156,
-                                            height: 15,
+                                            width: 200,
+                                            height: 30,
                                             child: Text.rich(
                                               TextSpan(
                                                 children: [
                                                   TextSpan(
-                                                    text: 'Subgrupo:',
+                                                    text:
+                                                        'Subgrupo: ',
                                                     style: TextStyle(
                                                       color: Colors.black,
                                                       fontSize: 14,
                                                       fontFamily: 'Roboto',
                                                       fontWeight:
                                                           FontWeight.w500,
-                                                      height: 0,
+                                                      height: 1.2,
                                                     ),
                                                   ),
                                                   TextSpan(
-                                                    text: ' Tempestades.',
+                                                    text: ' ${_acontecimento!.subgrupo}',
                                                     style: TextStyle(
                                                       color: Colors.black,
                                                       fontSize: 14,
                                                       fontFamily: 'Roboto',
                                                       fontWeight:
                                                           FontWeight.w400,
-                                                      height: 0,
+                                                      height: 1.2,
                                                     ),
                                                   ),
                                                 ],
@@ -247,7 +285,7 @@ class _DetalheHistorico extends State<DetalheHistorico> {
                                                   ),
                                                   TextSpan(
                                                     text:
-                                                        ' Tempestade local/Convectiva.',
+                                                        ' ${_acontecimento!.tipo}',
                                                     style: TextStyle(
                                                       color: Colors.black,
                                                       fontSize: 14,
@@ -362,7 +400,8 @@ class _DetalheHistorico extends State<DetalheHistorico> {
                                                   ),
                                                   TextSpan(
                                                     text:
-                                                        ' Tempestade local com vendaval de alta intensidade.',
+                                                        ' ${_acontecimento!.tipo}'
+                                                        ' ${_acontecimento!.subtipo}',
                                                     style: TextStyle(
                                                       color: Colors.black,
                                                       fontSize: 14,
@@ -398,7 +437,8 @@ class _DetalheHistorico extends State<DetalheHistorico> {
                                                     ),
                                                   ),
                                                   TextSpan(
-                                                    text: ' 1.3.2.1.5',
+                                                    text:
+                                                        ' ${_acontecimento!.infoCobrade}',
                                                     style: TextStyle(
                                                       color: Colors.black,
                                                       fontSize: 14,
@@ -553,8 +593,7 @@ class _DetalheHistorico extends State<DetalheHistorico> {
                                                     ),
                                                   ),
                                                   TextSpan(
-                                                    text:
-                                                        'Destelhamento do imóvel.',
+                                                    text: 'Precisa adicionar',
                                                     style: TextStyle(
                                                       color: Colors.black,
                                                       fontSize: 14,
@@ -590,8 +629,7 @@ class _DetalheHistorico extends State<DetalheHistorico> {
                                                     ),
                                                   ),
                                                   TextSpan(
-                                                    text:
-                                                        ' R. Frei Bruno, 201 - Efapi',
+                                                    text: ' Precisa adicionar',
                                                     style: TextStyle(
                                                       color: Colors.black,
                                                       fontSize: 14,
@@ -606,9 +644,6 @@ class _DetalheHistorico extends State<DetalheHistorico> {
                                             ),
                                           ),
                                         ),
-
-
-
                                         Positioned(
                                           left: 0,
                                           top: 170,
@@ -642,7 +677,8 @@ class _DetalheHistorico extends State<DetalheHistorico> {
                                                     ),
                                                   ),
                                                   TextSpan(
-                                                    text: ' Paulo da Silva',
+                                                    text:
+                                                        ' Implementar do login',
                                                     style: TextStyle(
                                                       color: Colors.black,
                                                       fontSize: 14,
@@ -691,7 +727,8 @@ class _DetalheHistorico extends State<DetalheHistorico> {
                                                     ),
                                                   ),
                                                   TextSpan(
-                                                    text: ' 1255',
+                                                    text:
+                                                        ' implementar do login',
                                                     style: TextStyle(
                                                       color: Colors.black,
                                                       fontSize: 14,
@@ -751,7 +788,8 @@ class _DetalheHistorico extends State<DetalheHistorico> {
                                                     ),
                                                   ),
                                                   TextSpan(
-                                                    text: ' 08/05/2023',
+                                                    text:
+                                                        ' ${widget.atendimento.dataVistoria}',
                                                     style: TextStyle(
                                                       color: Colors.black,
                                                       fontSize: 14,
@@ -826,9 +864,7 @@ class _DetalheHistorico extends State<DetalheHistorico> {
                                                 'assets/imagens/icon-endereco.png'),
                                           ),
                                         ),
-
                                       ],
-
                                     ),
                                   ),
                                 ),
@@ -2033,7 +2069,7 @@ class _DetalheHistorico extends State<DetalheHistorico> {
                 Positioned(
                   left: 10,
                   top: 1070,
-                  child:Container(
+                  child: Container(
                     width: 338,
                     height: 214,
                     child: Stack(
@@ -2046,7 +2082,8 @@ class _DetalheHistorico extends State<DetalheHistorico> {
                             height: 16,
                             child: Stack(
                               children: [
-                                Positioned( //Titulo
+                                Positioned(
+                                  //Titulo
                                   left: 0,
                                   top: 0,
                                   child: SizedBox(
@@ -2083,7 +2120,8 @@ class _DetalheHistorico extends State<DetalheHistorico> {
                                 aspectRatio: 16 / 9,
                                 autoPlayCurve: Curves.fastOutSlowIn,
                                 enableInfiniteScroll: true,
-                                autoPlayAnimationDuration: Duration(milliseconds: 800),
+                                autoPlayAnimationDuration:
+                                    Duration(milliseconds: 800),
                                 viewportFraction: 0.8,
                               ),
                               items: [
@@ -2096,10 +2134,12 @@ class _DetalheHistorico extends State<DetalheHistorico> {
                                   builder: (BuildContext context) {
                                     return Container(
                                       width: MediaQuery.of(context).size.width,
-                                      margin: EdgeInsets.symmetric(horizontal: 5.0),
+                                      margin:
+                                          EdgeInsets.symmetric(horizontal: 5.0),
                                       decoration: BoxDecoration(
                                         color: Colors.amber,
-                                        borderRadius: BorderRadius.circular(8.0),
+                                        borderRadius:
+                                            BorderRadius.circular(8.0),
                                       ),
                                       child: Image.network(
                                         item,
@@ -2114,7 +2154,8 @@ class _DetalheHistorico extends State<DetalheHistorico> {
                         ),
                       ],
                     ),
-                  ),),
+                  ),
+                ),
 
                 SizedBox(height: 20),
 
@@ -2193,8 +2234,7 @@ class _DetalheHistorico extends State<DetalheHistorico> {
                 ),
               ],
             ),
-          )
-          ),
+          )),
           Positioned(
             left: 0,
             top: 0,

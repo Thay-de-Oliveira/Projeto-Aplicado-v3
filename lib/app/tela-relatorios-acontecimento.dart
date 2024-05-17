@@ -21,7 +21,7 @@ class _RelatorioAcontecimentoState extends State<RelatorioAcontecimento> {
     final AcontecimentoController acontecimentoController = Get.put(AcontecimentoController());
 
 // Adicione um tipo de retorno Future<List<AcontecimentoModel>> ao método
-void _loadAcontecimentos() async {
+  Future<void> _loadAcontecimentos() async {
   await acontecimentoController.listAcontecimento();
   acontecimentoController.listAcontecimentoObs;
 }

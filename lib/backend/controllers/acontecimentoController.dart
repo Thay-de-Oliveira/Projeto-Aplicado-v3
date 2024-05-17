@@ -19,6 +19,19 @@ class AcontecimentoController extends GetxController {
     return listAcontecimentoObs;
   }
 
+  Future<AcontecimentoModel> getAcontecimentoByProtocolo(String protocolo) async {
+    isLoading.value = true;
+    try {
+      var response = await acontecimentoService.fetchAcontecimentoByProtocolo(protocolo);
+      return response;
+    } catch (e) {
+      throw Exception('Erro ao buscar acontecimento: $e');
+    } finally {
+      isLoading.value = false;
+      update();
+    }
+  }
+
   Future<dynamic> post(AcontecimentoModel acontecimento) async {
     isLoading.value = true;
     var response = await acontecimentoService.postAcontecimento(acontecimento);
