@@ -36,6 +36,55 @@ class _FormularioAcontecimentoState extends State<AcontecimentosForms> {
 
   final DateTime dataAtual = DateTime.now();
 
+  InputDecoration _customInputDecoration(String labelText) {
+    return InputDecoration(
+      labelText: labelText,
+      border: const OutlineInputBorder(),
+      contentPadding: const EdgeInsets.all(10.0),
+    );
+  }
+
+  Future<String?> _salvar() async {
+    if (_selectedClasseAcontecimento == null ||
+        _selectedGrupo == null ||
+        _selectedSubGrupo == null ||
+        _selectedTipo == null ||
+        _selectedSubTipo == null ||
+        _selectedCobradeAutomatico == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Por favor, preencha todos os campos.'),
+        ),
+      );
+      return null;
+    }
+
+    AcontecimentoModel acontecimento = AcontecimentoModel(
+      classe: _selectedClasseAcontecimento!,
+      grupo: _selectedGrupo!,
+      subgrupo: _selectedSubGrupo!,
+      tipo: _selectedTipo!,
+      subtipo: _selectedSubTipo!,
+      infoCobrade: _selectedCobradeAutomatico!,
+      dataHora: DateTime.now(),
+      pendente: true,
+    );
+
+    var response = await _acontecimentoController.post(acontecimento);
+
+    if (response != null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Acontecimento criado com sucesso.'),
+        ),
+      );
+      return 'Acontecimento criado com sucesso.';
+    } else {
+      return 'Erro ao criar acontecimento. Por favor contate o suporte.';
+    }
+  }
+
+
   // Opções para a classe de acontecimento
   List<String> classeOptions = [
     'Natural',
@@ -497,7 +546,7 @@ class _FormularioAcontecimentoState extends State<AcontecimentosForms> {
                         _customInputDecoration('Classe de acontecimento:'),
                   ),
 
-                  SizedBox(height: 30), // Espaçamento de 30 pixels
+                  const SizedBox(height: 30), // Espaçamento de 30 pixels
 
                   // Campo "Grupo" (dependente da classe de acontecimento)
                   if (_selectedClasseAcontecimento != null)
@@ -523,7 +572,7 @@ class _FormularioAcontecimentoState extends State<AcontecimentosForms> {
                       decoration: _customInputDecoration('Grupo:'),
                     ),
 
-                  SizedBox(height: 30), // Espaçamento de 30 pixels
+                  const SizedBox(height: 30), // Espaçamento de 30 pixels
 
                   // Campo "Subgrupo" (dependente do grupo)
                   if (_selectedGrupo != null)
@@ -548,7 +597,7 @@ class _FormularioAcontecimentoState extends State<AcontecimentosForms> {
                       decoration: _customInputDecoration('Subgrupo:'),
                     ),
 
-                  SizedBox(height: 30), // Espaçamento de 30 pixels
+                  const SizedBox(height: 30), // Espaçamento de 30 pixels
 
                   // Campo "Tipo" (dependente do subgrupo)
                   if (_selectedSubGrupo != null)
@@ -583,7 +632,7 @@ class _FormularioAcontecimentoState extends State<AcontecimentosForms> {
                       decoration: _customInputDecoration('Tipo:'),
                     ),
 
-                  SizedBox(height: 30), // Espaçamento de 30 pixels
+                  const SizedBox(height: 30), // Espaçamento de 30 pixels
 
                   // Campo "Subtipo" (dependente do tipo)
                   if (_selectedTipo != null)
@@ -616,7 +665,7 @@ class _FormularioAcontecimentoState extends State<AcontecimentosForms> {
                       decoration: _customInputDecoration('Subtipo:'),
                     ),
 
-                  SizedBox(height: 30), // Espaçamento de 30 pixels
+                  const SizedBox(height: 30), // Espaçamento de 30 pixels
 
                   // Campo "Cobrade" preenchido automaticamente
                   if (_selectedCobradeAutomatico != null)
@@ -626,7 +675,7 @@ class _FormularioAcontecimentoState extends State<AcontecimentosForms> {
                       decoration: _customInputDecoration('Info Cobrade:'),
                     ),
 
-                  SizedBox(height: 30),
+                  const SizedBox(height: 30),
 
                   if (dataAtual != null) // Verifica se a data não é nula
                     TextFormField(
@@ -635,29 +684,31 @@ class _FormularioAcontecimentoState extends State<AcontecimentosForms> {
                       decoration: _customInputDecoration('Data e Hora:'),
                     ),
 
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
 
                   Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       // Botão Salvar
                       InkWell(
-                        onTap: () {
-                          // Chama a função para salvar os dados
-                          _salvar();
-                          appState.atualizarTela('inicio');
-                          Navigator.of(context).pushReplacementNamed('/tela-inicio');
+                        onTap: () async {
+                          var response = await _salvar();
+                          
+                          if (response != null) {
+                            appState.atualizarTela('inicio');
+                            Navigator.of(context).pushReplacementNamed('/tela-inicio');
+                          }
                         },
                         child: Container(
                           width: 80,
                           height: 28.61,
                           decoration: ShapeDecoration(
-                            color: Color(0xFF30BD4F),
+                            color: const Color(0xFF30BD4F),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(5),
                             ),
                           ),
-                          child: Center(
+                          child: const Center(
                             child: Text(
                               'Salvar',
                               style: TextStyle(
@@ -672,7 +723,7 @@ class _FormularioAcontecimentoState extends State<AcontecimentosForms> {
                         ),
                       ),
 
-                      SizedBox(width: 10), // Adiciona um espaçamento entre os botões
+                      const SizedBox(width: 10), // Adiciona um espaçamento entre os botões
 
                       // Botão Cancelar
                       InkWell(
@@ -680,7 +731,7 @@ class _FormularioAcontecimentoState extends State<AcontecimentosForms> {
                           // Navega de volta para a tela Home
                           Navigator.of(context).pushReplacement(
                             MaterialPageRoute(
-                              builder: (context) => Home(title: ''),
+                              builder: (context) => const Home(title: ''),
                             ),
                           );
                         },
@@ -688,12 +739,12 @@ class _FormularioAcontecimentoState extends State<AcontecimentosForms> {
                           width: 80,
                           height: 28.61,
                           decoration: ShapeDecoration(
-                            color: Color(0xFFEC6F64),
+                            color: const Color(0xFFEC6F64),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(5),
                             ),
                           ),
-                          child: Center(
+                          child: const Center(
                             child: Text(
                               'Cancelar',
                               style: TextStyle(
@@ -717,48 +768,6 @@ class _FormularioAcontecimentoState extends State<AcontecimentosForms> {
       ),
       bottomNavigationBar: MenuInferior(),
     );
-  }
-
-  InputDecoration _customInputDecoration(String labelText) {
-    return InputDecoration(
-      labelText: labelText,
-      border: OutlineInputBorder(),
-      contentPadding: EdgeInsets.all(10.0),
-    );
-  }
-
-  // Obter os valores dos campos ao clicar em salvar
-  void _salvar() async {
-    final String valorCampoClasseAcontecimento = _selectedClasseAcontecimento.toString();
-    final String valorCampoGrupo = _selectedGrupo.toString();
-    final String valorCampoSubGrupo = _selectedSubGrupo.toString();
-    final String valorCampoTipo = _selectedTipo.toString();
-    final String valorCampoSubTipo = _selectedSubTipo.toString();
-    final String valorCampoCobradeAutomatico = _selectedCobradeAutomatico.toString();
-
-    // Cria um objeto AcontecimentoModel com os valores dos campos
-    AcontecimentoModel acontecimento = AcontecimentoModel(
-      classe: valorCampoClasseAcontecimento,
-      grupo: valorCampoGrupo,
-      subgrupo: valorCampoSubGrupo,
-      tipo: valorCampoTipo,
-      subtipo: valorCampoSubTipo,
-      infoCobrade: valorCampoCobradeAutomatico,
-      dataHora: DateTime.now(),
-      pendente: true,
-    );
-
-    // Chama a função post do AcontecimentoController para salvar os dados
-    var response = await _acontecimentoController.post(acontecimento);
-
-    // Exibir um SnackBar
-    if (response != null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Acontecimento criado com sucesso!'),
-        ),
-      );
-    }
   }
 }
 
