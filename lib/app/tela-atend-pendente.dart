@@ -42,6 +42,7 @@ Future<void> _loadAcontecimentos() async {
         child: CustomScrollView(
           slivers: <Widget>[
             SliverAppBar(
+              automaticallyImplyLeading: false,
               floating: true,
               pinned: true,
               snap: false,
@@ -249,12 +250,17 @@ Future<void> _loadAcontecimentos() async {
                                   child: Text('Erro ao carregar acontecimentos'),
                                 );
                               } else {
+                                // Filtrar os acontecimentos pendentes
+                                var pendentes = acontecimentoController.listAcontecimentoObs
+                                    .where((acontecimento) => acontecimento.pendente == true)
+                                    .toList();
+
                                 return ListView.builder(
                                   shrinkWrap: true,
                                   physics: NeverScrollableScrollPhysics(),
-                                  itemCount: acontecimentoController.listAcontecimentoObs.length,
+                                  itemCount: pendentes.length,
                                   itemBuilder: (context, index) {
-                                    AcontecimentoModel acontecimento = acontecimentoController.listAcontecimentoObs[index];
+                                    AcontecimentoModel acontecimento = pendentes[index];
                                     return AcontecimentoCard(acontecimento: acontecimento);
                                   },
                                 );
@@ -267,7 +273,7 @@ Future<void> _loadAcontecimentos() async {
                     ),
                   ),
                   // Fim da Lista de Cards
-
+                  
                   SizedBox(height: 25),
                 ],
               ),

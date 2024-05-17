@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:projetoaplicado/app/components/atendimento-card.dart';
-import 'package:projetoaplicado/app/tela-atend-hist-detalhes.dart';
 import 'package:projetoaplicado/backend/controllers/atendimentoController.dart';
+import 'package:projetoaplicado/backend/models/atendimentoModel.dart';
 
 import 'components/barra-superior.dart';
 import 'components/menu-inferior.dart';
@@ -17,9 +17,7 @@ class HistoricoAtendimento extends StatefulWidget {
 }
 
 class _HistoricoAtendimentoState extends State<HistoricoAtendimento> {
-
   final AtendimentoController atendimentoController = Get.put(AtendimentoController());
-
 
   @override
   void initState() {
@@ -27,148 +25,165 @@ class _HistoricoAtendimentoState extends State<HistoricoAtendimento> {
     _loadAtendimentos();
   }
 
-  void _loadAtendimentos() async {
+
+  Future<void> _loadAtendimentos() async {
     await atendimentoController.listAtendimento();
+    atendimentoController.listAtendimentoObs;
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: null,
-      body: CustomScrollView(
-        slivers: <Widget>[
-          SliverAppBar(
-            floating: true,
-            pinned: true,
-            snap: false,
-            expandedHeight: 50,
-            flexibleSpace: BarraSuperior(context),
-          ),
-          SliverList(
-            delegate: SliverChildListDelegate(
-              [
-                SizedBox(height: 20),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    GestureDetector(
-                      child: buildMenuButton(
-                        'Cadastro',
-                        'assets/imagens/icon-cadastro-inativo.png',
-                        AtendimentoForms(),
-                      ),
-                    ),
-                    GestureDetector(
-                      child: buildMenuButton(
-                        'Pendente',
-                        'assets/imagens/icon-pendente.png',
-                        AtendimentoPendente(),
-                      ),
-                    ),
-                    //Botão Historico
-                    GestureDetector(
-                      child: Ink(
-                        decoration: ShapeDecoration(
-                          //Estilo
-                          color: Color(0xFFBBD8F0),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          shadows: [
-                            //Sombras
-                            BoxShadow(
-                              color: Color(0x3F000000),
-                              blurRadius: 2,
-                              offset: Offset(2, 2),
-                              spreadRadius: 0,
-                            )
-                          ],
+      body: RefreshIndicator(
+        onRefresh: () async {
+          await _loadAtendimentos(); // Função de atualização ao puxar para cima
+        },
+        child: CustomScrollView(
+          slivers: <Widget>[
+            SliverAppBar( 
+              automaticallyImplyLeading: false,
+              floating: true,
+              pinned: true,
+              snap: false,
+              expandedHeight: 50,
+              flexibleSpace: BarraSuperior(context),
+            ),
+            SliverList(
+              delegate: SliverChildListDelegate(
+                [
+                  SizedBox(height: 20),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      GestureDetector(
+                        child: buildMenuButton(
+                          'Cadastro',
+                          'assets/imagens/icon-cadastro-inativo.png',
+                          AtendimentoForms(),
                         ),
-                        child: InkWell(
-                          onTap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => HistoricoAtendimento()));
-                          },
-                          child: Container(
-                            width: 90,
-                            height: 80,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: <Widget>[
-                                Container(
-                                  //Icone
-                                  width: 30,
-                                  height: 30,
-                                  child: Image.asset(
-                                      'assets/imagens/icon-historico-ativo.png'),
-                                ),
-                                SizedBox(
-                                    height:
-                                        5.0), //Espaço entre o ícone e o texto
-                                Text(
-                                  'Histórico',
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold,
+                      ),
+                      GestureDetector(
+                        child: buildMenuButton(
+                          'Pendente',
+                          'assets/imagens/icon-pendente.png',
+                          AtendimentoPendente(),
+                        ),
+                      ),
+                      //Botão Historico
+                      GestureDetector(
+                        child: Ink(
+                          decoration: ShapeDecoration(
+                            //Estilo
+                            color: Color(0xFFBBD8F0),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            shadows: [
+                              //Sombras
+                              BoxShadow(
+                                color: Color(0x3F000000),
+                                blurRadius: 2,
+                                offset: Offset(2, 2),
+                                spreadRadius: 0,
+                              )
+                            ],
+                          ),
+                          child: InkWell(
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => HistoricoAtendimento()));
+                            },
+                            child: Container(
+                              width: 90,
+                              height: 80,
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: <Widget>[
+                                  Container(
+                                    //Icone
+                                    width: 30,
+                                    height: 30,
+                                    child: Image.asset(
+                                        'assets/imagens/icon-historico-ativo.png'),
                                   ),
-                                ),
-                              ],
+                                  SizedBox(
+                                      height:
+                                          5.0), //Espaço entre o ícone e o texto
+                                  Text(
+                                    'Histórico',
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                         ),
                       ),
+                    ],
+                  ),
+                  SizedBox(height: 25),
+                  buildSearchBar(),
+                  SizedBox(height: 25),
+
+                  // Lista de Cards de Atendimento
+                    Center(
+                      child: Container(
+                        width: 330,
+                        child: FutureBuilder(
+                          future: atendimentoController.listAtendimento(),
+                          builder: (context, snapshot) {
+                            switch (snapshot.connectionState) {
+                              case ConnectionState.none:
+                              case ConnectionState.waiting:
+                                return Center(
+                                  child: CircularProgressIndicator(),
+                                );
+                              case ConnectionState.done:
+                                if (snapshot.hasError) {
+                                  return Center(
+                                    child: Text('Erro ao carregar acontecimentos'),
+                                  );
+                                } else {
+                                  // Filtrar os atendimentos pendentes
+                                  var pendentes = atendimentoController.listAtendimentoObs
+                                      .where((acontecimento) => acontecimento.pendente == true)
+                                      .toList();
+
+                                  return ListView.builder(
+                                    shrinkWrap: true,
+                                    physics: NeverScrollableScrollPhysics(),
+                                    itemCount: pendentes.length,
+                                    itemBuilder: (context, index) {
+                                      AtendimentosModel atendimento = pendentes[index];
+                                      return AtendimentoCard(atendimento: atendimento);
+                                    },
+                                  );
+                                }
+                              default:
+                                return SizedBox();
+                            }
+                          },
+                        ),
+                      ),
                     ),
+                  // Fim da Lista de Cards
+                  
+                    SizedBox(height: 25),
                   ],
                 ),
-                SizedBox(height: 25),
-                buildSearchBar(),
-                SizedBox(height: 25),
-
-                // Lista de Cards de Atendimento
-                Center(
-                  child: Container(
-                    width: 330,  // Largura desejada dos cards
-                    child: Obx(
-                      () {
-                        // Verifica se a lista está vazia e se o círculo de carregamento está visível
-                        if (atendimentoController.isLoading.value) {
-                          Future.delayed(Duration(seconds: 1), () {
-                            // A cada 1 segundo, verifica se a lista foi carregada
-                            if (atendimentoController.listAtendimentoObs.isNotEmpty) {
-                              atendimentoController.isLoading.value = false; // Oculta o círculo de carregamento
-                            }
-                          });
-                          return Center(child: CircularProgressIndicator());
-                        } else {
-                          var atendimentosPendentes = atendimentoController.listAtendimentoObs
-                              .where((atendimento) => atendimento.pendente)
-                              .toList();
-
-                          return ListView.builder(
-                            shrinkWrap: true,
-                            physics: NeverScrollableScrollPhysics(),
-                            itemCount: atendimentosPendentes.length,
-                            itemBuilder: (context, index) {
-                              return AtendimentoCard(atendimento: atendimentosPendentes[index]);
-                            },
-                          );
-                        }
-                      },
-                    ),
-                  ),
-                ),
-                // Fim da Lista de Cards
-                SizedBox(height: 25),
-              ],
-            ),
+              ),
+            ],
           ),
-        ],
-      ),
-      bottomNavigationBar: MenuInferior(),
-    );
-  }
+        ),
+        bottomNavigationBar: MenuInferior(),
+      );
+    }
 
     Widget buildMenuButton(String text, String imagePath, Widget destination) {
     return Ink(

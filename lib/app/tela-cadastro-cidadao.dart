@@ -84,15 +84,14 @@ class _CadastroCidadaoState extends State<CadastroCidadao> {
     return Scaffold(
       appBar: null,
       body: CustomScrollView(
-        //Permite rolagem da página
         slivers: <Widget>[
           SliverAppBar(
-            floating: true, // A barra irá flutuar no topo
-            pinned: true, // A barra será fixa no topo
-            snap: false, // Não encolherá a barra ao rolar para baixo
-            expandedHeight: 50, // Aumente este valor para adicionar mais espaço
-            //backgroundColor: Color(0xfff8f7f7),
-            flexibleSpace: BarraSuperior(context), //Barra
+            automaticallyImplyLeading: false,
+            floating: true,
+            pinned: true,
+            snap: false,
+            expandedHeight: 50,
+            flexibleSpace: BarraSuperior(context),
           ),
           SliverList(
             delegate: SliverChildListDelegate(

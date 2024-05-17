@@ -78,17 +78,13 @@ AcontecimentoModel? findAcontecimentoByProtocolo(String numeroProtocolo) {
     );
 
     if (pickedDate != null) {
-      // Formatando a data para o formato desejado (dd/MM/yyyy)
       String formattedDate = DateFormat('dd/MM/yyyy').format(pickedDate);
-      
-      // Atribuindo a data formatada ao controlador
       controller.text = formattedDate;
     }
   }
 
   Future<void> _salvarAtendimento() async {
     try {
-      // Verifica se todos os campos obrigatórios foram preenchidos
       if (_selectedNumeroProtocoloAtendimento == null ||
           _selectedTipoAtendimento == 'Selecionar atendimento' ||
           _selectedCanalAtendimento == 'Selecionar canal de atendimento' ||
@@ -102,7 +98,6 @@ AcontecimentoModel? findAcontecimentoByProtocolo(String numeroProtocolo) {
         return;
       }
 
-      // Cria um objeto AtendimentosModel com os dados fornecidos
       AtendimentosModel novoAtendimento = AtendimentosModel(
         n_protocolo: _selectedNumeroProtocoloAtendimento!,
         tipoAtendimento: _selectedTipoAtendimento,
@@ -113,35 +108,26 @@ AcontecimentoModel? findAcontecimentoByProtocolo(String numeroProtocolo) {
         dataSolicitacao: _dataSolicitacaoController.text,
         dataVistoria: _dataVistoriaController.text,
         entregueItensAjuda: _selectedEntregarItens == 'Sim' ? true : false,
-        pendente: true, // Por padrão, definimos como pendente
+        pendente: true,
       );
 
-      // Chama o método no controller para salvar o atendimento
       var resposta = await _atendimentoController.post(novoAtendimento);
 
       if (resposta != null && resposta == 'Atendimento criado com sucesso!') {
-        // Atendimento salvo com sucesso
         _exibirMensagem('Atendimento salvo com sucesso!');
-
-      var protocoloAtendimentoSalvo = novoAtendimento.n_protocolo;
-      
-      // Chame o método para atualizar o acontecimento correspondente
-      await AcontecimentoController.acontecimentoController.updateAcontecimento(protocoloAtendimentoSalvo, false);
-
+        var protocoloAtendimentoSalvo = novoAtendimento.n_protocolo;
+        await AcontecimentoController.acontecimentoController.updateAcontecimento(protocoloAtendimentoSalvo, false);
         _limparCamposFormulario();
       } else {
-        // Ocorreu um erro ao salvar o atendimento
         _exibirMensagem('Erro ao salvar o atendimento. Tente novamente.');
       }
     } catch (error) {
-      // Trata qualquer erro inesperado
       print(error.toString());
       _exibirMensagem(error.toString());
     }
   }
 
   void _exibirMensagem(String mensagem) {
-    // Exibe a mensagem para o usuário (pode ser um snackbar, dialog, etc.)
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(mensagem),
@@ -151,8 +137,6 @@ AcontecimentoModel? findAcontecimentoByProtocolo(String numeroProtocolo) {
   }
 
   void _limparCamposFormulario() {
-    // Adicione aqui a lógica para limpar os campos do formulário após o salvamento
-    // Por exemplo, você pode resetar os valores dos campos para os iniciais
     setState(() {
       _selectedNumeroProtocoloAtendimento = null;
       _selectedTipoAtendimento = 'Selecionar atendimento';
@@ -161,9 +145,6 @@ AcontecimentoModel? findAcontecimentoByProtocolo(String numeroProtocolo) {
     });
   }
 
-
-  //Cria as váriaveis que serão chamadas no campo Checklist
-  //Ao adicionar uma string com conteudo, estamos dizendo que esse conteudo deve ser mostrado como a opção primária
   String? _selectedNumeroProtocoloAtendimento;
   String _selectedTipoAtendimento = 'Selecionar atendimento';
   String _selectedCanalAtendimento = 'Selecionar canal de atendimento';
@@ -175,7 +156,6 @@ AcontecimentoModel? findAcontecimentoByProtocolo(String numeroProtocolo) {
   TextEditingController _dataVistoriaController = TextEditingController();
   TextEditingController _observacoesController = TextEditingController();
 
-//Ao adicionar uma condição boolean, dizemos que os campos do checklist iniciam vazios (sem seleção)
   bool isAguaSelected = false;
   bool isCestasSelected = false;
   bool isKitsSelected = false;
@@ -235,14 +215,13 @@ AcontecimentoModel? findAcontecimentoByProtocolo(String numeroProtocolo) {
     return Scaffold(
       appBar: null,
       body: CustomScrollView(
-        //Permite rolagem da página
         slivers: <Widget>[
           SliverAppBar(
-            floating: true, // A barra irá flutuar no topo
-            pinned: true, // A barra será fixa no topo
-            snap: false, // Não encolherá a barra ao rolar para baixo
-            expandedHeight: 50, // Aumente este valor para adicionar mais espaço
-            //backgroundColor: Color(0xfff8f7f7),
+            automaticallyImplyLeading: false,
+            floating: true,
+            pinned: true,
+            snap: false,
+            expandedHeight: 50,
             flexibleSpace: BarraSuperior(context), //Barra
           ),
           SliverList(
