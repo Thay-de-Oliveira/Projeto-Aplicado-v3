@@ -7,8 +7,8 @@ import 'package:projetoaplicado/app/tela-cadastro-cidadao.dart';
 import 'package:projetoaplicado/app/tela-relatorios-acontecimento.dart';
 import 'package:provider/provider.dart';
 
-import 'components/barra-superior.dart';
-import 'components/menu-inferior.dart';
+import 'components/globais/barra-superior.dart';
+import 'components/globais/menu-inferior.dart';
 import 'tela-atendimento-forms.dart';
 import 'tela-acontecimentos-forms.dart';
 

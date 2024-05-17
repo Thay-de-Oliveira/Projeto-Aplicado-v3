@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:projetoaplicado/app/components/barra-superior.dart';
+import 'package:projetoaplicado/app/components/globais/barra-superior.dart';
 import 'package:projetoaplicado/backend/controllers/atendimentoController.dart';
 import 'package:projetoaplicado/backend/models/atendimentoModel.dart';
 

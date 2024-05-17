@@ -6,8 +6,8 @@ import 'package:projetoaplicado/backend/controllers/acontecimentoController.dart
 import 'package:projetoaplicado/backend/models/acontecimentoModel.dart';
 import 'package:provider/provider.dart';
 
-import 'components/barra-superior.dart';
-import 'components/menu-inferior.dart';
+import 'components/globais/barra-superior.dart';
+import 'components/globais/menu-inferior.dart';
 
 class MyApp extends StatelessWidget {
   @override

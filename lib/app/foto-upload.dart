@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:dotted_border/dotted_border.dart';
-import 'components/barra-superior.dart';
+import 'components/globais/barra-superior.dart';
 import 'tela-atendimento-forms.dart';
 
 class Upload extends StatefulWidget {

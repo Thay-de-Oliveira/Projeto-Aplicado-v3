@@ -4,11 +4,11 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:projetoaplicado/app/components/acontecimento-card.dart';
+import 'package:projetoaplicado/app/components/acontecimento/acontecimento-card.dart';
 import 'package:projetoaplicado/backend/controllers/acontecimentoController.dart';
 import 'package:projetoaplicado/backend/models/acontecimentoModel.dart';
-import 'components/barra-superior.dart';
-import 'components/menu-inferior.dart';
+import 'components/globais/barra-superior.dart';
+import 'components/globais/menu-inferior.dart';
 import 'tela-atend-historico.dart';
 import 'tela-atendimento-forms.dart';
 

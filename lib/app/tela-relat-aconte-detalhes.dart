@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:maps_launcher/maps_launcher.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 
-import 'components/barra-superior.dart';
-import 'components/menu-inferior.dart';
+import 'components/globais/barra-superior.dart';
+import 'components/globais/menu-inferior.dart';
 
 import 'tela-atend-pendente.dart';
 import 'tela-atend-historico.dart';

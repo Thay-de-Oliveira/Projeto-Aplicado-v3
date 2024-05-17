@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:projetoaplicado/app/components/atendimento-card.dart';
+import 'package:projetoaplicado/app/components/atendimento/atendimento-card.dart';
 import 'package:projetoaplicado/backend/controllers/atendimentoController.dart';
 import 'package:projetoaplicado/backend/models/atendimentoModel.dart';
 
-import 'components/barra-superior.dart';
-import 'components/menu-inferior.dart';
+import 'components/globais/barra-superior.dart';
+import 'components/globais/menu-inferior.dart';
 
 import 'tela-atend-pendente.dart';
 import 'tela-atendimento-forms.dart';

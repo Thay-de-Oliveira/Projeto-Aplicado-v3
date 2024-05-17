@@ -3,8 +3,8 @@ import 'package:projetoaplicado/firebase_options.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_core/firebase_core.dart';
 
-import 'app/components/menu-inferior.dart';
-import 'app/components/barra-superior.dart';
+import 'app/components/globais/menu-inferior.dart';
+import 'app/components/globais/barra-superior.dart';
 
 import 'app/tela-atendimento-forms.dart';
 import 'app/tela-cadastro.dart';

@@ -12,8 +12,8 @@ import 'package:intl/intl.dart';
 import 'package:projetoaplicado/backend/models/cidadaoModel.dart';
 import 'package:projetoaplicado/backend/services/cidadaoService.dart';
 
-import 'components/barra-superior.dart';
-import 'components/menu-inferior.dart';
+import 'components/globais/barra-superior.dart';
+import 'components/globais/menu-inferior.dart';
 
 import 'tela-atend-pendente.dart';
 import 'tela-atend-historico.dart';

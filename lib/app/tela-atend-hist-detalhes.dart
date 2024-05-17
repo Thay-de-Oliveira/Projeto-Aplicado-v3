@@ -4,10 +4,10 @@ import 'package:get/get.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:projetoaplicado/app/components/acontecimento-card.dart';
+import 'package:projetoaplicado/app/components/acontecimento/acontecimento-card.dart';
 
-import 'components/barra-superior.dart';
-import 'components/menu-inferior.dart';
+import 'components/globais/barra-superior.dart';
+import 'components/globais/menu-inferior.dart';
 
 import 'tela-atend-pendente.dart';
 import 'tela-atendimento-forms.dart';
