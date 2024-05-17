@@ -3,6 +3,9 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:camera_camera/camera_camera.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:ftpconnect/ftpconnect.dart';
+
+
 
 class Camera extends StatefulWidget {
   const Camera({Key? key}) : super(key: key);
@@ -38,8 +41,18 @@ class _CameraState extends State<Camera> {
       _imageFile = picture;
     });
 
-    // Faça qualquer processamento adicional necessário com a imagem capturada aqui
-    // Por exemplo, você pode enviar a imagem para um servidor, salvá-la no dispositivo, etc.
+    // Envia a imagem para o servidor FTP
+    /*final ftp = FTPConnect('hostname', user: 'username', pass: 'password');
+    try {
+      await ftp.connect();
+      await ftp.changeDirectory('directory_on_server');
+      await ftp.uploadFile(File(picture.path), 'remote_filename.jpg');
+      print('Imagem enviada com sucesso para o servidor FTP');
+    } catch (e) {
+      print('Erro ao enviar imagem para o servidor FTP: $e');
+    } finally {
+      ftp.disconnect();
+    }*/
   }
 }
 
@@ -65,3 +78,4 @@ class _CameraState extends State<Camera> {
     );
   }
 }
+
