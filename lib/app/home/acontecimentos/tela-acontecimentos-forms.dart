@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:projetoaplicado/app/app-state.dart';
 import 'package:projetoaplicado/app/home/atendimentos/cadastro/tela-atendimento-forms.dart';
-import 'package:projetoaplicado/app/tela-inicio.dart';
+import 'package:projetoaplicado/app/home/tela-inicio.dart';
 import 'package:projetoaplicado/backend/controllers/acontecimentoController.dart';
 import 'package:projetoaplicado/backend/models/acontecimentoModel.dart';
 import 'package:provider/provider.dart';

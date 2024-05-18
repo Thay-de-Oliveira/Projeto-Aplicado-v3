@@ -7,14 +7,14 @@ import 'app/components/globais/menu-inferior.dart';
 import 'app/components/globais/barra-superior.dart';
 
 import 'app/home/atendimentos/cadastro/tela-atendimento-forms.dart';
-import 'app/tela-cadastro.dart';
-import 'app/tela-inicio.dart';
+import 'app/login/tela-cadastro.dart';
+import 'app/home/tela-inicio.dart';
 import 'app/app-state.dart';
 
-import 'app/tela-inicio.dart';
-import 'app/tela-login.dart';
+import 'app/home/tela-inicio.dart';
+import 'app/login/tela-login.dart';
 import 'app/tela-mapa.dart';
-import 'app/tela-usuario.dart';
+import 'app/home/tela-usuario.dart';
 import 'app/home/atendimentos/cadastro/foto-camera.dart';
 import 'app/home/atendimentos/cadastro/foto-upload.dart';
 

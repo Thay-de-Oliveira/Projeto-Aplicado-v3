@@ -6,7 +6,7 @@ import '../../../backend/controllers/cidadaoController.dart';
 
 import '../../components/globais/barra-superior.dart';
 import '../../components/globais/menu-inferior.dart';
-import '../../tela-inicio.dart';
+import '../tela-inicio.dart';
 
 class CadastroCidadao extends StatefulWidget {
   @override

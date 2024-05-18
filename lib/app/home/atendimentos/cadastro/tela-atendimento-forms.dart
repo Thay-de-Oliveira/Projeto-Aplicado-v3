@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:projetoaplicado/app/home/atendimentos/cadastro/foto-camera.dart';
 import 'package:projetoaplicado/app/home/atendimentos/cadastro/foto-upload.dart';
-import 'package:projetoaplicado/app/tela-inicio.dart';
+import 'package:projetoaplicado/app/home/tela-inicio.dart';
 import 'package:projetoaplicado/backend/controllers/acontecimentoController.dart';
 import 'package:projetoaplicado/backend/controllers/atendimentoController.dart';
 import 'package:projetoaplicado/backend/controllers/cidadaoController.dart';
