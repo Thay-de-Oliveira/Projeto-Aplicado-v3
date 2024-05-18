@@ -3,13 +3,13 @@ import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import 'components/barra-superior.dart';
-import 'components/menu-inferior.dart';
+import 'components/globais/barra-superior.dart';
+import 'components/globais/menu-inferior.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:maps_launcher/maps_launcher.dart';
-import 'tela-login.dart';
-import 'tela-inicio.dart';
-import 'tela-usuario.dart';
+import 'login/tela-login.dart';
+import 'home/tela-inicio.dart';
+import 'home/tela-usuario.dart';
 
 class Mapa extends StatefulWidget {
   State<Mapa> createState() => _MapaState(); //Função

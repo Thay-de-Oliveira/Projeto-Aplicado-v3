@@ -3,20 +3,20 @@ import 'package:projetoaplicado/firebase_options.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_core/firebase_core.dart';
 
-import 'app/components/menu-inferior.dart';
-import 'app/components/barra-superior.dart';
+import 'app/components/globais/menu-inferior.dart';
+import 'app/components/globais/barra-superior.dart';
 
-import 'app/tela-atendimento-forms.dart';
-import 'app/tela-cadastro.dart';
-import 'app/tela-inicio.dart';
+import 'app/home/atendimentos/cadastro/tela-atendimento-forms.dart';
+import 'app/login/tela-cadastro.dart';
+import 'app/home/tela-inicio.dart';
 import 'app/app-state.dart';
 
-import 'app/tela-inicio.dart';
-import 'app/tela-login.dart';
+import 'app/home/tela-inicio.dart';
+import 'app/login/tela-login.dart';
 import 'app/tela-mapa.dart';
-import 'app/tela-usuario.dart';
-import 'app/foto-camera.dart';
-import 'app/foto-upload.dart';
+import 'app/home/tela-usuario.dart';
+import 'app/home/atendimentos/cadastro/foto-camera.dart';
+import 'app/home/atendimentos/cadastro/foto-upload.dart';
 
 import 'controllerBinding.dart';
 

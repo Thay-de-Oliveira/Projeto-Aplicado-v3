@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:projetoaplicado/app/tela-relatorios-atendimento.dart';
-import 'package:projetoaplicado/app/tela-relatorios-recibo.dart';
+import 'package:projetoaplicado/app/home/relatorios/atendimento/tela-relatorios-atendimento.dart';
+import 'package:projetoaplicado/app/home/relatorios/recibos/tela-relatorios-recibo.dart';
 import 'package:get/get.dart';
-import 'package:projetoaplicado/app/components/acontecimento-card_relatorio.dart';
+import 'package:projetoaplicado/app/components/acontecimento/acontecimento-card-relatorio.dart';
 import 'package:projetoaplicado/backend/controllers/acontecimentoController.dart';
 
-import 'components/barra-superior.dart';
-import 'components/menu-inferior.dart';
+import '../../../components/globais/barra-superior.dart';
+import '../../../components/globais/menu-inferior.dart';
 
-import 'tela-atend-pendente.dart';
+import '../../atendimentos/pendente/tela-atend-pendente.dart';
 import 'tela-relat-aconte-detalhes.dart';
 
 class RelatorioAcontecimento extends StatefulWidget {

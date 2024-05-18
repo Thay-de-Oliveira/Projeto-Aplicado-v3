@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:projetoaplicado/app/tela-atend-hist-detalhes.dart';
+import 'package:projetoaplicado/app/home/atendimentos/historico/tela-atend-hist-detalhes.dart';
 import 'package:projetoaplicado/backend/models/acontecimentoModel.dart';
 import 'package:projetoaplicado/backend/models/atendimentoModel.dart';
 

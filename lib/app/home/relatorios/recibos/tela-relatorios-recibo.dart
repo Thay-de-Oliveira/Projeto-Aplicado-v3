@@ -1,21 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:projetoaplicado/app/tela-relatorios-acontecimento.dart';
-import 'package:projetoaplicado/app/tela-relatorios-recibo.dart';
+import 'package:projetoaplicado/app/home/relatorios/acontecimento/tela-relatorios-acontecimento.dart';
+import 'package:projetoaplicado/app/home/relatorios/atendimento/tela-relatorios-atendimento.dart';
 
-import 'components/barra-superior.dart';
-import 'components/menu-inferior.dart';
+import '../../../components/globais/barra-superior.dart';
+import '../../../components/globais/menu-inferior.dart';
 
-import 'tela-atend-pendente.dart';
-import 'tela-relat-aconte-detalhes.dart';
+import '../../atendimentos/pendente/tela-atend-pendente.dart';
+import '../acontecimento/tela-relat-aconte-detalhes.dart';
 
 //Botão leva ao PDF
 
-class RelatorioAtendimento extends StatefulWidget {
+class RelatorioRecibo extends StatefulWidget {
   @override
-  _RelatorioAtendimentoState createState() => _RelatorioAtendimentoState();
+  _RelatorioReciboState createState() => _RelatorioReciboState();
 }
 
-class _RelatorioAtendimentoState extends State<RelatorioAtendimento> {
+class _RelatorioReciboState extends State<RelatorioRecibo> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -100,7 +100,7 @@ class _RelatorioAtendimentoState extends State<RelatorioAtendimento> {
                       child: Ink(
                         decoration: ShapeDecoration(
                           //Estilo
-                          color: Color(0xFFBBD8F0),
+                          color: Color(0xffffffff),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10),
                           ),
@@ -133,7 +133,7 @@ class _RelatorioAtendimentoState extends State<RelatorioAtendimento> {
                                   width: 30,
                                   height: 30,
                                   child: Image.asset(
-                                      'assets/imagens/icon-atendimento-ativo.png'),
+                                      'assets/imagens/icon-atendimento-inativo.png'),
                                 ),
                                 SizedBox(
                                     height:
@@ -142,7 +142,7 @@ class _RelatorioAtendimentoState extends State<RelatorioAtendimento> {
                                   'Atendimento',
                                   style: TextStyle(
                                     fontSize: 14,
-                                    fontWeight: FontWeight.bold,
+                                    fontWeight: FontWeight.normal,
                                   ),
                                 ),
                               ],
@@ -157,7 +157,7 @@ class _RelatorioAtendimentoState extends State<RelatorioAtendimento> {
                       child: Ink(
                         decoration: ShapeDecoration(
                           //Estilo
-                          color: Color(0xffffffff),
+                          color: Color(0xFFBBD8F0),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10),
                           ),
@@ -189,7 +189,7 @@ class _RelatorioAtendimentoState extends State<RelatorioAtendimento> {
                                   width: 30,
                                   height: 30,
                                   child: Image.asset(
-                                      'assets/imagens/icon-recibos-inativo.png'),
+                                      'assets/imagens/icon-recibos-ativo.png'),
                                 ),
                                 SizedBox(
                                     height:
@@ -198,7 +198,7 @@ class _RelatorioAtendimentoState extends State<RelatorioAtendimento> {
                                   'Recibos',
                                   style: TextStyle(
                                     fontSize: 14,
-                                    fontWeight: FontWeight.normal,
+                                    fontWeight: FontWeight.bold,
                                   ),
                                 ),
                               ],
@@ -427,6 +427,7 @@ class _RelatorioAtendimentoState extends State<RelatorioAtendimento> {
                                   ),
                                 ),
                               ),
+
                               //MUDAR PARA PDF
                               InkWell(
                                 onTap: () {

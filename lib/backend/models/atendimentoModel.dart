@@ -4,11 +4,13 @@ class AtendimentosModel {
   final String tipoAtendimento;
   final String canalAtendimento;
   final String nomeResponsavel;
-  final bool vistoriaRealizada; // Corrigido para bool
-  final String tipoVistoria;
+  final bool vistoriaRealizada;
+  final String? tipoVistoria;
   final String dataSolicitacao;
   final String dataVistoria;
   final bool entregueItensAjuda;
+  final List<String> materiaisEntregues;
+  final String? observacoes;
   bool pendente;
 
   AtendimentosModel({
@@ -18,10 +20,12 @@ class AtendimentosModel {
     required this.canalAtendimento,
     required this.nomeResponsavel,
     required this.vistoriaRealizada,
-    required this.tipoVistoria,
+    this.tipoVistoria,
     required this.dataSolicitacao,
     required this.dataVistoria,
     required this.entregueItensAjuda,
+    required this.materiaisEntregues,
+    this.observacoes,
     required this.pendente,
   });
 
@@ -34,24 +38,28 @@ class AtendimentosModel {
       nomeResponsavel: json['NomeResponsavel'],
       vistoriaRealizada: json['VistoriaRealizada'],
       tipoVistoria: json['TipoVistoria'],
-      dataSolicitacao: json['DataSolicitacao'], // Corrigido para 'DataSolicitacao'
-      dataVistoria: json['DataVistoria'], // Corrigido para 'DataVistoria'
+      dataSolicitacao: json['DataSolicitacao'],
+      dataVistoria: json['DataVistoria'],
       entregueItensAjuda: json['EntregueItensAjuda'],
+      materiaisEntregues: List<String>.from(json['MateriaisEntregues']),
+      observacoes: json['Observacoes'],
       pendente: json['pendente'],
     );
   }
 
   Map<String, dynamic> toJson() => {
-        '_id': id,
-        'n_protocolo': n_protocolo,
-        'TipoAtendimento': tipoAtendimento,
-        'CanalAtendimento': canalAtendimento,
-        'NomeResponsavel': nomeResponsavel,
-        'VistoriaRealizada': vistoriaRealizada,
-        'TipoVistoria': tipoVistoria,
-        'DataSolicitacao': dataSolicitacao,
-        'DataVistoria': dataVistoria,
-        'EntregueItensAjuda': entregueItensAjuda,
-        'pendente': pendente,
-      };
+    '_id': id,
+    'n_protocolo': n_protocolo,
+    'TipoAtendimento': tipoAtendimento,
+    'CanalAtendimento': canalAtendimento,
+    'NomeResponsavel': nomeResponsavel,
+    'VistoriaRealizada': vistoriaRealizada,
+    'TipoVistoria': tipoVistoria,
+    'DataSolicitacao': dataSolicitacao,
+    'DataVistoria': dataVistoria,
+    'EntregueItensAjuda': entregueItensAjuda,
+    'MateriaisEntregues': materiaisEntregues,
+    'Observacoes': observacoes,
+    'pendente': pendente,
+  };
 }

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:projetoaplicado/app/tela-relat-aconte-detalhes.dart';
+import 'package:projetoaplicado/app/home/atendimentos/cadastro/tela-atendimento-forms.dart';
 import 'package:projetoaplicado/backend/models/acontecimentoModel.dart';
 
 class AcontecimentoCard extends StatelessWidget {
@@ -16,7 +16,9 @@ class AcontecimentoCard extends StatelessWidget {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => DetalhesRelatorioAcontecimento(),
+            builder: (context) => AtendimentoForms(
+              numeroProtocolo: acontecimento.numeroProtocolo,
+            ),
           ),
         );
       },

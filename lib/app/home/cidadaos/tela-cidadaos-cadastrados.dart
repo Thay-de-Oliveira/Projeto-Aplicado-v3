@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'components/barra-superior.dart';
-import 'components/menu-inferior.dart';
+import '../../components/globais/barra-superior.dart';
+import '../../components/globais/menu-inferior.dart';
 
 // Classe Modelo para o Cidadão
 class Cidadao {
