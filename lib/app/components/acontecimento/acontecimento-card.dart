@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:projetoaplicado/app/tela-atendimento-forms.dart';
+import 'package:projetoaplicado/app/home/atendimentos/cadastro/tela-atendimento-forms.dart';
 import 'package:projetoaplicado/backend/models/acontecimentoModel.dart';
 
 class AcontecimentoCard extends StatelessWidget {

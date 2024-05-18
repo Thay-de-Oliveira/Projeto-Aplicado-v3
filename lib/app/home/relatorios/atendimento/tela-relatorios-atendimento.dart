@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:projetoaplicado/app/components/atendimento/atendimento-card.dart';
-import 'package:projetoaplicado/app/tela-relatorios-acontecimento.dart';
-import 'package:projetoaplicado/app/tela-relatorios-recibo.dart';
+import 'package:projetoaplicado/app/home/relatorios/acontecimento/tela-relatorios-acontecimento.dart';
+import 'package:projetoaplicado/app/home/relatorios/recibos/tela-relatorios-recibo.dart';
 import 'package:projetoaplicado/backend/controllers/atendimentoController.dart';
 import 'package:projetoaplicado/backend/models/atendimentoModel.dart';
 
-import 'components/globais/barra-superior.dart';
-import 'components/globais/menu-inferior.dart';
+import '../../../components/globais/barra-superior.dart';
+import '../../../components/globais/menu-inferior.dart';
 
 class RelatorioAtendimento extends StatefulWidget {
   @override

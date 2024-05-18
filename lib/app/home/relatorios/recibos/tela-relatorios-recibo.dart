@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:projetoaplicado/app/tela-relatorios-acontecimento.dart';
-import 'package:projetoaplicado/app/tela-relatorios-atendimento.dart';
+import 'package:projetoaplicado/app/home/relatorios/acontecimento/tela-relatorios-acontecimento.dart';
+import 'package:projetoaplicado/app/home/relatorios/atendimento/tela-relatorios-atendimento.dart';
 
-import 'components/globais/barra-superior.dart';
-import 'components/globais/menu-inferior.dart';
+import '../../../components/globais/barra-superior.dart';
+import '../../../components/globais/menu-inferior.dart';
 
-import 'tela-atend-pendente.dart';
-import 'tela-relat-aconte-detalhes.dart';
+import '../../atendimentos/pendente/tela-atend-pendente.dart';
+import '../acontecimento/tela-relat-aconte-detalhes.dart';
 
 //Botão leva ao PDF
 

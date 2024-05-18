@@ -1,12 +1,12 @@
 // ignore_for_file: prefer_const_constructors, sized_box_for_whitespace
 
 import 'package:flutter/material.dart';
-import '../backend/models/cidadaoModel.dart';
-import '../backend/controllers/cidadaoController.dart';
+import '../../../backend/models/cidadaoModel.dart';
+import '../../../backend/controllers/cidadaoController.dart';
 
-import 'components/globais/barra-superior.dart';
-import 'components/globais/menu-inferior.dart';
-import 'tela-inicio.dart';
+import '../../components/globais/barra-superior.dart';
+import '../../components/globais/menu-inferior.dart';
+import '../../tela-inicio.dart';
 
 class CadastroCidadao extends StatefulWidget {
   @override
