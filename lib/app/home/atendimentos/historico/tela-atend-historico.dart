@@ -25,7 +25,6 @@ class _HistoricoAtendimentoState extends State<HistoricoAtendimento> {
     _loadAtendimentos();
   }
 
-
   Future<void> _loadAtendimentos() async {
     await atendimentoController.listAtendimento();
     atendimentoController.listAtendimentoObs;
@@ -147,12 +146,12 @@ class _HistoricoAtendimentoState extends State<HistoricoAtendimento> {
                               case ConnectionState.done:
                                 if (snapshot.hasError) {
                                   return Center(
-                                    child: Text('Erro ao carregar acontecimentos'),
+                                    child: Text('Erro ao carregar atendimentos'),
                                   );
                                 } else {
                                   // Filtrar os atendimentos pendentes
                                   var pendentes = atendimentoController.listAtendimentoObs
-                                      .where((acontecimento) => acontecimento.pendente == true)
+                                      .where((atendimento) => atendimento.pendente == true)
                                       .toList();
 
                                   return ListView.builder(

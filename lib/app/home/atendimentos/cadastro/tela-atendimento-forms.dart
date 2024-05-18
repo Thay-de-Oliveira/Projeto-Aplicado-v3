@@ -27,38 +27,63 @@ class AtendimentoForms extends StatefulWidget {
   _AtendimentoFormsState createState() => _AtendimentoFormsState();
 }
 
+//Classe para Lista de itens entregues
+class Item {
+  String name;
+  bool isSelected;
+
+  Item({required this.name, this.isSelected = false});
+}
 class _AtendimentoFormsState extends State<AtendimentoForms> {
-  TextEditingController nomeResponsavelController = TextEditingController();
+  List<AcontecimentoModel> listAcontecimento = [];
   List<CidadaoModel> suggestions = [];
+  List<Item> items = [];
 
   CidadaoService cidadaoService = CidadaoService();
-  final CidadaoController cidadaoController = CidadaoController.cidadaoController;
+
+  TextEditingController _nomeResponsavelController = TextEditingController();
   AcontecimentoController _acontecimentoController = AcontecimentoController();
   AtendimentoController _atendimentoController = AtendimentoController();
-  List<AcontecimentoModel> listAcontecimento = [];
+  final CidadaoController cidadaoController = CidadaoController.cidadaoController;
+
+  @override
+  void initState() {
+    super.initState();
+    _carregarAcontecimentos();
+    if (widget.numeroProtocolo != null) {
+      _selectedNumeroProtocoloAtendimento = widget.numeroProtocolo!;
+    }
+    items = [
+      Item(name: 'Água Potável'),
+      Item(name: 'Cestas básicas'),
+      Item(name: 'Kits'),
+      Item(name: 'Pastilha potabilizadora de água'),
+      Item(name: 'Colchões'),
+      Item(name: 'Lonas'),
+      Item(name: 'Cumeeiras'),
+      Item(name: 'Pregos/Parafusos'),
+      Item(name: 'Telhas'),
+      Item(name: 'Reservatórios'),
+      Item(name: 'Fraldas'),
+    ];
+  }
 
   void _carregarAcontecimentos() async {
     listAcontecimento = await _acontecimentoController.listAcontecimento();
     setState(() {});
   }
 
-  @override
-  void initState() {
-    super.initState();
-    _carregarAcontecimentos(); // Chame a função para carregar a lista de acontecimentos
-    // Preencher o campo de protocolo se estiver disponível
-    if (widget.numeroProtocolo != null) {
-      _selectedNumeroProtocoloAtendimento = widget.numeroProtocolo!;
-    }
+  AcontecimentoModel? findAcontecimentoByProtocolo(String numeroProtocolo) {
+    return listAcontecimento.firstWhere(
+      (acontecimento) => acontecimento.numeroProtocolo == numeroProtocolo,
+    );
   }
 
-AcontecimentoModel? findAcontecimentoByProtocolo(String numeroProtocolo) {
-  return listAcontecimento.firstWhere(
-    (acontecimento) => acontecimento.numeroProtocolo == numeroProtocolo,
-  );
-}
-
   List<CidadaoModel> getFilteredCidadaoList(String query, List<CidadaoModel> cidadaoList) {
+    if (query.isEmpty) {
+      return [];
+    }
+
     List<CidadaoModel> matches = [];
 
     matches.addAll(cidadaoList);
@@ -67,6 +92,10 @@ AcontecimentoModel? findAcontecimentoByProtocolo(String numeroProtocolo) {
         cidadao.name.toLowerCase().contains(query.toLowerCase()));
 
     return matches;
+  }
+
+  List<String> getSelectedItems() {
+    return items.where((item) => item.isSelected).map((item) => item.name).toList();
   }
 
   Future<void> _selectDate(BuildContext context, TextEditingController controller) async {
@@ -90,10 +119,9 @@ AcontecimentoModel? findAcontecimentoByProtocolo(String numeroProtocolo) {
           _selectedCanalAtendimento == 'Selecionar canal de atendimento' ||
           _selectedVistoriaRealizada == 'Selecionar' ||
           _selectedTipoRealizada == 'Selecionar' ||
-          _dataSolicitacaoController == null ||
-          _dataVistoriaController == null ||
-          _selectedEntregarItens == 'Selecionar' || 
-          _observacoesController == null) {
+          _dataSolicitacaoController.text.isEmpty ||
+          _dataVistoriaController.text.isEmpty ||
+          _selectedEntregarItens == 'Selecionar') {
         _exibirMensagem('Por favor, preencha todos os campos obrigatórios.');
         return;
       }
@@ -102,18 +130,20 @@ AcontecimentoModel? findAcontecimentoByProtocolo(String numeroProtocolo) {
         n_protocolo: _selectedNumeroProtocoloAtendimento!,
         tipoAtendimento: _selectedTipoAtendimento,
         canalAtendimento: _selectedCanalAtendimento,
-        nomeResponsavel: nomeResponsavelController.text,
+        nomeResponsavel: _nomeResponsavelController.text,
         vistoriaRealizada: _VistoriaRealizadaController,
         tipoVistoria: _selectedTipoRealizada,
         dataSolicitacao: _dataSolicitacaoController.text,
         dataVistoria: _dataVistoriaController.text,
         entregueItensAjuda: _selectedEntregarItens == 'Sim' ? true : false,
+        materiaisEntregues: getSelectedItems(),
+        observacoes: _observacoesController.text,
         pendente: true,
       );
 
       var resposta = await _atendimentoController.post(novoAtendimento);
 
-      if (resposta != null && resposta == 'Atendimento criado com sucesso!') {
+      if (resposta != null && resposta.contains('Atendimento criado com sucesso!')) {
         _exibirMensagem('Atendimento salvo com sucesso!');
         var protocoloAtendimentoSalvo = novoAtendimento.n_protocolo;
         await AcontecimentoController.acontecimentoController.updateAcontecimento(protocoloAtendimentoSalvo, false);
@@ -141,8 +171,32 @@ AcontecimentoModel? findAcontecimentoByProtocolo(String numeroProtocolo) {
       _selectedNumeroProtocoloAtendimento = null;
       _selectedTipoAtendimento = 'Selecionar atendimento';
       _selectedCanalAtendimento = 'Selecionar canal de atendimento';
-      // ... Limpar outros campos conforme necessário ...
+      _selectedVistoriaRealizada = 'Selecionar';
+      _selectedTipoRealizada = 'Selecionar';
+      _selectedEntregarItens = 'Selecionar';
+      _nomeResponsavelController.clear();
+      _dataSolicitacaoController.clear();
+      _dataVistoriaController.clear();
+      _observacoesController.clear();
+      _VistoriaRealizadaController = false;
+      for (var item in items) {
+        item.isSelected = false;
+      }
     });
+  }
+
+  List<Widget> buildCheckListTiles() {
+    return items.map((item) {
+      return CheckboxListTile(
+        title: Text(item.name),
+        value: item.isSelected,
+        onChanged: (bool? newValue) {
+          setState(() {
+            item.isSelected = newValue ?? false;
+          });
+        },
+      );
+    }).toList();
   }
 
   String? _selectedNumeroProtocoloAtendimento;
@@ -155,18 +209,6 @@ AcontecimentoModel? findAcontecimentoByProtocolo(String numeroProtocolo) {
   TextEditingController _dataSolicitacaoController = TextEditingController();
   TextEditingController _dataVistoriaController = TextEditingController();
   TextEditingController _observacoesController = TextEditingController();
-
-  bool isAguaSelected = false;
-  bool isCestasSelected = false;
-  bool isKitsSelected = false;
-  bool isPastilhaSelected = false;
-  bool isColchaoSelected = false;
-  bool isLonaSelected = false;
-  bool isCumeeiraSelected = false;
-  bool isPregoParafusoSelected = false;
-  bool isTelhaSelected = false;
-  bool isReservatorioSelected = false;
-  bool isFraldaSelected = false;
 
   //Lista de itens entregues
   bool mostrarItensEntregues = true;
@@ -465,29 +507,33 @@ AcontecimentoModel? findAcontecimentoByProtocolo(String numeroProtocolo) {
                         SizedBox(height: 30),
 
                         TypeAheadField<CidadaoModel>(
-
-                          controller: nomeResponsavelController,
+                          controller: _nomeResponsavelController,
                           debounceDuration: Duration(milliseconds: 300),
-                          // Função que será chamada conforme você digita
                           suggestionsCallback: (search) async {
-                            // Chamada ao seu serviço para buscar cidadãos
+                            if (search.isEmpty) {
+                              return [];
+                            }
+
                             var cidadaoService = CidadaoService();
-                            var cidadaoList = await cidadaoService.fetchListCidadao(searchTerm: search.isNotEmpty ? search : '.');
+                            var cidadaoList = await cidadaoService.fetchListCidadao(searchTerm: search);
 
                             // Filtra a lista com base na consulta
                             return getFilteredCidadaoList(search, cidadaoList);
                           },
-
                           builder: (context, controller, focusNode) {
                             return TextField(
-                              controller: nomeResponsavelController,
+                              controller: _nomeResponsavelController,
                               focusNode: focusNode,
-                              autofocus: true,
+                              autofocus: false,
                               decoration: _customInputDecoration("Nome do responsável no local:"),
                               onChanged: (text) async {
-                                // Chamada ao seu serviço para buscar cidadãos quando o texto é alterado
+                                if (text.isEmpty) {
+                                  SuggestionsController.of<CidadaoModel>(context).suggestions = [];
+                                  return;
+                                }
+
                                 var cidadaoService = CidadaoService();
-                                var cidadaoList = await cidadaoService.fetchListCidadao(searchTerm: text.isNotEmpty ? text : '.');
+                                var cidadaoList = await cidadaoService.fetchListCidadao(searchTerm: text);
 
                                 // Filtra a lista com base na consulta
                                 var filteredList = getFilteredCidadaoList(text, cidadaoList);
@@ -505,7 +551,7 @@ AcontecimentoModel? findAcontecimentoByProtocolo(String numeroProtocolo) {
                           },
                           onSelected: (cidadao) {
                             setState(() {
-                              nomeResponsavelController.text = cidadao.name;
+                              _nomeResponsavelController.text = cidadao.name;
                             });
                           },
                         ),
@@ -672,14 +718,6 @@ AcontecimentoModel? findAcontecimentoByProtocolo(String numeroProtocolo) {
                               setState(() {
                                 _selectedEntregarItens = newValue;
                               });
-                            } else {
-                              // Trate isso de acordo com a lógica desejada, por exemplo, defina um valor padrão
-                              print("Valor inválido selecionado: $newValue");
-                              
-                              // Defina um valor padrão ou tome outra ação adequada
-                              setState(() {
-                                _selectedEntregarItens = entragarItensOptions.first;
-                              });
                             }
                           },
                           decoration: _customInputDecoration(
@@ -695,136 +733,13 @@ AcontecimentoModel? findAcontecimentoByProtocolo(String numeroProtocolo) {
                           child: Container(
                             decoration: BoxDecoration(
                               border: Border.all(
-                                  color:
-                                      Colors.grey), // Cor da borda quando inativo
-                              borderRadius: BorderRadius.circular(
-                                  10.0), // Borda arredondada
+                                color: Colors.grey,
+                              ),
+                              borderRadius: BorderRadius.circular(10.0),
                             ),
                             child: ExpansionTile(
-                              title: Row(
-                                children: [
-                                  Text(
-                                    'Quais itens foram entregues?',
-                                    style: TextStyle(fontSize: 16),
-                                  ),
-                                ],
-                              ),
-                              trailing:
-                                  Icon(Icons.arrow_drop_down), //Ícone de seta
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.all(16.0),
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      CheckboxListTile(
-                                        title: Text('Água Potável'),
-                                        value: isAguaSelected,
-                                        onChanged: (bool? newValue) {
-                                          setState(() {
-                                            isAguaSelected = newValue ?? false;
-                                          });
-                                        },
-                                      ),
-                                      CheckboxListTile(
-                                        title: Text('Cestas básicas'),
-                                        value: isCestasSelected,
-                                        onChanged: (bool? newValue) {
-                                          setState(() {
-                                            isCestasSelected = newValue ?? false;
-                                          });
-                                        },
-                                      ),
-                                      CheckboxListTile(
-                                        title: Text('Kits'),
-                                        value: isKitsSelected,
-                                        onChanged: (bool? newValue) {
-                                          setState(() {
-                                            isKitsSelected = newValue ?? false;
-                                          });
-                                        },
-                                      ),
-                                      CheckboxListTile(
-                                        title: Text(
-                                            'Pastilha potabilizadora de água'),
-                                        value: isPastilhaSelected,
-                                        onChanged: (bool? newValue) {
-                                          setState(() {
-                                            isPastilhaSelected =
-                                                newValue ?? false;
-                                          });
-                                        },
-                                      ),
-                                      CheckboxListTile(
-                                        title: Text('Colchões'),
-                                        value: isColchaoSelected,
-                                        onChanged: (bool? newValue) {
-                                          setState(() {
-                                            isColchaoSelected = newValue ?? false;
-                                          });
-                                        },
-                                      ),
-                                      CheckboxListTile(
-                                        title: Text('Lonas'),
-                                        value: isLonaSelected,
-                                        onChanged: (bool? newValue) {
-                                          setState(() {
-                                            isLonaSelected = newValue ?? false;
-                                          });
-                                        },
-                                      ),
-                                      CheckboxListTile(
-                                        title: Text('Cumeeiras'),
-                                        value: isCumeeiraSelected,
-                                        onChanged: (bool? newValue) {
-                                          setState(() {
-                                            isCumeeiraSelected =
-                                                newValue ?? false;
-                                          });
-                                        },
-                                      ),
-                                      CheckboxListTile(
-                                        title: Text('Pregos/Parafusos'),
-                                        value: isPregoParafusoSelected,
-                                        onChanged: (bool? newValue) {
-                                          setState(() {
-                                            isPregoParafusoSelected =
-                                                newValue ?? false;
-                                          });
-                                        },
-                                      ),
-                                      CheckboxListTile(
-                                        title: Text('Telhas'),
-                                        value: isTelhaSelected,
-                                        onChanged: (bool? newValue) {
-                                          setState(() {
-                                            isTelhaSelected = newValue ?? false;
-                                          });
-                                        },
-                                      ),
-                                      CheckboxListTile(
-                                        title: Text('Reservatórios'),
-                                        value: isReservatorioSelected,
-                                        onChanged: (bool? newValue) {
-                                          setState(() {
-                                            isReservatorioSelected =
-                                                newValue ?? false;
-                                          });
-                                        },
-                                      ),
-                                      CheckboxListTile(
-                                        title: Text('Fraldas'),
-                                        value: isFraldaSelected,
-                                        onChanged: (bool? newValue) {
-                                          setState(() {
-                                            isFraldaSelected = newValue ?? false;
-                                          });
-                                        },
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ],
+                              title: Text('Quais itens foram entregues?'),
+                              children: buildCheckListTiles(),
                             ),
                           ),
                         ),
@@ -833,14 +748,10 @@ AcontecimentoModel? findAcontecimentoByProtocolo(String numeroProtocolo) {
 
                         //Campo de texto longo "Observações"
                         TextField(
+                          controller: _observacoesController,
                           decoration: _customInputDecoration('Observações'),
                           maxLines: null, // Permite múltiplas linhas
-                          keyboardType: TextInputType
-                              .multiline, // Define o teclado como multilinha
-                          onChanged: (String value) {
-                            // Aqui você pode atualizar o estado com o valor do campo de observação
-                            // Exemplo: _observacoes = value;
-                          },
+                          keyboardType: TextInputType.multiline,
                         ),
 
                         SizedBox(height: 20),
