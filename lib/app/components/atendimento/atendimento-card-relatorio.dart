@@ -7,23 +7,32 @@ class AtendimentoCardRelatorio extends StatelessWidget {
   final AtendimentosModel atendimento;
   final RelatorioAtendimentoController _relatorioController = RelatorioAtendimentoController();
 
-  AtendimentoCardRelatorio({Key? key, required this.atendimento})
-      : super(key: key);
+  AtendimentoCardRelatorio({Key? key, required this.atendimento}) : super(key: key);
 
   Future<void> _visualizarRelatorio(BuildContext context) async {
     try {
+      print('Gerando URL do PDF para o protocolo: ${atendimento.n_protocolo}');
       final pdfUrl = await _relatorioController.gerarRelatorioUrl(atendimento.n_protocolo);
+      final downloadUrl = _transformUrlToDownloadUrl(pdfUrl);
+      print('PDF URL: $pdfUrl');
+      print('Download URL: $downloadUrl');
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => DetalhesRelatorioAtendimento(pdfUrl: pdfUrl),
+          builder: (context) => DetalhesRelatorioAtendimento(pdfUrl: downloadUrl),
         ),
       );
     } catch (e) {
+      print('Erro ao gerar relatório: $e');
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Erro ao gerar relatório: $e')),
-      ); 
+      );
     }
+  }
+
+  String _transformUrlToDownloadUrl(String viewUrl) {
+    final fileId = viewUrl.split('/d/')[1].split('/')[0];
+    return 'https://drive.google.com/uc?export=download&id=$fileId';
   }
 
   @override
