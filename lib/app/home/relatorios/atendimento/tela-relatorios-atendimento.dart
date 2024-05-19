@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:projetoaplicado/app/components/atendimento/atendimento-card-relatorio.dart';
 import 'package:projetoaplicado/app/components/atendimento/atendimento-card.dart';
 import 'package:projetoaplicado/app/home/relatorios/acontecimento/tela-relatorios-acontecimento.dart';
 import 'package:projetoaplicado/app/home/relatorios/recibos/tela-relatorios-recibo.dart';
@@ -407,7 +408,7 @@ class _RelatorioAtendimentoState extends State<RelatorioAtendimento> {
                                       itemCount: pendentes.length,
                                       itemBuilder: (context, index) {
                                         AtendimentosModel atendimento = pendentes[index];
-                                        return AtendimentoCard(atendimento: atendimento);
+                                        return AtendimentoCardRelatorio(atendimento: atendimento);
                                       },
                                     );
                                   }

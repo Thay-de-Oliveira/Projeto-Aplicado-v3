@@ -1,29 +1,37 @@
 import 'package:flutter/material.dart';
-import 'package:projetoaplicado/app/home/atendimentos/historico/tela-atend-hist-detalhes.dart';
-import 'package:projetoaplicado/backend/models/acontecimentoModel.dart';
+import 'package:projetoaplicado/app/home/relatorios/atendimento/tela-relatorio-atend-detalhes.dart';
+import 'package:projetoaplicado/backend/controllers/relatorioAtendimentoController.dart';
 import 'package:projetoaplicado/backend/models/atendimentoModel.dart';
 
-class AtendimentoCard extends StatelessWidget {
+class AtendimentoCardRelatorio extends StatelessWidget {
   final AtendimentosModel atendimento;
-  //final AcontecimentoModel acontecimento;
+  final RelatorioAtendimentoController _relatorioController = RelatorioAtendimentoController();
 
-  const AtendimentoCard({Key? key, required this.atendimento})
+  AtendimentoCardRelatorio({Key? key, required this.atendimento})
       : super(key: key);
+
+  Future<void> _visualizarRelatorio(BuildContext context) async {
+    try {
+      final pdfUrl = await _relatorioController.gerarRelatorioUrl(atendimento.n_protocolo);
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => DetalhesRelatorioAtendimento(pdfUrl: pdfUrl),
+        ),
+      );
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Erro ao gerar relatório: $e')),
+      ); 
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {
-        // Navegar para a tela de detalhes ao clicar no card
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => DetalheHistorico(atendimento: atendimento),
-          ),
-        );
-      },
+      onTap: () => _visualizarRelatorio(context),
       child: Container(
-        margin: EdgeInsets.only(bottom: 11),
+        margin: const EdgeInsets.only(bottom: 11),
         width: 330,
         height: 120,
         child: Stack(
@@ -37,8 +45,8 @@ class AtendimentoCard extends StatelessWidget {
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(5),
-                  boxShadow: [
-                    const BoxShadow(
+                  boxShadow: const [
+                    BoxShadow(
                       color: Color(0x3F2F2F2F),
                       blurRadius: 1,
                       offset: Offset(1, 1),
@@ -69,7 +77,9 @@ class AtendimentoCard extends StatelessWidget {
             Positioned(
               left: 208,
               top: 89,
-              child: RealizarAtendimentoButton(),
+              child: RealizarAtendimentoButton(
+                onTap: () => _visualizarRelatorio(context),
+              ),
             ),
             Positioned(
               left: 9,
@@ -86,121 +96,11 @@ class AtendimentoCard extends StatelessWidget {
   }
 }
 
-class TempoIcone extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: 23,
-      height: 9,
-      child: Row(
-        children: [
-          Container(
-            width: 9,
-            height: 9,
-            decoration: const BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage("assets/icon-card-tempo.png"),
-                fit: BoxFit.cover,
-              ),
-            ),
-          ),
-          const SizedBox(width: 4),
-          const Text(
-            '10d',
-            style: TextStyle(
-              color: Color(0xFF082778),
-              fontSize: 8,
-              fontFamily: 'Roboto',
-              fontWeight: FontWeight.w400,
-              height: 0,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class ComentariosIcone extends StatelessWidget {
-  final int comentarios;
-
-  const ComentariosIcone({Key? key, required this.comentarios})
-      : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: 20,
-      height: 9,
-      child: Row(
-        children: [
-          Container(
-            width: 9,
-            height: 9,
-            decoration: const BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage("assets/imagens/icon-card-comentario.png"),
-                fit: BoxFit.cover,
-              ),
-            ),
-          ),
-          const SizedBox(width: 4),
-          Text(
-            '$comentarios',
-            style: const TextStyle(
-              color: Color(0xFF082778),
-              fontSize: 8,
-              fontFamily: 'Roboto',
-              fontWeight: FontWeight.w400,
-              height: 0,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class VencimentoIcone extends StatelessWidget {
-  final String vencimento;
-
-  const VencimentoIcone({Key? key, required this.vencimento}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: 77,
-      height: 8,
-      child: Row(
-        children: [
-          Container(
-            width: 8,
-            height: 8,
-            decoration: const BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage("assets/imagens/icon-card-vencimento.png"),
-                fit: BoxFit.cover,
-              ),
-            ),
-          ),
-          const SizedBox(width: 4),
-          Text(
-            'Venc.: $vencimento',
-            style: const TextStyle(
-              color: Color(0xFF082778),
-              fontSize: 8,
-              fontFamily: 'Roboto',
-              fontWeight: FontWeight.w400,
-              height: 0,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
 class RealizarAtendimentoButton extends StatelessWidget {
+  final VoidCallback onTap;
+
+  const RealizarAtendimentoButton({Key? key, required this.onTap}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -211,6 +111,7 @@ class RealizarAtendimentoButton extends StatelessWidget {
         borderRadius: BorderRadius.circular(4),
       ),
       child: InkWell(
+        onTap: onTap,
         child: Container(
           width: 115,
           height: 35,
@@ -220,7 +121,7 @@ class RealizarAtendimentoButton extends StatelessWidget {
           ),
           child: const Center(
             child: Text(
-              'Visualizar Atendimento',
+              'Visualizar Relatório',
               style: TextStyle(
                 color: Colors.black,
                 fontSize: 10,
