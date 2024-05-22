@@ -46,6 +46,8 @@ class _AtendimentoFormsState extends State<AtendimentoForms> {
   AtendimentoController _atendimentoController = AtendimentoController();
   final CidadaoController cidadaoController = CidadaoController.cidadaoController;
 
+  List<String> _uploadedUrls = [];
+
   @override
   void initState() {
     super.initState();
@@ -113,49 +115,50 @@ class _AtendimentoFormsState extends State<AtendimentoForms> {
   }
 
   Future<void> _salvarAtendimento() async {
-    try {
-      if (_selectedNumeroProtocoloAtendimento == null ||
-          _selectedTipoAtendimento == 'Selecionar atendimento' ||
-          _selectedCanalAtendimento == 'Selecionar canal de atendimento' ||
-          _selectedVistoriaRealizada == 'Selecionar' ||
-          _selectedTipoRealizada == 'Selecionar' ||
-          _dataSolicitacaoController.text.isEmpty ||
-          _dataVistoriaController.text.isEmpty ||
-          _selectedEntregarItens == 'Selecionar') {
-        _exibirMensagem('Por favor, preencha todos os campos obrigatórios.');
-        return;
-      }
-
-      AtendimentosModel novoAtendimento = AtendimentosModel(
-        n_protocolo: _selectedNumeroProtocoloAtendimento!,
-        tipoAtendimento: _selectedTipoAtendimento,
-        canalAtendimento: _selectedCanalAtendimento,
-        nomeResponsavel: _nomeResponsavelController.text,
-        vistoriaRealizada: _VistoriaRealizadaController,
-        tipoVistoria: _selectedTipoRealizada,
-        dataSolicitacao: _dataSolicitacaoController.text,
-        dataVistoria: _dataVistoriaController.text,
-        entregueItensAjuda: _selectedEntregarItens == 'Sim' ? true : false,
-        materiaisEntregues: getSelectedItems(),
-        observacoes: _observacoesController.text,
-        pendente: true,
-      );
-
-      var resposta = await _atendimentoController.post(novoAtendimento);
-
-      if (resposta != null && resposta.contains('Atendimento criado com sucesso!')) {
-        _exibirMensagem('Atendimento salvo com sucesso!');
-        var protocoloAtendimentoSalvo = novoAtendimento.n_protocolo;
-        await AcontecimentoController.acontecimentoController.updateAcontecimento(protocoloAtendimentoSalvo, false);
-        _limparCamposFormulario();
-      } else {
-        _exibirMensagem('Erro ao salvar o atendimento. Tente novamente.');
-      }
-    } catch (error) {
-      print(error.toString());
-      _exibirMensagem(error.toString());
+  try {
+    if (_selectedNumeroProtocoloAtendimento == null ||
+        _selectedTipoAtendimento == 'Selecionar atendimento' ||
+        _selectedCanalAtendimento == 'Selecionar canal de atendimento' ||
+        _selectedVistoriaRealizada == 'Selecionar' ||
+        _selectedTipoRealizada == 'Selecionar' ||
+        _dataSolicitacaoController.text.isEmpty ||
+        _dataVistoriaController.text.isEmpty ||
+        _selectedEntregarItens == 'Selecionar') {
+      _exibirMensagem('Por favor, preencha todos os campos obrigatórios.');
+      return;
     }
+
+    AtendimentosModel novoAtendimento = AtendimentosModel(
+      n_protocolo: _selectedNumeroProtocoloAtendimento!,
+      tipoAtendimento: _selectedTipoAtendimento,
+      canalAtendimento: _selectedCanalAtendimento,
+      nomeResponsavel: _nomeResponsavelController.text,
+      vistoriaRealizada: _VistoriaRealizadaController,
+      tipoVistoria: _selectedTipoRealizada,
+      dataSolicitacao: _dataSolicitacaoController.text,
+      dataVistoria: _dataVistoriaController.text,
+      entregueItensAjuda: _selectedEntregarItens == 'Sim' ? true : false,
+      materiaisEntregues: getSelectedItems(),
+      observacoes: _observacoesController.text,
+      pendente: true,
+      imageUrls: _uploadedUrls, // Sobe as imagens com URL no servidor Firebase
+    );
+
+    var resposta = await _atendimentoController.post(novoAtendimento);
+
+    if (resposta != null && resposta.contains('Atendimento criado com sucesso!')) {
+      _exibirMensagem('Atendimento salvo com sucesso!');
+      var protocoloAtendimentoSalvo = novoAtendimento.n_protocolo;
+      await AcontecimentoController.acontecimentoController.updateAcontecimento(protocoloAtendimentoSalvo, false);
+      _limparCamposFormulario();
+    } else {
+      _exibirMensagem('Erro ao salvar o atendimento. Tente novamente.');
+    }
+  } catch (error) {
+    print(error.toString());
+    _exibirMensagem(error.toString());
   }
+}
 
   void _exibirMensagem(String mensagem) {
     ScaffoldMessenger.of(context).showSnackBar(
@@ -182,6 +185,7 @@ class _AtendimentoFormsState extends State<AtendimentoForms> {
       for (var item in items) {
         item.isSelected = false;
       }
+      _uploadedUrls.clear(); //Sobe as imagens com URL no servidor Firebase
     });
   }
 

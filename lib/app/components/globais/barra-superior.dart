@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 
 Widget BarraSuperior(BuildContext context) {
+  bool isHome = ModalRoute.of(context)?.isFirst ?? false;
+
   return Container(
-    //BARRA AZUL
+    // BARRA AZUL
     width: double.infinity,
     height: 57,
     child: Stack(
@@ -22,6 +24,17 @@ Widget BarraSuperior(BuildContext context) {
             ),
           ),
         ),
+        if (!isHome)
+          Positioned(
+            left: 8,
+            top: 8,
+            child: IconButton(
+              icon: Icon(Icons.arrow_back, color: Colors.white),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            ),
+          ),
         Positioned(
           left: MediaQuery.of(context).size.width / 2 - 22.5, // Posiciona o logo no centro
           top: 8,

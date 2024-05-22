@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:camera_camera/camera_camera.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'tela-atendimento-forms.dart'; // Certifique-se de importar a tela AtendimentoForms
 
 class Camera extends StatefulWidget {
   const Camera({Key? key}) : super(key: key);
@@ -87,6 +88,15 @@ class _CameraState extends State<Camera> {
       home: Scaffold(
         appBar: AppBar(
           title: Text('Camera'),
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back),
+            onPressed: () {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => AtendimentoForms()),
+              );
+            },
+          ),
         ),
         body: Center(
           child: _imageFile == null

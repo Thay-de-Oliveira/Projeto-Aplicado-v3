@@ -17,6 +17,7 @@ class Upload extends StatefulWidget {
 class _UploadState extends State<Upload> {
   List<XFile> _imageFiles = [];
   List<String> _uploadedUrls = [];
+  bool isLoading = false; // Estado de carregamento
 
   Future<void> _pickImage() async {
     final XFile? image = await ImagePicker().pickImage(source: ImageSource.gallery);
@@ -28,6 +29,10 @@ class _UploadState extends State<Upload> {
   }
 
   Future<void> _uploadFiles() async {
+    setState(() {
+      isLoading = true;
+    });
+
     for (var image in _imageFiles) {
       try {
         String fileExtension = _getFileExtension(image);
@@ -55,19 +60,19 @@ class _UploadState extends State<Upload> {
       }
     }
 
-    // Exibir uma mensagem de sucesso e limpar a lista de arquivos
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Imagens salvas com sucesso!')));
     setState(() {
+      isLoading = false;
       _imageFiles.clear();
     });
+
+    // Exibir uma mensagem de sucesso e limpar a lista de arquivos
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Imagens salvas com sucesso!')));
   }
 
   String _getFileExtension(XFile image) {
     if (kIsWeb) {
-      // Para a web, extraia a extensão do nome do arquivo original
       return image.name.split('.').last;
     } else {
-      // Para dispositivos móveis, extraia a extensão do caminho do arquivo
       return image.path.split('.').last;
     }
   }
@@ -185,18 +190,20 @@ class _UploadState extends State<Upload> {
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       ElevatedButton(
-                        onPressed: _cancelUpload,
+                        onPressed: isLoading ? null : _cancelUpload,
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.grey,
                         ),
                         child: Text('Cancelar', style: TextStyle(color: Colors.white)),
                       ),
                       ElevatedButton(
-                        onPressed: _uploadFiles,
+                        onPressed: isLoading ? null : _uploadFiles,
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Color(0xFF1B7CB3),
                         ),
-                        child: Text('Salvar', style: TextStyle(color: Colors.white)),
+                        child: isLoading
+                            ? CircularProgressIndicator(color: Colors.white)
+                            : Text('Salvar', style: TextStyle(color: Colors.white)),
                       ),
                     ],
                   ),

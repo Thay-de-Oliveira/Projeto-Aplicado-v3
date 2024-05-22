@@ -13,6 +13,7 @@ class AtendimentosModel {
   final String? observacoes;
   final String? pdfUrl;
   bool pendente;
+  final List<String> imageUrls; // Novo campo para URLs das imagens
 
   AtendimentosModel({
     this.id,
@@ -29,6 +30,7 @@ class AtendimentosModel {
     this.observacoes,
     this.pdfUrl,
     required this.pendente,
+    required this.imageUrls, // Novo campo adiciona URL das imagens ao forms
   });
 
   factory AtendimentosModel.fromJson(Map<String, dynamic> json) {
@@ -47,6 +49,7 @@ class AtendimentosModel {
       observacoes: json['Observacoes'],
       pdfUrl: json['pdfUrl'],
       pendente: json['pendente'],
+      imageUrls: List<String>.from(json['imageUrls']), // Novo campo adiciona URL das imagens ao forms
     );
   }
 
@@ -65,5 +68,6 @@ class AtendimentosModel {
     'Observacoes': observacoes,
     'pdfUrl': pdfUrl,
     'pendente': pendente,
+    'imageUrls': imageUrls, // Novo campo adiciona URL das imagens ao forms
   };
 }

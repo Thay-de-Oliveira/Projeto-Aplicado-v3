@@ -3,7 +3,7 @@
   "packages": [
     {
       "name": "_flutterfire_internals",
-      "rootUri": "file:///C:/Users/Thain%C3%A1/AppData/Local/Pub/Cache/hosted/pub.dev/_flutterfire_internals-1.3.33",
+      "rootUri": "file:///C:/Users/Thain%C3%A1/AppData/Local/Pub/Cache/hosted/pub.dev/_flutterfire_internals-1.3.34",
       "packageUri": "lib/",
       "languageVersion": "3.2"
     },
@@ -96,6 +96,24 @@
       "rootUri": "file:///C:/Users/Thain%C3%A1/AppData/Local/Pub/Cache/hosted/pub.dev/clock-1.1.1",
       "packageUri": "lib/",
       "languageVersion": "2.12"
+    },
+    {
+      "name": "cloud_firestore",
+      "rootUri": "file:///C:/Users/Thain%C3%A1/AppData/Local/Pub/Cache/hosted/pub.dev/cloud_firestore-4.17.4",
+      "packageUri": "lib/",
+      "languageVersion": "2.18"
+    },
+    {
+      "name": "cloud_firestore_platform_interface",
+      "rootUri": "file:///C:/Users/Thain%C3%A1/AppData/Local/Pub/Cache/hosted/pub.dev/cloud_firestore_platform_interface-6.2.4",
+      "packageUri": "lib/",
+      "languageVersion": "2.18"
+    },
+    {
+      "name": "cloud_firestore_web",
+      "rootUri": "file:///C:/Users/Thain%C3%A1/AppData/Local/Pub/Cache/hosted/pub.dev/cloud_firestore_web-3.12.4",
+      "packageUri": "lib/",
+      "languageVersion": "3.2"
     },
     {
       "name": "collection",
@@ -195,7 +213,7 @@
     },
     {
       "name": "firebase_core",
-      "rootUri": "file:///C:/Users/Thain%C3%A1/AppData/Local/Pub/Cache/hosted/pub.dev/firebase_core-2.31.0",
+      "rootUri": "file:///C:/Users/Thain%C3%A1/AppData/Local/Pub/Cache/hosted/pub.dev/firebase_core-2.31.1",
       "packageUri": "lib/",
       "languageVersion": "2.18"
     },
@@ -908,7 +926,7 @@
       "languageVersion": "2.17"
     }
   ],
-  "generated": "2024-05-22T22:28:54.430924Z",
+  "generated": "2024-05-22T22:39:55.999022Z",
   "generator": "pub",
   "generatorVersion": "3.3.3"
 }
