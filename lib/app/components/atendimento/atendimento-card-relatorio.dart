@@ -14,8 +14,6 @@ class AtendimentoCardRelatorio extends StatelessWidget {
       print('Gerando URL do PDF para o protocolo: ${atendimento.n_protocolo}');
       final pdfUrl = await _relatorioController.gerarRelatorioUrl(atendimento.n_protocolo);
       final downloadUrl = _transformUrlToDownloadUrl(pdfUrl);
-      print('PDF URL: $pdfUrl');
-      print('Download URL: $downloadUrl');
       Navigator.push(
         context,
         MaterialPageRoute(

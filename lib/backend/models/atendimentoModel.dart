@@ -11,6 +11,7 @@ class AtendimentosModel {
   final bool entregueItensAjuda;
   final List<String> materiaisEntregues;
   final String? observacoes;
+  final String? pdfUrl;
   bool pendente;
 
   AtendimentosModel({
@@ -26,6 +27,7 @@ class AtendimentosModel {
     required this.entregueItensAjuda,
     required this.materiaisEntregues,
     this.observacoes,
+    this.pdfUrl,
     required this.pendente,
   });
 
@@ -43,6 +45,7 @@ class AtendimentosModel {
       entregueItensAjuda: json['EntregueItensAjuda'],
       materiaisEntregues: List<String>.from(json['MateriaisEntregues']),
       observacoes: json['Observacoes'],
+      pdfUrl: json['pdfUrl'],
       pendente: json['pendente'],
     );
   }
@@ -60,6 +63,7 @@ class AtendimentosModel {
     'EntregueItensAjuda': entregueItensAjuda,
     'MateriaisEntregues': materiaisEntregues,
     'Observacoes': observacoes,
+    'pdfUrl': pdfUrl,
     'pendente': pendente,
   };
 }

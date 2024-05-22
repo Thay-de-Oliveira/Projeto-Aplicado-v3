@@ -2,8 +2,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 class RelatorioAtendimentoService {
-  //String baseUrl = "https://web-production-0b75.up.railway.app"; // Substitua pelo URL do seu servidor
-  String baseUrl = "https://web-production-0b75.up.railway.app/relatorios"; // Substitua pelo URL do seu servidor
+  String baseUrl = "https://web-production-0b75.up.railway.app/relatorios";
 
   // Gerar relatorio de atendimento
   Future<String> gerarRelatorio(String nProtocolo) async {
