@@ -141,7 +141,7 @@ class _AtendimentoFormsState extends State<AtendimentoForms> {
       materiaisEntregues: getSelectedItems(),
       observacoes: _observacoesController.text,
       pendente: true,
-      imageUrls: _uploadedUrls, // Sobe as imagens com URL no servidor Firebase
+      imagesUrls: _uploadedUrls, // Sobe as imagens com URL no servidor Firebase
     );
 
     var resposta = await _atendimentoController.post(novoAtendimento);
