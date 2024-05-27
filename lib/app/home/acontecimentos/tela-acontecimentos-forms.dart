@@ -35,6 +35,7 @@ class _FormularioAcontecimentoState extends State<AcontecimentosForms> {
   String? _selectedCobradeAutomatico;
 
   final DateTime dataAtual = DateTime.now();
+  bool _isSaving = false;
 
   InputDecoration _customInputDecoration(String labelText) {
     return InputDecoration(
@@ -59,31 +60,40 @@ class _FormularioAcontecimentoState extends State<AcontecimentosForms> {
       return null;
     }
 
-    AcontecimentoModel acontecimento = AcontecimentoModel(
-      classe: _selectedClasseAcontecimento!,
-      grupo: _selectedGrupo!,
-      subgrupo: _selectedSubGrupo!,
-      tipo: _selectedTipo!,
-      subtipo: _selectedSubTipo!,
-      infoCobrade: _selectedCobradeAutomatico!,
-      dataHora: DateTime.now(),
-      pendente: true,
-    );
+    setState(() {
+      _isSaving = true; // Desativa o botão ao iniciar o salvamento
+    });
 
-    var response = await _acontecimentoController.post(acontecimento);
-
-    if (response != null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Acontecimento criado com sucesso.'),
-        ),
+    try {
+      AcontecimentoModel acontecimento = AcontecimentoModel(
+        classe: _selectedClasseAcontecimento!,
+        grupo: _selectedGrupo!,
+        subgrupo: _selectedSubGrupo!,
+        tipo: _selectedTipo!,
+        subtipo: _selectedSubTipo!,
+        infoCobrade: _selectedCobradeAutomatico!,
+        dataHora: DateTime.now(),
+        pendente: true,
       );
-      return 'Acontecimento criado com sucesso.';
-    } else {
-      return 'Erro ao criar acontecimento. Por favor contate o suporte.';
+
+      var response = await _acontecimentoController.post(acontecimento);
+
+      if (response != null) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Acontecimento criado com sucesso.'),
+          ),
+        );
+        return 'Acontecimento criado com sucesso.';
+      } else {
+        return 'Erro ao criar acontecimento. Por favor contate o suporte.';
+      }
+    } finally {
+      setState(() {
+        _isSaving = false; // Reativa o botão após a conclusão do salvamento
+      });
     }
   }
-
 
   // Opções para a classe de acontecimento
   List<String> classeOptions = [
@@ -691,12 +701,12 @@ class _FormularioAcontecimentoState extends State<AcontecimentosForms> {
                     children: [
                       // Botão Salvar
                       InkWell(
-                        onTap: () async {
+                        onTap: _isSaving ? null : () async {
                           var response = await _salvar();
                           
-                          if (response != null) {
+                          if (response == "Acontecimento criado com sucesso.") {
                             appState.atualizarTela('inicio');
-                            Navigator.of(context).pushReplacementNamed('/tela-inicio');
+                            await Navigator.of(context).pushReplacementNamed('/tela-inicio');
                           }
                         },
                         child: Container(

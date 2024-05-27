@@ -233,71 +233,71 @@ class _RelatorioAtendimentoState extends State<RelatorioAtendimento> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       //Botão FILTRO
-                      InkWell(
-                        onTap: () {
-                          // Ação a ser executada quando o botão de filtro for pressionado
-                        },
-                        child: Container(
-                          width: 65,
-                          height: 32,
-                          child: Stack(
-                            children: [
-                              Positioned(
-                                left: 0,
-                                top: 0,
-                                child: Container(
-                                  width: 65,
-                                  height: 32,
-                                  decoration: ShapeDecoration(
-                                    color: Color(0xFFCFDDF2),
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(8),
-                                    ),
-                                    shadows: [
-                                      BoxShadow(
-                                        color: Color(0x269FE3FF),
-                                        blurRadius: 8,
-                                        offset: Offset(1, 1),
-                                        spreadRadius: 0,
-                                      )
-                                    ],
-                                  ),
-                                ),
-                              ),
-                              Positioned(
-                                left: 6.09,
-                                top: 7,
-                                child: Container(
-                                  width: 53.91,
-                                  height: 18,
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Icon(
-                                        Icons.filter_list,
-                                        color: Color(0xff121212),
-                                        size: 16,
-                                      ),
-                                      SizedBox(
-                                          width:
-                                              4), // Espaço entre o ícone e o texto
-                                      Text(
-                                        'Filtrar',
-                                        style: TextStyle(
-                                          color: Color(0xFF2F2F2F),
-                                          fontSize: 12,
-                                          fontFamily: 'Roboto',
-                                          fontWeight: FontWeight.w500,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
+                      // InkWell(
+                      //   onTap: () {
+                      //     // Ação a ser executada quando o botão de filtro for pressionado
+                      //   },
+                      //   child: Container(
+                      //     width: 65,
+                      //     height: 32,
+                      //     child: Stack(
+                      //       children: [
+                      //         Positioned(
+                      //           left: 0,
+                      //           top: 0,
+                      //           child: Container(
+                      //             width: 65,
+                      //             height: 32,
+                      //             decoration: ShapeDecoration(
+                      //               color: Color(0xFFCFDDF2),
+                      //               shape: RoundedRectangleBorder(
+                      //                 borderRadius: BorderRadius.circular(8),
+                      //               ),
+                      //               shadows: [
+                      //                 BoxShadow(
+                      //                   color: Color(0x269FE3FF),
+                      //                   blurRadius: 8,
+                      //                   offset: Offset(1, 1),
+                      //                   spreadRadius: 0,
+                      //                 )
+                      //               ],
+                      //             ),
+                      //           ),
+                      //         ),
+                      //         Positioned(
+                      //           left: 6.09,
+                      //           top: 7,
+                      //           child: Container(
+                      //             width: 53.91,
+                      //             height: 18,
+                      //             child: Row(
+                      //               mainAxisAlignment: MainAxisAlignment.center,
+                      //               children: [
+                      //                 Icon(
+                      //                   Icons.filter_list,
+                      //                   color: Color(0xff121212),
+                      //                   size: 16,
+                      //                 ),
+                      //                 SizedBox(
+                      //                     width:
+                      //                         4), // Espaço entre o ícone e o texto
+                      //                 Text(
+                      //                   'Filtrar',
+                      //                   style: TextStyle(
+                      //                     color: Color(0xFF2F2F2F),
+                      //                     fontSize: 12,
+                      //                     fontFamily: 'Roboto',
+                      //                     fontWeight: FontWeight.w500,
+                      //                   ),
+                      //                 ),
+                      //               ],
+                      //             ),
+                      //           ),
+                      //         ),
+                      //       ],
+                      //     ),
+                      //   ),
+                      // ),
 
                       //Barra de pesquisa
                       Container(
@@ -376,52 +376,50 @@ class _RelatorioAtendimentoState extends State<RelatorioAtendimento> {
 
                   SizedBox(height: 25),
 
-                    SizedBox(height: 25),
+                  // Lista de Cards de Atendimento
+                  Center(
+                    child: Container(
+                      width: 330,
+                      child: FutureBuilder(
+                        future: atendimentoController.listAtendimento(),
+                        builder: (context, snapshot) {
+                          switch (snapshot.connectionState) {
+                            case ConnectionState.none:
+                            case ConnectionState.waiting:
+                              return Center(
+                                child: CircularProgressIndicator(),
+                              );
+                            case ConnectionState.done:
+                              if (snapshot.hasError) {
+                                return Center(
+                                  child: Text('Erro ao carregar acontecimentos'),
+                                );
+                              } else {
+                                // Filtrar os atendimentos pendentes
+                                var pendentes = atendimentoController.listAtendimentoObs
+                                    .where((acontecimento) => acontecimento.pendente == true)
+                                    .toList();
 
-                    // Lista de Cards de Atendimento
-                      Center(
-                        child: Container(
-                          width: 330,
-                          child: FutureBuilder(
-                            future: atendimentoController.listAtendimento(),
-                            builder: (context, snapshot) {
-                              switch (snapshot.connectionState) {
-                                case ConnectionState.none:
-                                case ConnectionState.waiting:
-                                  return Center(
-                                    child: CircularProgressIndicator(),
-                                  );
-                                case ConnectionState.done:
-                                  if (snapshot.hasError) {
-                                    return Center(
-                                      child: Text('Erro ao carregar acontecimentos'),
-                                    );
-                                  } else {
-                                    // Filtrar os atendimentos pendentes
-                                    var pendentes = atendimentoController.listAtendimentoObs
-                                        .where((acontecimento) => acontecimento.pendente == true)
-                                        .toList();
-
-                                    return ListView.builder(
-                                      shrinkWrap: true,
-                                      physics: NeverScrollableScrollPhysics(),
-                                      itemCount: pendentes.length,
-                                      itemBuilder: (context, index) {
-                                        AtendimentosModel atendimento = pendentes[index];
-                                        return AtendimentoCardRelatorio(atendimento: atendimento);
-                                      },
-                                    );
-                                  }
-                                default:
-                                  return SizedBox();
+                                return ListView.builder(
+                                  shrinkWrap: true,
+                                  physics: NeverScrollableScrollPhysics(),
+                                  itemCount: pendentes.length,
+                                  itemBuilder: (context, index) {
+                                    AtendimentosModel atendimento = pendentes[index];
+                                    return AtendimentoCardRelatorio(atendimento: atendimento);
+                                  },
+                                );
                               }
-                            },
-                          ),
-                        ),
+                            default:
+                              return SizedBox();
+                          }
+                        },
                       ),
-                    // Fim da Lista de Cards
-                    
-                    SizedBox(height: 25),
+                    ),
+                  ),
+                  // Fim da Lista de Cards
+                  
+                  SizedBox(height: 25),
 
                 ],
               ),
