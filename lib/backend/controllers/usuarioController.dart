@@ -14,14 +14,13 @@ class UserController extends GetxController {
     try {
       isLoading.value = true;
       await userService.registerUser(user);
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         content: Text("Usuário registrado com sucesso"),
         duration: Duration(seconds: 3),
       ));
       Navigator.of(context).pushReplacementNamed('/tela-inicio');
     } catch (e) {
-      print("Erro ao cadastrar: $e");
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         content: Text("Falha ao cadastrar usuário"),
         duration: Duration(seconds: 3),
       ));
@@ -38,21 +37,20 @@ class UserController extends GetxController {
 
       if (loginSuccess) {
         // Login bem-sucedido
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
           content: Text("Login bem sucedido!"),
           duration: Duration(seconds: 3),
         ));
         Navigator.of(context).pushReplacementNamed('/tela-inicio');
       } else {
         // Login falhou, exibir mensagem
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
           content: Text("Usuário ou senha incorretos"),
           duration: Duration(seconds: 3),
         ));
       }
     } catch (e) {
-      print("Erro ao fazer login: $e");
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         content: Text("Erro ao fazer login"),
         duration: Duration(seconds: 3),
       ));

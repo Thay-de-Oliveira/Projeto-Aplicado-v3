@@ -56,42 +56,27 @@ class AcontecimentoController extends GetxController {
     return response;
   }
 
-  Future<dynamic> updateAcontecimento(String protocolo, bool isPendente) async {
-    isLoading.value = true;
+  Future<void> updateAcontecimento(String protocolo, bool isPendente) async {
+    isLoading(true);
 
     try {
-      // Obtém o acontecimento correspondente ao protocolo
-      var acontecimento = listAcontecimentoObs.firstWhere(
-          (element) => element.numeroProtocolo == protocolo);
+      var index = listAcontecimentoObs.indexWhere((element) => element.numeroProtocolo == protocolo);
 
-      if (acontecimento != null) {
-        // Atualiza o estado "pendente" no modelo
-        acontecimento.pendente = isPendente;
-
-        // Chama o serviço para editar o acontecimento
-        var response = await acontecimentoService.editAcontecimento(acontecimento);
-
-        // Verifica a resposta do serviço
-        if (response is AcontecimentoModel) {
-          // Atualiza a lista de acontecimentos após a edição
-          var index = listAcontecimentoObs.indexWhere(
-              (element) => element.numeroProtocolo == protocolo);
-          if (index != -1) {
-            listAcontecimentoObs[index] = response;
-          }
-        } else {
-          // Trate o erro, se necessário
-          print('Erro durante a edição do acontecimento');
-        }
-      } else {
-        // Trate o caso em que não foi encontrado um acontecimento correspondente
+      if (index == -1) {
         print('Acontecimento não encontrado para o protocolo: $protocolo');
+        return;
       }
+
+      AcontecimentoModel acontecimento = listAcontecimentoObs[index];
+      acontecimento.pendente = isPendente;
+      AcontecimentoModel response = await acontecimentoService.editAcontecimento(acontecimento);
+
+      listAcontecimentoObs[index] = response;
+      print('Acontecimento atualizado com sucesso.');
     } catch (e) {
-      // Trate o erro, se necessário
       print('Erro durante a edição do acontecimento: $e');
     } finally {
-      isLoading.value = false;
+      isLoading(false);
       update();
     }
   }

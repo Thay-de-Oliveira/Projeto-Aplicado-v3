@@ -1,8 +1,8 @@
 class CidadaoModel {
   final String? id;
   final String name;
-  final int cpf;
-  final int rg;
+  final String cpf;
+  final String rg;
   final String cep;
   final String rua;
   final String bairro;

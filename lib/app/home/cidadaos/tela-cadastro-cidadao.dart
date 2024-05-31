@@ -147,8 +147,8 @@ class _CadastroCidadaoState extends State<CadastroCidadao> {
     try {
       CidadaoModel novoCidadao = CidadaoModel(
         name: nomeController.text,
-        cpf: int.tryParse(cpfController.text) ?? 0,
-        rg: int.tryParse(rgController.text) ?? 0,
+        cpf: cpfController.text,
+        rg: rgController.text,
         cep: cepController.text,
         rua: ruaController.text,
         bairro: bairroController.text,
