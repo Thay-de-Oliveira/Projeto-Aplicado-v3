@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:camera_camera/camera_camera.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'tela-atendimento-forms.dart'; // Certifique-se de importar a tela AtendimentoForms
+import 'tela-atendimento-forms.dart'; 
 
 class Camera extends StatefulWidget {
   const Camera({Key? key}) : super(key: key);

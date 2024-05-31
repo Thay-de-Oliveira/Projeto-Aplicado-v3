@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:projetoaplicado/app/home/cidadaos/tela-cidadaos-cadastrados.dart';
+import 'package:projetoaplicado/app/home/tela-inicio.dart';
 import '../../../backend/models/cidadaoModel.dart';
 import '../../../backend/controllers/cidadaoController.dart';
 import '../../../backend/controllers/cepController.dart';
-
 import '../../components/globais/barra-superior.dart';
 import '../../components/globais/menu-inferior.dart';
-import '../tela-inicio.dart';
 
 class CadastroCidadao extends StatefulWidget {
   @override
@@ -179,6 +179,116 @@ class _CadastroCidadaoState extends State<CadastroCidadao> {
     }
   }
 
+  Widget buttonBar() {
+    bool isCadastro = true; // Altere para 'false' quando estiver na tela de Histórico
+
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        GestureDetector(
+          child: Ink(
+            decoration: ShapeDecoration(
+              color: isCadastro ? Color(0xFFBBD8F0) : Colors.white,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
+              shadows: [
+                BoxShadow(
+                  color: Color(0x3F000000),
+                  blurRadius: 2,
+                  offset: Offset(2, 2),
+                  spreadRadius: 0,
+                )
+              ],
+            ),
+            child: InkWell(
+              onTap: () {
+                if (!isCadastro) {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => CadastroCidadao()));
+                }
+              },
+              child: Container(
+                width: 90,
+                height: 80,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Container(
+                      width: 30,
+                      height: 30,
+                      child: Image.asset('assets/imagens/icon-cadastro.png'),
+                    ),
+                    SizedBox(height: 5.0),
+                    Text(
+                      'Cadastro',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ),
+        GestureDetector(
+          child: Ink(
+            decoration: ShapeDecoration(
+              color: !isCadastro ? Color(0xFFBBD8F0) : Colors.white,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
+              shadows: [
+                BoxShadow(
+                  color: Color(0x3F000000),
+                  blurRadius: 2,
+                  offset: Offset(2, 2),
+                  spreadRadius: 0,
+                )
+              ],
+            ),
+            child: InkWell(
+              onTap: () {
+                if (isCadastro) {
+                  Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => DadosCidadao()));
+                }
+              },
+              child: Container(
+                width: 90,
+                height: 80,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Container(
+                      width: 30,
+                      height: 30,
+                      child: Image.asset('assets/imagens/icon-historico.png'),
+                    ),
+                    SizedBox(height: 5.0),
+                    Text(
+                      'Histórico',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.normal,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
   @override
   void initState() {
     super.initState();
@@ -220,41 +330,7 @@ class _CadastroCidadaoState extends State<CadastroCidadao> {
             delegate: SliverChildListDelegate(
               [
                 SizedBox(height: 20),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Container(
-                      width: 180,
-                      height: 50,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          Container(
-                            width: 30,
-                            height: 30,
-                            child: Image.asset('assets/imagens/icon-cidadao.png'),
-                          ),
-                          SizedBox(height: 1.0),
-                          Positioned(
-                            left: 0,
-                            top: 10,
-                            child: Text(
-                              'Cadastro de Cidadão',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 16,
-                                fontFamily: 'Roboto',
-                                fontWeight: FontWeight.w700,
-                                height: 0,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
+                buttonBar(), // Substitua a imagem pelo menu
                 SizedBox(height: 10),
                 Center(
                   child: Padding(

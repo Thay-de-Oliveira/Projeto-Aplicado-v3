@@ -54,13 +54,40 @@ class _DadosCidadaoState extends State<DadosCidadao> {
             Text('${cidadao.name}', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
             Text('Último Atendimento: ${cidadao.dataVistoria}'),
             Text('Cobrade: ${cidadao.ocorrencia}'),
-            /*FlatButton(
+            TextButton(
               onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => DetalhesCidadaoPage(cidadao: cidadao))),
               child: Text('Informações >'),
-              textColor: Colors.blue,
-            )*/
+              style: TextButton.styleFrom(
+                foregroundColor: Colors.blue, // Define a cor do texto para todas os estados
+              ),
+            ),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget buttonBar() {
+    return Padding(
+      padding: const EdgeInsets.only(top: 50),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: <Widget>[
+          ElevatedButton.icon(
+            icon: Icon(Icons.person_add),
+            label: Text('Cadastro'),
+            onPressed: () {
+              // Botão para Cadastro
+            },
+          ),
+          ElevatedButton.icon(
+            icon: Icon(Icons.history),
+            label: Text('Histórico'),
+            onPressed: () {
+              // Botão para Histórico
+            },
+          ),
+        ],
       ),
     );
   }
@@ -78,6 +105,9 @@ class _DadosCidadaoState extends State<DadosCidadao> {
             expandedHeight: 120,
             backgroundColor: Colors.white,
             flexibleSpace: BarraSuperior(context),
+          ),
+          SliverToBoxAdapter(
+            child: buttonBar(),
           ),
           SliverList(
             delegate: SliverChildBuilderDelegate(
