@@ -41,6 +41,7 @@ class _AtendimentoFormsState extends State<AtendimentoForms> {
 
   CidadaoService cidadaoService = CidadaoService();
 
+  TextEditingController _cpfResponsavelController = TextEditingController();
   TextEditingController _nomeResponsavelController = TextEditingController();
   AcontecimentoController _acontecimentoController = AcontecimentoController();
   AtendimentoController _atendimentoController = AtendimentoController();
@@ -90,9 +91,6 @@ class _AtendimentoFormsState extends State<AtendimentoForms> {
 
     matches.addAll(cidadaoList);
 
-    matches.retainWhere((cidadao) =>
-        cidadao.name.toLowerCase().contains(query.toLowerCase()));
-
     return matches;
   }
 
@@ -132,7 +130,7 @@ class _AtendimentoFormsState extends State<AtendimentoForms> {
       n_protocolo: _selectedNumeroProtocoloAtendimento!,
       tipoAtendimento: _selectedTipoAtendimento,
       canalAtendimento: _selectedCanalAtendimento,
-      nomeResponsavel: _nomeResponsavelController.text,
+      nomeResponsavel: _cpfResponsavelController.text,
       vistoriaRealizada: _VistoriaRealizadaController,
       tipoVistoria: _selectedTipoRealizada,
       dataSolicitacao: _dataSolicitacaoController.text,
@@ -178,6 +176,7 @@ class _AtendimentoFormsState extends State<AtendimentoForms> {
       _selectedTipoRealizada = 'Selecionar';
       _selectedEntregarItens = 'Selecionar';
       _nomeResponsavelController.clear();
+      _cpfResponsavelController.clear();
       _dataSolicitacaoController.clear();
       _dataVistoriaController.clear();
       _observacoesController.clear();
@@ -511,7 +510,7 @@ class _AtendimentoFormsState extends State<AtendimentoForms> {
                         SizedBox(height: 30),
 
                         TypeAheadField<CidadaoModel>(
-                          controller: _nomeResponsavelController,
+                          controller: _nomeResponsavelController, // Este controller agora só para exibir o nome
                           debounceDuration: Duration(milliseconds: 300),
                           suggestionsCallback: (search) async {
                             if (search.isEmpty) {
@@ -521,7 +520,6 @@ class _AtendimentoFormsState extends State<AtendimentoForms> {
                             var cidadaoService = CidadaoService();
                             var cidadaoList = await cidadaoService.fetchListCidadao(searchTerm: search);
 
-                            // Filtra a lista com base na consulta
                             return getFilteredCidadaoList(search, cidadaoList);
                           },
                           builder: (context, controller, focusNode) {
@@ -553,9 +551,10 @@ class _AtendimentoFormsState extends State<AtendimentoForms> {
                               subtitle: Text('CPF: ${cidadao.cpf}'),
                             );
                           },
-                          onSelected: (cidadao) {
+                          onSelected: (CidadaoModel cidadao) {
                             setState(() {
                               _nomeResponsavelController.text = cidadao.name;
+                              _cpfResponsavelController.text = cidadao.cpf;
                             });
                           },
                         ),

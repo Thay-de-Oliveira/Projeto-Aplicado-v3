@@ -12,7 +12,11 @@ class CidadaoService {
 
     if (response.statusCode == 200) {
       var list = json.decode(response.body);
-      return list.map((item) => CidadaoModel.fromJson(item)).toList();
+      List<CidadaoModel> listCidadaoModel = [];
+      for (var item in list) {
+        listCidadaoModel.add(CidadaoModel.fromJson(item));
+      }
+      return listCidadaoModel;
     } else {
       throw Exception('Falha ao carregar lista de cidadãos');
     }

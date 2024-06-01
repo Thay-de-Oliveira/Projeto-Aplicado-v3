@@ -17,7 +17,7 @@ class CidadaoController extends GetxController {
     return response;
   }
 
-  void fetchCidadaoByQuery(String query) async {
+  Future<void> fetchCidadaoByQuery(String query) async {
     isLoading(true);
     try {
       var cidadaos = await cidadaoService.fetchListCidadao(searchTerm: query);
