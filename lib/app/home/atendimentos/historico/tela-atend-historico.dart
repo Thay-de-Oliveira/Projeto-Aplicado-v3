@@ -31,8 +31,6 @@ class _HistoricoAtendimentoState extends State<HistoricoAtendimento> {
 
   @override
   Widget build(BuildContext context) {
-    double screenWidth = MediaQuery.of(context).size.width;
-
     return Scaffold(
       appBar: null,
       body: RefreshIndicator(
@@ -134,7 +132,7 @@ class _HistoricoAtendimentoState extends State<HistoricoAtendimento> {
                   // Lista de Cards de Atendimento
                   Center(
                     child: Container(
-                      width: screenWidth * 0.9,
+                      width: 330, // Definindo uma largura fixa para os cards
                       child: FutureBuilder(
                         future: atendimentoController.listAtendimento(),
                         builder: (context, snapshot) {
@@ -234,78 +232,39 @@ class _HistoricoAtendimentoState extends State<HistoricoAtendimento> {
   }
 
   Widget buildSearchBar() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Container(
-          width: 330,
-          height: 32,
-          child: Stack(
-            children: [
-              Positioned(
-                left: 0,
-                top: 0,
-                child: Container(
-                  width: 330,
-                  height: 32,
-                  decoration: ShapeDecoration(
-                    color: Colors.white,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    shadows: [
-                      BoxShadow(
-                        color: Color(0x199FE3FF),
-                        blurRadius: 8,
-                        offset: Offset(1, 3),
-                        spreadRadius: 0,
-                      )
-                    ],
-                  ),
-                ),
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20.0),
+      child: Container(
+        height: 32,
+        child: TextField(
+          decoration: InputDecoration(
+            hintText: 'Pesquisar',
+            hintStyle: TextStyle(
+              color: Color(0xFF979797),
+              fontSize: 14,
+              fontFamily: 'Roboto',
+              fontWeight: FontWeight.w400,
+            ),
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(8),
+              borderSide: BorderSide(
+                color: Colors.white,
+                width: 1,
               ),
-              Positioned(
-                left: 227,
-                top: 8,
-                child: Container(
-                  width: 15.37,
-                  height: 16,
-                  child: Stack(children: []),
-                ),
-              ),
-              Positioned(
-                left: 14,
-                top: 0,
-                child: Container(
-                  height: 32,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Padding(
-                        padding: EdgeInsets.only(right: 220.0),
-                        child: Text(
-                          'Pesquisar',
-                          style: TextStyle(
-                            color: Color(0xFF979797),
-                            fontSize: 14,
-                            fontFamily: 'Roboto',
-                            fontWeight: FontWeight.w400,
-                          ),
-                        ),
-                      ),
-                      Icon(
-                        Icons.search,
-                        color: Color(0xFF979797),
-                        size: 20,
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ],
+            ),
+            filled: true,
+            fillColor: Colors.white,
+            contentPadding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+            suffixIcon: Icon(
+              Icons.search,
+              color: Color(0xFF979797),
+            ),
           ),
-        )
-      ],
+          onChanged: (value) {
+            // Lógica de filtragem de atendimentos
+          },
+        ),
+      ),
     );
   }
 }
