@@ -10,7 +10,6 @@ import '../../../components/globais/menu-inferior.dart';
 import '../pendente/tela-atend-pendente.dart';
 import '../cadastro/tela-atendimento-forms.dart';
 
-
 class HistoricoAtendimento extends StatefulWidget {
   @override
   _HistoricoAtendimentoState createState() => _HistoricoAtendimentoState();
@@ -32,6 +31,8 @@ class _HistoricoAtendimentoState extends State<HistoricoAtendimento> {
 
   @override
   Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
+
     return Scaffold(
       appBar: null,
       body: RefreshIndicator(
@@ -40,7 +41,7 @@ class _HistoricoAtendimentoState extends State<HistoricoAtendimento> {
         },
         child: CustomScrollView(
           slivers: <Widget>[
-            SliverAppBar( 
+            SliverAppBar(
               automaticallyImplyLeading: false,
               floating: true,
               pinned: true,
@@ -131,60 +132,62 @@ class _HistoricoAtendimentoState extends State<HistoricoAtendimento> {
                   SizedBox(height: 25),
 
                   // Lista de Cards de Atendimento
-                    Center(
-                      child: Container(
-                        width: 330,
-                        child: FutureBuilder(
-                          future: atendimentoController.listAtendimento(),
-                          builder: (context, snapshot) {
-                            switch (snapshot.connectionState) {
-                              case ConnectionState.none:
-                              case ConnectionState.waiting:
+                  Center(
+                    child: Container(
+                      width: screenWidth * 0.9,
+                      child: FutureBuilder(
+                        future: atendimentoController.listAtendimento(),
+                        builder: (context, snapshot) {
+                          switch (snapshot.connectionState) {
+                            case ConnectionState.none:
+                            case ConnectionState.waiting:
+                              return Center(
+                                child: CircularProgressIndicator(),
+                              );
+                            case ConnectionState.done:
+                              if (snapshot.hasError) {
                                 return Center(
-                                  child: CircularProgressIndicator(),
+                                  child: Text('Erro ao carregar atendimentos'),
                                 );
-                              case ConnectionState.done:
-                                if (snapshot.hasError) {
-                                  return Center(
-                                    child: Text('Erro ao carregar atendimentos'),
-                                  );
-                                } else {
-                                  // Filtrar os atendimentos pendentes
-                                  var pendentes = atendimentoController.listAtendimentoObs
-                                      .where((atendimento) => atendimento.pendente == true)
-                                      .toList();
+                              } else {
+                                // Filtrar os atendimentos pendentes
+                                var pendentes = atendimentoController.listAtendimentoObs
+                                    .where((atendimento) => atendimento.pendente == true)
+                                    .toList();
 
-                                  return ListView.builder(
-                                    shrinkWrap: true,
-                                    physics: NeverScrollableScrollPhysics(),
-                                    itemCount: pendentes.length,
-                                    itemBuilder: (context, index) {
-                                      AtendimentosModel atendimento = pendentes[index];
-                                      return AtendimentoCard(atendimento: atendimento);
-                                    },
-                                  );
-                                }
-                              default:
-                                return SizedBox();
-                            }
-                          },
-                        ),
+                                return ListView.builder(
+                                  shrinkWrap: true,
+                                  physics: NeverScrollableScrollPhysics(),
+                                  itemCount: pendentes.length,
+                                  itemBuilder: (context, index) {
+                                    AtendimentosModel atendimento = pendentes[index];
+                                    return Padding(
+                                      padding: const EdgeInsets.symmetric(vertical: 8.0),
+                                      child: AtendimentoCard(atendimento: atendimento),
+                                    );
+                                  },
+                                );
+                              }
+                            default:
+                              return SizedBox();
+                          }
+                        },
                       ),
                     ),
+                  ),
                   // Fim da Lista de Cards
-                  
-                    SizedBox(height: 25),
-                  ],
-                ),
+                  SizedBox(height: 25),
+                ],
               ),
-            ],
-          ),
+            ),
+          ],
         ),
-        bottomNavigationBar: MenuInferior(),
-      );
-    }
+      ),
+      bottomNavigationBar: MenuInferior(),
+    );
+  }
 
-    Widget buildMenuButton(String text, String imagePath, Widget destination) {
+  Widget buildMenuButton(String text, String imagePath, Widget destination) {
     return Ink(
       decoration: ShapeDecoration(
         color: Color(0xffffffff),

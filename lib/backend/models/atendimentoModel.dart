@@ -53,6 +53,10 @@ class AtendimentosModel {
     );
   }
 
+  get descricao => null;
+
+  get local => null;
+
   set imagemUrls(List<String> imagemUrls) {}
 
   Map<String, dynamic> toJson() => {
