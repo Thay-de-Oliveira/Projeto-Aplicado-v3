@@ -53,6 +53,8 @@ class AtendimentosModel {
     );
   }
 
+  set imagemUrls(List<String> imagemUrls) {}
+
   Map<String, dynamic> toJson() => {
     '_id': id,
     'n_protocolo': n_protocolo,
