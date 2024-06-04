@@ -6,6 +6,7 @@ import 'package:projetoaplicado/backend/models/atendimentoModel.dart';
 
 import '../../../components/globais/barra-superior.dart';
 import '../../../components/globais/menu-inferior.dart';
+import '../../../components/globais/barra-pesquisa-e-filtro.dart';
 
 import '../pendente/tela-atend-pendente.dart';
 import '../cadastro/tela-atendimento-forms.dart';
@@ -27,6 +28,10 @@ class _HistoricoAtendimentoState extends State<HistoricoAtendimento> {
   Future<void> _loadAtendimentos() async {
     await atendimentoController.listAtendimento();
     atendimentoController.listAtendimentoObs;
+  }
+
+  void _onSearch(String query) {
+    // Lógica de filtragem de atendimentos com base na query
   }
 
   @override
@@ -125,8 +130,10 @@ class _HistoricoAtendimentoState extends State<HistoricoAtendimento> {
                       ),
                     ],
                   ),
+
+                  // Barra de pesquisa
                   SizedBox(height: 25),
-                  buildSearchBar(),
+                  SearchFilterBar(onSearch: _onSearch),
                   SizedBox(height: 25),
 
                   // Lista de Cards de Atendimento
@@ -231,40 +238,5 @@ class _HistoricoAtendimentoState extends State<HistoricoAtendimento> {
     );
   }
 
-  Widget buildSearchBar() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20.0),
-      child: Container(
-        height: 32,
-        child: TextField(
-          decoration: InputDecoration(
-            hintText: 'Pesquisar',
-            hintStyle: TextStyle(
-              color: Color(0xFF979797),
-              fontSize: 14,
-              fontFamily: 'Roboto',
-              fontWeight: FontWeight.w400,
-            ),
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(8),
-              borderSide: BorderSide(
-                color: Colors.white,
-                width: 1,
-              ),
-            ),
-            filled: true,
-            fillColor: Colors.white,
-            contentPadding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
-            suffixIcon: Icon(
-              Icons.search,
-              color: Color(0xFF979797),
-            ),
-          ),
-          onChanged: (value) {
-            // Lógica de filtragem de atendimentos
-          },
-        ),
-      ),
-    );
-  }
+  
 }

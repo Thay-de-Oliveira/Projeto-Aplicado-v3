@@ -7,8 +7,11 @@ import 'package:get/get.dart';
 import 'package:projetoaplicado/app/components/acontecimento/acontecimento-card.dart';
 import 'package:projetoaplicado/backend/controllers/acontecimentoController.dart';
 import 'package:projetoaplicado/backend/models/acontecimentoModel.dart';
+
 import '../../../components/globais/barra-superior.dart';
 import '../../../components/globais/menu-inferior.dart';
+import '../../../components/globais/barra-pesquisa-e-filtro.dart';
+
 import '../historico/tela-atend-historico.dart';
 import '../cadastro/tela-atendimento-forms.dart';
 
@@ -30,6 +33,10 @@ Future<void> _loadAcontecimentos() async {
   await acontecimentoController.listAcontecimento();
   acontecimentoController.listAcontecimentoObs;
 }
+
+void _onSearch(String query) {
+    // Lógica de filtragem de atendimentos com base na query
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -227,8 +234,10 @@ Future<void> _loadAcontecimentos() async {
                       ),
                     ],
                   ),
+
+                  // Barra de pesquisa
                   SizedBox(height: 25),
-                  buildSearchBar(),
+                  SearchFilterBar(onSearch: _onSearch),
                   SizedBox(height: 25),
 
                   // Lista de Cards de Atendimento
@@ -358,44 +367,6 @@ Future<void> _loadAcontecimentos() async {
                         offset: Offset(1, 3),
                         spreadRadius: 0,
                       )
-                    ],
-                  ),
-                ),
-              ),
-              Positioned(
-                left: 227,
-                top: 8,
-                child: Container(
-                  width: 15.37,
-                  height: 16,
-                  child: Stack(children: []),
-                ),
-              ),
-              Positioned(
-                left: 14,
-                top: 0,
-                child: Container(
-                  height: 32,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Padding(
-                        padding: EdgeInsets.only(right: 220.0),
-                        child: Text(
-                          'Pesquisar',
-                          style: TextStyle(
-                            color: Color(0xFF979797),
-                            fontSize: 14,
-                            fontFamily: 'Roboto',
-                            fontWeight: FontWeight.w400,
-                          ),
-                        ),
-                      ),
-                      Icon(
-                        Icons.search,
-                        color: Color(0xFF979797),
-                        size: 20,
-                      ),
                     ],
                   ),
                 ),

@@ -33,18 +33,14 @@ class SearchFilterBar extends StatelessWidget {
             filled: true,
             fillColor: Colors.white,
             contentPadding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
-            suffixIcon: IconButton(
-              icon: Icon(
-                Icons.search,
-                color: Color(0xFF979797),
-              ),
-              onPressed: () {
-                onSearch(searchController.text);
-              },
+            suffixIcon: Icon(
+              Icons.search,
+              color: Color(0xFF979797),
             ),
           ),
           onChanged: (value) {
-            // Lógica de filtragem pode ser adicionada aqui, se necessário.
+            // Lógica de filtragem de atendimentos
+            onSearch(value);
           },
         ),
       ),
