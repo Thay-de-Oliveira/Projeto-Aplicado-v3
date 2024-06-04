@@ -48,7 +48,7 @@ class _HomeState extends State<Home> {
                   appState,
                   'acontecimentos',
                 ),
-                SizedBox(height: 15),
+                SizedBox(height: 25),
                 buildMenuCard(
                   context,
                   'Atendimentos',
@@ -58,7 +58,7 @@ class _HomeState extends State<Home> {
                   appState,
                   'atendimento',
                 ),
-                SizedBox(height: 15),
+                SizedBox(height: 25),
                 buildMenuCard(
                   context,
                   'Cadastro de Cidadão',
@@ -68,7 +68,7 @@ class _HomeState extends State<Home> {
                   appState,
                   'cadastro_cidadao',
                 ),
-                SizedBox(height: 15),
+                SizedBox(height: 25),
                 buildMenuCard(
                   context,
                   'Relatórios',

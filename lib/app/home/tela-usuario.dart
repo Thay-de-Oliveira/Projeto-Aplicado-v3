@@ -1,17 +1,16 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../components/globais/barra-superior.dart';
 import '../components/globais/menu-inferior.dart';
 import '../login/tela-login.dart';
-import 'tela-inicio.dart';
-import '../tela-mapa.dart';
 
 class Perfil extends StatefulWidget {
-  State<Perfil> createState() => _PerfilState(); //Função
+  State<Perfil> createState() => _PerfilState(); // Função
 }
 
 class _PerfilState extends State<Perfil> {
+  bool notificationsEnabled = true; // Estado inicial das notificações
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -19,268 +18,233 @@ class _PerfilState extends State<Perfil> {
       backgroundColor: Colors.grey[200], // Cor de fundo cinza claro
       body: Stack(
         children: <Widget>[
-          SingleChildScrollView(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                SizedBox(
-                  height:
-                  80, // Define o espaço de 20 pixels abaixo do Container
-                ),
-                Center(
-                  child: Container(
-                    margin: EdgeInsets.all(20),
-                    width: 320,
-                    height: 335,
-                    child: Stack(
-                      children: [
-                        Positioned(
-                          left: 23,
-                          top: 117,
-                          child: Container(width: 40, height: 40),
-                        ),
-                        Positioned(
-                          left: 0,
-                          top: 0,
-                          child: Container(
-                            width: 320,
-                            height: 363,
-                            decoration: ShapeDecoration(
-                              color: Colors.white,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              shadows: [
-                                BoxShadow(
-                                  color: Color(0x3F000000),
-                                  blurRadius: 4,
-                                  offset: Offset(0, 4),
-                                  spreadRadius: 0,
-                                )
-                              ],
-                            ),
-                          ),
-                        ),
-                        Positioned(
-                          left: 103,
-                          top: 24,
-                          child: Text(
-                            'Paulo da Silva',
-                            style: TextStyle(
-                              color: Color(0xFF999999),
-                              fontSize: 18,
-                              fontFamily: 'Roboto',
-                              fontWeight: FontWeight.w500,
-                              height: 0,
-                            ),
-                          ),
-                        ),
-                        Positioned(
-                          left: 25,
-                          top: 112,
-                          child: Text(
-                            'Celular: (49) 98800-9704',
-                            style: TextStyle(
-                              color: Color(0xFF999999),
-                              fontSize: 15,
-                              fontFamily: 'Roboto',
-                              fontWeight: FontWeight.w500,
-                              height: 0,
-                            ),
-                          ),
-                        ),
-                        Positioned(
-                          left: 25,
-                          top: 141,
-                          child: Text(
-                            'Email: paulodasilva@gmail.com.br',
-                            style: TextStyle(
-                              color: Color(0xFF999999),
-                              fontSize: 15,
-                              fontFamily: 'Roboto',
-                              fontWeight: FontWeight.w500,
-                              height: 0,
-                            ),
-                          ),
-                        ),
-                        Positioned(
-                          left: 25,
-                          top: 170,
-                          child: Text(
-                            'CPF: 981.025.357-03',
-                            style: TextStyle(
-                              color: Color(0xFF999999),
-                              fontSize: 15,
-                              fontFamily: 'Roboto',
-                              fontWeight: FontWeight.w500,
-                              height: 0,
-                            ),
-                          ),
-                        ),
-                        Positioned(
-                          left: 138,
-                          top: 224,
-                          child: Text(
-                            'Cargo:',
-                            style: TextStyle(
-                              color: Color(0xFF999999),
-                              fontSize: 15,
-                              fontFamily: 'Roboto',
-                              fontWeight: FontWeight.w500,
-                              height: 0,
-                            ),
-                          ),
-                        ),
-                        Positioned(
-                          left: 17,
-                          top: 255,
-                          child: SizedBox(
-                            width: 550,
-                            height: 300,
-                            child: Text(
-                              'Agente de campo da área oeste de SC',
-                              textAlign: TextAlign.justify,
-                              style: TextStyle(
-                                color: Color(0xFF999999),
-                                fontSize: 15,
-                                fontFamily: 'Roboto',
-                                fontWeight: FontWeight.w500,
-                                height: 0,
-                              ),
-                            ),
-                          ),
-                        ),
-                        Positioned(
-                          left: 132,
-                          top: 48,
-                          child: Text(
-                            'ID: 1255',
-                            style: TextStyle(
-                              color: Color(0xFF999999),
-                              fontSize: 15,
-                              fontFamily: 'Roboto',
-                              fontWeight: FontWeight.w500,
-                              height: 0,
-                            ),
-                          ),
-                        ),
-                        GestureDetector(
-                          child: Ink(
-                            decoration: ShapeDecoration(
-                              //Estilo
-                              color: Color(0xffffffff),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              shadows: [
-                                //Sombras
-                                BoxShadow(
-                                  color: Color(0x3F000000),
-                                  blurRadius: 2,
-                                  offset: Offset(2, 2),
-                                  spreadRadius: 0,
-                                )
-                              ],
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                //Botão de sair
-                Positioned(
-                  left: 261,
-                  top: 103,
-                  child: Container(
-                    width: 63,
-                    height: 25,
-                    child: Stack(
-                      children: [
-                        Positioned(
-                          left: 0,
-                          top: 0,
-                          child: Container(
-                            width: 63,
-                            height: 25,
-                            decoration: ShapeDecoration(
-                              color: Color(0xFFCFDDF2),
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(4)),
-                            ),
-                          ),
-                        ),
-
-                        InkWell(
-                          onTap: () {
-
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      LoginApp()),
-                            );
-                          },
-                          child: Positioned(
-                            left: 15,
-                            top: 7,
-                            child: Container(
-                              width: 57,
-                              height: 25,
-                              child: Stack(
-                                children: [
-                                  Positioned(
-                                    left: 15,
-                                    top: 8,
-                                    child: SizedBox(
-                                      width: 50,
-                                      height: 25,
-                                      child: Text(
-                                        'Logout',
-                                        style: TextStyle(
-                                          color: Colors.black,
-                                          fontSize: 10,
-                                          fontFamily: 'Roboto',
-                                          fontWeight: FontWeight.bold,
-                                          height: 0,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                  Positioned(
-                                    left: 43,
-                                    top: 0,
-                                    child: Container(
-                                      width: 14,
-                                      height: 14,
-                                      clipBehavior: Clip.antiAlias,
-                                      decoration: ShapeDecoration(
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                          BorderRadius.circular(5),
-                                        ),
-                                      ),
-                                      child: Stack(children: []),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                ),
-
-              ],
-            ),
-          ),
           Positioned(
             left: 0,
             top: 0,
             right: 0,
             child: BarraSuperior(context),
+          ),
+          SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                SizedBox(height: 80),
+                CircleAvatar(
+                  radius: 40,
+                  backgroundColor: Color(0xFFF1F1F1),
+                  child: Icon(Icons.person, color: Color(0xFF696161), size: 60),
+                ),
+                SizedBox(height: 10),
+                Text(
+                  'Paulo da Silva',
+                  style: TextStyle(
+                    color: Color(0xFF696161),
+                    fontSize: 16,
+                    fontFamily: 'Roboto',
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+                Text(
+                  'ID: 1255',
+                  style: TextStyle(
+                    color: Color(0xFF696161),
+                    fontSize: 15,
+                    fontFamily: 'Roboto',
+                    fontWeight: FontWeight.w400,
+                  ),
+                ),
+                SizedBox(height: 20),
+                Center(
+                  child: Container(
+                    margin: EdgeInsets.all(20),
+                    padding: EdgeInsets.all(20),
+                    width: MediaQuery.of(context).size.width * 0.9, // Responsivo
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(10),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Color(0x3F000000),
+                          blurRadius: 4,
+                          offset: Offset(0, 4),
+                        ),
+                      ],
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: [
+                            Icon(Icons.person, color: Color(0xFF1A7CB2)),
+                            SizedBox(width: 8),
+                            Text(
+                              'Dados pessoais',
+                              style: TextStyle(
+                                color: Color(0xFF1A7CB2),
+                                fontSize: 16,
+                                fontFamily: 'Roboto',
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 10),
+                        Text(
+                          'Número de telefone: (49) 98888-8888',
+                          style: TextStyle(
+                            color: Color(0xFF696262),
+                            fontSize: 14,
+                            fontFamily: 'Roboto',
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
+                        SizedBox(height: 5),
+                        Text(
+                          'Email: paulo.silva@defesa.sc.com',
+                          style: TextStyle(
+                            color: Color(0xFF696262),
+                            fontSize: 14,
+                            fontFamily: 'Roboto',
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
+                        SizedBox(height: 5),
+                        Text(
+                          'CPF: 981.025.357-03',
+                          style: TextStyle(
+                            color: Color(0xFF696262),
+                            fontSize: 14,
+                            fontFamily: 'Roboto',
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
+                        SizedBox(height: 5),
+                        Text(
+                          'Cargo: lorem ipsum',
+                          style: TextStyle(
+                            color: Color(0xFF696262),
+                            fontSize: 14,
+                            fontFamily: 'Roboto',
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
+                        SizedBox(height: 5),
+                        Text(
+                          'Cidade de atuação: lorem ipsum',
+                          style: TextStyle(
+                            color: Color(0xFF696262),
+                            fontSize: 14,
+                            fontFamily: 'Roboto',
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
+                        SizedBox(height: 20),
+                        Row(
+                          children: [
+                            Icon(Icons.settings, color: Color(0xFF1A7CB2)),
+                            SizedBox(width: 8),
+                            Text(
+                              'Configuração',
+                              style: TextStyle(
+                                color: Color(0xFF1A7CB2),
+                                fontSize: 16,
+                                fontFamily: 'Roboto',
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 10),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              'Notificações',
+                              style: TextStyle(
+                                color: Color(0xFF696262),
+                                fontSize: 14,
+                                fontFamily: 'Roboto',
+                                fontWeight: FontWeight.w400,
+                              ),
+                            ),
+                            Switch(
+                              value: notificationsEnabled,
+                              onChanged: (value) {
+                                setState(() {
+                                  notificationsEnabled = value;
+                                });
+                              },
+                              activeColor: Color(0xFF1A7CB2), // Cor azul para a alavanca
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 10),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              'Idioma: Português',
+                              style: TextStyle(
+                                color: Color(0xFF696262),
+                                fontSize: 14,
+                                fontFamily: 'Roboto',
+                                fontWeight: FontWeight.w400,
+                              ),
+                            ),
+                            /*Container(
+                              width: 60,
+                              height: 24,
+                              child: TextButton(
+                                style: TextButton.styleFrom(
+                                  foregroundColor: Color(0xFF999999), backgroundColor: Color(0xFFF5F5F5),
+                                  padding: EdgeInsets.zero,
+                                  shape: RoundedRectangleBorder(
+                                    side: BorderSide(
+                                      color: Color(0x443C3C3C),
+                                      width: 0.59,
+                                    ),
+                                  ),
+                                ),
+                                onPressed: () {},
+                                child: Text(
+                                  'alterar',
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    fontSize: 10,
+                                    fontFamily: 'Lato',
+                                    fontWeight: FontWeight.w700,
+                                  ),
+                                ),
+                              ),
+                            ),*/
+                          ],
+                        ),
+                        SizedBox(height: 20),
+                        Align(
+                          alignment: Alignment.centerRight,
+                          child: ElevatedButton.icon(
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) => LoginApp()),
+                              );
+                            },
+                            icon: Icon(Icons.logout, size: 16),
+                            label: Text('Logout'),
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Color(0xFFBBD8F0),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
         ],
       ),
