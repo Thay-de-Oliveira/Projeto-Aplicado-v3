@@ -204,41 +204,41 @@ class _CadastroAppState extends State<CadastroApp> {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           // BOTÃO CADASTRAR
-                          ElevatedButton(
-                            onPressed: () async {
-                              // Verificar se as senhas coincidem antes de cadastrar
-                              if (_senhaController.text == _confirmarSenhaController.text) {
-                                try {
-                                  // Chamar o método de registro do controlador de usuário
-                                  await _userController.registerUser(context, UserModel(
-                                      username: _usernameController.text,
-                                      email: _emailController.text,
-                                      password: _senhaController.text,
-                                    ),
-                                  );
-                                  // Se o registro for bem-sucedido, redirecionar para a tela de início
-                                  appState.atualizarTela('inicio');
-                                } catch (e) {
-                                  // Se houver um erro durante o registro, exibir uma mensagem
-                                  print("Erro ao cadastrar: $e");
-                                  // Aqui você pode exibir uma mensagem de erro para o usuário
-                                }
-                              } else {
-                                // Senhas não coincidem, exibir mensagem ou tratar conforme necessário
-                                print("As senhas não coincidem");
-                                // Aqui você pode exibir uma mensagem para o usuário
-                              }
-                            },
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Color(0xff1d3484),
-                              minimumSize: Size(fieldWidth * 0.5, 40),
-                              padding: EdgeInsets.all(20.0),
-                            ),
-                            child: Text(
-                              'Cadastrar',
-                              style: TextStyle(color: Colors.white, fontSize: 15),
-                            ),
-                          ),
+                          // ElevatedButton(
+                          //   onPressed: () async {
+                          //     // Verificar se as senhas coincidem antes de cadastrar
+                          //     if (_senhaController.text == _confirmarSenhaController.text) {
+                          //       try {
+                          //         // Chamar o método de registro do controlador de usuário
+                          //         await _userController.registerUser(context, UserModel(
+                          //             username: _usernameController.text,
+                          //             email: _emailController.text,
+                          //             password: _senhaController.text,
+                          //           ),
+                          //         );
+                          //         // Se o registro for bem-sucedido, redirecionar para a tela de início
+                          //         appState.atualizarTela('inicio');
+                          //       } catch (e) {
+                          //         // Se houver um erro durante o registro, exibir uma mensagem
+                          //         print("Erro ao cadastrar: $e");
+                          //         // Aqui você pode exibir uma mensagem de erro para o usuário
+                          //       }
+                          //     } else {
+                          //       // Senhas não coincidem, exibir mensagem ou tratar conforme necessário
+                          //       print("As senhas não coincidem");
+                          //       // Aqui você pode exibir uma mensagem para o usuário
+                          //     }
+                          //   },
+                          //   style: ElevatedButton.styleFrom(
+                          //     backgroundColor: Color(0xff1d3484),
+                          //     minimumSize: Size(fieldWidth * 0.5, 40),
+                          //     padding: EdgeInsets.all(20.0),
+                          //   ),
+                          //   child: Text(
+                          //     'Cadastrar',
+                          //     style: TextStyle(color: Colors.white, fontSize: 15),
+                          //   ),
+                          // ),
 
                           SizedBox(height: 30),
 

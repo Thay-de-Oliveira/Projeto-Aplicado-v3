@@ -16,19 +16,19 @@ class CadastroCidadao extends StatefulWidget {
 InputDecoration _customInputDecoration(String labelText) {
   return InputDecoration(
     labelText: labelText,
-    labelStyle: TextStyle(fontSize: 16),
+    labelStyle: const TextStyle(fontSize: 16),
     border: OutlineInputBorder(
       borderRadius: BorderRadius.circular(10.0),
     ),
     enabledBorder: OutlineInputBorder(
-      borderSide: BorderSide(color: Colors.grey),
+      borderSide: const BorderSide(color: Colors.grey),
       borderRadius: BorderRadius.circular(10.0),
     ),
     focusedBorder: OutlineInputBorder(
-      borderSide: BorderSide(color: Colors.blue),
+      borderSide: const BorderSide(color: Colors.blue),
       borderRadius: BorderRadius.circular(10.0),
     ),
-    counter: Offstage(),
+    counter: const Offstage(),
   );
 }
 
@@ -38,6 +38,7 @@ class _CadastroCidadaoState extends State<CadastroCidadao> {
   final TextEditingController rgController = TextEditingController();
   final TextEditingController cepController = TextEditingController();
   final TextEditingController numeroCasaController = TextEditingController();
+  final TextEditingController numPessoasNaCasaController = TextEditingController();
   final TextEditingController bairroController = TextEditingController();
   final TextEditingController ruaController = TextEditingController();
   final TextEditingController cidadeController = TextEditingController();
@@ -52,7 +53,7 @@ class _CadastroCidadaoState extends State<CadastroCidadao> {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(mensagem),
-        duration: Duration(seconds: 3),
+        duration: const Duration(seconds: 3),
       ),
     );
   }
@@ -130,7 +131,8 @@ class _CadastroCidadaoState extends State<CadastroCidadao> {
         bairroController.text.isEmpty ||
         ruaController.text.isEmpty ||
         cidadeController.text.isEmpty ||
-        estadoController.text.isEmpty) {
+        estadoController.text.isEmpty ||
+        numPessoasNaCasaController.text.isEmpty) {
       _exibirMensagem('Por favor, preencha todos os campos.');
       return;
     }
@@ -155,6 +157,7 @@ class _CadastroCidadaoState extends State<CadastroCidadao> {
         cidade: cidadeController.text,
         estado: estadoController.text,
         numeroCasa: int.tryParse(numeroCasaController.text) ?? 0,
+        numPessoasNaCasa: int.tryParse(numeroCasaController.text) ?? 0,
       );
 
       var response = await CidadaoController.cidadaoController.post(novoCidadao);
@@ -163,7 +166,7 @@ class _CadastroCidadaoState extends State<CadastroCidadao> {
         _exibirMensagem('Cidadão cadastrado com sucesso!');
         Navigator.of(context).pushReplacement(
           MaterialPageRoute(
-            builder: (context) => Home(title: ''),
+            builder: (context) => const Home(title: ''),
           ),
         );
       } else {
@@ -188,11 +191,11 @@ class _CadastroCidadaoState extends State<CadastroCidadao> {
         GestureDetector(
           child: Ink(
             decoration: ShapeDecoration(
-              color: isCadastro ? Color(0xFFBBD8F0) : Colors.white,
+              color: isCadastro ? const Color(0xFFBBD8F0) : Colors.white,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(10),
               ),
-              shadows: [
+              shadows: const [
                 BoxShadow(
                   color: Color(0x3F000000),
                   blurRadius: 2,
@@ -203,12 +206,6 @@ class _CadastroCidadaoState extends State<CadastroCidadao> {
             ),
             child: InkWell(
               onTap: () {
-                if (!isCadastro) {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => CadastroCidadao()));
-                }
               },
               child: Container(
                 width: 90,
@@ -221,8 +218,8 @@ class _CadastroCidadaoState extends State<CadastroCidadao> {
                       height: 30,
                       child: Image.asset('assets/imagens/icon-cadastro.png'),
                     ),
-                    SizedBox(height: 5.0),
-                    Text(
+                    const SizedBox(height: 5.0),
+                    const Text(
                       'Cadastro',
                       style: TextStyle(
                         fontSize: 16,
@@ -238,11 +235,11 @@ class _CadastroCidadaoState extends State<CadastroCidadao> {
         GestureDetector(
           child: Ink(
             decoration: ShapeDecoration(
-              color: !isCadastro ? Color(0xFFBBD8F0) : Colors.white,
+              color: !isCadastro ? const Color(0xFFBBD8F0) : Colors.white,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(10),
               ),
-              shadows: [
+              shadows: const [
                 BoxShadow(
                   color: Color(0x3F000000),
                   blurRadius: 2,
@@ -271,8 +268,8 @@ class _CadastroCidadaoState extends State<CadastroCidadao> {
                       height: 30,
                       child: Image.asset('assets/imagens/icon-historico.png'),
                     ),
-                    SizedBox(height: 5.0),
-                    Text(
+                    const SizedBox(height: 5.0),
+                    const Text(
                       'Histórico',
                       style: TextStyle(
                         fontSize: 16,
@@ -329,9 +326,9 @@ class _CadastroCidadaoState extends State<CadastroCidadao> {
           SliverList(
             delegate: SliverChildListDelegate(
               [
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 buttonBar(), // Substitua a imagem pelo menu
-                SizedBox(height: 10),
+                const SizedBox(height: 10),
                 Center(
                   child: Padding(
                     padding: const EdgeInsets.all(20.0),
@@ -342,7 +339,7 @@ class _CadastroCidadaoState extends State<CadastroCidadao> {
                           controller: nomeController,
                           decoration: _customInputDecoration('Nome completo:'),
                         ),
-                        SizedBox(height: 30),
+                        const SizedBox(height: 30),
                         Row(
                           children: [
                             Expanded(
@@ -365,7 +362,7 @@ class _CadastroCidadaoState extends State<CadastroCidadao> {
                                     bottom: 10,
                                     child: Text(
                                       '${cpfController.text.length}/11',
-                                      style: TextStyle(
+                                      style: const TextStyle(
                                         fontSize: 12,
                                         color: Colors.grey,
                                       ),
@@ -376,7 +373,7 @@ class _CadastroCidadaoState extends State<CadastroCidadao> {
                             ),
                           ],
                         ),
-                        SizedBox(height: 30),
+                        const SizedBox(height: 30),
                         TextFormField(
                           controller: rgController,
                           decoration: _customInputDecoration('Registro Geral (RG):').copyWith(
@@ -385,7 +382,7 @@ class _CadastroCidadaoState extends State<CadastroCidadao> {
                           keyboardType: TextInputType.number,
                           maxLength: 7,
                         ),
-                        SizedBox(height: 30),
+                        const SizedBox(height: 30),
                         Row(
                           children: [
                             Expanded(
@@ -414,7 +411,7 @@ class _CadastroCidadaoState extends State<CadastroCidadao> {
                                     bottom: 10,
                                     child: Text(
                                       '${cepController.text.length}/8',
-                                      style: TextStyle(
+                                      style: const TextStyle(
                                         fontSize: 12,
                                         color: Colors.grey,
                                       ),
@@ -423,7 +420,7 @@ class _CadastroCidadaoState extends State<CadastroCidadao> {
                                 ],
                               ),
                             ),
-                            SizedBox(width: 10),
+                            const SizedBox(width: 10),
                             Expanded(
                               child: TextFormField(
                                 controller: numeroCasaController,
@@ -432,27 +429,27 @@ class _CadastroCidadaoState extends State<CadastroCidadao> {
                             ),
                           ],
                         ),
-                        SizedBox(height: 30),
+                        const SizedBox(height: 30),
                         TextFormField(
                           controller: bairroController,
                           decoration: _customInputDecoration('Bairro:'),
                         ),
-                        SizedBox(height: 30),
+                        const SizedBox(height: 30),
                         TextFormField(
                           controller: ruaController,
                           decoration: _customInputDecoration('Rua:'),
                         ),
-                        SizedBox(height: 30),
+                        const SizedBox(height: 30),
                         TextFormField(
                           controller: cidadeController,
                           decoration: _customInputDecoration('Cidade:'),
                         ),
-                        SizedBox(height: 30),
+                        const SizedBox(height: 30),
                         TextFormField(
                           controller: estadoController,
                           decoration: _customInputDecoration('Estado:'),
                         ),
-                        SizedBox(height: 20),
+                        const SizedBox(height: 20),
                         Align(
                           alignment: Alignment.centerRight,
                           child: Row(
@@ -465,14 +462,14 @@ class _CadastroCidadaoState extends State<CadastroCidadao> {
                                         await salvarCidadao();
                                       },
                                 style: ElevatedButton.styleFrom(
-                                  backgroundColor: Color(0xFF30BD4F),
+                                  backgroundColor: const Color(0xFF30BD4F),
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(5),
                                   ),
                                 ),
                                 child: Text(
                                   _isSaving ? 'Salvando...' : 'Salvar',
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                     color: Colors.white,
                                     fontSize: 16,
                                     fontFamily: 'Roboto',
@@ -481,22 +478,22 @@ class _CadastroCidadaoState extends State<CadastroCidadao> {
                                   ),
                                 ),
                               ),
-                              SizedBox(width: 10),
+                              const SizedBox(width: 10),
                               TextButton(
                                 onPressed: () {
                                   Navigator.of(context).pushReplacement(
                                     MaterialPageRoute(
-                                      builder: (context) => Home(title: ''),
+                                      builder: (context) => const Home(title: ''),
                                     ),
                                   );
                                 },
                                 style: TextButton.styleFrom(
-                                  backgroundColor: Color(0xFFEC6F64),
+                                  backgroundColor: const Color(0xFFEC6F64),
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(5),
                                   ),
                                 ),
-                                child: Text(
+                                child: const Text(
                                   'Cancelar',
                                   style: TextStyle(
                                     color: Colors.white,

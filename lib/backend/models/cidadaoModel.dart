@@ -9,6 +9,7 @@ class CidadaoModel {
   final String cidade;
   final String estado;
   final int numeroCasa;
+  final int numPessoasNaCasa;
 
   CidadaoModel({
     this.id,
@@ -21,6 +22,7 @@ class CidadaoModel {
     required this.cidade,
     required this.estado,
     required this.numeroCasa,
+    required this.numPessoasNaCasa,
   });
 
   factory CidadaoModel.fromJson(Map<String, dynamic> json) {
@@ -35,6 +37,7 @@ class CidadaoModel {
       cidade: json['cidade'],
       estado: json['estado'],
       numeroCasa: json['numeroCasa'],
+      numPessoasNaCasa: json['numPessoasNaCasa'],
     );
   }
 
@@ -49,5 +52,6 @@ class CidadaoModel {
     'cidade': cidade,
     'estado': estado,
     'numeroCasa': numeroCasa,
+    'numPessoasNaCasa': numPessoasNaCasa,
   };
 }

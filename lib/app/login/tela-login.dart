@@ -31,7 +31,7 @@ class _LoginAppState extends State<LoginApp> {
                   children: [
                     //LOGO
                     Container(
-                      margin: EdgeInsets.only(bottom: 30.0), // Espaçamento abaixo da imagem
+                      margin: const EdgeInsets.only(bottom: 30.0), // Espaçamento abaixo da imagem
                       child: Image.asset('assets/imagens/logo.png', width: fieldWidth * 0.7),
                     ),
 
@@ -39,12 +39,12 @@ class _LoginAppState extends State<LoginApp> {
                     Container(
                       alignment: Alignment.centerLeft, // Alinha o texto com o início do campo
                       width: fieldWidth,
-                      child: Text(
+                      child: const Text(
                         'Email',
                         style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
                       ),
                     ),
-                    SizedBox(height: 5), //Espaçamento entre o texto e o campo
+                    const SizedBox(height: 5), //Espaçamento entre o texto e o campo
 
                     //CAMPO USUÁRIO
                     Container(
@@ -53,10 +53,10 @@ class _LoginAppState extends State<LoginApp> {
                       decoration: ShapeDecoration(
                         color: Colors.white,
                         shape: RoundedRectangleBorder(
-                          side: BorderSide(width: 0.70, color: Color(0xFF091B4A)),
+                          side: const BorderSide(width: 0.70, color: Color(0xFF091B4A)),
                           borderRadius: BorderRadius.circular(5),
                         ),
-                        shadows: [
+                        shadows: const [
                           BoxShadow(
                             color: Color(0x3F000000),
                             blurRadius: 4,
@@ -67,24 +67,24 @@ class _LoginAppState extends State<LoginApp> {
                       ),
                       child: TextField(
                         controller: _usernameController,
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                           border: InputBorder.none,
                           contentPadding: EdgeInsets.all(10.0),
                         ),
                       ),
                     ),
-                    SizedBox(height: 35),
+                    const SizedBox(height: 35),
 
                     //Texto "SENHA"
                     Container(
                       alignment: Alignment.centerLeft, // Alinha o texto com o início do campo
                       width: fieldWidth,
-                      child: Text(
+                      child: const Text(
                         'Senha',
                         style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
                       ),
                     ),
-                    SizedBox(height: 5), //Espaçamento entre o texto e o campo
+                    const SizedBox(height: 5), //Espaçamento entre o texto e o campo
 
                     //CAMPO SENHA
                     Container(
@@ -93,10 +93,10 @@ class _LoginAppState extends State<LoginApp> {
                       decoration: ShapeDecoration(
                         color: Colors.white,
                         shape: RoundedRectangleBorder(
-                          side: BorderSide(width: 0.70, color: Color(0xFF091B4A)),
+                          side: const BorderSide(width: 0.70, color: Color(0xFF091B4A)),
                           borderRadius: BorderRadius.circular(5),
                         ),
-                        shadows: [
+                        shadows: const [
                           BoxShadow(
                             color: Color(0x3F000000),
                             blurRadius: 4,
@@ -108,7 +108,7 @@ class _LoginAppState extends State<LoginApp> {
                       child: TextField(
                         controller: _passwordController,
                         obscureText: true,
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                           border: InputBorder.none,
                           contentPadding: EdgeInsets.all(10.0),
                         ),
@@ -116,18 +116,18 @@ class _LoginAppState extends State<LoginApp> {
                     ),
 
                     //TEXTO "ESQUECI MINHA SENHA"
-                    SizedBox(height: 30), // Espaço entre os campos e o link "Esqueci minha senha"
+                    const SizedBox(height: 30), // Espaço entre os campos e o link "Esqueci minha senha"
                     TextButton(
                       onPressed: () {
                         print('Esqueci minha senha');
                       },
-                      child: Text(
+                      child: const Text(
                         'Esqueci minha senha',
                         style: TextStyle(color: Colors.white),
                       ),
                     ),
 
-                    SizedBox(height: 5),
+                    const SizedBox(height: 5),
 
                     Container(
                       padding: EdgeInsets.all(padding),
@@ -138,35 +138,45 @@ class _LoginAppState extends State<LoginApp> {
                           //BOTÃO LOGIN
                           ElevatedButton(
                             onPressed: () async {
-                              await _userController.loginUser(
-                                context,
+                              String loginMessage = await _userController.loginUser(
                                 _usernameController.text,
                                 _passwordController.text,
                               );
+
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text(loginMessage),
+                                  duration: Duration(seconds: 3),
+                                )
+                              );
+
+                              if (loginMessage == "Login bem sucedido!") {
+                                Navigator.of(context).pushReplacementNamed('/tela-inicio');
+                              }
                             },
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: Color(0xff1d3484),
+                              backgroundColor: const Color(0xff1d3484),
                               minimumSize: Size(fieldWidth * 0.5, 40),
-                              padding: EdgeInsets.all(20.0),
+                              padding: const EdgeInsets.all(20.0),
                             ),
-                            child: Text(
+                            child: const Text(
                               'Login',
                               style: TextStyle(color: Colors.white, fontSize: 15),
                             ),
                           ),
 
-                          SizedBox(height: 30), // Espaço entre os botões
+                          const SizedBox(height: 30), // Espaço entre os botões
 
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             mainAxisSize: MainAxisSize.max,
                             children: [
-                              Text(
+                              const Text(
                                 "Não possui uma conta?",
                                 style: TextStyle(color: Color(0xffffffff)),
                               ),
                               TextButton(
-                                child: Text(
+                                child: const Text(
                                   "Cadastre-se",
                                   style: TextStyle(
                                     color: Color(0xff1d3484),

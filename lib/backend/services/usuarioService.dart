@@ -5,30 +5,7 @@ import 'package:projetoaplicado/backend/models/usuarioModel.dart';
 class UserService {
   String baseUrl = "https://web-production-0b75.up.railway.app/auth";
 
-  Future<void> registerUser(UserModel user) async {
-    final response = await http.post(
-      Uri.parse('$baseUrl/register'),
-      body: json.encode({
-        'username': user.username,
-        'email': user.email,
-        'password': user.password,
-      }),
-      headers: {
-        "Accept": "*/*",
-        "Accept-Encoding": "gzip, deflate, br",
-        "content-type": "application/json",
-      },
-    );
-
-    if (response.statusCode == 201) {
-      print("Usuário registrado com sucesso");
-    } else {
-      print("Falha ao registrar usuário: ${response.statusCode}");
-      throw Exception('Falha ao registrar usuário');
-    }
-  }
-
-  Future<bool> loginUser(String email, String password) async {
+  Future<UserModel?> loginUser(String email, String password) async {
     final response = await http.post(
       Uri.parse('$baseUrl/login'),
       body: json.encode({
@@ -42,9 +19,10 @@ class UserService {
     );
 
     if (response.statusCode == 200) {
-      return true; // Login bem-sucedido
+      var data = json.decode(response.body);
+      return UserModel.fromJson(data['user']);
     } else {
-      return false; // Login falhou
+      return null;
     }
   }
 }
