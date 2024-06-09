@@ -43,7 +43,7 @@ class _CadastroCidadaoState extends State<CadastroCidadao> {
   final TextEditingController ruaController = TextEditingController();
   final TextEditingController cidadeController = TextEditingController();
   final TextEditingController estadoController = TextEditingController();
-  final TextEditingController enderecoController = TextEditingController();
+  final TextEditingController telefoneController = TextEditingController();
   final CepController cepControllerInstance = CepController();
 
   bool _isSaving = false;
@@ -132,7 +132,8 @@ class _CadastroCidadaoState extends State<CadastroCidadao> {
         ruaController.text.isEmpty ||
         cidadeController.text.isEmpty ||
         estadoController.text.isEmpty ||
-        numPessoasNaCasaController.text.isEmpty) {
+        numPessoasNaCasaController.text.isEmpty ||
+        telefoneController.text.isEmpty) {
       _exibirMensagem('Por favor, preencha todos os campos.');
       return;
     }
@@ -157,7 +158,8 @@ class _CadastroCidadaoState extends State<CadastroCidadao> {
         cidade: cidadeController.text,
         estado: estadoController.text,
         numeroCasa: int.tryParse(numeroCasaController.text) ?? 0,
-        numPessoasNaCasa: int.tryParse(numeroCasaController.text) ?? 0,
+        numPessoasNaCasa: int.tryParse(numPessoasNaCasaController.text) ?? 0,
+        telefone: telefoneController.text,
       );
 
       var response = await CidadaoController.cidadaoController.post(novoCidadao);
@@ -448,6 +450,21 @@ class _CadastroCidadaoState extends State<CadastroCidadao> {
                         TextFormField(
                           controller: estadoController,
                           decoration: _customInputDecoration('Estado:'),
+                        ),
+                        const SizedBox(height: 30),
+                        TextFormField(
+                          controller: telefoneController,
+                          decoration: _customInputDecoration('Telefone:'),
+                          keyboardType: TextInputType.phone,
+                        ),
+                        const SizedBox(height: 30),
+                        TextFormField(
+                          controller: numPessoasNaCasaController,
+                          decoration: _customInputDecoration('Número de Pessoas na Casa:'),
+                          keyboardType: TextInputType.number,
+                          inputFormatters: [
+                            FilteringTextInputFormatter.digitsOnly,
+                          ],
                         ),
                         const SizedBox(height: 20),
                         Align(

@@ -1,11 +1,15 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:projetoaplicado/app/home/atendimentos/cadastro/foto-camera.dart';
 import 'package:projetoaplicado/app/home/atendimentos/cadastro/foto-upload.dart';
 import 'package:projetoaplicado/app/home/tela-inicio.dart';
 import 'package:projetoaplicado/backend/controllers/acontecimentoController.dart';
 import 'package:projetoaplicado/backend/controllers/atendimentoController.dart';
 import 'package:projetoaplicado/backend/controllers/cidadaoController.dart';
+import 'package:projetoaplicado/backend/controllers/imagensController.dart';
 import 'package:projetoaplicado/backend/models/acontecimentoModel.dart';
 import 'package:projetoaplicado/backend/models/atendimentoModel.dart';
 import 'package:intl/intl.dart';
@@ -35,19 +39,21 @@ class Item {
   Item({required this.name, this.isSelected = false});
 }
 class _AtendimentoFormsState extends State<AtendimentoForms> {
+  late ImagensController _imagensController;
   List<AcontecimentoModel> listAcontecimento = [];
   List<CidadaoModel> suggestions = [];
   List<Item> items = [];
 
   CidadaoService cidadaoService = CidadaoService();
 
-  TextEditingController _cpfResponsavelController = TextEditingController();
-  TextEditingController _nomeResponsavelController = TextEditingController();
-  AcontecimentoController _acontecimentoController = AcontecimentoController();
-  AtendimentoController _atendimentoController = AtendimentoController();
+  final TextEditingController _cpfResponsavelController = TextEditingController();
+  final TextEditingController _nomeResponsavelController = TextEditingController();
+  final AcontecimentoController _acontecimentoController = AcontecimentoController();
+  final AtendimentoController _atendimentoController = AtendimentoController();
   final CidadaoController cidadaoController = CidadaoController.cidadaoController;
-
-  List<String> _uploadedUrls = [];
+  final TextEditingController _dataSolicitacaoController = TextEditingController();
+  final TextEditingController _dataVistoriaController = TextEditingController();
+  final TextEditingController _observacoesController = TextEditingController();
 
   @override
   void initState() {
@@ -69,6 +75,11 @@ class _AtendimentoFormsState extends State<AtendimentoForms> {
       Item(name: 'Reservatórios'),
       Item(name: 'Fraldas'),
     ];
+    _imagensController = ImagensController(onImageAdded: updateUI);
+  }
+
+  void updateUI() {
+    setState(() {});
   }
 
   void _carregarAcontecimentos() async {
@@ -102,8 +113,8 @@ class _AtendimentoFormsState extends State<AtendimentoForms> {
     DateTime? pickedDate = await showDatePicker(
       context: context,
       initialDate: DateTime.now(),
-      firstDate: DateTime(2022),
-      lastDate: DateTime(2025),
+      firstDate: DateTime(2024),
+      lastDate: DateTime(2030),
     );
 
     if (pickedDate != null) {
@@ -113,56 +124,59 @@ class _AtendimentoFormsState extends State<AtendimentoForms> {
   }
 
   Future<void> _salvarAtendimento() async {
-  try {
-    if (_selectedNumeroProtocoloAtendimento == null ||
-        _selectedTipoAtendimento == 'Selecionar atendimento' ||
-        _selectedCanalAtendimento == 'Selecionar canal de atendimento' ||
-        _selectedVistoriaRealizada == 'Selecionar' ||
-        _selectedTipoRealizada == 'Selecionar' ||
-        _dataSolicitacaoController.text.isEmpty ||
-        _dataVistoriaController.text.isEmpty ||
-        _selectedEntregarItens == 'Selecionar') {
-      _exibirMensagem('Por favor, preencha todos os campos obrigatórios.');
-      return;
+    try {
+      if (_selectedNumeroProtocoloAtendimento == null ||
+          _selectedTipoAtendimento == 'Selecionar atendimento' ||
+          _selectedCanalAtendimento == 'Selecionar canal de atendimento' ||
+          _selectedVistoriaRealizada == 'Selecionar' ||
+          _selectedTipoRealizada == 'Selecionar' ||
+          _dataSolicitacaoController.text.isEmpty ||
+          _dataVistoriaController.text.isEmpty ||
+          _selectedEntregarItens == 'Selecionar') {
+        _exibirMensagem('Por favor, preencha todos os campos obrigatórios.');
+        return;
+      }
+
+      AtendimentosModel novoAtendimento = AtendimentosModel(
+        n_protocolo: _selectedNumeroProtocoloAtendimento!,
+        tipoAtendimento: _selectedTipoAtendimento,
+        canalAtendimento: _selectedCanalAtendimento,
+        nomeResponsavel: _cpfResponsavelController.text,
+        vistoriaRealizada: _VistoriaRealizadaController,
+        tipoVistoria: _selectedTipoRealizada,
+        dataSolicitacao: _dataSolicitacaoController.text,
+        dataVistoria: _dataVistoriaController.text,
+        entregueItensAjuda: _selectedEntregarItens == 'Sim' ? true : false,
+        materiaisEntregues: getSelectedItems(),
+        observacoes: _observacoesController.text,
+        pendente: true,
+        imagesUrls: [],  // Este campo é provavelmente obsoleto se você está enviando as imagens como arquivos
+      );
+
+      // Converter os XFiles para Files
+      List<File> imageFiles = _imagensController.imageFiles.map((xFile) => File(xFile.path)).toList();
+
+      var resposta = await _atendimentoController.post(novoAtendimento, imageFiles);
+
+      if (resposta != null && resposta.contains('Atendimento criado com sucesso!')) {
+        _exibirMensagem('Atendimento salvo com sucesso!');
+        var protocoloAtendimentoSalvo = novoAtendimento.n_protocolo;
+        await AcontecimentoController.acontecimentoController.updateAcontecimento(protocoloAtendimentoSalvo, false);
+        _limparCamposFormulario();
+      } else {
+        _exibirMensagem('Erro ao salvar o atendimento. Tente novamente.');
+      }
+    } catch (error) {
+      print(error.toString());
+      _exibirMensagem(error.toString());
     }
-
-    AtendimentosModel novoAtendimento = AtendimentosModel(
-      n_protocolo: _selectedNumeroProtocoloAtendimento!,
-      tipoAtendimento: _selectedTipoAtendimento,
-      canalAtendimento: _selectedCanalAtendimento,
-      nomeResponsavel: _cpfResponsavelController.text,
-      vistoriaRealizada: _VistoriaRealizadaController,
-      tipoVistoria: _selectedTipoRealizada,
-      dataSolicitacao: _dataSolicitacaoController.text,
-      dataVistoria: _dataVistoriaController.text,
-      entregueItensAjuda: _selectedEntregarItens == 'Sim' ? true : false,
-      materiaisEntregues: getSelectedItems(),
-      observacoes: _observacoesController.text,
-      pendente: true,
-      imagesUrls: _uploadedUrls, // Sobe as imagens com URL no servidor Firebase
-    );
-
-    var resposta = await _atendimentoController.post(novoAtendimento);
-
-    if (resposta != null && resposta.contains('Atendimento criado com sucesso!')) {
-      _exibirMensagem('Atendimento salvo com sucesso!');
-      var protocoloAtendimentoSalvo = novoAtendimento.n_protocolo;
-      await AcontecimentoController.acontecimentoController.updateAcontecimento(protocoloAtendimentoSalvo, false);
-      _limparCamposFormulario();
-    } else {
-      _exibirMensagem('Erro ao salvar o atendimento. Tente novamente.');
-    }
-  } catch (error) {
-    print(error.toString());
-    _exibirMensagem(error.toString());
   }
-}
 
   void _exibirMensagem(String mensagem) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(mensagem),
-        duration: Duration(seconds: 3),
+        duration: const Duration(seconds: 3),
       ),
     );
   }
@@ -184,7 +198,6 @@ class _AtendimentoFormsState extends State<AtendimentoForms> {
       for (var item in items) {
         item.isSelected = false;
       }
-      _uploadedUrls.clear(); //Sobe as imagens com URL no servidor Firebase
     });
   }
 
@@ -209,9 +222,6 @@ class _AtendimentoFormsState extends State<AtendimentoForms> {
   bool _VistoriaRealizadaController = false;
   String _selectedTipoRealizada = 'Selecionar';
   String? _selectedEntregarItens = 'Selecionar';
-  TextEditingController _dataSolicitacaoController = TextEditingController();
-  TextEditingController _dataVistoriaController = TextEditingController();
-  TextEditingController _observacoesController = TextEditingController();
 
   //Lista de itens entregues
   bool mostrarItensEntregues = true;
@@ -239,18 +249,77 @@ class _AtendimentoFormsState extends State<AtendimentoForms> {
   InputDecoration _customInputDecoration(String labelText) {
     return InputDecoration(
       labelText: labelText,
-      labelStyle: TextStyle(fontSize: 16), //Tamanho da fonte dos campos
+      labelStyle: const TextStyle(fontSize: 16), //Tamanho da fonte dos campos
       border: OutlineInputBorder(
         borderRadius: BorderRadius.circular(10.0), //Borda arredondada
       ),
       enabledBorder: OutlineInputBorder(
         borderSide:
-            BorderSide(color: Colors.grey), //Cor da borda quando inativo
+            const BorderSide(color: Colors.grey), //Cor da borda quando inativo
         borderRadius: BorderRadius.circular(10.0),
       ),
       focusedBorder: OutlineInputBorder(
-        borderSide: BorderSide(color: Colors.blue), //Cor da borda quando ativo
+        borderSide: const BorderSide(color: Colors.blue), //Cor da borda quando ativo
         borderRadius: BorderRadius.circular(10.0),
+      ),
+    );
+  }
+
+  Widget _buildImagePreviews() {
+    return SizedBox(
+      height: 60,
+      child: ListView.builder(
+        scrollDirection: Axis.horizontal,
+        itemCount: _imagensController.imageFiles.length,
+        itemBuilder: (context, index) {
+          return Stack(
+            alignment: Alignment.topRight,
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(4.0),
+                child: GestureDetector(
+                  onTap: () {
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          content: Image.file(File(_imagensController.imageFiles[index].path)),
+                        );
+                      },
+                    );
+                  },
+                  child: Image.file(
+                    File(_imagensController.imageFiles[index].path),
+                    width: 60,
+                    height: 60,
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ),
+              Positioned(
+                right: 0,
+                child: GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      _imagensController.removeImage(index);
+                    });
+                  },
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.red,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: const Icon(
+                      Icons.close,
+                      size: 16,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          );
+        },
       ),
     );
   }
@@ -272,7 +341,7 @@ class _AtendimentoFormsState extends State<AtendimentoForms> {
           SliverList(
             delegate: SliverChildListDelegate(
               [
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
@@ -281,11 +350,11 @@ class _AtendimentoFormsState extends State<AtendimentoForms> {
                       child: Ink(
                         decoration: ShapeDecoration(
                           //Estilo
-                          color: Color(0xFFBBD8F0),
+                          color: const Color(0xFFBBD8F0),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10),
                           ),
-                          shadows: [
+                          shadows: const [
                             //Sombras
                             BoxShadow(
                               color: Color(0x3F000000),
@@ -315,10 +384,10 @@ class _AtendimentoFormsState extends State<AtendimentoForms> {
                                   child: Image.asset(
                                       'assets/imagens/icon-cadastro.png'),
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                     height:
                                         5.0), //Espaço entre o ícone e o texto
-                                Text(
+                                const Text(
                                   'Cadastro',
                                   style: TextStyle(
                                     fontSize: 16,
@@ -337,11 +406,11 @@ class _AtendimentoFormsState extends State<AtendimentoForms> {
                       child: Ink(
                         decoration: ShapeDecoration(
                           //Estilo
-                          color: Color(0xffffffff),
+                          color: const Color(0xffffffff),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10),
                           ),
-                          shadows: [
+                          shadows: const [
                             //Sombras
                             BoxShadow(
                               color: Color(0x3F000000),
@@ -372,10 +441,10 @@ class _AtendimentoFormsState extends State<AtendimentoForms> {
                                   child: Image.asset(
                                       'assets/imagens/icon-pendente.png'),
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                     height:
                                         5.0), //Espaço entre o ícone e o texto
-                                Text(
+                                const Text(
                                   'Pendente',
                                   style: TextStyle(
                                     fontSize: 16,
@@ -394,11 +463,11 @@ class _AtendimentoFormsState extends State<AtendimentoForms> {
                       child: Ink(
                         decoration: ShapeDecoration(
                           //Estilo
-                          color: Color(0xffffffff),
+                          color: const Color(0xffffffff),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10),
                           ),
-                          shadows: [
+                          shadows: const [
                             //Sombras
                             BoxShadow(
                               color: Color(0x3F000000),
@@ -429,10 +498,10 @@ class _AtendimentoFormsState extends State<AtendimentoForms> {
                                   child: Image.asset(
                                       'assets/imagens/icon-historico.png'),
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                     height:
                                         5.0), //Espaço entre o ícone e o texto
-                                Text(
+                                const Text(
                                   'Histórico',
                                   style: TextStyle(
                                     fontSize: 16,
@@ -447,7 +516,7 @@ class _AtendimentoFormsState extends State<AtendimentoForms> {
                     ),
                   ],
                 ),
-                SizedBox(height: 10),
+                const SizedBox(height: 10),
                 Center(
                   child: Padding(
                     padding: const EdgeInsets.all(20.0),
@@ -471,7 +540,7 @@ class _AtendimentoFormsState extends State<AtendimentoForms> {
                           ),
                         ),
 
-                        SizedBox(height: 30),
+                        const SizedBox(height: 30),
 
                         //Campo "Tipo de atendimento"
                         DropdownButtonFormField<String>(
@@ -489,7 +558,7 @@ class _AtendimentoFormsState extends State<AtendimentoForms> {
                               _customInputDecoration('Tipo de atendimento:'),
                         ),
 
-                        SizedBox(height: 30),
+                        const SizedBox(height: 30),
 
                         //Campo "Canal da solicitação"
                         DropdownButtonFormField<String>(
@@ -507,7 +576,7 @@ class _AtendimentoFormsState extends State<AtendimentoForms> {
                               'Canal da solicitação:'), // Aplicar estilo personalizado
                         ),
 
-                        SizedBox(height: 30),
+                        const SizedBox(height: 30),
 
                         TypeAheadField<CidadaoModel>(
                           controller: _nomeResponsavelController, // Este controller agora só para exibir o nome
@@ -559,7 +628,7 @@ class _AtendimentoFormsState extends State<AtendimentoForms> {
                           },
                         ),
 
-                        SizedBox(height: 30),
+                        const SizedBox(height: 30),
 
                           //Campos lado a lado "Vistoria"
                           Row(
@@ -589,7 +658,7 @@ class _AtendimentoFormsState extends State<AtendimentoForms> {
                                       'Vistoria realizada?'), // Aplicar estilo personalizado
                                 ),
                               ),
-                              SizedBox(width: 16), // Espaçamento entre os campos
+                              const SizedBox(width: 16), // Espaçamento entre os campos
                               Expanded(
                                 child: DropdownButtonFormField<String>(
                                   value: _selectedTipoRealizada,
@@ -611,7 +680,7 @@ class _AtendimentoFormsState extends State<AtendimentoForms> {
                             ],
                           ),
 
-                        SizedBox(height: 30),
+                        const SizedBox(height: 30),
 
                         //Campos lado a lado "Datas"
                         Row(
@@ -627,7 +696,7 @@ class _AtendimentoFormsState extends State<AtendimentoForms> {
                                 ),
                               ),
                             ),
-                            SizedBox(width: 16),
+                            const SizedBox(width: 16),
                             Expanded(
                               child: GestureDetector(
                                 onTap: () => _selectDate(context, _dataVistoriaController),
@@ -642,70 +711,55 @@ class _AtendimentoFormsState extends State<AtendimentoForms> {
                           ],
                         ),
 
-                        SizedBox(height: 20),
+                        const SizedBox(height: 20),
 
-                        //Campo com icones "Registro da vistoria"
-                        TextFormField(
-                          decoration: InputDecoration(
-                            labelText: 'Registro da vistoria',
-                            labelStyle: TextStyle(fontSize: 16),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10.0),
-                            ),
-                            enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: Colors
-                                      .grey), // Cor da borda quando inativo
-                              borderRadius: BorderRadius.circular(10.0),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color:
-                                      Colors.blue), // Cor da borda quando ativo
-                              borderRadius: BorderRadius.circular(10.0),
-                            ),
-                            suffixIcon: Padding(
-                              padding: EdgeInsets.only(right: 16.0),
-                              child: Row(
-                                // Ícones
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  GestureDetector(
-                                    onTap: () {
-                                      Navigator.of(context).push(
-                                        MaterialPageRoute(
-                                          builder: (context) => Camera(),
-                                        ),
-                                      );
-                                    },
-                                    child: Container(
-                                      width: 30,
-                                      height: 30,
-                                      child: Icon(Icons.camera_alt),
-                                    ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            TextFormField(
+                              decoration: InputDecoration(
+                                labelText: 'Registro da vistoria',
+                                labelStyle: const TextStyle(fontSize: 16),
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10.0),
+                                ),
+                                enabledBorder: OutlineInputBorder(
+                                  borderSide: const BorderSide(color: Colors.grey),
+                                  borderRadius: BorderRadius.circular(10.0),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderSide: const BorderSide(color: Colors.blue),
+                                  borderRadius: BorderRadius.circular(10.0),
+                                ),
+                                suffixIcon: Padding(
+                                  padding: const EdgeInsets.only(right: 16.0),
+                                  child: Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      GestureDetector(
+                                        onTap: () => setState(() {
+                                          _imagensController.takePicture();
+                                        }), // Ação de abrir câmera atualizada
+                                        child: const Icon(Icons.camera_alt),
+                                      ),
+                                      const SizedBox(width: 16),
+                                      GestureDetector(
+                                        onTap: () => setState(() {
+                                          _imagensController.pickImage();
+                                        }), // Ação de abrir galeria atualizada
+                                        child: const Icon(Icons.cloud_upload),
+                                      ),
+                                    ],
                                   ),
-                                  SizedBox(width: 16), // Espaçamento entre os ícones
-                                  GestureDetector(
-                                    onTap: () {
-                                      Navigator.of(context).push(
-                                        MaterialPageRoute(
-                                          builder: (context) => Upload(),
-                                        ),
-                                      );
-                                    },
-                                    child: Container(
-                                      width: 30,
-                                      height: 30,
-                                      child: Icon(Icons.cloud_upload),
-                                    ),
-                                  ),
-                                ],
+                                ),
                               ),
                             ),
-                          ),
+                            const SizedBox(height: 8), // Espaço entre o campo e as miniaturas
+                            _imagensController.imageFiles.isEmpty ? Container() : _buildImagePreviews(), // Ajuste para verificar se a lista do controlador está vazia
+                          ],
                         ),
 
-                        SizedBox(height: 30),
+                        const SizedBox(height: 30),
 
                         //Campo "Será entregue itens de assistencia humanitaria"
                         DropdownButtonFormField<String>(
@@ -728,7 +782,7 @@ class _AtendimentoFormsState extends State<AtendimentoForms> {
                           ),
                         ),
 
-                        SizedBox(height: 30),
+                        const SizedBox(height: 30),
 
                         //Campo CHECKLIST "Quais itens foram entregues?"
                         Visibility(
@@ -741,13 +795,13 @@ class _AtendimentoFormsState extends State<AtendimentoForms> {
                               borderRadius: BorderRadius.circular(10.0),
                             ),
                             child: ExpansionTile(
-                              title: Text('Quais itens foram entregues?'),
+                              title: const Text('Quais itens foram entregues?'),
                               children: buildCheckListTiles(),
                             ),
                           ),
                         ),
 
-                        SizedBox(height: 30),
+                        const SizedBox(height: 30),
 
                         //Campo de texto longo "Observações"
                         TextField(
@@ -757,7 +811,7 @@ class _AtendimentoFormsState extends State<AtendimentoForms> {
                           keyboardType: TextInputType.multiline,
                         ),
 
-                        SizedBox(height: 20),
+                        const SizedBox(height: 20),
 
                         Align(
                           // SALVAR + CANCELAR
@@ -777,10 +831,10 @@ class _AtendimentoFormsState extends State<AtendimentoForms> {
                                   width: 65,
                                   height: 28.61,
                                   decoration: BoxDecoration(
-                                    color: Color(0xFF30BD4F),
+                                    color: const Color(0xFF30BD4F),
                                     borderRadius: BorderRadius.circular(5),
                                   ),
-                                  child: Center(
+                                  child: const Center(
                                     child: Text(
                                       'Salvar',
                                       style: TextStyle(
@@ -796,14 +850,14 @@ class _AtendimentoFormsState extends State<AtendimentoForms> {
                                 ),
                               ),
 
-                              SizedBox(width: 16), // Espaçamento entre os botões
+                              const SizedBox(width: 16), // Espaçamento entre os botões
 
                               // Botão "Cancelar"
                               InkWell(
                                 onTap: () {
                                   Navigator.of(context).pushReplacement(
                                     MaterialPageRoute(
-                                      builder: (context) => Home(title: ''),
+                                      builder: (context) => const Home(title: ''),
                                     ),
                                   );
                                 },
@@ -811,10 +865,10 @@ class _AtendimentoFormsState extends State<AtendimentoForms> {
                                   width: 75,
                                   height: 28.61,
                                   decoration: BoxDecoration(
-                                    color: Color(0xFFEC6F64),
+                                    color: const Color(0xFFEC6F64),
                                     borderRadius: BorderRadius.circular(5),
                                   ),
-                                  child: Center(
+                                  child: const Center(
                                     child: Text(
                                       'Cancelar',
                                       style: TextStyle(

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:get/get.dart';
 import 'package:projetoaplicado/backend/models/atendimentoModel.dart';
 import 'package:projetoaplicado/backend/services/atendimentoService.dart';
@@ -26,12 +28,19 @@ class AtendimentoController extends GetxController {
     return response;
   }
 
-  Future<dynamic> post(AtendimentosModel atendimento) async {
+  Future<dynamic> post(AtendimentosModel atendimento, List<File> imageFiles) async {
     isLoading.value = true;
-    var response = await atendimentoService.postAtendimento(atendimento);
-    isLoading.value = false;
-    update();
-    return response;
+    try {
+      var response = await atendimentoService.postAtendimento(atendimento, imageFiles);
+      isLoading.value = false;
+      update();
+      return response;
+    } catch (e) {
+      print('Erro ao enviar o atendimento: $e');
+      isLoading.value = false;
+      update();
+      return null;
+    }
   }
 
   Future<dynamic> deleteAtendimento(String id) async {
@@ -42,33 +51,23 @@ class AtendimentoController extends GetxController {
     return response;
   }
 
-Future<dynamic> editAtendimento(AtendimentosModel atendimento, bool isPendente) async {
-  isLoading.value = true;
+  Future<dynamic> editAtendimento(AtendimentosModel atendimento, bool isPendente) async {
+    isLoading.value = true;
 
-  try {
-    // Atualiza o estado "pendente" no modelo
-    atendimento.pendente = isPendente;
+    try {
+      atendimento.pendente = isPendente;
 
-    // Chama o serviço para editar o atendimento
-    var response = await atendimentoService.editAtendimento(atendimento);
+      var response = await atendimentoService.editAtendimento(atendimento);
 
-    // Verifica a resposta do serviço
-    if (response is AtendimentosModel) {
-      // Atualiza a lista de atendimentos após a edição
       var index = listAtendimentoObs.indexWhere((element) => element.id == atendimento.id);
       if (index != -1) {
         listAtendimentoObs[index] = response;
       }
-    } else {
-      // Trate o erro, se necessário
-      print('Erro durante a edição do atendimento');
+      } catch (e) {
+      print('Erro durante a edição do atendimento: $e');
+    } finally {
+      isLoading.value = false;
+      update();
     }
-  } catch (e) {
-    // Trate o erro, se necessário
-    print('Erro durante a edição do atendimento: $e');
-  } finally {
-    isLoading.value = false;
-    update();
   }
-}
 }

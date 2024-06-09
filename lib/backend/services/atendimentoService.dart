@@ -1,8 +1,10 @@
-
+import 'package:mime/mime.dart';
 import 'dart:convert';
+import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:projetoaplicado/backend/models/atendimentoModel.dart';
-
+import 'package:path/path.dart';
+import 'package:http_parser/http_parser.dart';
 
 class AtendimentoService {
   String baseUrl = "https://web-production-0b75.up.railway.app/atendimentos";
@@ -66,21 +68,38 @@ class AtendimentoService {
     }
   }
 
-  Future<String> postAtendimento(AtendimentosModel atendimento) async {
-    final response = await http.post(
-      Uri.parse('$baseUrl/cria_atendimento'),
-      body: json.encode(atendimento.toJson()),
-      headers: {
-        "Accept": "*/*",
-        "content-type": "application/json",
-      },
-    );
+  Future<String> postAtendimento(AtendimentosModel atendimento, List<File> imageFiles) async {
+    var uri = Uri.parse('$baseUrl/cria_atendimento');
+    var request = http.MultipartRequest('POST', uri);
 
-    if (response.statusCode == 200 || response.statusCode == 201) {
-      String retorno = response.body;
-      return retorno;
-    } else {
-      throw Exception('Falha ao criar atendimento');
+    // Adiciona os campos do formulário
+    Map<String, dynamic> atendimentoData = atendimento.toJson();
+    atendimentoData.forEach((key, value) {
+        request.fields[key] = value.toString();
+    });
+
+    // Adiciona cada arquivo de imagem à requisição
+    for (var file in imageFiles) {
+        var stream = http.ByteStream(file.openRead());
+        var length = await file.length();
+        var mimeType = lookupMimeType(file.path) ?? 'application/octet-stream'; // Garante um fallback
+        var multipartFile = http.MultipartFile('Files', stream, length,
+            filename: basename(file.path),
+            contentType: MediaType.parse(mimeType));
+        request.files.add(multipartFile);
+    }
+
+    try {
+        var response = await request.send();
+        if (response.statusCode == 200 || response.statusCode == 201) {
+            String responseBody = await response.stream.bytesToString();
+            return responseBody;
+        } else {
+            String responseBody = await response.stream.bytesToString();
+            throw Exception('Falha ao criar atendimento: $responseBody');
+        }
+    } catch (e) {
+        throw Exception('Erro ao enviar dados: $e');
     }
   }
 }
