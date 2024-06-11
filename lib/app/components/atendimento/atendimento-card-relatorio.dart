@@ -1,23 +1,31 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:projetoaplicado/app/home/relatorios/atendimento/tela-relatorio-atend-detalhes.dart';
+import 'package:projetoaplicado/backend/controllers/cidadaoController.dart';
 import 'package:projetoaplicado/backend/controllers/relatorioAtendimentoController.dart';
 import 'package:projetoaplicado/backend/models/atendimentoModel.dart';
+import 'package:projetoaplicado/backend/models/cidadaoModel.dart';
 
 class AtendimentoCardRelatorio extends StatelessWidget {
   final AtendimentosModel atendimento;
-  final RelatorioAtendimentoController _relatorioController = RelatorioAtendimentoController();
+  final RelatorioAtendimentoController _relatorioController =
+      RelatorioAtendimentoController();
+  final CidadaoController cidadaoController = Get.put(CidadaoController());
 
-  AtendimentoCardRelatorio({Key? key, required this.atendimento}) : super(key: key);
+  AtendimentoCardRelatorio({Key? key, required this.atendimento})
+      : super(key: key);
 
   Future<void> _visualizarRelatorio(BuildContext context) async {
     try {
       print('Gerando URL do PDF para o protocolo: ${atendimento.n_protocolo}');
-      final pdfUrl = await _relatorioController.gerarRelatorioUrl(atendimento.n_protocolo);
+      final pdfUrl =
+          await _relatorioController.gerarRelatorioUrl(atendimento.n_protocolo);
       final downloadUrl = _transformUrlToDownloadUrl(pdfUrl);
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => DetalhesRelatorioAtendimento(pdfUrl: downloadUrl),
+          builder: (context) =>
+              DetalhesRelatorioAtendimento(pdfUrl: downloadUrl),
         ),
       );
     } catch (e) {
@@ -31,6 +39,11 @@ class AtendimentoCardRelatorio extends StatelessWidget {
   String _transformUrlToDownloadUrl(String viewUrl) {
     final fileId = viewUrl.split('/d/')[1].split('/')[0];
     return 'https://drive.google.com/uc?export=download&id=$fileId';
+  }
+
+  Future<CidadaoModel> _fetchCidadao() async {
+    await cidadaoController.getCidadaoByCpf(atendimento.nomeResponsavel);
+    return cidadaoController.listCidadaoObs.first;
   }
 
   @override
@@ -86,14 +99,33 @@ class AtendimentoCardRelatorio extends StatelessWidget {
               top: 89,
               child: RealizarAtendimentoButton(
                 onTap: () => _visualizarRelatorio(context),
+                text:
+                    atendimento.pdfUrl != null && atendimento.pdfUrl!.isNotEmpty
+                        ? 'Visualizar Relatório'
+                        : 'Gerar Relatório',
               ),
             ),
             Positioned(
               left: 9,
               top: 31,
-              child: DataAcontecimentoInfo(
-                dataAcontecimento: atendimento.dataSolicitacao,
-                nProtocolo: atendimento.n_protocolo,
+              child: FutureBuilder<CidadaoModel>(
+                future: _fetchCidadao(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return CircularProgressIndicator();
+                  } else if (snapshot.hasError) {
+                    return Text("Erro ao carregar endereço");
+                  } else if (!snapshot.hasData) {
+                    return Text("Endereço não encontrado");
+                  } else {
+                    return DataAcontecimentoInfo(
+                      dataAcontecimento: atendimento.dataSolicitacao,
+                      nProtocolo: atendimento.n_protocolo,
+                      endereco:
+                          '${snapshot.data!.bairro}, ${snapshot.data!.cidade} - ${snapshot.data!.estado}',
+                    );
+                  }
+                },
               ),
             ),
           ],
@@ -105,8 +137,11 @@ class AtendimentoCardRelatorio extends StatelessWidget {
 
 class RealizarAtendimentoButton extends StatelessWidget {
   final VoidCallback onTap;
+  final String text;
 
-  const RealizarAtendimentoButton({Key? key, required this.onTap}) : super(key: key);
+  const RealizarAtendimentoButton(
+      {Key? key, required this.onTap, required this.text})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -126,10 +161,10 @@ class RealizarAtendimentoButton extends StatelessWidget {
             color: Colors.transparent,
             borderRadius: BorderRadius.circular(5),
           ),
-          child: const Center(
+          child: Center(
             child: Text(
-              'Visualizar Relatório',
-              style: TextStyle(
+              text,
+              style: const TextStyle(
                 color: Colors.black,
                 fontSize: 10,
                 fontFamily: 'Roboto',
@@ -147,11 +182,13 @@ class RealizarAtendimentoButton extends StatelessWidget {
 class DataAcontecimentoInfo extends StatelessWidget {
   final String dataAcontecimento;
   final String nProtocolo;
+  final String endereco;
 
   const DataAcontecimentoInfo({
     Key? key,
     required this.dataAcontecimento,
     required this.nProtocolo,
+    required this.endereco,
   }) : super(key: key);
 
   @override
@@ -165,6 +202,17 @@ class DataAcontecimentoInfo extends StatelessWidget {
         children: [
           const SizedBox(height: 4),
           Text(
+            'N° do protocolo: ' '$nProtocolo',
+            style: const TextStyle(
+              color: Colors.black,
+              fontSize: 12,
+              fontFamily: 'Roboto',
+              fontWeight: FontWeight.w400,
+              height: 0,
+            ),
+          ),
+          const SizedBox(height: 4),
+          Text(
             'Data do acontecimento: $dataAcontecimento',
             style: TextStyle(
               color: Colors.black.withOpacity(0.85),
@@ -176,7 +224,7 @@ class DataAcontecimentoInfo extends StatelessWidget {
           ),
           const SizedBox(height: 4),
           Text(
-            'Bairro: Líder | Cidade: Chapecó/SC',
+            'Endereço: $endereco',
             style: TextStyle(
               color: Colors.black.withOpacity(0.85),
               fontSize: 12,
@@ -186,27 +234,6 @@ class DataAcontecimentoInfo extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 4),
-          Text(
-            'N° do protocolo de acontecimento:',
-            style: const TextStyle(
-              color: Colors.black,
-              fontSize: 12,
-              fontFamily: 'Roboto',
-              fontWeight: FontWeight.w400,
-              height: 0,
-            ),
-          ),
-          const SizedBox(height: 4),
-          Text(
-            '$nProtocolo',
-            style: const TextStyle(
-              color: Colors.black,
-              fontSize: 12,
-              fontFamily: 'Roboto',
-              fontWeight: FontWeight.w400,
-              height: 0,
-            ),
-          ),
         ],
       ),
     );

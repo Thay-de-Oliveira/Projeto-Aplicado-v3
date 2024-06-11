@@ -1,14 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:projetoaplicado/app/home/atendimentos/historico/tela-atend-hist-detalhes.dart';
+import 'package:projetoaplicado/backend/controllers/cidadaoController.dart';
 import 'package:projetoaplicado/backend/models/acontecimentoModel.dart';
 import 'package:projetoaplicado/backend/models/atendimentoModel.dart';
+import 'package:projetoaplicado/backend/models/cidadaoModel.dart';
 
 class AtendimentoCard extends StatelessWidget {
   final AtendimentosModel atendimento;
-  //final AcontecimentoModel acontecimento;
+  final CidadaoController cidadaoController = Get.put(CidadaoController());
 
-  const AtendimentoCard({Key? key, required this.atendimento})
-      : super(key: key);
+  AtendimentoCard({Key? key, required this.atendimento}) : super(key: key);
+
+  Future<CidadaoModel> _fetchCidadao() async {
+    await cidadaoController.getCidadaoByCpf(atendimento.nomeResponsavel);
+    return cidadaoController.listCidadaoObs.first;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -37,8 +44,8 @@ class AtendimentoCard extends StatelessWidget {
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(5),
-                  boxShadow: [
-                    const BoxShadow(
+                  boxShadow: const [
+                    BoxShadow(
                       color: Color(0x3F2F2F2F),
                       blurRadius: 1,
                       offset: Offset(1, 1),
@@ -74,9 +81,24 @@ class AtendimentoCard extends StatelessWidget {
             Positioned(
               left: 9,
               top: 31,
-              child: DataAcontecimentoInfo(
-                dataAcontecimento: atendimento.dataSolicitacao,
-                nProtocolo: atendimento.n_protocolo,
+              child: FutureBuilder<CidadaoModel>(
+                future: _fetchCidadao(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return CircularProgressIndicator();
+                  } else if (snapshot.hasError) {
+                    return Text("Erro ao carregar endereço");
+                  } else if (!snapshot.hasData) {
+                    return Text("Endereço não encontrado");
+                  } else {
+                    return DataAcontecimentoInfo(
+                      dataAcontecimento: atendimento.dataSolicitacao,
+                      nProtocolo: atendimento.n_protocolo,
+                      endereco:
+                          '${snapshot.data!.bairro}, ${snapshot.data!.cidade} - ${snapshot.data!.estado}',
+                    );
+                  }
+                },
               ),
             ),
           ],
@@ -239,11 +261,13 @@ class RealizarAtendimentoButton extends StatelessWidget {
 class DataAcontecimentoInfo extends StatelessWidget {
   final String dataAcontecimento;
   final String nProtocolo;
+  final String endereco;
 
   const DataAcontecimentoInfo({
     Key? key,
     required this.dataAcontecimento,
     required this.nProtocolo,
+    required this.endereco,
   }) : super(key: key);
 
   @override
@@ -257,6 +281,17 @@ class DataAcontecimentoInfo extends StatelessWidget {
         children: [
           const SizedBox(height: 4),
           Text(
+            'N° do protocolo: ' '$nProtocolo',
+            style: const TextStyle(
+              color: Colors.black,
+              fontSize: 12,
+              fontFamily: 'Roboto',
+              fontWeight: FontWeight.w400,
+              height: 0,
+            ),
+          ),
+          const SizedBox(height: 4),
+          Text(
             'Data do acontecimento: $dataAcontecimento',
             style: TextStyle(
               color: Colors.black.withOpacity(0.85),
@@ -268,7 +303,7 @@ class DataAcontecimentoInfo extends StatelessWidget {
           ),
           const SizedBox(height: 4),
           Text(
-            'Bairro: Líder | Cidade: Chapecó/SC',
+            'Endereço: $endereco',
             style: TextStyle(
               color: Colors.black.withOpacity(0.85),
               fontSize: 12,
@@ -278,27 +313,6 @@ class DataAcontecimentoInfo extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 4),
-          Text(
-            'N° do protocolo de acontecimento:',
-            style: const TextStyle(
-              color: Colors.black,
-              fontSize: 12,
-              fontFamily: 'Roboto',
-              fontWeight: FontWeight.w400,
-              height: 0,
-            ),
-          ),
-          const SizedBox(height: 4),
-          Text(
-            '$nProtocolo',
-            style: const TextStyle(
-              color: Colors.black,
-              fontSize: 12,
-              fontFamily: 'Roboto',
-              fontWeight: FontWeight.w400,
-              height: 0,
-            ),
-          ),
         ],
       ),
     );

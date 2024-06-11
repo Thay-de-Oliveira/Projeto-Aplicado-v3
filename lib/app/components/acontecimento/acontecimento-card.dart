@@ -6,7 +6,8 @@ import 'package:projetoaplicado/backend/models/acontecimentoModel.dart';
 class AcontecimentoCard extends StatelessWidget {
   final AcontecimentoModel acontecimento;
 
-  const AcontecimentoCard({Key? key, required this.acontecimento}) : super(key: key);
+  const AcontecimentoCard({Key? key, required this.acontecimento})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -48,12 +49,11 @@ class AcontecimentoCard extends StatelessWidget {
                 ),
               ),
             ),
-            const SizedBox(width: 4),
             Positioned(
               left: 9,
               top: 15,
               child: SizedBox(
-                width: 189,
+                width: 250,
                 height: 21,
                 child: Text(
                   acontecimento.subgrupo,
@@ -72,11 +72,52 @@ class AcontecimentoCard extends StatelessWidget {
               top: 31,
               child: DataHoraInfo(
                 dataHora: acontecimento.dataHora,
-                numeroProtocolo: acontecimento.numeroProtocolo ?? "Sem Protocolo",
+                numeroProtocolo:
+                    acontecimento.numeroProtocolo ?? "Sem Protocolo",
               ),
             ),
-            // Adicione outros elementos conforme necessário
+            Positioned(
+              left: 208,
+              top: 89,
+              child: RealizarAtendimentoButton(),
+            ),
           ],
+        ),
+      ),
+    );
+  }
+}
+
+class RealizarAtendimentoButton extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 116,
+      height: 17,
+      decoration: BoxDecoration(
+        color: const Color(0xFFCFDDF2),
+        borderRadius: BorderRadius.circular(4),
+      ),
+      child: InkWell(
+        child: Container(
+          width: 115,
+          height: 35,
+          decoration: BoxDecoration(
+            color: Colors.transparent,
+            borderRadius: BorderRadius.circular(5),
+          ),
+          child: const Center(
+            child: Text(
+              'Realizar Atendimento',
+              style: TextStyle(
+                color: Colors.black,
+                fontSize: 10,
+                fontFamily: 'Roboto',
+                fontWeight: FontWeight.w600,
+                height: 1,
+              ),
+            ),
+          ),
         ),
       ),
     );
@@ -104,31 +145,20 @@ class DataHoraInfo extends StatelessWidget {
         children: [
           const SizedBox(height: 4),
           Text(
-            'Data e Hora: ${DateFormat.yMd().add_jm().format(dataHora)}',
+            'N° do protocolo: ' '$numeroProtocolo',
+            style: const TextStyle(
+              color: Colors.black,
+              fontSize: 12,
+              fontFamily: 'Roboto',
+              fontWeight: FontWeight.w400,
+              height: 0,
+            ),
+          ),
+          const SizedBox(height: 4),
+          Text(
+            'Data do acontecimento: ${DateFormat.yMd().add_jm().format(dataHora)}',
             style: TextStyle(
               color: Colors.black.withOpacity(0.85),
-              fontSize: 12,
-              fontFamily: 'Roboto',
-              fontWeight: FontWeight.w400,
-              height: 0,
-            ),
-          ),
-          const SizedBox(height: 4),
-          Text(
-            'Número do Protocolo:',
-            style: const TextStyle(
-              color: Colors.black,
-              fontSize: 12,
-              fontFamily: 'Roboto',
-              fontWeight: FontWeight.w400,
-              height: 0,
-            ),
-          ),
-          const SizedBox(height: 4),
-          Text(
-            '$numeroProtocolo',
-            style: const TextStyle(
-              color: Colors.black,
               fontSize: 12,
               fontFamily: 'Roboto',
               fontWeight: FontWeight.w400,
