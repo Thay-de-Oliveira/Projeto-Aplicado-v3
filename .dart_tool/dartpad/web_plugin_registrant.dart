@@ -15,6 +15,7 @@ import 'package:flutter_keyboard_visibility_web/flutter_keyboard_visibility_web.
 import 'package:google_maps_flutter_web/google_maps_flutter_web.dart';
 import 'package:image_picker_for_web/image_picker_for_web.dart';
 import 'package:maps_launcher/maps_launcher_web.dart';
+import 'package:pointer_interceptor_web/pointer_interceptor_web.dart';
 import 'package:syncfusion_pdfviewer_web/pdfviewer_web.dart';
 import 'package:url_launcher_web/url_launcher_web.dart';
 import 'package:flutter_web_plugins/flutter_web_plugins.dart';
@@ -30,6 +31,7 @@ void registerPlugins([final Registrar? pluginRegistrar]) {
   GoogleMapsPlugin.registerWith(registrar);
   ImagePickerPlugin.registerWith(registrar);
   MapsLauncherWeb.registerWith(registrar);
+  PointerInterceptorWeb.registerWith(registrar);
   SyncfusionFlutterPdfViewerPlugin.registerWith(registrar);
   UrlLauncherPlugin.registerWith(registrar);
   registrar.registerMessageHandler();
