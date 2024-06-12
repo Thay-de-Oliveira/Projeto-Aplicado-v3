@@ -26,7 +26,7 @@ class AtendimentoForms extends StatefulWidget {
   final String? numeroProtocolo;
 
   AtendimentoForms({Key? key, this.numeroProtocolo}) : super(key: key);
-  
+
   @override
   _AtendimentoFormsState createState() => _AtendimentoFormsState();
 }
@@ -38,6 +38,7 @@ class Item {
 
   Item({required this.name, this.isSelected = false});
 }
+
 class _AtendimentoFormsState extends State<AtendimentoForms> {
   late ImagensController _imagensController;
   List<AcontecimentoModel> listAcontecimento = [];
@@ -46,12 +47,17 @@ class _AtendimentoFormsState extends State<AtendimentoForms> {
 
   CidadaoService cidadaoService = CidadaoService();
 
-  final TextEditingController _cpfResponsavelController = TextEditingController();
-  final TextEditingController _nomeResponsavelController = TextEditingController();
-  final AcontecimentoController _acontecimentoController = AcontecimentoController();
+  final TextEditingController _cpfResponsavelController =
+      TextEditingController();
+  final TextEditingController _cidadaoResponsavelController =
+      TextEditingController();
+  final AcontecimentoController _acontecimentoController =
+      AcontecimentoController();
   final AtendimentoController _atendimentoController = AtendimentoController();
-  final CidadaoController cidadaoController = CidadaoController.cidadaoController;
-  final TextEditingController _dataSolicitacaoController = TextEditingController();
+  final CidadaoController cidadaoController =
+      CidadaoController.cidadaoController;
+  final TextEditingController _dataSolicitacaoController =
+      TextEditingController();
   final TextEditingController _dataVistoriaController = TextEditingController();
   final TextEditingController _observacoesController = TextEditingController();
 
@@ -93,7 +99,8 @@ class _AtendimentoFormsState extends State<AtendimentoForms> {
     );
   }
 
-  List<CidadaoModel> getFilteredCidadaoList(String query, List<CidadaoModel> cidadaoList) {
+  List<CidadaoModel> getFilteredCidadaoList(
+      String query, List<CidadaoModel> cidadaoList) {
     if (query.isEmpty) {
       return [];
     }
@@ -106,10 +113,14 @@ class _AtendimentoFormsState extends State<AtendimentoForms> {
   }
 
   List<String> getSelectedItems() {
-    return items.where((item) => item.isSelected).map((item) => item.name).toList();
+    return items
+        .where((item) => item.isSelected)
+        .map((item) => item.name)
+        .toList();
   }
 
-  Future<void> _selectDate(BuildContext context, TextEditingController controller) async {
+  Future<void> _selectDate(
+      BuildContext context, TextEditingController controller) async {
     DateTime? pickedDate = await showDatePicker(
       context: context,
       initialDate: DateTime.now(),
@@ -141,7 +152,7 @@ class _AtendimentoFormsState extends State<AtendimentoForms> {
         n_protocolo: _selectedNumeroProtocoloAtendimento!,
         tipoAtendimento: _selectedTipoAtendimento,
         canalAtendimento: _selectedCanalAtendimento,
-        nomeResponsavel: _cpfResponsavelController.text,
+        cidadaoResponsavel: _cpfResponsavelController.text,
         vistoriaRealizada: _VistoriaRealizadaController,
         tipoVistoria: _selectedTipoRealizada,
         dataSolicitacao: _dataSolicitacaoController.text,
@@ -150,18 +161,23 @@ class _AtendimentoFormsState extends State<AtendimentoForms> {
         materiaisEntregues: getSelectedItems(),
         observacoes: _observacoesController.text,
         pendente: true,
-        imagesUrls: [],  // Este campo é provavelmente obsoleto se você está enviando as imagens como arquivos
+        imagesUrls: [], // Este campo é provavelmente obsoleto se você está enviando as imagens como arquivos
       );
 
       // Converter os XFiles para Files
-      List<File> imageFiles = _imagensController.imageFiles.map((xFile) => File(xFile.path)).toList();
+      List<File> imageFiles = _imagensController.imageFiles
+          .map((xFile) => File(xFile.path))
+          .toList();
 
-      var resposta = await _atendimentoController.post(novoAtendimento, imageFiles);
+      var resposta =
+          await _atendimentoController.post(novoAtendimento, imageFiles);
 
-      if (resposta != null && resposta.contains('Atendimento criado com sucesso!')) {
+      if (resposta != null &&
+          resposta.contains('Atendimento criado com sucesso!')) {
         _exibirMensagem('Atendimento salvo com sucesso!');
         var protocoloAtendimentoSalvo = novoAtendimento.n_protocolo;
-        await AcontecimentoController.acontecimentoController.updateAcontecimento(protocoloAtendimentoSalvo, false);
+        await AcontecimentoController.acontecimentoController
+            .updateAcontecimento(protocoloAtendimentoSalvo, false);
         _limparCamposFormulario();
       } else {
         _exibirMensagem('Erro ao salvar o atendimento. Tente novamente.');
@@ -189,7 +205,7 @@ class _AtendimentoFormsState extends State<AtendimentoForms> {
       _selectedVistoriaRealizada = 'Selecionar';
       _selectedTipoRealizada = 'Selecionar';
       _selectedEntregarItens = 'Selecionar';
-      _nomeResponsavelController.clear();
+      _cidadaoResponsavelController.clear();
       _cpfResponsavelController.clear();
       _dataSolicitacaoController.clear();
       _dataVistoriaController.clear();
@@ -259,7 +275,8 @@ class _AtendimentoFormsState extends State<AtendimentoForms> {
         borderRadius: BorderRadius.circular(10.0),
       ),
       focusedBorder: OutlineInputBorder(
-        borderSide: const BorderSide(color: Colors.blue), //Cor da borda quando ativo
+        borderSide:
+            const BorderSide(color: Colors.blue), //Cor da borda quando ativo
         borderRadius: BorderRadius.circular(10.0),
       ),
     );
@@ -283,7 +300,8 @@ class _AtendimentoFormsState extends State<AtendimentoForms> {
                       context: context,
                       builder: (BuildContext context) {
                         return AlertDialog(
-                          content: Image.file(File(_imagensController.imageFiles[index].path)),
+                          content: Image.file(
+                              File(_imagensController.imageFiles[index].path)),
                         );
                       },
                     );
@@ -526,18 +544,19 @@ class _AtendimentoFormsState extends State<AtendimentoForms> {
                         //Campo "Número do protocolo de acontecimento"
                         DropdownButtonFormField<String>(
                           value: _selectedNumeroProtocoloAtendimento,
-                          items: listAcontecimento.map((AcontecimentoModel acontecimento) {
+                          items: listAcontecimento
+                              .map((AcontecimentoModel acontecimento) {
                             return DropdownMenuItem<String>(
                               value: acontecimento.numeroProtocolo,
-                              child: Text(acontecimento.numeroProtocolo.toString()),
+                              child: Text(
+                                  acontecimento.numeroProtocolo.toString()),
                             );
                           }).toList(),
                           onChanged: (String? newValue) {
                             _selectedNumeroProtocoloAtendimento = newValue!;
                           },
                           decoration: _customInputDecoration(
-                            'Número do protocolo de acontecimento:'
-                          ),
+                              'Número do protocolo de acontecimento:'),
                         ),
 
                         const SizedBox(height: 30),
@@ -579,7 +598,8 @@ class _AtendimentoFormsState extends State<AtendimentoForms> {
                         const SizedBox(height: 30),
 
                         TypeAheadField<CidadaoModel>(
-                          controller: _nomeResponsavelController, // Este controller agora só para exibir o nome
+                          controller:
+                              _cidadaoResponsavelController, // Este controller agora só para exibir o nome
                           debounceDuration: Duration(milliseconds: 300),
                           suggestionsCallback: (search) async {
                             if (search.isEmpty) {
@@ -587,30 +607,37 @@ class _AtendimentoFormsState extends State<AtendimentoForms> {
                             }
 
                             var cidadaoService = CidadaoService();
-                            var cidadaoList = await cidadaoService.fetchListCidadao(searchTerm: search);
+                            var cidadaoList = await cidadaoService
+                                .fetchListCidadao(searchTerm: search);
 
                             return getFilteredCidadaoList(search, cidadaoList);
                           },
                           builder: (context, controller, focusNode) {
                             return TextField(
-                              controller: _nomeResponsavelController,
+                              controller: _cidadaoResponsavelController,
                               focusNode: focusNode,
                               autofocus: false,
-                              decoration: _customInputDecoration("Nome do responsável no local:"),
+                              decoration: _customInputDecoration(
+                                  "Nome do responsável no local:"),
                               onChanged: (text) async {
                                 if (text.isEmpty) {
-                                  SuggestionsController.of<CidadaoModel>(context).suggestions = [];
+                                  SuggestionsController.of<CidadaoModel>(
+                                          context)
+                                      .suggestions = [];
                                   return;
                                 }
 
                                 var cidadaoService = CidadaoService();
-                                var cidadaoList = await cidadaoService.fetchListCidadao(searchTerm: text);
+                                var cidadaoList = await cidadaoService
+                                    .fetchListCidadao(searchTerm: text);
 
                                 // Filtra a lista com base na consulta
-                                var filteredList = getFilteredCidadaoList(text, cidadaoList);
+                                var filteredList =
+                                    getFilteredCidadaoList(text, cidadaoList);
 
                                 // Atualiza as sugestões
-                                SuggestionsController.of<CidadaoModel>(context).suggestions = filteredList;
+                                SuggestionsController.of<CidadaoModel>(context)
+                                    .suggestions = filteredList;
                               },
                             );
                           },
@@ -622,7 +649,7 @@ class _AtendimentoFormsState extends State<AtendimentoForms> {
                           },
                           onSelected: (CidadaoModel cidadao) {
                             setState(() {
-                              _nomeResponsavelController.text = cidadao.name;
+                              _cidadaoResponsavelController.text = cidadao.name;
                               _cpfResponsavelController.text = cidadao.cpf;
                             });
                           },
@@ -630,55 +657,56 @@ class _AtendimentoFormsState extends State<AtendimentoForms> {
 
                         const SizedBox(height: 30),
 
-                          //Campos lado a lado "Vistoria"
-                          Row(
-                            children: [
-                              Expanded(
-                                child: DropdownButtonFormField<String>(
-                                  value: _selectedVistoriaRealizada,
-                                  items: vistoriaRealizadaOptions
-                                      .map((String option) {
-                                    return DropdownMenuItem<String>(
-                                      value: option,
-                                      child: Text(option),
-                                    );
-                                  }).toList(),
-                                  onChanged: (String? newValue) {
-                                    setState(() {
-                                      if(newValue == "Sim"){
-                                        _selectedVistoriaRealizada = 'Sim';
-                                        _VistoriaRealizadaController = true;
-                                      } else {
-                                        _selectedVistoriaRealizada = 'Não';
-                                        _VistoriaRealizadaController = false;
-                                      }
-                                    });
-                                  },
-                                  decoration: _customInputDecoration(
-                                      'Vistoria realizada?'), // Aplicar estilo personalizado
-                                ),
+                        //Campos lado a lado "Vistoria"
+                        Row(
+                          children: [
+                            Expanded(
+                              child: DropdownButtonFormField<String>(
+                                value: _selectedVistoriaRealizada,
+                                items: vistoriaRealizadaOptions
+                                    .map((String option) {
+                                  return DropdownMenuItem<String>(
+                                    value: option,
+                                    child: Text(option),
+                                  );
+                                }).toList(),
+                                onChanged: (String? newValue) {
+                                  setState(() {
+                                    if (newValue == "Sim") {
+                                      _selectedVistoriaRealizada = 'Sim';
+                                      _VistoriaRealizadaController = true;
+                                    } else {
+                                      _selectedVistoriaRealizada = 'Não';
+                                      _VistoriaRealizadaController = false;
+                                    }
+                                  });
+                                },
+                                decoration: _customInputDecoration(
+                                    'Vistoria realizada?'), // Aplicar estilo personalizado
                               ),
-                              const SizedBox(width: 16), // Espaçamento entre os campos
-                              Expanded(
-                                child: DropdownButtonFormField<String>(
-                                  value: _selectedTipoRealizada,
-                                  items: tipoVistoriaOptions.map((String option) {
-                                    return DropdownMenuItem<String>(
-                                      value: option,
-                                      child: Text(option),
-                                    );
-                                  }).toList(),
-                                  onChanged: (String? newValue) {
-                                    setState(() {
-                                      _selectedTipoRealizada = newValue!;
-                                    });
-                                  },
-                                  decoration: _customInputDecoration(
-                                      'Tipo de vistoria:'), // Aplicar estilo personalizado
-                                ),
+                            ),
+                            const SizedBox(
+                                width: 16), // Espaçamento entre os campos
+                            Expanded(
+                              child: DropdownButtonFormField<String>(
+                                value: _selectedTipoRealizada,
+                                items: tipoVistoriaOptions.map((String option) {
+                                  return DropdownMenuItem<String>(
+                                    value: option,
+                                    child: Text(option),
+                                  );
+                                }).toList(),
+                                onChanged: (String? newValue) {
+                                  setState(() {
+                                    _selectedTipoRealizada = newValue!;
+                                  });
+                                },
+                                decoration: _customInputDecoration(
+                                    'Tipo de vistoria:'), // Aplicar estilo personalizado
                               ),
-                            ],
-                          ),
+                            ),
+                          ],
+                        ),
 
                         const SizedBox(height: 30),
 
@@ -687,11 +715,13 @@ class _AtendimentoFormsState extends State<AtendimentoForms> {
                           children: [
                             Expanded(
                               child: GestureDetector(
-                                onTap: () => _selectDate(context, _dataSolicitacaoController),
+                                onTap: () => _selectDate(
+                                    context, _dataSolicitacaoController),
                                 child: AbsorbPointer(
                                   child: TextFormField(
                                     controller: _dataSolicitacaoController,
-                                    decoration: _customInputDecoration('Data da solicitação:'),
+                                    decoration: _customInputDecoration(
+                                        'Data da solicitação:'),
                                   ),
                                 ),
                               ),
@@ -699,11 +729,13 @@ class _AtendimentoFormsState extends State<AtendimentoForms> {
                             const SizedBox(width: 16),
                             Expanded(
                               child: GestureDetector(
-                                onTap: () => _selectDate(context, _dataVistoriaController),
+                                onTap: () => _selectDate(
+                                    context, _dataVistoriaController),
                                 child: AbsorbPointer(
                                   child: TextFormField(
                                     controller: _dataVistoriaController,
-                                    decoration: _customInputDecoration('Data da vistoria:'),
+                                    decoration: _customInputDecoration(
+                                        'Data da vistoria:'),
                                   ),
                                 ),
                               ),
@@ -724,11 +756,13 @@ class _AtendimentoFormsState extends State<AtendimentoForms> {
                                   borderRadius: BorderRadius.circular(10.0),
                                 ),
                                 enabledBorder: OutlineInputBorder(
-                                  borderSide: const BorderSide(color: Colors.grey),
+                                  borderSide:
+                                      const BorderSide(color: Colors.grey),
                                   borderRadius: BorderRadius.circular(10.0),
                                 ),
                                 focusedBorder: OutlineInputBorder(
-                                  borderSide: const BorderSide(color: Colors.blue),
+                                  borderSide:
+                                      const BorderSide(color: Colors.blue),
                                   borderRadius: BorderRadius.circular(10.0),
                                 ),
                                 suffixIcon: Padding(
@@ -754,8 +788,12 @@ class _AtendimentoFormsState extends State<AtendimentoForms> {
                                 ),
                               ),
                             ),
-                            const SizedBox(height: 8), // Espaço entre o campo e as miniaturas
-                            _imagensController.imageFiles.isEmpty ? Container() : _buildImagePreviews(), // Ajuste para verificar se a lista do controlador está vazia
+                            const SizedBox(
+                                height:
+                                    8), // Espaço entre o campo e as miniaturas
+                            _imagensController.imageFiles.isEmpty
+                                ? Container()
+                                : _buildImagePreviews(), // Ajuste para verificar se a lista do controlador está vazia
                           ],
                         ),
 
@@ -824,8 +862,10 @@ class _AtendimentoFormsState extends State<AtendimentoForms> {
                                 onTap: () {
                                   _salvarAtendimento();
                                   Navigator.push(
-                                    context,
-                                    MaterialPageRoute(builder: (context) => AtendimentoForms()));
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              AtendimentoForms()));
                                 },
                                 child: Container(
                                   width: 65,
@@ -850,14 +890,16 @@ class _AtendimentoFormsState extends State<AtendimentoForms> {
                                 ),
                               ),
 
-                              const SizedBox(width: 16), // Espaçamento entre os botões
+                              const SizedBox(
+                                  width: 16), // Espaçamento entre os botões
 
                               // Botão "Cancelar"
                               InkWell(
                                 onTap: () {
                                   Navigator.of(context).pushReplacement(
                                     MaterialPageRoute(
-                                      builder: (context) => const Home(title: ''),
+                                      builder: (context) =>
+                                          const Home(title: ''),
                                     ),
                                   );
                                 },
@@ -886,7 +928,6 @@ class _AtendimentoFormsState extends State<AtendimentoForms> {
                             ],
                           ),
                         ),
-
                       ],
                     ),
                   ),

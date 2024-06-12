@@ -3,7 +3,7 @@ class AtendimentosModel {
   final String n_protocolo;
   final String tipoAtendimento;
   final String canalAtendimento;
-  final String nomeResponsavel;
+  final String cidadaoResponsavel;
   final bool vistoriaRealizada;
   final String? tipoVistoria;
   final String dataSolicitacao;
@@ -20,7 +20,7 @@ class AtendimentosModel {
     required this.n_protocolo,
     required this.tipoAtendimento,
     required this.canalAtendimento,
-    required this.nomeResponsavel,
+    required this.cidadaoResponsavel,
     required this.vistoriaRealizada,
     this.tipoVistoria,
     required this.dataSolicitacao,
@@ -39,7 +39,7 @@ class AtendimentosModel {
       n_protocolo: json['n_protocolo'],
       tipoAtendimento: json['TipoAtendimento'],
       canalAtendimento: json['CanalAtendimento'],
-      nomeResponsavel: json['NomeResponsavel'],
+      cidadaoResponsavel: json['cidadaoResponsavel'],
       vistoriaRealizada: json['VistoriaRealizada'],
       tipoVistoria: json['TipoVistoria'],
       dataSolicitacao: json['DataSolicitacao'],
@@ -60,20 +60,20 @@ class AtendimentosModel {
   set imagemUrls(List<String> imagemUrls) {}
 
   Map<String, dynamic> toJson() => {
-    '_id': id,
-    'n_protocolo': n_protocolo,
-    'TipoAtendimento': tipoAtendimento,
-    'CanalAtendimento': canalAtendimento,
-    'NomeResponsavel': nomeResponsavel,
-    'VistoriaRealizada': vistoriaRealizada,
-    'TipoVistoria': tipoVistoria,
-    'DataSolicitacao': dataSolicitacao,
-    'DataVistoria': dataVistoria,
-    'EntregueItensAjuda': entregueItensAjuda,
-    'MateriaisEntregues': materiaisEntregues,
-    'Observacoes': observacoes,
-    'pdfUrl': pdfUrl,
-    'pendente': pendente,
-    'imagesUrls': imagesUrls,
-  };
+        '_id': id,
+        'n_protocolo': n_protocolo,
+        'TipoAtendimento': tipoAtendimento,
+        'CanalAtendimento': canalAtendimento,
+        'cidadaoResponsavel': cidadaoResponsavel,
+        'VistoriaRealizada': vistoriaRealizada,
+        'TipoVistoria': tipoVistoria,
+        'DataSolicitacao': dataSolicitacao,
+        'DataVistoria': dataVistoria,
+        'EntregueItensAjuda': entregueItensAjuda,
+        'MateriaisEntregues': materiaisEntregues,
+        'Observacoes': observacoes,
+        'pdfUrl': pdfUrl,
+        'pendente': pendente,
+        'imagesUrls': imagesUrls,
+      };
 }

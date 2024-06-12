@@ -13,15 +13,18 @@ import 'package:projetoaplicado/backend/controllers/cidadaoController.dart';
 class DetalheHistorico extends StatefulWidget {
   final AtendimentosModel atendimento;
 
-  const DetalheHistorico({Key? key, required this.atendimento}) : super(key: key);
+  const DetalheHistorico({Key? key, required this.atendimento})
+      : super(key: key);
 
   @override
   _DetalheHistorico createState() => _DetalheHistorico();
 }
 
 class _DetalheHistorico extends State<DetalheHistorico> {
-  AtendimentoController atendimentoController = Get.put(AtendimentoController());
-  AcontecimentoController acontecimentoController = Get.put(AcontecimentoController());
+  AtendimentoController atendimentoController =
+      Get.put(AtendimentoController());
+  AcontecimentoController acontecimentoController =
+      Get.put(AcontecimentoController());
   CidadaoController cidadaoController = Get.put(CidadaoController());
 
   bool isPendente = false;
@@ -34,7 +37,7 @@ class _DetalheHistorico extends State<DetalheHistorico> {
     super.initState();
     isPendente = widget.atendimento.pendente;
     _loadAcontecimento();
-    _fetchCidadao(widget.atendimento.nomeResponsavel);
+    _fetchCidadao(widget.atendimento.cidadaoResponsavel);
   }
 
   Future<void> _loadAcontecimento() async {
@@ -132,15 +135,32 @@ class _DetalheHistorico extends State<DetalheHistorico> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               if (_acontecimento != null) ...[
-                                _buildInfoRow('assets/imagens/icon-numero-protocolo.png', 'N° do Protocolo:', widget.atendimento.n_protocolo, Colors.blue),
+                                _buildInfoRow(
+                                    'assets/imagens/icon-numero-protocolo.png',
+                                    'N° do Protocolo:',
+                                    widget.atendimento.n_protocolo,
+                                    Colors.blue),
                                 const SizedBox(height: 8),
-                                _buildInfoRow('assets/imagens/icon-subgrupo.png', 'Subgrupo:', _acontecimento!.subgrupo, Colors.blue),
+                                _buildInfoRow(
+                                    'assets/imagens/icon-subgrupo.png',
+                                    'Subgrupo:',
+                                    _acontecimento!.subgrupo,
+                                    Colors.blue),
                                 const SizedBox(height: 8),
-                                _buildInfoRow('assets/imagens/icon-tipo.png', 'Tipo:', _acontecimento!.tipo, Colors.blue),
+                                _buildInfoRow('assets/imagens/icon-tipo.png',
+                                    'Tipo:', _acontecimento!.tipo, Colors.blue),
                                 const SizedBox(height: 8),
-                                _buildInfoRow('assets/imagens/icon-evento.png', 'Evento:', '${_acontecimento!.tipo} ${_acontecimento!.subtipo}', Colors.blue),
+                                _buildInfoRow(
+                                    'assets/imagens/icon-evento.png',
+                                    'Evento:',
+                                    '${_acontecimento!.tipo} ${_acontecimento!.subtipo}',
+                                    Colors.blue),
                                 const SizedBox(height: 8),
-                                _buildInfoRow('assets/imagens/icon-cobrade.png', 'COBRADE:', _acontecimento!.infoCobrade, Colors.blue),
+                                _buildInfoRow(
+                                    'assets/imagens/icon-cobrade.png',
+                                    'COBRADE:',
+                                    _acontecimento!.infoCobrade,
+                                    Colors.blue),
                               ],
                             ],
                           ),
@@ -176,13 +196,29 @@ class _DetalheHistorico extends State<DetalheHistorico> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              _buildInfoRow('assets/imagens/icon-atendente-nome.png', 'Nome do atendente:', 'Implementar do login', Colors.green),
+                              _buildInfoRow(
+                                  'assets/imagens/icon-atendente-nome.png',
+                                  'Nome do atendente:',
+                                  'Implementar do login',
+                                  Colors.green),
                               const SizedBox(height: 8),
-                              _buildInfoRow('assets/imagens/icon-data-vistoria.png', 'Data da vistoria:', widget.atendimento.dataVistoria, Colors.green),
+                              _buildInfoRow(
+                                  'assets/imagens/icon-data-vistoria.png',
+                                  'Data da vistoria:',
+                                  widget.atendimento.dataVistoria,
+                                  Colors.green),
                               const SizedBox(height: 8),
-                              _buildInfoRow('assets/imagens/icon-ocorrencia.png', 'Ocorrência:', widget.atendimento.n_protocolo, Colors.green),
+                              _buildInfoRow(
+                                  'assets/imagens/icon-ocorrencia.png',
+                                  'Ocorrência:',
+                                  widget.atendimento.n_protocolo,
+                                  Colors.green),
                               const SizedBox(height: 8),
-                              _buildInfoRow('assets/imagens/icon-endereco.png', 'Endereço:', '${cidadao?.bairro}, ${cidadao?.cidade} - ${cidadao?.estado}', Colors.green),
+                              _buildInfoRow(
+                                  'assets/imagens/icon-endereco.png',
+                                  'Endereço:',
+                                  '${cidadao?.bairro}, ${cidadao?.cidade} - ${cidadao?.estado}',
+                                  Colors.green),
                             ],
                           ),
                         ),
@@ -217,22 +253,43 @@ class _DetalheHistorico extends State<DetalheHistorico> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              _buildInfoRow('assets/imagens/icon-nome-solicitante.png', 'Nome do solicitante:', cidadao?.name ?? '', Colors.red),
+                              _buildInfoRow(
+                                  'assets/imagens/icon-nome-solicitante.png',
+                                  'Nome do solicitante:',
+                                  cidadao?.name ?? '',
+                                  Colors.red),
                               const SizedBox(height: 8),
-                              _buildInfoRow('assets/imagens/icon-cpf.png', 'CPF do solicitante:', cidadao?.cpf ?? '', Colors.red),
+                              _buildInfoRow(
+                                  'assets/imagens/icon-cpf.png',
+                                  'CPF do solicitante:',
+                                  cidadao?.cpf ?? '',
+                                  Colors.red),
                               const SizedBox(height: 8),
-                              _buildInfoRow('assets/imagens/icon-rg.png', 'RG do solicitante:', cidadao?.rg ?? '', Colors.red),
+                              _buildInfoRow(
+                                  'assets/imagens/icon-rg.png',
+                                  'RG do solicitante:',
+                                  cidadao?.rg ?? '',
+                                  Colors.red),
                               const SizedBox(height: 8),
-                              _buildInfoRow('assets/imagens/icon-telefone.png', 'Telefone do solicitante:', cidadao?.telefone ?? '', Colors.red),
+                              _buildInfoRow(
+                                  'assets/imagens/icon-telefone.png',
+                                  'Telefone do solicitante:',
+                                  cidadao?.telefone ?? '',
+                                  Colors.red),
                               const SizedBox(height: 8),
-                              _buildInfoRow('assets/imagens/icon-pessoas-imovel.png', 'Número de pessoas no imóvel:', cidadao?.numPessoasNaCasa.toString() ?? '', Colors.red),
+                              _buildInfoRow(
+                                  'assets/imagens/icon-pessoas-imovel.png',
+                                  'Número de pessoas no imóvel:',
+                                  cidadao?.numPessoasNaCasa.toString() ?? '',
+                                  Colors.red),
                             ],
                           ),
                         ),
                         const SizedBox(height: 20),
 
                         // Seção de Registro fotográfico
-                        if (widget.atendimento.imagesUrls != null && widget.atendimento.imagesUrls!.isNotEmpty)
+                        if (widget.atendimento.imagesUrls != null &&
+                            widget.atendimento.imagesUrls!.isNotEmpty)
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -254,18 +311,23 @@ class _DetalheHistorico extends State<DetalheHistorico> {
                                   aspectRatio: 16 / 9,
                                   autoPlayCurve: Curves.fastOutSlowIn,
                                   enableInfiniteScroll: true,
-                                  autoPlayAnimationDuration: const Duration(milliseconds: 800),
+                                  autoPlayAnimationDuration:
+                                      const Duration(milliseconds: 800),
                                   viewportFraction: 0.8,
                                 ),
-                                items: widget.atendimento.imagesUrls!.map((item) {
+                                items:
+                                    widget.atendimento.imagesUrls!.map((item) {
                                   return Builder(
                                     builder: (BuildContext context) {
                                       return Container(
-                                        width: MediaQuery.of(context).size.width,
-                                        margin: const EdgeInsets.symmetric(horizontal: 5.0),
+                                        width:
+                                            MediaQuery.of(context).size.width,
+                                        margin: const EdgeInsets.symmetric(
+                                            horizontal: 5.0),
                                         decoration: BoxDecoration(
                                           color: Colors.amber,
-                                          borderRadius: BorderRadius.circular(8.0),
+                                          borderRadius:
+                                              BorderRadius.circular(8.0),
                                         ),
                                         child: Image.network(
                                           item,
@@ -291,7 +353,8 @@ class _DetalheHistorico extends State<DetalheHistorico> {
     );
   }
 
-  Widget _buildInfoRow(String iconPath, String title, String value, Color backgroundColor) {
+  Widget _buildInfoRow(
+      String iconPath, String title, String value, Color backgroundColor) {
     return Container(
       margin: const EdgeInsets.only(bottom: 8),
       child: Row(

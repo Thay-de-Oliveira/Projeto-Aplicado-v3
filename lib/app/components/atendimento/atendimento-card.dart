@@ -13,7 +13,7 @@ class AtendimentoCard extends StatelessWidget {
   AtendimentoCard({Key? key, required this.atendimento}) : super(key: key);
 
   Future<CidadaoModel> _fetchCidadao() async {
-    await cidadaoController.getCidadaoByCpf(atendimento.nomeResponsavel);
+    await cidadaoController.getCidadaoByCpf(atendimento.cidadaoResponsavel);
     return cidadaoController.listCidadaoObs.first;
   }
 

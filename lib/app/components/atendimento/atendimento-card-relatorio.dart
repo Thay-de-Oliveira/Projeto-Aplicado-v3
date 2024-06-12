@@ -42,7 +42,7 @@ class AtendimentoCardRelatorio extends StatelessWidget {
   }
 
   Future<CidadaoModel> _fetchCidadao() async {
-    await cidadaoController.getCidadaoByCpf(atendimento.nomeResponsavel);
+    await cidadaoController.getCidadaoByCpf(atendimento.cidadaoResponsavel);
     return cidadaoController.listCidadaoObs.first;
   }
 
