@@ -14,6 +14,7 @@ class AtendimentosModel {
   final String? pdfUrl;
   bool pendente;
   final List<String>? imagesUrls;
+  final String atendenteResponsavel;
 
   AtendimentosModel({
     this.id,
@@ -31,6 +32,7 @@ class AtendimentosModel {
     this.pdfUrl,
     required this.pendente,
     this.imagesUrls,
+    required this.atendenteResponsavel,
   });
 
   factory AtendimentosModel.fromJson(Map<String, dynamic> json) {
@@ -39,7 +41,7 @@ class AtendimentosModel {
       n_protocolo: json['n_protocolo'],
       tipoAtendimento: json['TipoAtendimento'],
       canalAtendimento: json['CanalAtendimento'],
-      cidadaoResponsavel: json['cidadaoResponsavel'],
+      cidadaoResponsavel: json['CidadaoResponsavel'],
       vistoriaRealizada: json['VistoriaRealizada'],
       tipoVistoria: json['TipoVistoria'],
       dataSolicitacao: json['DataSolicitacao'],
@@ -50,6 +52,7 @@ class AtendimentosModel {
       pdfUrl: json['pdfUrl'],
       pendente: json['pendente'],
       imagesUrls: List<String>.from(json['imagesUrls']),
+      atendenteResponsavel: json['AtendenteResponsavel'],
     );
   }
 
@@ -64,7 +67,7 @@ class AtendimentosModel {
         'n_protocolo': n_protocolo,
         'TipoAtendimento': tipoAtendimento,
         'CanalAtendimento': canalAtendimento,
-        'cidadaoResponsavel': cidadaoResponsavel,
+        'CidadaoResponsavel': cidadaoResponsavel,
         'VistoriaRealizada': vistoriaRealizada,
         'TipoVistoria': tipoVistoria,
         'DataSolicitacao': dataSolicitacao,
@@ -75,5 +78,6 @@ class AtendimentosModel {
         'pdfUrl': pdfUrl,
         'pendente': pendente,
         'imagesUrls': imagesUrls,
+        'AtendenteResponsavel': atendenteResponsavel,
       };
 }

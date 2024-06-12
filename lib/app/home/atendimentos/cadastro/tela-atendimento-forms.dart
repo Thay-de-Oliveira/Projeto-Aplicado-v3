@@ -2,19 +2,19 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:projetoaplicado/app/home/atendimentos/cadastro/foto-camera.dart';
-import 'package:projetoaplicado/app/home/atendimentos/cadastro/foto-upload.dart';
 import 'package:projetoaplicado/app/home/tela-inicio.dart';
 import 'package:projetoaplicado/backend/controllers/acontecimentoController.dart';
 import 'package:projetoaplicado/backend/controllers/atendimentoController.dart';
 import 'package:projetoaplicado/backend/controllers/cidadaoController.dart';
 import 'package:projetoaplicado/backend/controllers/imagensController.dart';
+import 'package:projetoaplicado/backend/controllers/usuarioController.dart';
 import 'package:projetoaplicado/backend/models/acontecimentoModel.dart';
 import 'package:projetoaplicado/backend/models/atendimentoModel.dart';
 import 'package:intl/intl.dart';
 import 'package:projetoaplicado/backend/models/cidadaoModel.dart';
+import 'package:projetoaplicado/backend/models/usuarioModel.dart';
 import 'package:projetoaplicado/backend/services/cidadaoService.dart';
+import 'package:get/get.dart';
 
 import '../../../components/globais/barra-superior.dart';
 import '../../../components/globais/menu-inferior.dart';
@@ -40,6 +40,7 @@ class Item {
 }
 
 class _AtendimentoFormsState extends State<AtendimentoForms> {
+  final UserController userController = Get.find<UserController>();
   late ImagensController _imagensController;
   List<AcontecimentoModel> listAcontecimento = [];
   List<CidadaoModel> suggestions = [];
@@ -47,17 +48,13 @@ class _AtendimentoFormsState extends State<AtendimentoForms> {
 
   CidadaoService cidadaoService = CidadaoService();
 
-  final TextEditingController _cpfResponsavelController =
-      TextEditingController();
-  final TextEditingController _cidadaoResponsavelController =
-      TextEditingController();
-  final AcontecimentoController _acontecimentoController =
-      AcontecimentoController();
+  final TextEditingController _cpfResponsavelController = TextEditingController();
+  final TextEditingController _cidadaoResponsavelController = TextEditingController();
+  final TextEditingController _atendenteResponsavelController = TextEditingController();
+  final AcontecimentoController _acontecimentoController = AcontecimentoController();
   final AtendimentoController _atendimentoController = AtendimentoController();
-  final CidadaoController cidadaoController =
-      CidadaoController.cidadaoController;
-  final TextEditingController _dataSolicitacaoController =
-      TextEditingController();
+  final CidadaoController cidadaoController = CidadaoController.cidadaoController;
+  final TextEditingController _dataSolicitacaoController = TextEditingController();
   final TextEditingController _dataVistoriaController = TextEditingController();
   final TextEditingController _observacoesController = TextEditingController();
 
@@ -65,6 +62,7 @@ class _AtendimentoFormsState extends State<AtendimentoForms> {
   void initState() {
     super.initState();
     _carregarAcontecimentos();
+    _carregarUsuario();
     if (widget.numeroProtocolo != null) {
       _selectedNumeroProtocoloAtendimento = widget.numeroProtocolo!;
     }
@@ -91,6 +89,13 @@ class _AtendimentoFormsState extends State<AtendimentoForms> {
   void _carregarAcontecimentos() async {
     listAcontecimento = await _acontecimentoController.listAcontecimento();
     setState(() {});
+  }
+
+  void _carregarUsuario() {
+    UserModel? user = userController.currentUser;
+    if (user != null) {
+      _atendenteResponsavelController.text = user.username;
+    }
   }
 
   AcontecimentoModel? findAcontecimentoByProtocolo(String numeroProtocolo) {
@@ -162,6 +167,7 @@ class _AtendimentoFormsState extends State<AtendimentoForms> {
         observacoes: _observacoesController.text,
         pendente: true,
         imagesUrls: [], // Este campo é provavelmente obsoleto se você está enviando as imagens como arquivos
+        atendenteResponsavel: _atendenteResponsavelController.text,
       );
 
       // Converter os XFiles para Files
@@ -344,6 +350,8 @@ class _AtendimentoFormsState extends State<AtendimentoForms> {
 
   @override
   Widget build(BuildContext context) {
+    UserModel? user = userController.currentUser;
+
     return Scaffold(
       appBar: null,
       body: CustomScrollView(

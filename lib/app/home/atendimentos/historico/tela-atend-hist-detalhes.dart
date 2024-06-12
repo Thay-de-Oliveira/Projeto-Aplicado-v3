@@ -29,7 +29,6 @@ class _DetalheHistorico extends State<DetalheHistorico> {
 
   bool isPendente = false;
   AcontecimentoModel? _acontecimento;
-  String? _errorMessage;
   CidadaoModel? cidadao;
 
   @override
@@ -49,7 +48,6 @@ class _DetalheHistorico extends State<DetalheHistorico> {
       });
     } catch (e) {
       setState(() {
-        _errorMessage = e.toString();
       });
     }
   }
@@ -62,7 +60,6 @@ class _DetalheHistorico extends State<DetalheHistorico> {
       });
     } catch (e) {
       setState(() {
-        _errorMessage = e.toString();
       });
     }
   }
@@ -199,7 +196,7 @@ class _DetalheHistorico extends State<DetalheHistorico> {
                               _buildInfoRow(
                                   'assets/imagens/icon-atendente-nome.png',
                                   'Nome do atendente:',
-                                  'Implementar do login',
+                                  widget.atendimento.atendenteResponsavel,
                                   Colors.green),
                               const SizedBox(height: 8),
                               _buildInfoRow(
