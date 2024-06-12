@@ -1,17 +1,12 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
-
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:projetoaplicado/app/components/acontecimento/acontecimento-card.dart';
 import 'package:projetoaplicado/backend/controllers/acontecimentoController.dart';
 import 'package:projetoaplicado/backend/models/acontecimentoModel.dart';
-
 import '../../../components/globais/barra-superior.dart';
 import '../../../components/globais/menu-inferior.dart';
 import '../../../components/globais/barra-pesquisa-e-filtro.dart';
-
 import '../historico/tela-atend-historico.dart';
 import '../cadastro/tela-atendimento-forms.dart';
 
@@ -29,13 +24,12 @@ class _AtendimentoPendenteState extends State<AtendimentoPendente> {
     _loadAcontecimentos();
   }
 
-Future<void> _loadAcontecimentos() async {
-  await acontecimentoController.listAcontecimento();
-  acontecimentoController.listAcontecimentoObs;
-}
+  Future<void> _loadAcontecimentos() async {
+    await acontecimentoController.listAcontecimento();
+  }
 
-void _onSearch(String query) {
-    // Lógica de filtragem de atendimentos com base na query
+  void _onSearch(String query) {
+    acontecimentoController.searchByWord(query);
   }
 
   @override
@@ -44,7 +38,7 @@ void _onSearch(String query) {
       appBar: null,
       body: RefreshIndicator(
         onRefresh: () async {
-          await _loadAcontecimentos(); // Função de atualização ao puxar para cima
+          await _loadAcontecimentos();
         },
         child: CustomScrollView(
           slivers: <Widget>[
@@ -63,17 +57,14 @@ void _onSearch(String query) {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      //Botão Cadastro
                       GestureDetector(
                         child: Ink(
                           decoration: ShapeDecoration(
-                            //Estilo
                             color: Color(0xffffffff),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10),
                             ),
                             shadows: [
-                              //Sombras
                               BoxShadow(
                                 color: Color(0x3F000000),
                                 blurRadius: 2,
@@ -97,15 +88,12 @@ void _onSearch(String query) {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: <Widget>[
                                   Container(
-                                    //Icone
                                     width: 30,
                                     height: 30,
                                     child: Image.asset(
                                         'assets/imagens/icon-cadastro.png'),
                                   ),
-                                  SizedBox(
-                                      height:
-                                          5.0), //Espaço entre o ícone e o texto
+                                  SizedBox(height: 5.0),
                                   Text(
                                     'Cadastro',
                                     style: TextStyle(
@@ -119,18 +107,14 @@ void _onSearch(String query) {
                           ),
                         ),
                       ),
-
-                      //Botão PENDENTE
                       GestureDetector(
                         child: Ink(
                           decoration: ShapeDecoration(
-                            //Estilo
                             color: Color(0xFFBBD8F0),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10),
                             ),
                             shadows: [
-                              //Sombras
                               BoxShadow(
                                 color: Color(0x3F000000),
                                 blurRadius: 2,
@@ -153,15 +137,12 @@ void _onSearch(String query) {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: <Widget>[
                                   Container(
-                                    //Icone
                                     width: 30,
                                     height: 30,
                                     child: Image.asset(
                                         'assets/imagens/icon-pendente-ativo.png'),
                                   ),
-                                  SizedBox(
-                                      height:
-                                          5.0), //Espaço entre o ícone e o texto
+                                  SizedBox(height: 5.0),
                                   Text(
                                     'Pendente',
                                     style: TextStyle(
@@ -175,18 +156,14 @@ void _onSearch(String query) {
                           ),
                         ),
                       ),
-
-                      //Botão HISTÓRICO
                       GestureDetector(
                         child: Ink(
                           decoration: ShapeDecoration(
-                            //Estilo
                             color: Color(0xffffffff),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10),
                             ),
                             shadows: [
-                              //Sombras
                               BoxShadow(
                                 color: Color(0x3F000000),
                                 blurRadius: 2,
@@ -210,15 +187,12 @@ void _onSearch(String query) {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: <Widget>[
                                   Container(
-                                    //Icone
                                     width: 30,
                                     height: 30,
                                     child: Image.asset(
                                         'assets/imagens/icon-historico.png'),
                                   ),
-                                  SizedBox(
-                                      height:
-                                          5.0), //Espaço entre o ícone e o texto
+                                  SizedBox(height: 5.0),
                                   Text(
                                     'Histórico',
                                     style: TextStyle(
@@ -234,55 +208,31 @@ void _onSearch(String query) {
                       ),
                     ],
                   ),
-
-                  // Barra de pesquisa
                   SizedBox(height: 25),
-                  SearchFilterBar(onSearch: _onSearch),
+                  SearchFilterBar(
+                    onSearch: _onSearch,
+                  ),
                   SizedBox(height: 25),
-
-                  // Lista de Cards de Atendimento
                   Center(
                     child: Container(
                       width: 330,
-                      child: FutureBuilder(
-                        future: acontecimentoController.listAcontecimento(),
-                        builder: (context, snapshot) {
-                          switch (snapshot.connectionState) {
-                            case ConnectionState.none:
-                            case ConnectionState.waiting:
-                              return Center(
-                                child: CircularProgressIndicator(),
-                              );
-                            case ConnectionState.done:
-                              if (snapshot.hasError) {
-                                return Center(
-                                  child: Text('Erro ao carregar acontecimentos'),
-                                );
-                              } else {
-                                // Filtrar os acontecimentos pendentes
-                                var pendentes = acontecimentoController.listAcontecimentoObs
-                                    .where((acontecimento) => acontecimento.pendente == true)
-                                    .toList();
+                      child: Obx(() {
+                        var pendentes = acontecimentoController.listAcontecimentoObs
+                            .where((acontecimento) => acontecimento.pendente == true)
+                            .toList();
 
-                                return ListView.builder(
-                                  shrinkWrap: true,
-                                  physics: NeverScrollableScrollPhysics(),
-                                  itemCount: pendentes.length,
-                                  itemBuilder: (context, index) {
-                                    AcontecimentoModel acontecimento = pendentes[index];
-                                    return AcontecimentoCard(acontecimento: acontecimento);
-                                  },
-                                );
-                              }
-                            default:
-                              return SizedBox();
-                          }
-                        },
-                      ),
+                        return ListView.builder(
+                          shrinkWrap: true,
+                          physics: NeverScrollableScrollPhysics(),
+                          itemCount: pendentes.length,
+                          itemBuilder: (context, index) {
+                            AcontecimentoModel acontecimento = pendentes[index];
+                            return AcontecimentoCard(acontecimento: acontecimento);
+                          },
+                        );
+                      }),
                     ),
                   ),
-                  // Fim da Lista de Cards
-                  
                   SizedBox(height: 25),
                 ],
               ),
@@ -291,90 +241,6 @@ void _onSearch(String query) {
         ),
       ),
       bottomNavigationBar: MenuInferior(),
-    );
-  }
-
-  Widget buildMenuButton(String text, String imagePath, Widget destination) {
-    return Ink(
-      decoration: ShapeDecoration(
-        color: Color(0xffffffff),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10),
-        ),
-        shadows: [
-          BoxShadow(
-            color: Color(0x3F000000),
-            blurRadius: 2,
-            offset: Offset(2, 2),
-            spreadRadius: 0,
-          )
-        ],
-      ),
-      child: InkWell(
-        onTap: () {
-          Navigator.push(context, MaterialPageRoute(builder: (context) => destination));
-        },
-        child: Container(
-          width: 90,
-          height: 80,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Container(
-                width: 30,
-                height: 30,
-                child: Image.asset(imagePath),
-              ),
-              SizedBox(height: 5.0),
-              Text(
-                text,
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.normal,
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget buildSearchBar() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Container(
-          width: 330,
-          height: 32,
-          child: Stack(
-            children: [
-              Positioned(
-                left: 0,
-                top: 0,
-                child: Container(
-                  width: 330,
-                  height: 32,
-                  decoration: ShapeDecoration(
-                    color: Colors.white,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    shadows: [
-                      BoxShadow(
-                        color: Color(0x199FE3FF),
-                        blurRadius: 8,
-                        offset: Offset(1, 3),
-                        spreadRadius: 0,
-                      )
-                    ],
-                  ),
-                ),
-              ),
-            ],
-          ),
-        )
-      ],
     );
   }
 }

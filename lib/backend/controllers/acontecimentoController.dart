@@ -2,7 +2,6 @@ import 'package:get/get.dart';
 import 'package:projetoaplicado/backend/models/acontecimentoModel.dart';
 import 'package:projetoaplicado/backend/services/acontecimentoService.dart';
 
-
 class AcontecimentoController extends GetxController {
   AcontecimentoService acontecimentoService = AcontecimentoService();
   var isLoading = false.obs;
@@ -79,5 +78,13 @@ class AcontecimentoController extends GetxController {
       isLoading(false);
       update();
     }
+  }
+
+  void searchByWord(String query) {
+    var filteredList = listAcontecimentoObs.where((acontecimento) {
+      var searchString = '${acontecimento.classe} ${acontecimento.grupo} ${acontecimento.subgrupo} ${acontecimento.tipo} ${acontecimento.subtipo} ${acontecimento.infoCobrade} ${acontecimento.numeroProtocolo ?? ''}'.toLowerCase();
+      return searchString.contains(query.toLowerCase());
+    }).toList();
+    listAcontecimentoObs.value = filteredList;
   }
 }

@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:get/get.dart';
 import 'package:projetoaplicado/backend/models/atendimentoModel.dart';
 import 'package:projetoaplicado/backend/services/atendimentoService.dart';
@@ -63,11 +62,19 @@ class AtendimentoController extends GetxController {
       if (index != -1) {
         listAtendimentoObs[index] = response;
       }
-      } catch (e) {
+    } catch (e) {
       print('Erro durante a edição do atendimento: $e');
     } finally {
       isLoading.value = false;
       update();
     }
+  }
+
+  void searchByWord(String query) {
+    var filteredList = listAtendimentoObs.where((atendimento) {
+      var searchString = '${atendimento.n_protocolo} ${atendimento.tipoAtendimento} ${atendimento.canalAtendimento} ${atendimento.nomeResponsavel} ${atendimento.tipoVistoria ?? ''} ${atendimento.observacoes ?? ''}'.toLowerCase();
+      return searchString.contains(query.toLowerCase());
+    }).toList();
+    listAtendimentoObs.value = filteredList;
   }
 }

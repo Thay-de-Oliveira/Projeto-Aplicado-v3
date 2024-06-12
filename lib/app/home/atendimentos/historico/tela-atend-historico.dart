@@ -3,11 +3,9 @@ import 'package:get/get.dart';
 import 'package:projetoaplicado/app/components/atendimento/atendimento-card.dart';
 import 'package:projetoaplicado/backend/controllers/atendimentoController.dart';
 import 'package:projetoaplicado/backend/models/atendimentoModel.dart';
-
 import '../../../components/globais/barra-superior.dart';
 import '../../../components/globais/menu-inferior.dart';
 import '../../../components/globais/barra-pesquisa-e-filtro.dart';
-
 import '../pendente/tela-atend-pendente.dart';
 import '../cadastro/tela-atendimento-forms.dart';
 
@@ -27,11 +25,10 @@ class _HistoricoAtendimentoState extends State<HistoricoAtendimento> {
 
   Future<void> _loadAtendimentos() async {
     await atendimentoController.listAtendimento();
-    atendimentoController.listAtendimentoObs;
   }
 
   void _onSearch(String query) {
-    // Lógica de filtragem de atendimentos com base na query
+    atendimentoController.searchByWord(query);
   }
 
   @override
@@ -40,7 +37,7 @@ class _HistoricoAtendimentoState extends State<HistoricoAtendimento> {
       appBar: null,
       body: RefreshIndicator(
         onRefresh: () async {
-          await _loadAtendimentos(); // Função de atualização ao puxar para cima
+          await _loadAtendimentos();
         },
         child: CustomScrollView(
           slivers: <Widget>[
@@ -73,17 +70,14 @@ class _HistoricoAtendimentoState extends State<HistoricoAtendimento> {
                           AtendimentoPendente(),
                         ),
                       ),
-                      //Botão Historico
                       GestureDetector(
                         child: Ink(
                           decoration: ShapeDecoration(
-                            //Estilo
                             color: Color(0xFFBBD8F0),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10),
                             ),
                             shadows: [
-                              //Sombras
                               BoxShadow(
                                 color: Color(0x3F000000),
                                 blurRadius: 2,
@@ -106,15 +100,12 @@ class _HistoricoAtendimentoState extends State<HistoricoAtendimento> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: <Widget>[
                                   Container(
-                                    //Icone
                                     width: 30,
                                     height: 30,
                                     child: Image.asset(
                                         'assets/imagens/icon-historico-ativo.png'),
                                   ),
-                                  SizedBox(
-                                      height:
-                                          5.0), //Espaço entre o ícone e o texto
+                                  SizedBox(height: 5.0),
                                   Text(
                                     'Histórico',
                                     style: TextStyle(
@@ -130,57 +121,32 @@ class _HistoricoAtendimentoState extends State<HistoricoAtendimento> {
                       ),
                     ],
                   ),
-
-                  // Barra de pesquisa
                   SizedBox(height: 25),
-                  SearchFilterBar(onSearch: _onSearch),
+                  SearchFilterBar(
+                    onSearch: _onSearch,
+                  ),
                   SizedBox(height: 25),
-
-                  // Lista de Cards de Atendimento
                   Center(
                     child: Container(
-                      width: 330, // Definindo uma largura fixa para os cards
-                      child: FutureBuilder(
-                        future: atendimentoController.listAtendimento(),
-                        builder: (context, snapshot) {
-                          switch (snapshot.connectionState) {
-                            case ConnectionState.none:
-                            case ConnectionState.waiting:
-                              return Center(
-                                child: CircularProgressIndicator(),
-                              );
-                            case ConnectionState.done:
-                              if (snapshot.hasError) {
-                                return Center(
-                                  child: Text('Erro ao carregar atendimentos'),
-                                );
-                              } else {
-                                // Filtrar os atendimentos pendentes
-                                var pendentes = atendimentoController.listAtendimentoObs
-                                    .where((atendimento) => atendimento.pendente == true)
-                                    .toList();
+                      width: 330,
+                      child: Obx(() {
+                        var historico = atendimentoController.listAtendimentoObs.toList();
 
-                                return ListView.builder(
-                                  shrinkWrap: true,
-                                  physics: NeverScrollableScrollPhysics(),
-                                  itemCount: pendentes.length,
-                                  itemBuilder: (context, index) {
-                                    AtendimentosModel atendimento = pendentes[index];
-                                    return Padding(
-                                      padding: const EdgeInsets.symmetric(vertical: 8.0),
-                                      child: AtendimentoCard(atendimento: atendimento),
-                                    );
-                                  },
-                                );
-                              }
-                            default:
-                              return SizedBox();
-                          }
-                        },
-                      ),
+                        return ListView.builder(
+                          shrinkWrap: true,
+                          physics: NeverScrollableScrollPhysics(),
+                          itemCount: historico.length,
+                          itemBuilder: (context, index) {
+                            AtendimentosModel atendimento = historico[index];
+                            return Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 8.0),
+                              child: AtendimentoCard(atendimento: atendimento),
+                            );
+                          },
+                        );
+                      }),
                     ),
                   ),
-                  // Fim da Lista de Cards
                   SizedBox(height: 25),
                 ],
               ),
@@ -237,6 +203,4 @@ class _HistoricoAtendimentoState extends State<HistoricoAtendimento> {
       ),
     );
   }
-
-  
 }
