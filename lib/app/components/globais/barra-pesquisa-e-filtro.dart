@@ -39,7 +39,6 @@ class SearchFilterBar extends StatelessWidget {
             ),
           ),
           onChanged: (value) {
-            // Lógica de filtragem de atendimentos
             onSearch(value);
           },
         ),
