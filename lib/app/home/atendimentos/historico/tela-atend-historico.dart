@@ -5,7 +5,7 @@ import 'package:projetoaplicado/backend/controllers/atendimentoController.dart';
 import 'package:projetoaplicado/backend/models/atendimentoModel.dart';
 import '../../../components/globais/barra-superior.dart';
 import '../../../components/globais/menu-inferior.dart';
-import '../../../components/globais/barra-pesquisa-e-filtro.dart';
+import '../../../components/globais/barra-pesquisa.dart';
 import '../pendente/tela-atend-pendente.dart';
 import '../cadastro/tela-atendimento-forms.dart';
 

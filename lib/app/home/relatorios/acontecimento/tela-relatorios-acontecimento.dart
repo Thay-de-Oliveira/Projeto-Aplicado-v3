@@ -9,7 +9,7 @@ import '../../../components/globais/barra-superior.dart';
 import '../../../components/globais/menu-inferior.dart';
 import '../../atendimentos/pendente/tela-atend-pendente.dart';
 import 'tela-relat-aconte-detalhes.dart';
-import '../../../components/globais/barra-pesquisa-e-filtro.dart'; 
+import '../../../components/globais/barra-pesquisa.dart'; 
 
 class RelatorioAcontecimento extends StatefulWidget {
   @override

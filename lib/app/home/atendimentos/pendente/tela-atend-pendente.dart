@@ -6,7 +6,7 @@ import 'package:projetoaplicado/backend/controllers/acontecimentoController.dart
 import 'package:projetoaplicado/backend/models/acontecimentoModel.dart';
 import '../../../components/globais/barra-superior.dart';
 import '../../../components/globais/menu-inferior.dart';
-import '../../../components/globais/barra-pesquisa-e-filtro.dart';
+import '../../../components/globais/barra-pesquisa.dart';
 import '../historico/tela-atend-historico.dart';
 import '../cadastro/tela-atendimento-forms.dart';
 
