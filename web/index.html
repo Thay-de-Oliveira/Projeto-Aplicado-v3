@@ -31,31 +31,6 @@
 
   <title>hello_world</title>
   <link rel="manifest" href="manifest.json">
-
-  <!-- Adicionando SDKs do Firebase -->
-  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-analytics.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-storage.js"></script>
-  
-  <script>
-    // Suas configurações do Firebase
-    var firebaseConfig = {
-      apiKey: "AIzaSyCAq_Dy3bOTrSYJ-32pt0eTjoo9NBStd3w",
-      authDomain: "servidorimagens-defesacivil.firebaseapp.com",
-      projectId: "servidorimagens-defesacivil",
-      storageBucket: "servidorimagens-defesacivil.appspot.com",
-      messagingSenderId: "381013195783",
-      appId: "1:381013195783:web:9e3316e36e2b2fe8c77ea2",
-      measurementId: "G-ECBPSYB6B5"
-    };
-    // Inicialize o Firebase
-    firebase.initializeApp(firebaseConfig);
-    if (firebaseConfig.measurementId) {
-      firebase.analytics();
-    }
-  </script>
 </head>
 <body>
   <!-- This script installs service_worker.js to provide PWA functionality to

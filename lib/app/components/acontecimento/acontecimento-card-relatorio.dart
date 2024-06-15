@@ -54,7 +54,7 @@ class AcontecimentoCard extends StatelessWidget {
                 width: 189,
                 height: 21,
                 child: Text(
-                  acontecimento.tipo,
+                  acontecimento.subgrupo,
                   style: const TextStyle(
                     color: Colors.black,
                     fontSize: 16,

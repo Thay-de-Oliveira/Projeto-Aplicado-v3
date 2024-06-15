@@ -8,6 +8,7 @@ import '../components/globais/menu-inferior.dart';
 import '../login/tela-login.dart';
 
 class Perfil extends StatefulWidget {
+  @override
   State<Perfil> createState() => _PerfilState();
 }
 
@@ -22,19 +23,13 @@ class _PerfilState extends State<Perfil> {
     return Scaffold(
       appBar: null,
       backgroundColor: Colors.grey[200],
-      body: Stack(
+      body: Column(
         children: <Widget>[
-          Positioned(
-            left: 0,
-            top: 0,
-            right: 0,
-            child: BarraSuperior(context),
-          ),
-          SingleChildScrollView(
+          BarraSuperior(context),
+          Expanded(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                const SizedBox(height: 80),
                 const CircleAvatar(
                   radius: 40,
                   backgroundColor: Color(0xFFF1F1F1),
@@ -50,15 +45,6 @@ class _PerfilState extends State<Perfil> {
                     fontWeight: FontWeight.w500,
                   ),
                 ),
-                // Text(
-                //   'ID: ${user?.id ?? "Indisponível"}',
-                //   style: const TextStyle(
-                //     color: Color(0xFF696161),
-                //     fontSize: 15,
-                //     fontFamily: 'Roboto',
-                //     fontWeight: FontWeight.w400,
-                //   ),
-                // ),
                 const SizedBox(height: 20),
                 Center(
                   child: Container(
@@ -197,32 +183,6 @@ class _PerfilState extends State<Perfil> {
                                 fontWeight: FontWeight.w400,
                               ),
                             ),
-                            /*Container(
-                              width: 60,
-                              height: 24,
-                              child: TextButton(
-                                style: TextButton.styleFrom(
-                                  foregroundColor: Color(0xFF999999), backgroundColor: Color(0xFFF5F5F5),
-                                  padding: EdgeInsets.zero,
-                                  shape: RoundedRectangleBorder(
-                                    side: BorderSide(
-                                      color: Color(0x443C3C3C),
-                                      width: 0.59,
-                                    ),
-                                  ),
-                                ),
-                                onPressed: () {},
-                                child: Text(
-                                  'alterar',
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                    fontSize: 10,
-                                    fontFamily: 'Lato',
-                                    fontWeight: FontWeight.w700,
-                                  ),
-                                ),
-                              ),
-                            ),*/
                           ],
                         ),
                         const SizedBox(height: 20),

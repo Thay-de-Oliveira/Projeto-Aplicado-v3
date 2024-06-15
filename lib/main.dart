@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:firebase_core/firebase_core.dart';
 
 import 'app/components/globais/menu-inferior.dart';
 import 'app/components/globais/barra-superior.dart';
@@ -12,7 +11,7 @@ import 'app/app-state.dart';
 
 import 'app/home/tela-inicio.dart';
 import 'app/login/tela-login.dart';
-import 'app/tela-mapa.dart';
+import 'app/home/tela-mapa.dart';
 import 'app/home/tela-usuario.dart';
 
 import 'controllerBinding.dart';

@@ -519,20 +519,16 @@ class _FormularioAcontecimentoState extends State<AcontecimentosForms> {
     return Scaffold(
       appBar: null,
       backgroundColor: Colors.white,
-      body: Stack(
+      body: Column(
         children: [
-          Positioned(
-            left: 0,
-            top: 0,
-            right: 0,
-            child: BarraSuperior(context),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 70),
-            child: SingleChildScrollView(
+          BarraSuperior(context),
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start, // Alinhar no topo
                 children: <Widget>[
+                  SizedBox(height: 30),
                   // Campo "Classe de acontecimento"
                   DropdownButtonFormField<String>(
                     value: _selectedClasseAcontecimento,
@@ -552,8 +548,7 @@ class _FormularioAcontecimentoState extends State<AcontecimentosForms> {
                         _selectedCobradeAutomatico = null;
                       });
                     },
-                    decoration:
-                        _customInputDecoration('Classe de acontecimento:'),
+                    decoration: _customInputDecoration('Classe de acontecimento:'),
                   ),
 
                   const SizedBox(height: 30), // Espaçamento de 30 pixels
@@ -613,14 +608,13 @@ class _FormularioAcontecimentoState extends State<AcontecimentosForms> {
                   if (_selectedSubGrupo != null)
                     DropdownButtonFormField<String>(
                       value: _selectedTipo,
-                      items:
-                          tipoOptions[_selectedSubGrupo!]?.map((String option) {
-                                return DropdownMenuItem<String>(
-                                  value: option,
-                                  child: Text(option),
-                                );
-                              }).toList() ??
-                              [],
+                      items: tipoOptions[_selectedSubGrupo!]?.map((String option) {
+                            return DropdownMenuItem<String>(
+                              value: option,
+                              child: Text(option),
+                            );
+                          }).toList() ??
+                          [],
                       onChanged: (String? newValue) {
                         setState(() {
                           _selectedTipo = newValue;
@@ -632,10 +626,8 @@ class _FormularioAcontecimentoState extends State<AcontecimentosForms> {
                         if (_selectedTipo != null &&
                             valoresAutomaticosTipo.containsKey(_selectedTipo)) {
                           setState(() {
-                            _selectedSubTipo = valoresAutomaticosTipo[
-                                _selectedTipo]!['SubTipo'];
-                            _selectedCobradeAutomatico = valoresAutomaticosTipo[
-                                _selectedTipo]!['Cobrade'];
+                            _selectedSubTipo = valoresAutomaticosTipo[_selectedTipo]!['SubTipo'];
+                            _selectedCobradeAutomatico = valoresAutomaticosTipo[_selectedTipo]!['Cobrade'];
                           });
                         }
                       },
@@ -648,26 +640,23 @@ class _FormularioAcontecimentoState extends State<AcontecimentosForms> {
                   if (_selectedTipo != null)
                     DropdownButtonFormField<String>(
                       value: _selectedSubTipo,
-                      items:
-                          subTipoOptions[_selectedTipo!]?.map((String option) {
-                                return DropdownMenuItem<String>(
-                                  value: option,
-                                  child: Text(option),
-                                );
-                              }).toList() ??
-                              [],
+                      items: subTipoOptions[_selectedTipo!]?.map((String option) {
+                            return DropdownMenuItem<String>(
+                              value: option,
+                              child: Text(option),
+                            );
+                          }).toList() ??
+                          [],
                       onChanged: (String? newValue) {
                         setState(() {
                           _selectedSubTipo = newValue;
 
                           // Verificar se deve preencher automaticamente
                           if (_selectedSubTipo != null &&
-                              valoresAutomaticosTipo
-                                  .containsKey(_selectedSubTipo)) {
+                              valoresAutomaticosTipo.containsKey(_selectedSubTipo)) {
                             setState(() {
                               _selectedCobradeAutomatico =
-                                  valoresAutomaticosTipo[_selectedSubTipo]![
-                                      'Cobrade'];
+                                  valoresAutomaticosTipo[_selectedSubTipo]!['Cobrade'];
                             });
                           }
                         });

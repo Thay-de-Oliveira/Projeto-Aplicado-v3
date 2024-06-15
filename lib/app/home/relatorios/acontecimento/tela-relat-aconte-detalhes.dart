@@ -1,13 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:maps_launcher/maps_launcher.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 
 import '../../../components/globais/barra-superior.dart';
 import '../../../components/globais/menu-inferior.dart';
-
-import '../../atendimentos/pendente/tela-atend-pendente.dart';
-import '../../atendimentos/historico/tela-atend-historico.dart';
-import '../../atendimentos/cadastro/tela-atendimento-forms.dart';
 
 class DetalhesRelatorioAcontecimento extends StatefulWidget {
   @override
@@ -73,109 +68,6 @@ class _DetalhesRelatorioAcontecimentoState extends State<DetalhesRelatorioAconte
                   ),
                 ),
                 SizedBox(height: 15),
-                Center(
-                  child: Container(
-                    width: screenWidth * 0.9,
-                    padding: EdgeInsets.all(16),
-                    decoration: ShapeDecoration(
-                      color: Colors.white,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      shadows: [
-                        BoxShadow(
-                          color: Color(0x3F2F2F2F),
-                          blurRadius: 1,
-                          offset: Offset(1, 1),
-                          spreadRadius: 0,
-                        ),
-                      ],
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text('Registro fotográfico', style: TextStyle(color: Colors.black, fontSize: 14, fontFamily: 'Roboto', fontWeight: FontWeight.w500)),
-                        SizedBox(height: 16),
-                        CarouselSlider(
-                          options: CarouselOptions(
-                            height: 182,
-                            enlargeCenterPage: true,
-                            autoPlay: true,
-                            aspectRatio: 16 / 9,
-                            autoPlayCurve: Curves.fastOutSlowIn,
-                            enableInfiniteScroll: true,
-                            autoPlayAnimationDuration: Duration(milliseconds: 800),
-                            viewportFraction: 0.8,
-                          ),
-                          items: [
-                            'assets/imagens/imagem-1.png',
-                            'assets/imagens/imagem-2.png',
-                            'assets/imagens/imagem-3.png',
-                            'assets/imagens/imagem-4.png',
-                          ].map((item) {
-                            return Builder(
-                              builder: (BuildContext context) {
-                                return Container(
-                                  width: MediaQuery.of(context).size.width,
-                                  margin: EdgeInsets.symmetric(horizontal: 5.0),
-                                  decoration: BoxDecoration(
-                                    color: Colors.amber,
-                                    borderRadius: BorderRadius.circular(8.0),
-                                  ),
-                                  child: Image.network(
-                                    item,
-                                    fit: BoxFit.cover,
-                                  ),
-                                );
-                              },
-                            );
-                          }).toList(),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                SizedBox(height: 20),
-                // Botão com localização
-                Center(
-                  child: Container(
-                    width: screenWidth * 0.9,
-                    child: Card(
-                      color: Colors.white,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: InkWell(
-                        onTap: () {
-                          MapsLauncher.launchQuery('R. Frei Bruno, 201 - Parque das Palmeiras, Chapecó - SC, 89803-785');
-                        },
-                        child: Padding(
-                          padding: EdgeInsets.all(16),
-                          child: Row(
-                            children: <Widget>[
-                              Container(
-                                // Icone
-                                width: 30,
-                                height: 30,
-                                child: Image.asset('assets/imagens/icon-pendente.png'),
-                              ),
-                              SizedBox(width: 10),
-                              Text(
-                                'Localização do acontecimento',
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.normal,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      elevation: 4,
-                      margin: EdgeInsets.all(10),
-                    ),
-                  ),
-                ),
               ],
             ),
           ),

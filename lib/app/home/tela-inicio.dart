@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:projetoaplicado/app/app-state.dart';
 import 'package:projetoaplicado/app/home/atendimentos/cadastro/tela-atendimento-forms.dart';
-import 'package:projetoaplicado/app/home/atendimentos/historico/tela-atend-hist-detalhes.dart';
 import 'package:projetoaplicado/app/home/cidadaos/tela-cadastro-cidadao.dart';
 import 'package:projetoaplicado/app/home/relatorios/acontecimento/tela-relatorios-acontecimento.dart';
 import 'package:projetoaplicado/app/home/acontecimentos/tela-acontecimentos-forms.dart';
@@ -12,6 +11,7 @@ import '../components/globais/menu-inferior.dart';
 class Home extends StatefulWidget {
   const Home({super.key, required this.title});
   final String title;
+
   @override
   State<Home> createState() => _HomeState();
 }
@@ -32,60 +32,57 @@ class _HomeState extends State<Home> {
     return Scaffold(
       appBar: null,
       backgroundColor: Colors.grey[200],
-      body: Stack(
+      body: Column(
         children: <Widget>[
-          SingleChildScrollView(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                SizedBox(height: 80),
-                buildMenuCard(
-                  context,
-                  'Acontecimentos',
-                  'assets/imagens/chuva-icone.png',
-                  Colors.lightBlueAccent,
-                  AcontecimentosForms(),
-                  appState,
-                  'acontecimentos',
-                ),
-                SizedBox(height: 25),
-                buildMenuCard(
-                  context,
-                  'Atendimentos',
-                  'assets/imagens/fone-icone.png',
-                  Colors.greenAccent,
-                  AtendimentoForms(),
-                  appState,
-                  'atendimento',
-                ),
-                SizedBox(height: 25),
-                buildMenuCard(
-                  context,
-                  'Cadastro de Cidadão',
-                  'assets/imagens/cadastro-icone.png',
-                  Colors.orangeAccent,
-                  CadastroCidadao(),
-                  appState,
-                  'cadastro_cidadao',
-                ),
-                SizedBox(height: 25),
-                buildMenuCard(
-                  context,
-                  'Relatórios',
-                  'assets/imagens/icon-relatorio.png',
-                  Colors.yellowAccent,
-                  RelatorioAcontecimento(),
-                  appState,
-                  'relatorios',
-                ),
-              ],
+          BarraSuperior(context),
+          Expanded(
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  SizedBox(height: 30),
+                  buildMenuCard(
+                    context,
+                    'Acontecimentos',
+                    'assets/imagens/chuva-icone.png',
+                    Colors.lightBlueAccent,
+                    AcontecimentosForms(),
+                    appState,
+                    'acontecimentos',
+                  ),
+                  SizedBox(height: 25),
+                  buildMenuCard(
+                    context,
+                    'Atendimentos',
+                    'assets/imagens/fone-icone.png',
+                    Colors.greenAccent,
+                    AtendimentoForms(),
+                    appState,
+                    'atendimento',
+                  ),
+                  SizedBox(height: 25),
+                  buildMenuCard(
+                    context,
+                    'Cadastro de Cidadão',
+                    'assets/imagens/cadastro-icone.png',
+                    Colors.orangeAccent,
+                    CadastroCidadao(),
+                    appState,
+                    'cadastro_cidadao',
+                  ),
+                  SizedBox(height: 25),
+                  buildMenuCard(
+                    context,
+                    'Relatórios',
+                    'assets/imagens/icon-relatorio.png',
+                    Colors.yellowAccent,
+                    RelatorioAcontecimento(),
+                    appState,
+                    'relatorios',
+                  ),
+                ],
+              ),
             ),
-          ),
-          Positioned(
-            left: 0,
-            top: 0,
-            right: 0,
-            child: BarraSuperior(context),
           ),
         ],
       ),

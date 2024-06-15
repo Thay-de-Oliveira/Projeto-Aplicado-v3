@@ -30,4 +30,9 @@ class ImagensController {
       onImageAdded();  // Notifica o listener que uma imagem foi removida
     }
   }
+
+  void clear() {
+    imageFiles.clear();
+    onImageAdded();
+  }
 }
