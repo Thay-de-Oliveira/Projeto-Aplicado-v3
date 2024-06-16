@@ -117,15 +117,15 @@ class _LoginAppState extends State<LoginApp> {
 
                     //TEXTO "ESQUECI MINHA SENHA"
                     const SizedBox(height: 30), // Espaço entre os campos e o link "Esqueci minha senha"
-                    TextButton(
-                      onPressed: () {
-                        print('Esqueci minha senha');
-                      },
-                      child: const Text(
-                        'Esqueci minha senha',
-                        style: TextStyle(color: Colors.white),
-                      ),
-                    ),
+                    // TextButton(
+                    //   onPressed: () {
+                    //     print('Esqueci minha senha');
+                    //   },
+                    //   child: const Text(
+                    //     'Esqueci minha senha',
+                    //     style: TextStyle(color: Colors.white),
+                    //   ),
+                    // ),
 
                     const SizedBox(height: 5),
 
@@ -165,30 +165,30 @@ class _LoginAppState extends State<LoginApp> {
                             ),
                           ),
 
-                          const SizedBox(height: 30), // Espaço entre os botões
+                          // const SizedBox(height: 30), // Espaço entre os botões
 
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            mainAxisSize: MainAxisSize.max,
-                            children: [
-                              const Text(
-                                "Não possui uma conta?",
-                                style: TextStyle(color: Color(0xffffffff)),
-                              ),
-                              TextButton(
-                                child: const Text(
-                                  "Cadastre-se",
-                                  style: TextStyle(
-                                    color: Color(0xff1d3484),
-                                    fontWeight: FontWeight.bold, //Negrito
-                                  ),
-                                ),
-                                onPressed: () => {
-                                  Navigator.of(context).pushNamed("/tela-cadastro")
-                                },
-                              ),
-                            ],
-                          )
+                          // Row(
+                          //   mainAxisAlignment: MainAxisAlignment.center,
+                          //   mainAxisSize: MainAxisSize.max,
+                          //   children: [
+                          //     const Text(
+                          //       "Não possui uma conta?",
+                          //       style: TextStyle(color: Color(0xffffffff)),
+                          //     ),
+                          //     TextButton(
+                          //       child: const Text(
+                          //         "Cadastre-se",
+                          //         style: TextStyle(
+                          //           color: Color(0xff1d3484),
+                          //           fontWeight: FontWeight.bold, //Negrito
+                          //         ),
+                          //       ),
+                          //       onPressed: () => {
+                          //         Navigator.of(context).pushNamed("/tela-cadastro")
+                          //       },
+                          //     ),
+                          //   ],
+                          // )
                         ],
                       ),
                     )

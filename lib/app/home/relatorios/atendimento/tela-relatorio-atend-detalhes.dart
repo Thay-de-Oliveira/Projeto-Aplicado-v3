@@ -6,6 +6,82 @@ import 'package:share_plus/share_plus.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'dart:io';
 
+// Barra Superior Customizada
+Widget BarraSuperior(BuildContext context, VoidCallback onDownloadPressed, VoidCallback onSharePressed) {
+  bool isHome = ModalRoute.of(context)?.isFirst ?? false;
+
+  return LayoutBuilder(
+    builder: (BuildContext context, BoxConstraints constraints) {
+      return SafeArea(
+        child: Container(
+          width: double.infinity,
+          height: 57,
+          child: Stack(
+            children: [
+              Positioned(
+                left: 0,
+                top: 0,
+                child: Container(
+                  width: constraints.maxWidth,
+                  height: 57,
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment(1.00, -0.03),
+                      end: Alignment(-1, 0.03),
+                      colors: [Color(0xFF1A7CB2), Color(0xFF4BA1E0)],
+                    ),
+                  ),
+                ),
+              ),
+              if (!isHome)
+                Positioned(
+                  left: 8,
+                  top: 8,
+                  child: IconButton(
+                    icon: Icon(Icons.arrow_back, color: Colors.white),
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                  ),
+                ),
+              Positioned(
+                left: (constraints.maxWidth / 2) - 22.5,
+                top: 8,
+                child: Container(
+                  width: 45,
+                  height: 42.49,
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                      image: AssetImage("assets/imagens/logo-sem-fundo.png"),
+                      fit: BoxFit.fill,
+                    ),
+                  ),
+                ),
+              ),
+              Positioned(
+                right: 60,
+                top: 8,
+                child: IconButton(
+                  icon: Icon(Icons.file_download, color: Colors.white),
+                  onPressed: onDownloadPressed,
+                ),
+              ),
+              Positioned(
+                right: 16,
+                top: 8,
+                child: IconButton(
+                  icon: Icon(Icons.share, color: Colors.white),
+                  onPressed: onSharePressed,
+                ),
+              ),
+            ],
+          ),
+        ),
+      );
+    },
+  );
+}
+
 class DetalhesRelatorioAtendimento extends StatefulWidget {
   final String pdfUrl;
 
@@ -92,18 +168,14 @@ class _DetalhesRelatorioAtendimentoState extends State<DetalhesRelatorioAtendime
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Visualizar Relatório'),
-        actions: [
-          IconButton(
-            icon: Icon(Icons.file_download),
-            onPressed: _downloadToDevice,
-          ),
-          IconButton(
-            icon: Icon(Icons.share),
-            onPressed: _sharePdf,
-          ),
-        ],
+      backgroundColor: Colors.grey[200],
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(57),
+        child: BarraSuperior(
+          context,
+          _downloadToDevice,
+          _sharePdf,
+        ),
       ),
       body: _isLoading
           ? Center(child: CircularProgressIndicator())

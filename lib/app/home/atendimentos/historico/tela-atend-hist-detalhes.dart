@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:intl/intl.dart';
+import 'package:projetoaplicado/app/home/relatorios/acontecimento/tela-relat-aconte-detalhes.dart';
+import 'package:projetoaplicado/app/home/relatorios/atendimento/tela-relatorio-atend-detalhes.dart' as atendimento;
+import 'package:projetoaplicado/backend/controllers/relatorioAtendimentoController.dart';
 import 'package:projetoaplicado/backend/models/cidadaoModel.dart';
-import '../../../components/globais/barra-superior.dart';
+import '../../../components/globais/barra-superior.dart' as globais;
 import '../../../components/globais/menu-inferior.dart';
 import 'package:projetoaplicado/backend/models/atendimentoModel.dart';
 import 'package:projetoaplicado/backend/controllers/atendimentoController.dart';
@@ -22,10 +26,9 @@ class DetalheHistorico extends StatefulWidget {
 }
 
 class _DetalheHistorico extends State<DetalheHistorico> {
-  AtendimentoController atendimentoController =
-      Get.put(AtendimentoController());
-  AcontecimentoController acontecimentoController =
-      Get.put(AcontecimentoController());
+  final RelatorioAtendimentoController _relatorioController = RelatorioAtendimentoController();
+  AtendimentoController atendimentoController = Get.put(AtendimentoController());
+  AcontecimentoController acontecimentoController = Get.put(AcontecimentoController());
   CidadaoController cidadaoController = Get.put(CidadaoController());
 
   bool isPendente = false;
@@ -77,6 +80,46 @@ class _DetalheHistorico extends State<DetalheHistorico> {
     }
   }
 
+  Future<void> _visualizarRelatorio(BuildContext context, String tipo) async {
+    setState(() {
+      isLoading = true;
+    });
+
+    try {
+      final pdfUrl = await _relatorioController.gerarRelatorioUrl(widget.atendimento.n_protocolo);
+      final downloadUrl = _transformUrlToDownloadUrl(pdfUrl);
+
+      if (tipo == 'atendimento') {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => atendimento.DetalhesRelatorioAtendimento(pdfUrl: downloadUrl),
+          ),
+        );
+      } else if (tipo == 'acontecimento') {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => DetalhesRelatorioAcontecimento(acontecimento: _acontecimento!),
+          ),
+        );
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Erro ao gerar relatório: $e')),
+      );
+    } finally {
+      setState(() {
+        isLoading = false;
+      });
+    }
+  }
+
+  String _transformUrlToDownloadUrl(String viewUrl) {
+    final fileId = viewUrl.split('/d/')[1].split('/')[0];
+    return 'https://drive.google.com/uc?export=download&id=$fileId';
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -87,7 +130,7 @@ class _DetalheHistorico extends State<DetalheHistorico> {
               children: <Widget>[
                 Column(
                   children: [
-                    BarraSuperior(context),
+                    globais.BarraSuperior(context),
                     Expanded(
                       child: SingleChildScrollView(
                         child: Padding(
@@ -106,15 +149,7 @@ class _DetalheHistorico extends State<DetalheHistorico> {
                                 ),
                               ),
                               const SizedBox(height: 10),
-                              Row(
-                                children: [
-                                  _buildDocumentCard('Ocorrência', '09/05/2023'),
-                                  const SizedBox(width: 10),
-                                  _buildDocumentCard('Recibo', '09/05/2023'),
-                                  const SizedBox(width: 10),
-                                  _buildDocumentCard('Relatório', '09/05/2023'),
-                                ],
-                              ),
+                              _buildDocumentRow(context),
                               const SizedBox(height: 20),
 
                               // Seção de Dados da Ocorrência
@@ -465,69 +500,110 @@ class _DetalheHistorico extends State<DetalheHistorico> {
     );
   }
 
-  Widget _buildDocumentCard(String title, String date) {
-    return Container(
-      width: 115,
-      height: 75,
-      padding: const EdgeInsets.all(10),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(5),
-        boxShadow: const [
-          BoxShadow(
-            color: Color(0x3F2F2F2F),
-            blurRadius: 1,
-            offset: Offset(1, 1),
-            spreadRadius: 0,
-          )
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            title,
-            style: const TextStyle(
-              color: Colors.black,
-              fontSize: 11,
-              fontFamily: 'Roboto',
-              fontWeight: FontWeight.w500,
-            ),
+  Widget _buildDocumentCard(String title, String date, VoidCallback onTap) {
+    return Expanded(
+      child: InkWell(
+        onTap: onTap,
+        child: Container(
+          height: 75,
+          padding: const EdgeInsets.all(10),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(5),
+            boxShadow: const [
+              BoxShadow(
+                color: Color(0x3F2F2F2F),
+                blurRadius: 1,
+                offset: Offset(1, 1),
+                spreadRadius: 0,
+              )
+            ],
           ),
-          const Spacer(),
-          Text(
-            'Emitido em $date',
-            style: const TextStyle(
-              color: Color(0xFF6C6C6C),
-              fontSize: 8,
-              fontFamily: 'Roboto',
-              fontWeight: FontWeight.w400,
-            ),
-          ),
-          const Spacer(),
-          Container(
-            width: double.infinity,
-            height: 16,
-            decoration: ShapeDecoration(
-              color: const Color(0xFF7CA0FF),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(3),
-              ),
-            ),
-            child: const Center(
-              child: Text(
-                'Download',
-                style: TextStyle(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                title,
+                style: const TextStyle(
                   color: Colors.black,
-                  fontSize: 9,
-                  fontFamily: 'Lato',
+                  fontSize: 11,
+                  fontFamily: 'Roboto',
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+              const Spacer(),
+              Text(
+                'Emitido em $date',
+                style: const TextStyle(
+                  color: Color(0xFF6C6C6C),
+                  fontSize: 8,
+                  fontFamily: 'Roboto',
                   fontWeight: FontWeight.w400,
                 ),
               ),
+              const Spacer(),
+              Container(
+                width: double.infinity,
+                height: 16,
+                decoration: ShapeDecoration(
+                  color: const Color(0xFF7CA0FF),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(3),
+                  ),
+                ),
+                child: const Center(
+                  child: Text(
+                    'Visualizar',
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 9,
+                      fontFamily: 'Lato',
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildDocumentRow(BuildContext context) {
+    List<Map<String, dynamic>> documents = [
+      {
+        'title': 'Ocorrência',
+        'date': _acontecimento != null ? DateFormat('dd/MM/yyyy').format(_acontecimento!.dataHora) : 'Data não disponível',
+        'onTap': () => _visualizarRelatorio(context, 'acontecimento'),
+      },
+      {
+        'title': 'Relatório',
+        'date': widget.atendimento.dataVistoria,
+        'onTap': () => _visualizarRelatorio(context, 'atendimento'),
+      },
+      {
+        'title': 'Recibo',
+        'date': '01/01/2024',
+        'onTap': () {
+        },
+      },
+    ];
+
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: documents.map((doc) {
+        return Expanded(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 5.0),
+            child: _buildDocumentCard(
+              doc['title']!,
+              doc['date']!,
+              doc['onTap'],
             ),
           ),
-        ],
-      ),
+        );
+      }).toList(),
     );
   }
 }
