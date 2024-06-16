@@ -4,11 +4,12 @@ import 'package:get/get.dart';
 import 'package:projetoaplicado/app/components/acontecimento/acontecimento-card.dart';
 import 'package:projetoaplicado/backend/controllers/acontecimentoController.dart';
 import 'package:projetoaplicado/backend/models/acontecimentoModel.dart';
+
 import '../../../components/globais/barra-pesquisa-e-filtro.dart';
 import '../../../components/globais/barra-superior.dart';
+import '../../../components/globais/filtro-atendimento.dart';
 import '../../../components/globais/menu-inferior.dart';
 
-import '../../../components/globais/filtro-atendimento.dart';
 import '../historico/tela-atend-historico.dart';
 import '../cadastro/tela-atendimento-forms.dart';
 
@@ -38,11 +39,12 @@ class _AtendimentoPendenteState extends State<AtendimentoPendente> {
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        List<String> subgrupos = acontecimentoController.listAcontecimentoObs
-            .map((acontecimento) => acontecimento.subgrupo)
-            .toSet()
-            .toList();
-        return FiltroAtendimento(subgrupos: subgrupos);
+        return FiltroAtendimento(
+          subgrupos: acontecimentoController.listAcontecimentoObs.map((a) => a.subgrupo).toSet().toList(),
+          onSave: (filters) {
+            acontecimentoController.filterAcontecimentos(filters);
+          },
+        );
       },
     );
   }

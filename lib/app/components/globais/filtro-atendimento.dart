@@ -2,12 +2,16 @@ import 'package:flutter/material.dart';
 
 class FiltroAtendimento extends StatelessWidget {
   final List<String> subgrupos;
+  final Function(Map<String, dynamic>) onSave;
 
-  FiltroAtendimento({required this.subgrupos});
+  FiltroAtendimento({required this.subgrupos, required this.onSave});
 
   @override
   Widget build(BuildContext context) {
     String? selectedSubgroup;
+    TextEditingController protocoloController = TextEditingController();
+    TextEditingController bairroController = TextEditingController();
+    DateTimeRange? selectedDateRange;
 
     return Dialog(
       shape: RoundedRectangleBorder(
@@ -26,7 +30,7 @@ class FiltroAtendimento extends StatelessWidget {
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              const Divider(color: Colors.grey), // Linha fina e cinza
+              const Divider(color: Colors.grey),
               const SizedBox(height: 10),
               DropdownButtonFormField<String>(
                 decoration: _customInputDecoration('Subgrupo'),
@@ -42,14 +46,31 @@ class FiltroAtendimento extends StatelessWidget {
               ),
               const SizedBox(height: 10),
               TextField(
+                controller: protocoloController,
                 decoration: _customInputDecoration('Número do protocolo'),
               ),
               const SizedBox(height: 10),
-              TextField(
-                decoration: _customInputDecoration('Data do acontecimento'),
+              GestureDetector(
+                onTap: () async {
+                  selectedDateRange = await showDateRangePicker(
+                    context: context,
+                    firstDate: DateTime.now().subtract(Duration(days: 30)),
+                    lastDate: DateTime.now(),
+                  );
+                },
+                child: AbsorbPointer(
+                  child: TextField(
+                    decoration: _customInputDecoration(
+                      selectedDateRange == null
+                          ? 'Selecione o período'
+                          : 'Período: ${selectedDateRange?.start.toIso8601String().split('T').first} - ${selectedDateRange?.end.toIso8601String().split('T').first}',
+                    ),
+                  ),
+                ),
               ),
               const SizedBox(height: 10),
               TextField(
+                controller: bairroController,
                 decoration: _customInputDecoration('Bairro'),
               ),
               const SizedBox(height: 20),
@@ -74,7 +95,15 @@ class FiltroAtendimento extends StatelessWidget {
                   const SizedBox(width: 10),
                   ElevatedButton(
                     onPressed: () {
-                      // Ação do botão Salvar
+                      Map<String, dynamic> filters = {
+                        'subgrupo': selectedSubgroup,
+                        'protocolo': protocoloController.text.isEmpty ? null : protocoloController.text,
+                        'dataInicio': selectedDateRange?.start,
+                        'dataFim': selectedDateRange?.end,
+                        'bairro': bairroController.text.isEmpty ? null : bairroController.text,
+                      };
+                      onSave(filters);
+                      Navigator.of(context).pop();
                     },
                     child: Text(
                       'Salvar',

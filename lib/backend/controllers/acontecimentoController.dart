@@ -87,4 +87,29 @@ class AcontecimentoController extends GetxController {
     }).toList();
     listAcontecimentoObs.value = filteredList;
   }
+
+  void filterAcontecimentos(Map<String, dynamic> filters) {
+  var filteredList = listAcontecimentoObs.where((acontecimento) {
+    bool matches = true;
+
+    if (filters['subgrupo'] != null && filters['subgrupo'].isNotEmpty) {
+      matches &= acontecimento.subgrupo == filters['subgrupo'];
+    }
+    if (filters['protocolo'] != null && filters['protocolo'].isNotEmpty) {
+      matches &= acontecimento.numeroProtocolo?.contains(filters['protocolo']) ?? false;
+    }
+    if (filters['dataInicio'] != null && filters['dataFim'] != null) {
+      matches &= acontecimento.dataHora.isAfter(filters['dataInicio']) &&
+                 acontecimento.dataHora.isBefore(filters['dataFim']);
+    }
+    if (filters['bairro'] != null && filters['bairro'].isNotEmpty) {
+      matches &= acontecimento.infoCobrade.contains(filters['bairro']);
+    }
+
+    return matches;
+  }).toList();
+
+  listAcontecimentoObs.value = filteredList;
+}
+
 }
