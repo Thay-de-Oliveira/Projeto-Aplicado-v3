@@ -7,8 +7,6 @@ import 'package:projetoaplicado/backend/controllers/acontecimentoController.dart
 
 import '../../../components/globais/barra-superior.dart';
 import '../../../components/globais/menu-inferior.dart';
-import '../../atendimentos/pendente/tela-atend-pendente.dart';
-import 'tela-relat-aconte-detalhes.dart';
 import '../../../components/globais/barra-pesquisa.dart'; 
 
 class RelatorioAcontecimento extends StatefulWidget {
@@ -226,7 +224,7 @@ class _RelatorioAcontecimentoState extends State<RelatorioAcontecimento> {
                           physics: NeverScrollableScrollPhysics(),
                           itemCount: acontecimentos.length,
                           itemBuilder: (context, index) {
-                            return AcontecimentoCard(acontecimento: acontecimentos[index]);
+                            return AcontecimentoCardRelatorio(acontecimento: acontecimentos[index]);
                           },
                         );
                       }

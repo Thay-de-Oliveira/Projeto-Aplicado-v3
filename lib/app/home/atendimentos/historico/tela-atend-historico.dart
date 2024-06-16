@@ -139,7 +139,7 @@ class _HistoricoAtendimentoState extends State<HistoricoAtendimento> {
                           itemBuilder: (context, index) {
                             AtendimentosModel atendimento = historico[index];
                             return Padding(
-                              padding: const EdgeInsets.symmetric(vertical: 8.0),
+                              padding: const EdgeInsets.symmetric(vertical: 0.0),
                               child: AtendimentoCard(atendimento: atendimento),
                             );
                           },

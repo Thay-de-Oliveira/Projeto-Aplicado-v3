@@ -291,12 +291,12 @@ class _RelatorioReciboState extends State<RelatorioRecibo> {
                               InkWell(
                                 onTap: () {
                                   // Navega para a tela de DetalhesRelatorioAcontecimento quando o botão for pressionado
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            DetalhesRelatorioAcontecimento()),
-                                  );
+                                  // Navigator.push(
+                                  //   context,
+                                  //   MaterialPageRoute(
+                                  //       builder: (context) =>
+                                  //           DetalhesRelatorioAcontecimento()),
+                                  // );
                                 },
                                 child: Positioned(
                                   left: 10,

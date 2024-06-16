@@ -156,7 +156,7 @@ class DataHoraInfo extends StatelessWidget {
           ),
           const SizedBox(height: 4),
           Text(
-            'Data do acontecimento: ${DateFormat.yMd().add_jm().format(dataHora)}',
+            'Data do acontecimento: ${DateFormat('dd/MM/yyyy').format(dataHora)}',
             style: TextStyle(
               color: Colors.black.withOpacity(0.85),
               fontSize: 12,
