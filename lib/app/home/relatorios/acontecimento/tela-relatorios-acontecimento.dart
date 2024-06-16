@@ -7,7 +7,7 @@ import 'package:projetoaplicado/backend/controllers/acontecimentoController.dart
 
 import '../../../components/globais/barra-superior.dart';
 import '../../../components/globais/menu-inferior.dart';
-import '../../../components/globais/barra-pesquisa.dart'; 
+import '../../../components/globais/barra-pesquisa-e-filtro.dart'; 
 
 class RelatorioAcontecimento extends StatefulWidget {
   @override
@@ -200,7 +200,7 @@ class _RelatorioAcontecimentoState extends State<RelatorioAcontecimento> {
                 ),
                 SizedBox(height: 25),
                 SearchFilterBar(
-                  onSearch: _onSearch,
+                  onSearch: _onSearch, onFilter: () {  },
                 ),
                 SizedBox(height: 25),
                 Center(

@@ -1,17 +1,13 @@
-2024/06/10-21:16:15.486 1aa4 Reusing MANIFEST C:\Users\VINICI~1\AppData\Local\Temp\flutter_tools.1fd43683\flutter_tools_chrome_device.36862c18\Default\Site Characteristics Database/MANIFEST-000001
-2024/06/10-21:16:15.491 1aa4 Recovering log #3
-2024/06/10-21:16:15.492 1aa4 Level-0 table #10: started
-2024/06/10-21:16:15.540 1aa4 Level-0 table #10: 590 bytes OK
-2024/06/10-21:16:15.541 1aa4 Recovering log #6
-2024/06/10-21:16:15.541 1aa4 Level-0 table #11: started
-2024/06/10-21:16:15.574 1aa4 Level-0 table #11: 162 bytes OK
-2024/06/10-21:16:15.574 1aa4 Recovering log #10
-2024/06/10-21:16:15.575 1aa4 Reusing old log C:\Users\VINICI~1\AppData\Local\Temp\flutter_tools.1fd43683\flutter_tools_chrome_device.36862c18\Default\Site Characteristics Database/000010.log 
-2024/06/10-21:16:15.603 1aa4 Delete type=0 #3
-2024/06/10-21:16:15.604 1aa4 Delete type=0 #6
-2024/06/10-21:16:15.604 1ff4 Compacting 2@0 + 0@1 files
-2024/06/10-21:16:15.622 1ff4 Generated table #12@0: 1 keys, 162 bytes
-2024/06/10-21:16:15.622 1ff4 Compacted 2@0 + 0@1 files => 162 bytes
-2024/06/10-21:16:15.641 1ff4 compacted to: files[ 3 1 0 0 0 0 0 ]
-2024/06/10-21:16:15.642 1ff4 Delete type=2 #8
-2024/06/10-21:16:15.642 1ff4 Delete type=2 #11
+2024/06/15-18:32:43.222 3808 Reusing MANIFEST C:\Users\THAIN~1\AppData\Local\Temp\flutter_tools.d3d46f60\flutter_tools_chrome_device.3cdabaf7\Default\Site Characteristics Database/MANIFEST-000001
+2024/06/15-18:32:43.223 1d04 Compacting 8@0 + 0@1 files
+2024/06/15-18:32:43.246 1d04 Generated table #20@0: 3 keys, 262 bytes
+2024/06/15-18:32:43.247 1d04 Compacted 8@0 + 0@1 files => 262 bytes
+2024/06/15-18:32:43.265 1d04 compacted to: files[ 0 1 0 0 0 0 0 ]
+2024/06/15-18:32:43.267 1d04 Delete type=2 #4
+2024/06/15-18:32:43.267 1d04 Delete type=2 #6
+2024/06/15-18:32:43.267 1d04 Delete type=2 #11
+2024/06/15-18:32:43.267 1d04 Delete type=2 #13
+2024/06/15-18:32:43.267 1d04 Delete type=2 #14
+2024/06/15-18:32:43.267 1d04 Delete type=2 #15
+2024/06/15-18:32:43.267 1d04 Delete type=2 #16
+2024/06/15-18:32:43.272 1d04 Delete type=2 #17

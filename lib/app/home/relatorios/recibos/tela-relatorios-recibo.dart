@@ -4,7 +4,7 @@ import 'package:projetoaplicado/app/home/relatorios/atendimento/tela-relatorios-
 
 import '../../../components/globais/barra-superior.dart';
 import '../../../components/globais/menu-inferior.dart';
-import '../../../components/globais/barra-pesquisa.dart';
+import '../../../components/globais/barra-pesquisa-e-filtro.dart';
 
 
 import '../../atendimentos/pendente/tela-atend-pendente.dart';

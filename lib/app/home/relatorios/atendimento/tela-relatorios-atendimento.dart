@@ -9,7 +9,7 @@ import 'package:projetoaplicado/backend/models/atendimentoModel.dart';
 
 import '../../../components/globais/barra-superior.dart';
 import '../../../components/globais/menu-inferior.dart';
-import '../../../components/globais/barra-pesquisa.dart'; 
+import '../../../components/globais/barra-pesquisa-e-filtro.dart'; 
 
 
 class RelatorioAtendimento extends StatefulWidget {
@@ -234,7 +234,7 @@ class _RelatorioAtendimentoState extends State<RelatorioAtendimento> {
 
                   SizedBox(height: 25),
                   SearchFilterBar(
-                    onSearch: _onSearch,
+                    onSearch: _onSearch, onFilter: () {  },
                   ),
                   SizedBox(height: 25),
 

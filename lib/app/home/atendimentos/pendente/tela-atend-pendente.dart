@@ -4,9 +4,12 @@ import 'package:get/get.dart';
 import 'package:projetoaplicado/app/components/acontecimento/acontecimento-card.dart';
 import 'package:projetoaplicado/backend/controllers/acontecimentoController.dart';
 import 'package:projetoaplicado/backend/models/acontecimentoModel.dart';
+
 import '../../../components/globais/barra-superior.dart';
+import '../../../components/globais/filtro-atendimento.dart';
 import '../../../components/globais/menu-inferior.dart';
-import '../../../components/globais/barra-pesquisa.dart';
+import '../../../components/globais/barra-pesquisa-e-filtro.dart';
+
 import '../historico/tela-atend-historico.dart';
 import '../cadastro/tela-atendimento-forms.dart';
 
@@ -30,6 +33,15 @@ class _AtendimentoPendenteState extends State<AtendimentoPendente> {
 
   void _onSearch(String query) {
     acontecimentoController.searchByWord(query);
+  }
+
+  void _showFilterDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return FiltroAtendimento();
+      },
+    );
   }
 
   @override
@@ -209,8 +221,130 @@ class _AtendimentoPendenteState extends State<AtendimentoPendente> {
                     ],
                   ),
                   SizedBox(height: 25),
-                  SearchFilterBar(
-                    onSearch: _onSearch,
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                    child: Row(
+                      children: [
+                        GestureDetector(
+                          onTap: _showFilterDialog,
+                          child: Container(
+                            width: 65,
+                            height: 32,
+                            child: Stack(
+                              children: [
+                                Positioned(
+                                  left: 0,
+                                  top: 0,
+                                  child: Container(
+                                    width: 65,
+                                    height: 32,
+                                    decoration: ShapeDecoration(
+                                      color: Color(0xFFCFDDF2),
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(8),
+                                      ),
+                                      shadows: [
+                                        BoxShadow(
+                                          color: Color(0x269FE3FF),
+                                          blurRadius: 8,
+                                          offset: Offset(1, 1),
+                                          spreadRadius: 0,
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                Positioned(
+                                  left: 6.09,
+                                  top: 7,
+                                  child: Container(
+                                    width: 53.91,
+                                    height: 18,
+                                    child: Stack(
+                                      children: [
+                                        Positioned(
+                                          left: 18.91,
+                                          top: 2,
+                                          child: SizedBox(
+                                            width: 35,
+                                            height: 13,
+                                            child: Text(
+                                              'Filtrar',
+                                              style: TextStyle(
+                                                color: Color(0xFF2F2F2F),
+                                                fontSize: 12,
+                                                fontFamily: 'Roboto',
+                                                fontWeight: FontWeight.w500,
+                                                height: 0,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                        Positioned(
+                                          left: 0,
+                                          top: 0,
+                                          child: Container(
+                                            width: 15.23,
+                                            height: 18,
+                                            clipBehavior: Clip.antiAlias,
+                                            decoration: ShapeDecoration(
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius: BorderRadius.circular(8),
+                                              ),
+                                            ),
+                                            child: Column(
+                                              mainAxisSize: MainAxisSize.min,
+                                              mainAxisAlignment: MainAxisAlignment.start,
+                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              children: [],
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 10),
+                        Expanded(
+                          child: Container(
+                            height: 32,
+                            child: TextField(
+                              decoration: InputDecoration(
+                                hintText: 'Pesquisar',
+                                hintStyle: TextStyle(
+                                  color: Color(0xFF979797),
+                                  fontSize: 14,
+                                  fontFamily: 'Roboto',
+                                  fontWeight: FontWeight.w400,
+                                ),
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(8),
+                                  borderSide: BorderSide(
+                                    color: Colors.white,
+                                    width: 1,
+                                  ),
+                                ),
+                                filled: true,
+                                fillColor: Colors.white,
+                                contentPadding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+                                suffixIcon: Icon(
+                                  Icons.search,
+                                  color: Color(0xFF979797),
+                                ),
+                              ),
+                              onChanged: (value) {
+                                // Lógica de filtragem de atendimentos
+                                _onSearch(value);
+                              },
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                   SizedBox(height: 25),
                   Center(
