@@ -56,6 +56,24 @@ class FiltroAtendimento extends StatelessWidget {
                     context: context,
                     firstDate: DateTime.now().subtract(Duration(days: 30)),
                     lastDate: DateTime.now(),
+                    builder: (context, child) {
+                      return Theme(
+                        data: Theme.of(context).copyWith(
+                          colorScheme: ColorScheme.light(
+                            primary: Color(0xFF1B7CB3), // cor principal
+                            onPrimary: Colors.white, // cor do texto do botão selecionado
+                            onSurface: Color(0xFF1B7CB3), // cor do texto dos dias
+                            surface: Colors.blue.shade50, // cor da barra de dias selecionados
+                          ),
+                          textButtonTheme: TextButtonThemeData(
+                            style: TextButton.styleFrom(
+                              foregroundColor: Color(0xFF1B7CB3), // cor do texto dos botões
+                            ),
+                          ),
+                        ),
+                        child: child!,
+                      );
+                    },
                   );
                 },
                 child: AbsorbPointer(
