@@ -1,8 +1,14 @@
 import 'package:flutter/material.dart';
 
 class FiltroAtendimento extends StatelessWidget {
+  final List<String> subgrupos;
+
+  FiltroAtendimento({required this.subgrupos});
+
   @override
   Widget build(BuildContext context) {
+    String? selectedSubgroup;
+
     return Dialog(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10.0),
@@ -22,8 +28,17 @@ class FiltroAtendimento extends StatelessWidget {
               ),
               const Divider(color: Colors.grey), // Linha fina e cinza
               const SizedBox(height: 10),
-              TextField(
-                decoration: _customInputDecoration('Classe de acontecimento'),
+              DropdownButtonFormField<String>(
+                decoration: _customInputDecoration('Subgrupo'),
+                items: subgrupos.map((String subgroup) {
+                  return DropdownMenuItem<String>(
+                    value: subgroup,
+                    child: Text(subgroup),
+                  );
+                }).toList(),
+                onChanged: (value) {
+                  selectedSubgroup = value;
+                },
               ),
               const SizedBox(height: 10),
               TextField(
