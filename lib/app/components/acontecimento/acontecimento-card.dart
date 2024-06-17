@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:projetoaplicado/app/home/atendimentos/cadastro/tela-atendimento-forms.dart';
+import 'package:projetoaplicado/app/home/atendimentos/pendente/tela-atend-pendente-detalhes.dart';
 import 'package:projetoaplicado/backend/models/acontecimentoModel.dart';
 
 class AcontecimentoCard extends StatelessWidget {
@@ -13,12 +13,12 @@ class AcontecimentoCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        // Navegar para a tela de formulário de atendimento com o protocolo
+        // Navegar para a tela de detalhes de atendimento pendente com o acontecimento
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => AtendimentoForms(
-              numeroProtocolo: acontecimento.numeroProtocolo,
+            builder: (context) => DetalhesAtendimentoPendente(
+              acontecimento: acontecimento,
             ),
           ),
         );

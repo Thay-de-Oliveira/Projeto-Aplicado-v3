@@ -138,7 +138,7 @@ class _AtendimentoCardRelatorioState extends State<AtendimentoCardRelatorio> {
               Positioned(
                 left: 208,
                 top: 89,
-                child: RealizarAtendimentoButton(
+                child: GerarRelatorioAtendimentoButton(
                   onTap: () => _visualizarRelatorio(context),
                   text: widget.atendimento.pdfUrl != null && widget.atendimento.pdfUrl!.isNotEmpty
                       ? 'Visualizar Relatório'
@@ -169,11 +169,11 @@ class _AtendimentoCardRelatorioState extends State<AtendimentoCardRelatorio> {
   }
 }
 
-class RealizarAtendimentoButton extends StatelessWidget {
+class GerarRelatorioAtendimentoButton extends StatelessWidget {
   final VoidCallback onTap;
   final String text;
 
-  const RealizarAtendimentoButton({Key? key, required this.onTap, required this.text}) : super(key: key);
+  const GerarRelatorioAtendimentoButton({Key? key, required this.onTap, required this.text}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

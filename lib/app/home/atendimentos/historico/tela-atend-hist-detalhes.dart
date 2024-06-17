@@ -125,7 +125,7 @@ class _DetalheHistorico extends State<DetalheHistorico> {
     return Scaffold(
       appBar: null,
       body: isLoading
-          ? Center(child: CircularProgressIndicator())
+          ? const Center(child: CircularProgressIndicator())
           : Stack(
               children: <Widget>[
                 Column(
@@ -406,26 +406,20 @@ class _DetalheHistorico extends State<DetalheHistorico> {
                                       ),
                                       child: InkWell(
                                         onTap: () {
-                                          String endereco =
-                                              '${cidadao!.rua}, ${cidadao!.bairro}, ${cidadao!.cidade} - ${cidadao!.estado}, ${cidadao!.cep}';
+                                          String endereco = '${cidadao!.rua}, ${cidadao!.bairro}, ${cidadao!.cidade} - ${cidadao!.estado}, ${cidadao!.cep}';
                                           MapsLauncher.launchQuery(endereco);
                                         },
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(16),
+                                        child: const Padding(
+                                          padding: EdgeInsets.all(16),
                                           child: Row(
                                             children: <Widget>[
-                                              Container(
-                                                width: 30,
-                                                height: 30,
-                                                child: Image.asset(
-                                                    'assets/imagens/icon-pendente.png'),
-                                              ),
-                                              const SizedBox(width: 10),
-                                              const Text(
+                                              Icon(Icons.location_on, color: Color(0xFF2987C0)),
+                                              SizedBox(width: 10),
+                                              Text(
                                                 'Localização do acontecimento',
                                                 style: TextStyle(
                                                   fontSize: 16,
-                                                  fontWeight: FontWeight.normal,
+                                                  color: Colors.black
                                                 ),
                                               ),
                                             ],
@@ -436,7 +430,7 @@ class _DetalheHistorico extends State<DetalheHistorico> {
                                       margin: const EdgeInsets.all(10),
                                     ),
                                   ),
-                                ),
+                                )
                             ],
                           ),
                         ),
