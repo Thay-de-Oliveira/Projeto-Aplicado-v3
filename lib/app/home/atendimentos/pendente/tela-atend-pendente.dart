@@ -7,7 +7,7 @@ import 'package:projetoaplicado/backend/models/acontecimentoModel.dart';
 
 import '../../../components/globais/barra-pesquisa-e-filtro.dart';
 import '../../../components/globais/barra-superior.dart';
-import '../../../components/globais/filtro-atendimento.dart';
+import '../../../components/globais/filtro-atendi-pendente.dart';
 import '../../../components/globais/menu-inferior.dart';
 
 import '../historico/tela-atend-historico.dart';

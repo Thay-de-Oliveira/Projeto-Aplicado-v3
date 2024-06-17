@@ -1,18 +1,23 @@
 import 'package:flutter/material.dart';
 
-class FiltroAtendimento extends StatelessWidget {
+class FiltroAtendimento extends StatefulWidget {
   final List<String> subgrupos;
   final Function(Map<String, dynamic>) onSave;
 
   FiltroAtendimento({required this.subgrupos, required this.onSave});
 
   @override
-  Widget build(BuildContext context) {
-    String? selectedSubgroup;
-    TextEditingController protocoloController = TextEditingController();
-    TextEditingController bairroController = TextEditingController();
-    DateTimeRange? selectedDateRange;
+  _FiltroAtendimentoState createState() => _FiltroAtendimentoState();
+}
 
+class _FiltroAtendimentoState extends State<FiltroAtendimento> {
+  String? selectedSubgroup;
+  TextEditingController protocoloController = TextEditingController();
+  TextEditingController bairroController = TextEditingController();
+  DateTimeRange? selectedDateRange;
+
+  @override
+  Widget build(BuildContext context) {
     return Dialog(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10.0),
@@ -34,14 +39,16 @@ class FiltroAtendimento extends StatelessWidget {
               const SizedBox(height: 10),
               DropdownButtonFormField<String>(
                 decoration: _customInputDecoration('Subgrupo'),
-                items: subgrupos.map((String subgroup) {
+                items: widget.subgrupos.map((String subgroup) {
                   return DropdownMenuItem<String>(
                     value: subgroup,
                     child: Text(subgroup),
                   );
                 }).toList(),
                 onChanged: (value) {
-                  selectedSubgroup = value;
+                  setState(() {
+                    selectedSubgroup = value;
+                  });
                 },
               ),
               const SizedBox(height: 10),
@@ -63,7 +70,7 @@ class FiltroAtendimento extends StatelessWidget {
                             primary: Color(0xFF1B7CB3), // cor principal
                             onPrimary: Colors.white, // cor do texto do botão selecionado
                             onSurface: Color(0xFF1B7CB3), // cor do texto dos dias
-                            surface: Colors.blue.shade50, // cor da barra de dias selecionados
+                            surface: const Color.fromARGB(255, 193, 214, 230), // cor da barra de dias selecionados
                           ),
                           textButtonTheme: TextButtonThemeData(
                             style: TextButton.styleFrom(
@@ -75,12 +82,13 @@ class FiltroAtendimento extends StatelessWidget {
                       );
                     },
                   );
+                  setState(() {});
                 },
                 child: AbsorbPointer(
                   child: TextField(
                     decoration: _customInputDecoration(
                       selectedDateRange == null
-                          ? 'Selecione o período'
+                          ? 'Selecionar período (máx 15 dias)'
                           : 'Período: ${selectedDateRange?.start.toIso8601String().split('T').first} - ${selectedDateRange?.end.toIso8601String().split('T').first}',
                     ),
                   ),
@@ -120,7 +128,7 @@ class FiltroAtendimento extends StatelessWidget {
                         'dataFim': selectedDateRange?.end,
                         'bairro': bairroController.text.isEmpty ? null : bairroController.text,
                       };
-                      onSave(filters);
+                      widget.onSave(filters);
                       Navigator.of(context).pop();
                     },
                     child: Text(
