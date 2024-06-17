@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 
-class FiltroAtendimento extends StatefulWidget {
+class FiltroAtendimentoPendente extends StatefulWidget {
   final List<String> subgrupos;
   final Function(Map<String, dynamic>) onSave;
 
-  FiltroAtendimento({required this.subgrupos, required this.onSave});
+  FiltroAtendimentoPendente({required this.subgrupos, required this.onSave});
 
   @override
-  _FiltroAtendimentoState createState() => _FiltroAtendimentoState();
+  _FiltroAtendimentoPendenteState createState() => _FiltroAtendimentoPendenteState();
 }
 
-class _FiltroAtendimentoState extends State<FiltroAtendimento> {
+class _FiltroAtendimentoPendenteState extends State<FiltroAtendimentoPendente> {
   String? selectedSubgroup;
   TextEditingController protocoloController = TextEditingController();
   TextEditingController bairroController = TextEditingController();

@@ -88,28 +88,60 @@ class AcontecimentoController extends GetxController {
     listAcontecimentoObs.value = filteredList;
   }
 
-  void filterAcontecimentos(Map<String, dynamic> filters) {
-  var filteredList = listAcontecimentoObs.where((acontecimento) {
-    bool matches = true;
+  void filterAcontecimentoPendente(Map<String, dynamic> filters) {
+    var filteredList = listAcontecimentoObs.where((acontecimento) {
+      bool matches = true;
 
-    if (filters['subgrupo'] != null && filters['subgrupo'].isNotEmpty) {
-      matches &= acontecimento.subgrupo == filters['subgrupo'];
-    }
-    if (filters['protocolo'] != null && filters['protocolo'].isNotEmpty) {
-      matches &= acontecimento.numeroProtocolo?.contains(filters['protocolo']) ?? false;
-    }
-    if (filters['dataInicio'] != null && filters['dataFim'] != null) {
-      matches &= acontecimento.dataHora.isAfter(filters['dataInicio']) &&
-                 acontecimento.dataHora.isBefore(filters['dataFim']);
-    }
-    if (filters['bairro'] != null && filters['bairro'].isNotEmpty) {
-      matches &= acontecimento.infoCobrade.contains(filters['bairro']);
-    }
+      if (filters['subgrupo'] != null && filters['subgrupo'].isNotEmpty) {
+        matches &= acontecimento.subgrupo == filters['subgrupo'];
+      }
+      if (filters['protocolo'] != null && filters['protocolo'].isNotEmpty) {
+        matches &= acontecimento.numeroProtocolo?.contains(filters['protocolo']) ?? false;
+      }
+      if (filters['dataInicio'] != null && filters['dataFim'] != null) {
+        matches &= acontecimento.dataHora.isAfter(filters['dataInicio']) &&
+                   acontecimento.dataHora.isBefore(filters['dataFim']);
+      }
+      if (filters['bairro'] != null && filters['bairro'].isNotEmpty) {
+        matches &= acontecimento.infoCobrade.contains(filters['bairro']);
+      }
 
-    return matches;
-  }).toList();
+      return matches;
+    }).toList();
 
-  listAcontecimentoObs.value = filteredList;
-}
+    listAcontecimentoObs.value = filteredList;
+  }
 
+  void filterAtendimentoHistorico(Map<String, dynamic> filters) {
+    var filteredList = listAcontecimentoObs.where((acontecimento) {
+      bool matches = true;
+
+      if (filters['subgrupo'] != null && filters['subgrupo'].isNotEmpty) {
+        matches &= acontecimento.subgrupo == filters['subgrupo'];
+      }
+      if (filters['protocolo'] != null && filters['protocolo'].isNotEmpty) {
+        matches &= acontecimento.numeroProtocolo?.contains(filters['protocolo']) ?? false;
+      }
+      if (filters['dataInicio'] != null && filters['dataFim'] != null) {
+        matches &= acontecimento.dataHora.isAfter(filters['dataInicio']) &&
+                   acontecimento.dataHora.isBefore(filters['dataFim']);
+      }
+      if (filters['bairro'] != null && filters['bairro'].isNotEmpty) {
+        matches &= acontecimento.infoCobrade.contains(filters['bairro']);
+      }
+      if (filters['tipoAtendimento'] != null && filters['tipoAtendimento'].isNotEmpty) {
+        matches &= acontecimento.tipo.contains(filters['tipoAtendimento']);
+      }
+      if (filters['atendente'] != null && filters['atendente'].isNotEmpty) {
+        matches &= acontecimento.subtipo.contains(filters['atendente']);
+      }
+      if (filters['itensAssistencia'] != null && filters['itensAssistencia'].isNotEmpty) {
+        matches &= acontecimento.infoCobrade.contains(filters['itensAssistencia']);
+      }
+
+      return matches;
+    }).toList();
+
+    listAcontecimentoObs.value = filteredList;
+  }
 }

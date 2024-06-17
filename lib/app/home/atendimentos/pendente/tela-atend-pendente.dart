@@ -39,10 +39,10 @@ class _AtendimentoPendenteState extends State<AtendimentoPendente> {
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        return FiltroAtendimento(
+        return FiltroAtendimentoPendente(
           subgrupos: acontecimentoController.listAcontecimentoObs.map((a) => a.subgrupo).toSet().toList(),
           onSave: (filters) {
-            acontecimentoController.filterAcontecimentos(filters);
+            acontecimentoController.filterAcontecimentoPendente(filters);
           },
         );
       },

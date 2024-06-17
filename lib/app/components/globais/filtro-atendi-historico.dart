@@ -1,6 +1,24 @@
 import 'package:flutter/material.dart';
 
-class FiltroAtendimento extends StatelessWidget {
+class FiltroAtendimentoHistorico extends StatefulWidget {
+  final List<String> subgrupos;
+  final Function(Map<String, dynamic>) onSave;
+
+  FiltroAtendimentoHistorico({required this.subgrupos, required this.onSave});
+
+  @override
+  _FiltroAtendimentoHistoricoState createState() => _FiltroAtendimentoHistoricoState();
+}
+
+class _FiltroAtendimentoHistoricoState extends State<FiltroAtendimentoHistorico> {
+  String? selectedSubgroup;
+  TextEditingController protocoloController = TextEditingController();
+  TextEditingController bairroController = TextEditingController();
+  TextEditingController atendenteController = TextEditingController();
+  TextEditingController tipoAtendimentoController = TextEditingController();
+  TextEditingController itensAssistenciaController = TextEditingController();
+  DateTimeRange? selectedDateRange;
+
   @override
   Widget build(BuildContext context) {
     return Dialog(
@@ -20,57 +38,84 @@ class FiltroAtendimento extends StatelessWidget {
                   fontWeight: FontWeight.bold,
                 ),
               ),
+              const Divider(color: Colors.grey),
               const SizedBox(height: 10),
               TextField(
+                controller: tipoAtendimentoController,
                 decoration: _customInputDecoration('Tipo de atendimento'),
               ),
               const SizedBox(height: 10),
               TextField(
-                decoration: _customInputDecoration('Classe de acontecimento'),
-              ),
-              const SizedBox(height: 10),
-              TextField(
-                decoration: _customInputDecoration('Subgrupo'),
-              ),
-              const SizedBox(height: 10),
-              TextField(
+                controller: atendenteController,
                 decoration: _customInputDecoration('Atendente'),
               ),
               const SizedBox(height: 10),
-              Row(
-                children: [
-                  Expanded(
-                    child: TextField(
-                      decoration: _customInputDecoration('Código de identificação'),
-                    ),
-                  ),
-                  const SizedBox(width: 10),
-                  Expanded(
-                    child: TextField(
-                      decoration: _customInputDecoration('Data da vistoria'),
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 10),
-              Row(
-                children: [
-                  Expanded(
-                    child: TextField(
-                      decoration: _customInputDecoration('Bairro'),
-                    ),
-                  ),
-                  const SizedBox(width: 10),
-                  Expanded(
-                    child: TextField(
-                      decoration: _customInputDecoration('Cidade'),
-                    ),
-                  ),
-                ],
+              DropdownButtonFormField<String>(
+                decoration: _customInputDecoration('Subgrupo'),
+                items: widget.subgrupos.map((String subgroup) {
+                  return DropdownMenuItem<String>(
+                    value: subgroup,
+                    child: Text(subgroup),
+                  );
+                }).toList(),
+                onChanged: (value) {
+                  setState(() {
+                    selectedSubgroup = value;
+                  });
+                },
               ),
               const SizedBox(height: 10),
               TextField(
-                decoration: _customInputDecoration('Foi entregue itens de assistência humanitária?'),
+                controller: protocoloController,
+                decoration: _customInputDecoration('Número do protocolo'),
+              ),
+              const SizedBox(height: 10),
+              GestureDetector(
+                onTap: () async {
+                  selectedDateRange = await showDateRangePicker(
+                    context: context,
+                    firstDate: DateTime.now().subtract(Duration(days: 30)),
+                    lastDate: DateTime.now(),
+                    builder: (context, child) {
+                      return Theme(
+                        data: Theme.of(context).copyWith(
+                          colorScheme: ColorScheme.light(
+                            primary: Color(0xFF1B7CB3), // cor principal
+                            onPrimary: Colors.white, // cor do texto do botão selecionado
+                            onSurface: Color(0xFF1B7CB3), // cor do texto dos dias
+                            surface: const Color.fromARGB(255, 193, 214, 230), // cor da barra de dias selecionados
+                          ),
+                          textButtonTheme: TextButtonThemeData(
+                            style: TextButton.styleFrom(
+                              foregroundColor: Color(0xFF1B7CB3), // cor do texto dos botões
+                            ),
+                          ),
+                        ),
+                        child: child!,
+                      );
+                    },
+                  );
+                  setState(() {});
+                },
+                child: AbsorbPointer(
+                  child: TextField(
+                    decoration: _customInputDecoration(
+                      selectedDateRange == null
+                          ? 'Selecionar período (máx 15 dias)'
+                          : 'Período: ${selectedDateRange?.start.toIso8601String().split('T').first} - ${selectedDateRange?.end.toIso8601String().split('T').first}',
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 10),
+              TextField(
+                controller: bairroController,
+                decoration: _customInputDecoration('Bairro'),
+              ),
+              const SizedBox(height: 10),
+              TextField(
+                controller: itensAssistenciaController,
+                decoration: _customInputDecoration('Entrega de itens assistência humanitária'),
               ),
               const SizedBox(height: 20),
               Row(
@@ -80,19 +125,42 @@ class FiltroAtendimento extends StatelessWidget {
                     onPressed: () {
                       Navigator.of(context).pop();
                     },
-                    child: Text('Cancelar'),
+                    child: Text(
+                      'Cancelar',
+                      style: TextStyle(color: Colors.white),
+                    ),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.grey,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8.0),
+                      ),
                     ),
                   ),
                   const SizedBox(width: 10),
                   ElevatedButton(
                     onPressed: () {
-                      // Ação do botão Salvar
+                      Map<String, dynamic> filters = {
+                        'subgrupo': selectedSubgroup,
+                        'protocolo': protocoloController.text.isEmpty ? null : protocoloController.text,
+                        'dataInicio': selectedDateRange?.start,
+                        'dataFim': selectedDateRange?.end,
+                        'bairro': bairroController.text.isEmpty ? null : bairroController.text,
+                        'tipoAtendimento': tipoAtendimentoController.text.isEmpty ? null : tipoAtendimentoController.text,
+                        'atendente': atendenteController.text.isEmpty ? null : atendenteController.text,
+                        'itensAssistencia': itensAssistenciaController.text.isEmpty ? null : itensAssistenciaController.text,
+                      };
+                      widget.onSave(filters);
+                      Navigator.of(context).pop();
                     },
-                    child: Text('Salvar'),
+                    child: Text(
+                      'Salvar',
+                      style: TextStyle(color: Colors.white),
+                    ),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.blue,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8.0),
+                      ),
                     ),
                   ),
                 ],
