@@ -1,9 +1,11 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:projetoaplicado/app/home/tela-inicio.dart';
 import 'package:projetoaplicado/backend/controllers/acontecimentoController.dart';
 import 'package:projetoaplicado/backend/controllers/atendimentoController.dart';
+import 'package:projetoaplicado/backend/controllers/cepController.dart';
 import 'package:projetoaplicado/backend/controllers/cidadaoController.dart';
 import 'package:projetoaplicado/backend/controllers/imagensController.dart';
 import 'package:projetoaplicado/backend/controllers/usuarioController.dart';
@@ -54,6 +56,12 @@ class _AtendimentoFormsState extends State<AtendimentoForms> {
   final TextEditingController _dataSolicitacaoController = TextEditingController();
   final TextEditingController _dataVistoriaController = TextEditingController();
   final TextEditingController _observacoesController = TextEditingController();
+  final TextEditingController _cepController = TextEditingController();
+  final TextEditingController _ruaController = TextEditingController();
+  final TextEditingController _bairroController = TextEditingController();
+  final TextEditingController _cidadeController = TextEditingController();
+  final TextEditingController _estadoController = TextEditingController();
+  final CepController _cepControllerInstance = CepController();
 
   @override
   void initState() {
@@ -77,6 +85,12 @@ class _AtendimentoFormsState extends State<AtendimentoForms> {
       Item(name: 'Fraldas'),
     ];
     _imagensController = ImagensController(onImageAdded: updateUI);
+    _cepController.addListener(() {
+      String cep = _cepController.text;
+      if (cep.length != 8) {
+        limparCamposEndereco();
+      }
+    });
   }
 
   void updateUI() {
@@ -155,9 +169,9 @@ class _AtendimentoFormsState extends State<AtendimentoForms> {
         context: context,
         barrierDismissible: false,
         builder: (BuildContext context) {
-          return Dialog(
+          return const Dialog(
             child: Padding(
-              padding: const EdgeInsets.all(16.0),
+              padding: EdgeInsets.all(16.0),
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
@@ -172,11 +186,11 @@ class _AtendimentoFormsState extends State<AtendimentoForms> {
       );
 
       AtendimentosModel novoAtendimento = AtendimentosModel(
-        n_protocolo: _selectedNumeroProtocoloAtendimento!,
+        nProtocolo: _selectedNumeroProtocoloAtendimento!,
         tipoAtendimento: _selectedTipoAtendimento,
         canalAtendimento: _selectedCanalAtendimento,
         cidadaoResponsavel: _cpfResponsavelController.text,
-        vistoriaRealizada: _VistoriaRealizadaController,
+        vistoriaRealizada: _vistoriaRealizadaController,
         tipoVistoria: _selectedTipoRealizada,
         dataSolicitacao: _dataSolicitacaoController.text,
         dataVistoria: _dataVistoriaController.text,
@@ -186,6 +200,11 @@ class _AtendimentoFormsState extends State<AtendimentoForms> {
         pendente: true,
         imagesUrls: [],
         atendenteResponsavel: _atendenteResponsavelController.text,
+        cep: _cepController.text,
+        rua: _ruaController.text,
+        bairro: _bairroController.text,
+        cidade: _cidadeController.text,
+        estado: _estadoController.text,
       );
 
       // Converter os XFiles para Files
@@ -193,18 +212,15 @@ class _AtendimentoFormsState extends State<AtendimentoForms> {
           .map((xFile) => File(xFile.path))
           .toList();
 
-      var resposta =
-          await _atendimentoController.post(novoAtendimento, imageFiles);
+      var resposta = await _atendimentoController.post(novoAtendimento, imageFiles);
 
       // Fechar o indicador de carregamento
       Navigator.of(context).pop();
 
-      if (resposta != null &&
-          resposta.contains('Atendimento criado com sucesso!')) {
+      if (resposta != null && resposta.contains('Atendimento criado com sucesso!')) {
         _exibirMensagem('Atendimento salvo com sucesso!');
-        var protocoloAtendimentoSalvo = novoAtendimento.n_protocolo;
-        await AcontecimentoController.acontecimentoController
-            .updateAcontecimento(protocoloAtendimentoSalvo, false);
+        var protocoloAtendimentoSalvo = novoAtendimento.nProtocolo;
+        await AcontecimentoController.acontecimentoController.updateAcontecimento(protocoloAtendimentoSalvo, false);
         _limparCamposFormulario();
       } else {
         _exibirMensagem('Erro ao salvar o atendimento. Tente novamente.');
@@ -240,10 +256,11 @@ class _AtendimentoFormsState extends State<AtendimentoForms> {
       _dataVistoriaController.clear();
       _observacoesController.clear();
       _imagensController.clear();
-      _VistoriaRealizadaController = false;
+      _vistoriaRealizadaController = false;
       for (var item in items) {
         item.isSelected = false;
       }
+      limparCamposEndereco();
     });
   }
 
@@ -261,11 +278,107 @@ class _AtendimentoFormsState extends State<AtendimentoForms> {
     }).toList();
   }
 
+Widget _buildAddressFields() {
+  return Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: <Widget>[
+      Row(
+        children: [
+          Expanded(
+            child: Stack(
+              alignment: Alignment.centerRight,
+              children: [
+                TextFormField(
+                  controller: _cepController,
+                  decoration: _customInputDecoration('CEP:').copyWith(
+                    counterText: '',
+                  ),
+                  keyboardType: TextInputType.number,
+                  maxLength: 8,
+                  onChanged: (value) {
+                    if (value.length == 8) {
+                      buscarCep();
+                    }
+                    setState(() {});
+                  },
+                  inputFormatters: [
+                    FilteringTextInputFormatter.digitsOnly,
+                  ],
+                ),
+                Positioned(
+                  right: 10,
+                  bottom: 5,
+                  child: Text(
+                    '${_cepController.text.length}/8',
+                    style: const TextStyle(
+                      fontSize: 12,
+                      color: Colors.grey,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+      const SizedBox(height: 16),
+
+      _buildNonEditableField(_ruaController, 'Rua:'),
+      _buildNonEditableField(_bairroController, 'Bairro:'),
+      _buildNonEditableField(_cidadeController, 'Cidade:'),
+      _buildNonEditableField(_estadoController, 'Estado:'),
+    ],
+  );
+}
+
+  Widget _buildNonEditableField(TextEditingController controller, String label) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        TextFormField(
+          controller: controller,
+          decoration: _customInputDecoration(label).copyWith(
+            fillColor: Colors.grey[200],
+            filled: true,
+          ),
+          enabled: false,
+        ),
+        const SizedBox(height: 16),
+      ],
+    );
+  }
+
+  void buscarCep() async {
+    String cep = _cepController.text;
+    if (cep.length == 8) {
+      var dadosCep = await _cepControllerInstance.buscarCep(cep);
+      if (dadosCep != null) {
+        setState(() {
+          _ruaController.text = dadosCep['logradouro'];
+          _bairroController.text = dadosCep['bairro'];
+          _cidadeController.text = dadosCep['localidade'];
+          _estadoController.text = dadosCep['uf'];
+        });
+      } else {
+        _exibirMensagem('CEP não encontrado.');
+      }
+    }
+  }
+
+  void limparCamposEndereco() {
+    setState(() {
+      _ruaController.clear();
+      _bairroController.clear();
+      _cidadeController.clear();
+      _estadoController.clear();
+    });
+  }
+
   String? _selectedNumeroProtocoloAtendimento;
   String _selectedTipoAtendimento = 'Selecionar atendimento';
   String _selectedCanalAtendimento = 'Selecionar canal de atendimento';
   String _selectedVistoriaRealizada = 'Selecionar';
-  bool _VistoriaRealizadaController = false;
+  bool _vistoriaRealizadaController = false;
   String _selectedTipoRealizada = 'Selecionar';
   String? _selectedEntregarItens = 'Selecionar';
 
@@ -636,7 +749,7 @@ class _AtendimentoFormsState extends State<AtendimentoForms> {
                           TypeAheadField<CidadaoModel>(
                             controller:
                                 _cidadaoResponsavelController, // Este controller agora só para exibir o nome
-                            debounceDuration: Duration(milliseconds: 300),
+                            debounceDuration: const Duration(milliseconds: 300),
                             suggestionsCallback: (search) async {
                               if (search.isEmpty) {
                                 return [];
@@ -710,10 +823,10 @@ class _AtendimentoFormsState extends State<AtendimentoForms> {
                                     setState(() {
                                       if (newValue == "Sim") {
                                         _selectedVistoriaRealizada = 'Sim';
-                                        _VistoriaRealizadaController = true;
+                                        _vistoriaRealizadaController = true;
                                       } else {
                                         _selectedVistoriaRealizada = 'Não';
-                                        _VistoriaRealizadaController = false;
+                                        _vistoriaRealizadaController = false;
                                       }
                                     });
                                   },
@@ -875,13 +988,17 @@ class _AtendimentoFormsState extends State<AtendimentoForms> {
                             ),
                           ),
 
-                          const SizedBox(height: 30),
+                          const SizedBox(height: 20),
+
+                          _buildAddressFields(),
+
+                          const SizedBox(height: 20),
 
                           //Campo de texto longo "Observações"
                           TextField(
                             controller: _observacoesController,
                             decoration: _customInputDecoration('Observações'),
-                            maxLines: null, // Permite múltiplas linhas
+                            maxLines: null,
                             keyboardType: TextInputType.multiline,
                           ),
 

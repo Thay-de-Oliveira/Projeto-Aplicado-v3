@@ -1,6 +1,6 @@
 class AtendimentosModel {
   final String? id;
-  final String n_protocolo;
+  final String nProtocolo;
   final String tipoAtendimento;
   final String canalAtendimento;
   final String cidadaoResponsavel;
@@ -12,13 +12,18 @@ class AtendimentosModel {
   final List<String> materiaisEntregues;
   final String? observacoes;
   final String? pdfUrl;
+  final String atendenteResponsavel;
+  final String cep;
+  final String rua;
+  final String bairro;
+  final String cidade;
+  final String estado;
   bool pendente;
   final List<String>? imagesUrls;
-  final String atendenteResponsavel;
 
   AtendimentosModel({
     this.id,
-    required this.n_protocolo,
+    required this.nProtocolo,
     required this.tipoAtendimento,
     required this.canalAtendimento,
     required this.cidadaoResponsavel,
@@ -30,54 +35,63 @@ class AtendimentosModel {
     required this.materiaisEntregues,
     this.observacoes,
     this.pdfUrl,
+    required this.atendenteResponsavel,
+    required this.cep,
+    required this.rua,
+    required this.bairro,
+    required this.cidade,
+    required this.estado,
     required this.pendente,
     this.imagesUrls,
-    required this.atendenteResponsavel,
   });
 
   factory AtendimentosModel.fromJson(Map<String, dynamic> json) {
     return AtendimentosModel(
       id: json['_id'],
-      n_protocolo: json['n_protocolo'],
-      tipoAtendimento: json['TipoAtendimento'],
-      canalAtendimento: json['CanalAtendimento'],
-      cidadaoResponsavel: json['CidadaoResponsavel'],
-      vistoriaRealizada: json['VistoriaRealizada'],
-      tipoVistoria: json['TipoVistoria'],
-      dataSolicitacao: json['DataSolicitacao'],
-      dataVistoria: json['DataVistoria'],
-      entregueItensAjuda: json['EntregueItensAjuda'],
-      materiaisEntregues: List<String>.from(json['MateriaisEntregues']),
-      observacoes: json['Observacoes'],
+      nProtocolo: json['nProtocolo'],
+      tipoAtendimento: json['tipoAtendimento'],
+      canalAtendimento: json['canalAtendimento'],
+      cidadaoResponsavel: json['cidadaoResponsavel'],
+      vistoriaRealizada: json['vistoriaRealizada'],
+      tipoVistoria: json['tipoVistoria'],
+      dataSolicitacao: json['dataSolicitacao'],
+      dataVistoria: json['dataVistoria'],
+      entregueItensAjuda: json['entregueItensAjuda'],
+      materiaisEntregues: List<String>.from(json['materiaisEntregues']),
+      observacoes: json['observacoes'],
       pdfUrl: json['pdfUrl'],
+      atendenteResponsavel: json['atendenteResponsavel'],
+      cep: json['cep'],
+      rua: json['rua'],
+      bairro: json['bairro'],
+      cidade: json['cidade'],
+      estado: json['estado'],
       pendente: json['pendente'],
-      imagesUrls: List<String>.from(json['imagesUrls']),
-      atendenteResponsavel: json['AtendenteResponsavel'],
+      imagesUrls: json['imagesUrls'] != null ? List<String>.from(json['imagesUrls']) : null,
     );
   }
 
-  get descricao => null;
-
-  get local => null;
-
-  set imagemUrls(List<String> imagemUrls) {}
-
   Map<String, dynamic> toJson() => {
         '_id': id,
-        'n_protocolo': n_protocolo,
-        'TipoAtendimento': tipoAtendimento,
-        'CanalAtendimento': canalAtendimento,
-        'CidadaoResponsavel': cidadaoResponsavel,
-        'VistoriaRealizada': vistoriaRealizada,
-        'TipoVistoria': tipoVistoria,
-        'DataSolicitacao': dataSolicitacao,
-        'DataVistoria': dataVistoria,
-        'EntregueItensAjuda': entregueItensAjuda,
-        'MateriaisEntregues': materiaisEntregues,
-        'Observacoes': observacoes,
+        'nProtocolo': nProtocolo,
+        'tipoAtendimento': tipoAtendimento,
+        'canalAtendimento': canalAtendimento,
+        'cidadaoResponsavel': cidadaoResponsavel,
+        'vistoriaRealizada': vistoriaRealizada,
+        'tipoVistoria': tipoVistoria,
+        'dataSolicitacao': dataSolicitacao,
+        'dataVistoria': dataVistoria,
+        'entregueItensAjuda': entregueItensAjuda,
+        'materiaisEntregues': materiaisEntregues,
+        'observacoes': observacoes,
         'pdfUrl': pdfUrl,
+        'atendenteResponsavel': atendenteResponsavel,
+        'cep': cep,
+        'rua': rua,
+        'bairro': bairro,
+        'cidade': cidade,
+        'estado': estado,
         'pendente': pendente,
         'imagesUrls': imagesUrls,
-        'AtendenteResponsavel': atendenteResponsavel,
       };
 }

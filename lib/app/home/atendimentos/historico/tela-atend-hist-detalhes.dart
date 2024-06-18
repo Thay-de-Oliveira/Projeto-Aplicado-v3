@@ -54,7 +54,7 @@ class _DetalheHistorico extends State<DetalheHistorico> {
   Future<void> _loadAcontecimento() async {
     try {
       AcontecimentoModel acontecimento = await acontecimentoController
-          .getAcontecimentoByProtocolo(widget.atendimento.n_protocolo);
+          .getAcontecimentoByProtocolo(widget.atendimento.nProtocolo);
       setState(() {
         _acontecimento = acontecimento;
       });
@@ -86,7 +86,7 @@ class _DetalheHistorico extends State<DetalheHistorico> {
     });
 
     try {
-      final pdfUrl = await _relatorioController.gerarRelatorioUrl(widget.atendimento.n_protocolo);
+      final pdfUrl = await _relatorioController.gerarRelatorioUrl(widget.atendimento.nProtocolo);
       final downloadUrl = _transformUrlToDownloadUrl(pdfUrl);
 
       if (tipo == 'atendimento') {
@@ -185,7 +185,7 @@ class _DetalheHistorico extends State<DetalheHistorico> {
                                       _buildInfoRow(
                                           'assets/imagens/icon-numero-protocolo.png',
                                           'N° do Protocolo:',
-                                          widget.atendimento.n_protocolo,
+                                          widget.atendimento.nProtocolo,
                                           Colors.blue),
                                       const SizedBox(height: 8),
                                       _buildInfoRow(
@@ -263,7 +263,7 @@ class _DetalheHistorico extends State<DetalheHistorico> {
                                     _buildInfoRow(
                                         'assets/imagens/icon-ocorrencia.png',
                                         'Ocorrência:',
-                                        widget.atendimento.n_protocolo,
+                                        widget.atendimento.nProtocolo,
                                         Colors.green),
                                     const SizedBox(height: 8),
                                     _buildInfoRow(

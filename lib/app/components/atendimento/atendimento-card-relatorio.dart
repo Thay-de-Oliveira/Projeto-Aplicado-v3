@@ -27,7 +27,7 @@ class _AtendimentoCardRelatorioState extends State<AtendimentoCardRelatorio> {
     });
 
     try {
-      final pdfUrl = await _relatorioController.gerarRelatorioUrl(widget.atendimento.n_protocolo);
+      final pdfUrl = await _relatorioController.gerarRelatorioUrl(widget.atendimento.nProtocolo);
       final downloadUrl = _transformUrlToDownloadUrl(pdfUrl);
 
       Navigator.push(
@@ -128,7 +128,7 @@ class _AtendimentoCardRelatorioState extends State<AtendimentoCardRelatorio> {
                     } else {
                       return DataAcontecimentoInfo(
                         dataAcontecimento: widget.atendimento.dataSolicitacao,
-                        nProtocolo: widget.atendimento.n_protocolo,
+                        nProtocolo: widget.atendimento.nProtocolo,
                         endereco: '${snapshot.data!.bairro}, ${snapshot.data!.cidade} - ${snapshot.data!.estado}',
                       );
                     }

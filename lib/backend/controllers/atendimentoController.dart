@@ -72,7 +72,7 @@ class AtendimentoController extends GetxController {
 
   void searchByWord(String query) {
     var filteredList = listAtendimentoObs.where((atendimento) {
-      var searchString = '${atendimento.n_protocolo} ${atendimento.tipoAtendimento} ${atendimento.canalAtendimento} ${atendimento.cidadaoResponsavel} ${atendimento.tipoVistoria ?? ''} ${atendimento.observacoes ?? ''}'.toLowerCase();
+      var searchString = '${atendimento.nProtocolo} ${atendimento.tipoAtendimento} ${atendimento.canalAtendimento} ${atendimento.cidadaoResponsavel} ${atendimento.tipoVistoria ?? ''} ${atendimento.observacoes ?? ''}'.toLowerCase();
       return searchString.contains(query.toLowerCase());
     }).toList();
     listAtendimentoObs.value = filteredList;

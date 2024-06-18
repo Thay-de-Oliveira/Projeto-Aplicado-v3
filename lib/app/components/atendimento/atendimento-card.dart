@@ -93,7 +93,7 @@ class AtendimentoCard extends StatelessWidget {
                   } else {
                     return DataAcontecimentoInfo(
                       dataAcontecimento: atendimento.dataSolicitacao,
-                      nProtocolo: atendimento.n_protocolo,
+                      nProtocolo: atendimento.nProtocolo,
                       endereco:
                           '${snapshot.data!.bairro}, ${snapshot.data!.cidade} - ${snapshot.data!.estado}',
                     );
