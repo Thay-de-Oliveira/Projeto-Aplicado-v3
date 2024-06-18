@@ -691,21 +691,12 @@ Widget _buildAddressFields() {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
                           //Campo "Número do protocolo de acontecimento"
-                          DropdownButtonFormField<String>(
-                            value: _selectedNumeroProtocoloAtendimento,
-                            items: listAcontecimento
-                                .map((AcontecimentoModel acontecimento) {
-                              return DropdownMenuItem<String>(
-                                value: acontecimento.numeroProtocolo,
-                                child: Text(
-                                    acontecimento.numeroProtocolo.toString()),
-                              );
-                            }).toList(),
-                            onChanged: (String? newValue) {
-                              _selectedNumeroProtocoloAtendimento = newValue!;
-                            },
+                          TextFormField(
+                            controller: TextEditingController(
+                                text: _selectedNumeroProtocoloAtendimento),
                             decoration: _customInputDecoration(
                                 'Número do protocolo de acontecimento:'),
+                            enabled: false,
                           ),
 
                           const SizedBox(height: 30),
