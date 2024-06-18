@@ -2,10 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:projetoaplicado/app/components/atendimento/atendimento-card.dart';
 import 'package:projetoaplicado/backend/controllers/atendimentoController.dart';
+import 'package:projetoaplicado/backend/controllers/acontecimentoController.dart';
 import 'package:projetoaplicado/backend/models/atendimentoModel.dart';
+
 import '../../../components/globais/barra-superior.dart';
 import '../../../components/globais/menu-inferior.dart';
 import '../../../components/globais/barra-pesquisa-e-filtro.dart';
+import '../../../components/globais/filtro-atendi-historico.dart';
+
 import '../pendente/tela-atend-pendente.dart';
 import '../cadastro/tela-atendimento-forms.dart';
 
@@ -16,6 +20,7 @@ class HistoricoAtendimento extends StatefulWidget {
 
 class _HistoricoAtendimentoState extends State<HistoricoAtendimento> {
   final AtendimentoController atendimentoController = Get.put(AtendimentoController());
+  final AcontecimentoController acontecimentoController = Get.put(AcontecimentoController());
 
   @override
   void initState() {
@@ -29,6 +34,22 @@ class _HistoricoAtendimentoState extends State<HistoricoAtendimento> {
 
   void _onSearch(String query) {
     atendimentoController.searchByWord(query);
+  }
+
+  void _showFilterDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return FiltroAtendimentoHistorico(
+          subgrupos: acontecimentoController.listAcontecimentoObs.map((a) => a.subgrupo).toSet().toList(),
+          tiposAtendimento: atendimentoController.listAtendimentoObs.map((a) => a.tipoAtendimento).toSet().toList(),
+          onSave: (filters) {
+            atendimentoController.filterAtendimentoHistorico(filters);
+            acontecimentoController.filterAtendimentoAcontecimentoHistorico(filters);
+          },
+        );
+      },
+    );
   }
 
   @override
@@ -123,7 +144,8 @@ class _HistoricoAtendimentoState extends State<HistoricoAtendimento> {
                   ),
                   SizedBox(height: 25),
                   SearchFilterBar(
-                    onSearch: _onSearch, onFilter: () {  },
+                    onSearch: _onSearch,
+                    onFilter: _showFilterDialog,
                   ),
                   SizedBox(height: 25),
                   Center(

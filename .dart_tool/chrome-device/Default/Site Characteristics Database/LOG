@@ -1,13 +1,20 @@
-2024/06/15-18:32:43.222 3808 Reusing MANIFEST C:\Users\THAIN~1\AppData\Local\Temp\flutter_tools.d3d46f60\flutter_tools_chrome_device.3cdabaf7\Default\Site Characteristics Database/MANIFEST-000001
-2024/06/15-18:32:43.223 1d04 Compacting 8@0 + 0@1 files
-2024/06/15-18:32:43.246 1d04 Generated table #20@0: 3 keys, 262 bytes
-2024/06/15-18:32:43.247 1d04 Compacted 8@0 + 0@1 files => 262 bytes
-2024/06/15-18:32:43.265 1d04 compacted to: files[ 0 1 0 0 0 0 0 ]
-2024/06/15-18:32:43.267 1d04 Delete type=2 #4
-2024/06/15-18:32:43.267 1d04 Delete type=2 #6
-2024/06/15-18:32:43.267 1d04 Delete type=2 #11
-2024/06/15-18:32:43.267 1d04 Delete type=2 #13
-2024/06/15-18:32:43.267 1d04 Delete type=2 #14
-2024/06/15-18:32:43.267 1d04 Delete type=2 #15
-2024/06/15-18:32:43.267 1d04 Delete type=2 #16
-2024/06/15-18:32:43.272 1d04 Delete type=2 #17
+2024/06/17-20:02:32.531 2f8c Reusing MANIFEST C:\Users\THAIN~1\AppData\Local\Temp\flutter_tools.46625be5\flutter_tools_chrome_device.b9c3da03\Default\Site Characteristics Database/MANIFEST-000001
+2024/06/17-20:02:32.539 2f8c Recovering log #3
+2024/06/17-20:02:32.539 2f8c Level-0 table #22: started
+2024/06/17-20:02:32.557 2f8c Level-0 table #22: 590 bytes OK
+2024/06/17-20:02:32.558 2f8c Recovering log #6
+2024/06/17-20:02:32.559 2f8c Level-0 table #23: started
+2024/06/17-20:02:32.576 2f8c Level-0 table #23: 923 bytes OK
+2024/06/17-20:02:32.576 2f8c Recovering log #10
+2024/06/17-20:02:32.577 2f8c Level-0 table #24: started
+2024/06/17-20:02:32.586 2f8c Level-0 table #24: 3226 bytes OK
+2024/06/17-20:02:32.586 2f8c Recovering log #19
+2024/06/17-20:02:32.587 2f8c Reusing old log C:\Users\THAIN~1\AppData\Local\Temp\flutter_tools.46625be5\flutter_tools_chrome_device.b9c3da03\Default\Site Characteristics Database/000019.log 
+2024/06/17-20:02:32.593 2f8c Delete type=0 #3
+2024/06/17-20:02:32.593 2f8c Delete type=2 #4
+2024/06/17-20:02:32.593 2f8c Delete type=2 #6
+2024/06/17-20:02:32.594 2f8c Delete type=0 #6
+2024/06/17-20:02:32.594 2f8c Delete type=0 #10
+2024/06/17-20:02:32.594 2f8c Delete type=2 #11
+2024/06/17-20:02:32.594 2f8c Delete type=2 #13
+2024/06/17-20:02:32.594 2f8c Delete type=2 #14

@@ -112,7 +112,7 @@ class AcontecimentoController extends GetxController {
     listAcontecimentoObs.value = filteredList;
   }
 
-  void filterAtendimentoHistorico(Map<String, dynamic> filters) {
+  void filterAtendimentoAcontecimentoHistorico(Map<String, dynamic> filters) {
     var filteredList = listAcontecimentoObs.where((acontecimento) {
       bool matches = true;
 
@@ -125,18 +125,6 @@ class AcontecimentoController extends GetxController {
       if (filters['dataInicio'] != null && filters['dataFim'] != null) {
         matches &= acontecimento.dataHora.isAfter(filters['dataInicio']) &&
                    acontecimento.dataHora.isBefore(filters['dataFim']);
-      }
-      if (filters['bairro'] != null && filters['bairro'].isNotEmpty) {
-        matches &= acontecimento.infoCobrade.contains(filters['bairro']);
-      }
-      if (filters['tipoAtendimento'] != null && filters['tipoAtendimento'].isNotEmpty) {
-        matches &= acontecimento.tipo.contains(filters['tipoAtendimento']);
-      }
-      if (filters['atendente'] != null && filters['atendente'].isNotEmpty) {
-        matches &= acontecimento.subtipo.contains(filters['atendente']);
-      }
-      if (filters['itensAssistencia'] != null && filters['itensAssistencia'].isNotEmpty) {
-        matches &= acontecimento.infoCobrade.contains(filters['itensAssistencia']);
       }
 
       return matches;

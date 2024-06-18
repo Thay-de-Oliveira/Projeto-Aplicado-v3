@@ -1,16 +1,13 @@
-2024/06/15-18:32:43.148 3808 Log #3: 18 ops saved to Table #15 OK
-2024/06/15-18:32:43.152 3808 Archiving C:\Users\THAIN~1\AppData\Local\Temp\flutter_tools.d3d46f60\flutter_tools_chrome_device.3cdabaf7\Default\Site Characteristics Database/000003.log: OK
-2024/06/15-18:32:43.165 3808 Log #6: 90 ops saved to Table #16 OK
-2024/06/15-18:32:43.168 3808 Archiving C:\Users\THAIN~1\AppData\Local\Temp\flutter_tools.d3d46f60\flutter_tools_chrome_device.3cdabaf7\Default\Site Characteristics Database/000006.log: OK
-2024/06/15-18:32:43.177 3808 Log #10: 228 ops saved to Table #17 OK
-2024/06/15-18:32:43.178 3808 Archiving C:\Users\THAIN~1\AppData\Local\Temp\flutter_tools.d3d46f60\flutter_tools_chrome_device.3cdabaf7\Default\Site Characteristics Database/000010.log: OK
-2024/06/15-18:32:43.182 3808 Table #4: 18 entries OK
-2024/06/15-18:32:43.183 3808 Table #6: 18 entries OK
-2024/06/15-18:32:43.183 3808 Table #11: 2 entries OK
-2024/06/15-18:32:43.183 3808 Table #13: 18 entries OK
-2024/06/15-18:32:43.183 3808 Table #14: 90 entries OK
-2024/06/15-18:32:43.183 3808 Table #15: 18 entries OK
-2024/06/15-18:32:43.183 3808 Table #16: 90 entries OK
-2024/06/15-18:32:43.184 3808 Table #17: 228 entries OK
-2024/06/15-18:32:43.194 3808 Archiving C:\Users\THAIN~1\AppData\Local\Temp\flutter_tools.d3d46f60\flutter_tools_chrome_device.3cdabaf7\Default\Site Characteristics Database/MANIFEST-000001: OK
-2024/06/15-18:32:43.211 3808 **** Repaired leveldb C:\Users\THAIN~1\AppData\Local\Temp\flutter_tools.d3d46f60\flutter_tools_chrome_device.3cdabaf7\Default\Site Characteristics Database; recovered 8 files; 7629 bytes. Some data may have been lost. ****
+2024/06/15-18:32:43.222 3808 Reusing MANIFEST C:\Users\THAIN~1\AppData\Local\Temp\flutter_tools.d3d46f60\flutter_tools_chrome_device.3cdabaf7\Default\Site Characteristics Database/MANIFEST-000001
+2024/06/15-18:32:43.223 1d04 Compacting 8@0 + 0@1 files
+2024/06/15-18:32:43.246 1d04 Generated table #20@0: 3 keys, 262 bytes
+2024/06/15-18:32:43.247 1d04 Compacted 8@0 + 0@1 files => 262 bytes
+2024/06/15-18:32:43.265 1d04 compacted to: files[ 0 1 0 0 0 0 0 ]
+2024/06/15-18:32:43.267 1d04 Delete type=2 #4
+2024/06/15-18:32:43.267 1d04 Delete type=2 #6
+2024/06/15-18:32:43.267 1d04 Delete type=2 #11
+2024/06/15-18:32:43.267 1d04 Delete type=2 #13
+2024/06/15-18:32:43.267 1d04 Delete type=2 #14
+2024/06/15-18:32:43.267 1d04 Delete type=2 #15
+2024/06/15-18:32:43.267 1d04 Delete type=2 #16
+2024/06/15-18:32:43.272 1d04 Delete type=2 #17
