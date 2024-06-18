@@ -1,19 +1,23 @@
 import 'package:flutter/material.dart';
 
-class FiltroAtendimentoPendente extends StatefulWidget {
+class FiltroAtendimento extends StatefulWidget {
   final List<String> subgrupos;
+  final List<String> tiposAtendimento;
   final Function(Map<String, dynamic>) onSave;
 
-  FiltroAtendimentoPendente({required this.subgrupos, required this.onSave});
+  FiltroAtendimento({required this.subgrupos, required this.tiposAtendimento, required this.onSave});
 
   @override
-  _FiltroAtendimentoPendenteState createState() => _FiltroAtendimentoPendenteState();
+  _FiltroAtendimentoState createState() => _FiltroAtendimentoState();
 }
 
-class _FiltroAtendimentoPendenteState extends State<FiltroAtendimentoPendente> {
+class _FiltroAtendimentoState extends State<FiltroAtendimento> {
   String? selectedSubgroup;
+  String? selectedTipoAtendimento;
+  String? selectedItensAssistencia;
   TextEditingController protocoloController = TextEditingController();
   TextEditingController bairroController = TextEditingController();
+  TextEditingController atendenteController = TextEditingController();
   DateTimeRange? selectedDateRange;
 
   @override
@@ -36,6 +40,26 @@ class _FiltroAtendimentoPendenteState extends State<FiltroAtendimentoPendente> {
                 ),
               ),
               const Divider(color: Colors.grey),
+              const SizedBox(height: 10),
+              DropdownButtonFormField<String>(
+                decoration: _customInputDecoration('Tipo de Atendimento'),
+                items: widget.tiposAtendimento.map((String tipo) {
+                  return DropdownMenuItem<String>(
+                    value: tipo,
+                    child: Text(tipo),
+                  );
+                }).toList(),
+                onChanged: (value) {
+                  setState(() {
+                    selectedTipoAtendimento = value;
+                  });
+                },
+              ),
+              const SizedBox(height: 10),
+              TextField(
+                controller: atendenteController,
+                decoration: _customInputDecoration('Atendente'),
+              ),
               const SizedBox(height: 10),
               DropdownButtonFormField<String>(
                 decoration: _customInputDecoration('Subgrupo'),
@@ -67,14 +91,14 @@ class _FiltroAtendimentoPendenteState extends State<FiltroAtendimentoPendente> {
                       return Theme(
                         data: Theme.of(context).copyWith(
                           colorScheme: ColorScheme.light(
-                            primary: Color(0xFF1B7CB3), // cor principal
-                            onPrimary: Colors.white, // cor do texto do botão selecionado
-                            onSurface: Color(0xFF1B7CB3), // cor do texto dos dias
-                            surface: const Color.fromARGB(255, 193, 214, 230), // cor da barra de dias selecionados
+                            primary: Color(0xFF1B7CB3),
+                            onPrimary: Colors.white,
+                            onSurface: Color(0xFF1B7CB3),
+                            surface: const Color.fromARGB(255, 193, 214, 230),
                           ),
                           textButtonTheme: TextButtonThemeData(
                             style: TextButton.styleFrom(
-                              foregroundColor: Color(0xFF1B7CB3), // cor do texto dos botões
+                              foregroundColor: Color(0xFF1B7CB3),
                             ),
                           ),
                         ),
@@ -88,7 +112,7 @@ class _FiltroAtendimentoPendenteState extends State<FiltroAtendimentoPendente> {
                   child: TextField(
                     decoration: _customInputDecoration(
                       selectedDateRange == null
-                          ? 'Selecionar período (máx 15 dias)'
+                          ? 'Selecione período para filtrar (máx 15 dias)'
                           : 'Período: ${selectedDateRange?.start.toIso8601String().split('T').first} - ${selectedDateRange?.end.toIso8601String().split('T').first}',
                     ),
                   ),
@@ -98,6 +122,21 @@ class _FiltroAtendimentoPendenteState extends State<FiltroAtendimentoPendente> {
               TextField(
                 controller: bairroController,
                 decoration: _customInputDecoration('Bairro'),
+              ),
+              const SizedBox(height: 10),
+              DropdownButtonFormField<String>(
+                decoration: _customInputDecoration('Entrega de itens assistência humanitária'),
+                items: ['Sim', 'Não'].map((String value) {
+                  return DropdownMenuItem<String>(
+                    value: value,
+                    child: Text(value),
+                  );
+                }).toList(),
+                onChanged: (value) {
+                  setState(() {
+                    selectedItensAssistencia = value;
+                  });
+                },
               ),
               const SizedBox(height: 20),
               Row(
@@ -127,6 +166,9 @@ class _FiltroAtendimentoPendenteState extends State<FiltroAtendimentoPendente> {
                         'dataInicio': selectedDateRange?.start,
                         'dataFim': selectedDateRange?.end,
                         'bairro': bairroController.text.isEmpty ? null : bairroController.text,
+                        'tipoAtendimento': selectedTipoAtendimento,
+                        'atendente': atendenteController.text.isEmpty ? null : atendenteController.text,
+                        'itensAssistencia': selectedItensAssistencia == 'Sim',
                       };
                       widget.onSave(filters);
                       Navigator.of(context).pop();

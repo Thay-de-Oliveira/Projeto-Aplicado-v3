@@ -8,7 +8,7 @@ import 'package:projetoaplicado/backend/models/atendimentoModel.dart';
 import '../../../components/globais/barra-superior.dart';
 import '../../../components/globais/menu-inferior.dart';
 import '../../../components/globais/barra-pesquisa-e-filtro.dart';
-import '../../../components/globais/filtro-atendi-historico.dart';
+import '../../../components/globais/filtro-atendimento.dart';
 
 import '../pendente/tela-atend-pendente.dart';
 import '../cadastro/tela-atendimento-forms.dart';
@@ -40,7 +40,7 @@ class _HistoricoAtendimentoState extends State<HistoricoAtendimento> {
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        return FiltroAtendimentoHistorico(
+        return FiltroAtendimento(
           subgrupos: acontecimentoController.listAcontecimentoObs.map((a) => a.subgrupo).toSet().toList(),
           tiposAtendimento: atendimentoController.listAtendimentoObs.map((a) => a.tipoAtendimento).toSet().toList(),
           onSave: (filters) {

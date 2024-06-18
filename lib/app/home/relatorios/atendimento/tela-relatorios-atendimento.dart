@@ -9,8 +9,8 @@ import 'package:projetoaplicado/backend/models/atendimentoModel.dart';
 
 import '../../../components/globais/barra-superior.dart';
 import '../../../components/globais/menu-inferior.dart';
-import '../../../components/globais/barra-pesquisa-e-filtro.dart'; 
-
+import '../../../components/globais/barra-pesquisa-e-filtro.dart';
+import '../../../components/globais/filtro-atendimento.dart'; 
 
 class RelatorioAtendimento extends StatefulWidget {
   @override
@@ -33,6 +33,21 @@ class _RelatorioAtendimentoState extends State<RelatorioAtendimento> {
   Future<void> _loadAtendimentos() async {
     await atendimentoController.listAtendimento();
     atendimentoController.listAtendimentoObs;
+  }
+
+  void _showFilterDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return FiltroAtendimento(
+          subgrupos: atendimentoController.listAtendimentoObs.map((a) => a.tipoAtendimento).toSet().toList(),
+          tiposAtendimento: atendimentoController.listAtendimentoObs.map((a) => a.tipoAtendimento).toSet().toList(),
+          onSave: (filters) {
+            atendimentoController.filterAtendimentoHistorico(filters);
+          },
+        );
+      },
+    );
   }
 
   @override
@@ -60,17 +75,17 @@ class _RelatorioAtendimentoState extends State<RelatorioAtendimento> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      //Botão ACONTECIMENTO
+                      // Botão ACONTECIMENTO
                       GestureDetector(
                         child: Ink(
                           decoration: ShapeDecoration(
-                            //Estilo
+                            // Estilo
                             color: Color(0xffffffff),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10),
                             ),
                             shadows: [
-                              //Sombras
+                              // Sombras
                               BoxShadow(
                                 color: Color(0x3F000000),
                                 blurRadius: 2,
@@ -82,10 +97,9 @@ class _RelatorioAtendimentoState extends State<RelatorioAtendimento> {
                           child: InkWell(
                             onTap: () {
                               Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          RelatorioAcontecimento()));
+                                context,
+                                MaterialPageRoute(builder: (context) => RelatorioAcontecimento()),
+                              );
                             },
                             child: Container(
                               width: 110,
@@ -94,15 +108,12 @@ class _RelatorioAtendimentoState extends State<RelatorioAtendimento> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: <Widget>[
                                   Container(
-                                    //Icone
+                                    // Icone
                                     width: 30,
                                     height: 30,
-                                    child: Image.asset(
-                                        'assets/imagens/icon-acontecimento-inativo.png'),
+                                    child: Image.asset('assets/imagens/icon-acontecimento-inativo.png'),
                                   ),
-                                  SizedBox(
-                                      height:
-                                          5.0), //Espaço entre o ícone e o texto
+                                  SizedBox(height: 5.0), // Espaço entre o ícone e o texto
                                   Text(
                                     'Acontecimento',
                                     style: TextStyle(
@@ -116,18 +127,17 @@ class _RelatorioAtendimentoState extends State<RelatorioAtendimento> {
                           ),
                         ),
                       ),
-
-                      //Botão ATENDIMENTO
+                      // Botão ATENDIMENTO
                       GestureDetector(
                         child: Ink(
                           decoration: ShapeDecoration(
-                            //Estilo
+                            // Estilo
                             color: Color(0xFFBBD8F0),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10),
                             ),
                             shadows: [
-                              //Sombras
+                              // Sombras
                               BoxShadow(
                                 color: Color(0x3F000000),
                                 blurRadius: 2,
@@ -139,10 +149,9 @@ class _RelatorioAtendimentoState extends State<RelatorioAtendimento> {
                           child: InkWell(
                             onTap: () {
                               Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          RelatorioAtendimento()));
+                                context,
+                                MaterialPageRoute(builder: (context) => RelatorioAtendimento()),
+                              );
                             },
                             child: Container(
                               width: 90,
@@ -151,15 +160,12 @@ class _RelatorioAtendimentoState extends State<RelatorioAtendimento> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: <Widget>[
                                   Container(
-                                    //Icone
+                                    // Icone
                                     width: 30,
                                     height: 30,
-                                    child: Image.asset(
-                                        'assets/imagens/icon-atendimento-ativo.png'),
+                                    child: Image.asset('assets/imagens/icon-atendimento-ativo.png'),
                                   ),
-                                  SizedBox(
-                                      height:
-                                          5.0), //Espaço entre o ícone e o texto
+                                  SizedBox(height: 5.0), // Espaço entre o ícone e o texto
                                   Text(
                                     'Atendimento',
                                     style: TextStyle(
@@ -173,18 +179,17 @@ class _RelatorioAtendimentoState extends State<RelatorioAtendimento> {
                           ),
                         ),
                       ),
-
-                      //Botão RECIBOS
+                      // Botão RECIBOS
                       GestureDetector(
                         child: Ink(
                           decoration: ShapeDecoration(
-                            //Estilo
+                            // Estilo
                             color: Color(0xffffffff),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10),
                             ),
                             shadows: [
-                              //Sombras
+                              // Sombras
                               BoxShadow(
                                 color: Color(0x3F000000),
                                 blurRadius: 2,
@@ -196,9 +201,9 @@ class _RelatorioAtendimentoState extends State<RelatorioAtendimento> {
                           child: InkWell(
                             onTap: () {
                               Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => RelatorioRecibo()));
+                                context,
+                                MaterialPageRoute(builder: (context) => RelatorioRecibo()),
+                              );
                             },
                             child: Container(
                               width: 90,
@@ -207,15 +212,12 @@ class _RelatorioAtendimentoState extends State<RelatorioAtendimento> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: <Widget>[
                                   Container(
-                                    //Icone
+                                    // Icone
                                     width: 30,
                                     height: 30,
-                                    child: Image.asset(
-                                        'assets/imagens/icon-recibos-inativo.png'),
+                                    child: Image.asset('assets/imagens/icon-recibos-inativo.png'),
                                   ),
-                                  SizedBox(
-                                      height:
-                                          5.0), //Espaço entre o ícone e o texto
+                                  SizedBox(height: 5.0), // Espaço entre o ícone e o texto
                                   Text(
                                     'Recibos',
                                     style: TextStyle(
@@ -231,13 +233,12 @@ class _RelatorioAtendimentoState extends State<RelatorioAtendimento> {
                       ),
                     ],
                   ),
-
                   SizedBox(height: 25),
                   SearchFilterBar(
-                    onSearch: _onSearch, onFilter: () {  },
+                    onSearch: _onSearch,
+                    onFilter: _showFilterDialog, // Chamar a função para mostrar o filtro
                   ),
                   SizedBox(height: 25),
-
                   // Lista de Cards de Atendimento
                   Center(
                     child: Container(
@@ -254,12 +255,12 @@ class _RelatorioAtendimentoState extends State<RelatorioAtendimento> {
                             case ConnectionState.done:
                               if (snapshot.hasError) {
                                 return Center(
-                                  child: Text('Erro ao carregar acontecimentos'),
+                                  child: Text('Erro ao carregar atendimentos'),
                                 );
                               } else {
                                 // Filtrar os atendimentos pendentes
                                 var pendentes = atendimentoController.listAtendimentoObs
-                                    .where((acontecimento) => acontecimento.pendente == true)
+                                    .where((atendimento) => atendimento.pendente == true)
                                     .toList();
 
                                 return ListView.builder(
@@ -280,9 +281,7 @@ class _RelatorioAtendimentoState extends State<RelatorioAtendimento> {
                     ),
                   ),
                   // Fim da Lista de Cards
-                  
                   SizedBox(height: 25),
-
                 ],
               ),
             ),

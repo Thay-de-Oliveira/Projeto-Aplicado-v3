@@ -7,7 +7,9 @@ import 'package:projetoaplicado/backend/controllers/acontecimentoController.dart
 
 import '../../../components/globais/barra-superior.dart';
 import '../../../components/globais/menu-inferior.dart';
-import '../../../components/globais/barra-pesquisa-e-filtro.dart'; 
+import '../../../components/globais/barra-pesquisa-e-filtro.dart';
+import 'package:projetoaplicado/app/components/globais/filtro-acontecimento.dart';
+
 
 class RelatorioAcontecimento extends StatefulWidget {
   @override
@@ -30,6 +32,20 @@ class _RelatorioAcontecimentoState extends State<RelatorioAcontecimento> {
 
   void _onSearch(String query) {
     acontecimentoController.searchByWord(query);
+  }
+
+  void _showFilterDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return FiltroAcontecimento(
+          subgrupos: acontecimentoController.listAcontecimentoObs.map((a) => a.subgrupo ?? '').toSet().toList(),
+          onSave: (filters) {
+            acontecimentoController.filterAcontecimentoPendente(filters);
+          },
+        );
+      },
+    );
   }
 
   @override
@@ -200,7 +216,8 @@ class _RelatorioAcontecimentoState extends State<RelatorioAcontecimento> {
                 ),
                 SizedBox(height: 25),
                 SearchFilterBar(
-                  onSearch: _onSearch, onFilter: () {  },
+                  onSearch: _onSearch,
+                  onFilter: _showFilterDialog,
                 ),
                 SizedBox(height: 25),
                 Center(

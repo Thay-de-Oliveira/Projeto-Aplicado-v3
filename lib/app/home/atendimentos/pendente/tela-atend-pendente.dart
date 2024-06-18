@@ -7,7 +7,7 @@ import 'package:projetoaplicado/backend/models/acontecimentoModel.dart';
 
 import '../../../components/globais/barra-pesquisa-e-filtro.dart';
 import '../../../components/globais/barra-superior.dart';
-import '../../../components/globais/filtro-atendi-pendente.dart';
+import '../../../components/globais/filtro-acontecimento.dart';
 import '../../../components/globais/menu-inferior.dart';
 
 import '../historico/tela-atend-historico.dart';
@@ -39,7 +39,7 @@ class _AtendimentoPendenteState extends State<AtendimentoPendente> {
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        return FiltroAtendimentoPendente(
+        return FiltroAcontecimento(
           subgrupos: acontecimentoController.listAcontecimentoObs.map((a) => a.subgrupo).toSet().toList(),
           onSave: (filters) {
             acontecimentoController.filterAcontecimentoPendente(filters);

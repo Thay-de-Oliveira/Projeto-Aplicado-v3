@@ -1,23 +1,19 @@
 import 'package:flutter/material.dart';
 
-class FiltroAtendimentoHistorico extends StatefulWidget {
+class FiltroAcontecimento extends StatefulWidget {
   final List<String> subgrupos;
-  final List<String> tiposAtendimento;
   final Function(Map<String, dynamic>) onSave;
 
-  FiltroAtendimentoHistorico({required this.subgrupos, required this.tiposAtendimento, required this.onSave});
+  FiltroAcontecimento({required this.subgrupos, required this.onSave});
 
   @override
-  _FiltroAtendimentoHistoricoState createState() => _FiltroAtendimentoHistoricoState();
+  _FiltroAcontecimentoState createState() => _FiltroAcontecimentoState();
 }
 
-class _FiltroAtendimentoHistoricoState extends State<FiltroAtendimentoHistorico> {
+class _FiltroAcontecimentoState extends State<FiltroAcontecimento> {
   String? selectedSubgroup;
-  String? selectedTipoAtendimento;
-  String? selectedItensAssistencia;
   TextEditingController protocoloController = TextEditingController();
   TextEditingController bairroController = TextEditingController();
-  TextEditingController atendenteController = TextEditingController();
   DateTimeRange? selectedDateRange;
 
   @override
@@ -40,26 +36,6 @@ class _FiltroAtendimentoHistoricoState extends State<FiltroAtendimentoHistorico>
                 ),
               ),
               const Divider(color: Colors.grey),
-              const SizedBox(height: 10),
-              DropdownButtonFormField<String>(
-                decoration: _customInputDecoration('Tipo de Atendimento'),
-                items: widget.tiposAtendimento.map((String tipo) {
-                  return DropdownMenuItem<String>(
-                    value: tipo,
-                    child: Text(tipo),
-                  );
-                }).toList(),
-                onChanged: (value) {
-                  setState(() {
-                    selectedTipoAtendimento = value;
-                  });
-                },
-              ),
-              const SizedBox(height: 10),
-              TextField(
-                controller: atendenteController,
-                decoration: _customInputDecoration('Atendente'),
-              ),
               const SizedBox(height: 10),
               DropdownButtonFormField<String>(
                 decoration: _customInputDecoration('Subgrupo'),
@@ -91,14 +67,14 @@ class _FiltroAtendimentoHistoricoState extends State<FiltroAtendimentoHistorico>
                       return Theme(
                         data: Theme.of(context).copyWith(
                           colorScheme: ColorScheme.light(
-                            primary: Color(0xFF1B7CB3),
-                            onPrimary: Colors.white,
-                            onSurface: Color(0xFF1B7CB3),
-                            surface: const Color.fromARGB(255, 193, 214, 230),
+                            primary: Color(0xFF1B7CB3), // cor principal
+                            onPrimary: Colors.white, // cor do texto do botão selecionado
+                            onSurface: Color(0xFF1B7CB3), // cor do texto dos dias
+                            surface: const Color.fromARGB(255, 193, 214, 230), // cor da barra de dias selecionados
                           ),
                           textButtonTheme: TextButtonThemeData(
                             style: TextButton.styleFrom(
-                              foregroundColor: Color(0xFF1B7CB3),
+                              foregroundColor: Color(0xFF1B7CB3), // cor do texto dos botões
                             ),
                           ),
                         ),
@@ -112,7 +88,7 @@ class _FiltroAtendimentoHistoricoState extends State<FiltroAtendimentoHistorico>
                   child: TextField(
                     decoration: _customInputDecoration(
                       selectedDateRange == null
-                          ? 'Selecione período para filtrar (máx 15 dias)'
+                          ? 'Selecionar período (máx 15 dias)'
                           : 'Período: ${selectedDateRange?.start.toIso8601String().split('T').first} - ${selectedDateRange?.end.toIso8601String().split('T').first}',
                     ),
                   ),
@@ -122,21 +98,6 @@ class _FiltroAtendimentoHistoricoState extends State<FiltroAtendimentoHistorico>
               TextField(
                 controller: bairroController,
                 decoration: _customInputDecoration('Bairro'),
-              ),
-              const SizedBox(height: 10),
-              DropdownButtonFormField<String>(
-                decoration: _customInputDecoration('Entrega de itens assistência humanitária'),
-                items: ['Sim', 'Não'].map((String value) {
-                  return DropdownMenuItem<String>(
-                    value: value,
-                    child: Text(value),
-                  );
-                }).toList(),
-                onChanged: (value) {
-                  setState(() {
-                    selectedItensAssistencia = value;
-                  });
-                },
               ),
               const SizedBox(height: 20),
               Row(
@@ -166,9 +127,6 @@ class _FiltroAtendimentoHistoricoState extends State<FiltroAtendimentoHistorico>
                         'dataInicio': selectedDateRange?.start,
                         'dataFim': selectedDateRange?.end,
                         'bairro': bairroController.text.isEmpty ? null : bairroController.text,
-                        'tipoAtendimento': selectedTipoAtendimento,
-                        'atendente': atendenteController.text.isEmpty ? null : atendenteController.text,
-                        'itensAssistencia': selectedItensAssistencia == 'Sim',
                       };
                       widget.onSave(filters);
                       Navigator.of(context).pop();
