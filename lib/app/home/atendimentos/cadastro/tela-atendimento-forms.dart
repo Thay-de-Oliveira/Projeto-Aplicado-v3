@@ -158,7 +158,7 @@ class _AtendimentoFormsState extends State<AtendimentoForms> {
           _selectedVistoriaRealizada == 'Selecionar' ||
           _selectedTipoRealizada == 'Selecionar' ||
           _dataSolicitacaoController.text.isEmpty ||
-          _dataVistoriaController.text.isEmpty ||
+          (_selectedVistoriaRealizada == 'Sim' && _dataVistoriaController.text.isEmpty) ||
           _selectedEntregarItens == 'Selecionar') {
         _exibirMensagem('Por favor, preencha todos os campos obrigatórios.');
         return;
@@ -278,58 +278,58 @@ class _AtendimentoFormsState extends State<AtendimentoForms> {
     }).toList();
   }
 
-Widget _buildAddressFields() {
-  return Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: <Widget>[
-      Row(
-        children: [
-          Expanded(
-            child: Stack(
-              alignment: Alignment.centerRight,
-              children: [
-                TextFormField(
-                  controller: _cepController,
-                  decoration: _customInputDecoration('CEP:').copyWith(
-                    counterText: '',
+  Widget _buildAddressFields() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Row(
+          children: [
+            Expanded(
+              child: Stack(
+                alignment: Alignment.centerRight,
+                children: [
+                  TextFormField(
+                    controller: _cepController,
+                    decoration: _customInputDecoration('CEP:').copyWith(
+                      counterText: '',
+                    ),
+                    keyboardType: TextInputType.number,
+                    maxLength: 8,
+                    onChanged: (value) {
+                      if (value.length == 8) {
+                        buscarCep();
+                      }
+                      setState(() {});
+                    },
+                    inputFormatters: [
+                      FilteringTextInputFormatter.digitsOnly,
+                    ],
                   ),
-                  keyboardType: TextInputType.number,
-                  maxLength: 8,
-                  onChanged: (value) {
-                    if (value.length == 8) {
-                      buscarCep();
-                    }
-                    setState(() {});
-                  },
-                  inputFormatters: [
-                    FilteringTextInputFormatter.digitsOnly,
-                  ],
-                ),
-                Positioned(
-                  right: 10,
-                  bottom: 5,
-                  child: Text(
-                    '${_cepController.text.length}/8',
-                    style: const TextStyle(
-                      fontSize: 12,
-                      color: Colors.grey,
+                  Positioned(
+                    right: 10,
+                    bottom: 5,
+                    child: Text(
+                      '${_cepController.text.length}/8',
+                      style: const TextStyle(
+                        fontSize: 12,
+                        color: Colors.grey,
+                      ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
-        ],
-      ),
-      const SizedBox(height: 16),
+          ],
+        ),
+        const SizedBox(height: 16),
 
-      _buildNonEditableField(_ruaController, 'Rua:'),
-      _buildNonEditableField(_bairroController, 'Bairro:'),
-      _buildNonEditableField(_cidadeController, 'Cidade:'),
-      _buildNonEditableField(_estadoController, 'Estado:'),
-    ],
-  );
-}
+        _buildNonEditableField(_ruaController, 'Rua:'),
+        _buildNonEditableField(_bairroController, 'Bairro:'),
+        _buildNonEditableField(_cidadeController, 'Cidade:'),
+        _buildNonEditableField(_estadoController, 'Estado:'),
+      ],
+    );
+  }
 
   Widget _buildNonEditableField(TextEditingController controller, String label) {
     return Column(
@@ -414,12 +414,12 @@ Widget _buildAddressFields() {
       ),
       enabledBorder: OutlineInputBorder(
         borderSide:
-            const BorderSide(color: Colors.grey), //Cor da borda quando inativo
+        const BorderSide(color: Colors.grey), //Cor da borda quando inativo
         borderRadius: BorderRadius.circular(10.0),
       ),
       focusedBorder: OutlineInputBorder(
         borderSide:
-            const BorderSide(color: Colors.blue), //Cor da borda quando ativo
+        const BorderSide(color: Colors.blue), //Cor da borda quando ativo
         borderRadius: BorderRadius.circular(10.0),
       ),
     );
@@ -553,7 +553,7 @@ Widget _buildAddressFields() {
                                   ),
                                   const SizedBox(
                                       height:
-                                          5.0), //Espaço entre o ícone e o texto
+                                      5.0), //Espaço entre o ícone e o texto
                                   const Text(
                                     'Cadastro',
                                     style: TextStyle(
@@ -610,7 +610,7 @@ Widget _buildAddressFields() {
                                   ),
                                   const SizedBox(
                                       height:
-                                          5.0), //Espaço entre o ícone e o texto
+                                      5.0), //Espaço entre o ícone e o texto
                                   const Text(
                                     'Pendente',
                                     style: TextStyle(
@@ -667,7 +667,7 @@ Widget _buildAddressFields() {
                                   ),
                                   const SizedBox(
                                       height:
-                                          5.0), //Espaço entre o ícone e o texto
+                                      5.0), //Espaço entre o ícone e o texto
                                   const Text(
                                     'Histórico',
                                     style: TextStyle(
@@ -714,7 +714,7 @@ Widget _buildAddressFields() {
                               _selectedTipoAtendimento = newValue!;
                             },
                             decoration:
-                                _customInputDecoration('Tipo de atendimento:'),
+                            _customInputDecoration('Tipo de atendimento:'),
                           ),
 
                           const SizedBox(height: 30),
@@ -739,7 +739,7 @@ Widget _buildAddressFields() {
 
                           TypeAheadField<CidadaoModel>(
                             controller:
-                                _cidadaoResponsavelController, // Este controller agora só para exibir o nome
+                            _cidadaoResponsavelController, // Este controller agora só para exibir o nome
                             debounceDuration: const Duration(milliseconds: 300),
                             suggestionsCallback: (search) async {
                               if (search.isEmpty) {
@@ -762,7 +762,7 @@ Widget _buildAddressFields() {
                                 onChanged: (text) async {
                                   if (text.isEmpty) {
                                     SuggestionsController.of<CidadaoModel>(
-                                            context)
+                                        context)
                                         .suggestions = [];
                                     return;
                                   }
@@ -773,7 +773,7 @@ Widget _buildAddressFields() {
 
                                   // Filtra a lista com base na consulta
                                   var filteredList =
-                                      getFilteredCidadaoList(text, cidadaoList);
+                                  getFilteredCidadaoList(text, cidadaoList);
 
                                   // Atualiza as sugestões
                                   SuggestionsController.of<CidadaoModel>(context)
@@ -818,34 +818,67 @@ Widget _buildAddressFields() {
                                       } else {
                                         _selectedVistoriaRealizada = 'Não';
                                         _vistoriaRealizadaController = false;
+                                        _selectedTipoRealizada = 'Selecionar';
+                                        _dataVistoriaController.clear();
                                       }
                                     });
                                   },
                                   decoration: _customInputDecoration(
-                                      'Vistoria realizada?'), // Aplicar estilo personalizado
-                                ),
-                              ),
-                              const SizedBox(
-                                  width: 16), // Espaçamento entre os campos
-                              Expanded(
-                                child: DropdownButtonFormField<String>(
-                                  value: _selectedTipoRealizada,
-                                  items: tipoVistoriaOptions.map((String option) {
-                                    return DropdownMenuItem<String>(
-                                      value: option,
-                                      child: Text(option),
-                                    );
-                                  }).toList(),
-                                  onChanged: (String? newValue) {
-                                    setState(() {
-                                      _selectedTipoRealizada = newValue!;
-                                    });
-                                  },
-                                  decoration: _customInputDecoration(
-                                      'Tipo de vistoria:'), // Aplicar estilo personalizado
+                                      'Vistoria realizada?'), 
                                 ),
                               ),
                             ],
+                          ),
+
+                          const SizedBox(height: 20),
+
+                          Visibility(
+                            visible: _selectedVistoriaRealizada == 'Sim',
+                            child: Column(
+                              children: [
+                                Row(
+                                  children: [
+                                    Expanded(
+                                      child: DropdownButtonFormField<String>(
+                                        value: _selectedTipoRealizada,
+                                        items: tipoVistoriaOptions
+                                            .map((String option) {
+                                          return DropdownMenuItem<String>(
+                                            value: option,
+                                            child: Text(option),
+                                          );
+                                        }).toList(),
+                                        onChanged: (String? newValue) {
+                                          setState(() {
+                                            _selectedTipoRealizada = newValue!;
+                                          });
+                                        },
+                                        decoration: _customInputDecoration(
+                                            'Tipo de vistoria:'), 
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                const SizedBox(height: 30),
+                                Row(
+                                  children: [
+                                    Expanded(
+                                      child: GestureDetector(
+                                        onTap: () => _selectDate(
+                                            context, _dataVistoriaController),
+                                        child: AbsorbPointer(
+                                          child: TextFormField(
+                                            controller: _dataVistoriaController,
+                                            decoration: _customInputDecoration(
+                                                'Data da vistoria:'),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
                           ),
 
                           const SizedBox(height: 30),
@@ -866,24 +899,10 @@ Widget _buildAddressFields() {
                                   ),
                                 ),
                               ),
-                              const SizedBox(width: 16),
-                              Expanded(
-                                child: GestureDetector(
-                                  onTap: () => _selectDate(
-                                      context, _dataVistoriaController),
-                                  child: AbsorbPointer(
-                                    child: TextFormField(
-                                      controller: _dataVistoriaController,
-                                      decoration: _customInputDecoration(
-                                          'Data da vistoria:'),
-                                    ),
-                                  ),
-                                ),
-                              ),
                             ],
                           ),
 
-                          const SizedBox(height: 20),
+                          const SizedBox(height: 30),
 
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -897,12 +916,12 @@ Widget _buildAddressFields() {
                                   ),
                                   enabledBorder: OutlineInputBorder(
                                     borderSide:
-                                        const BorderSide(color: Colors.grey),
+                                    const BorderSide(color: Colors.grey),
                                     borderRadius: BorderRadius.circular(10.0),
                                   ),
                                   focusedBorder: OutlineInputBorder(
                                     borderSide:
-                                        const BorderSide(color: Colors.blue),
+                                    const BorderSide(color: Colors.blue),
                                     borderRadius: BorderRadius.circular(10.0),
                                   ),
                                   suffixIcon: Padding(
@@ -930,7 +949,7 @@ Widget _buildAddressFields() {
                               ),
                               const SizedBox(
                                   height:
-                                      8), // Espaço entre o campo e as miniaturas
+                                  8), // Espaço entre o campo e as miniaturas
                               _imagensController.imageFiles.isEmpty
                                   ? Container()
                                   : _buildImagePreviews(), // Ajuste para verificar se a lista do controlador está vazia
@@ -1038,7 +1057,7 @@ Widget _buildAddressFields() {
                                     Navigator.of(context).pushReplacement(
                                       MaterialPageRoute(
                                         builder: (context) =>
-                                            const Home(title: ''),
+                                        const Home(title: ''),
                                       ),
                                     );
                                   },
