@@ -102,9 +102,9 @@ class AcontecimentoController extends GetxController {
         matches &= acontecimento.dataHora.isAfter(filters['dataInicio']) &&
                    acontecimento.dataHora.isBefore(filters['dataFim']);
       }
-      if (filters['bairro'] != null && filters['bairro'].isNotEmpty) {
-        matches &= acontecimento.infoCobrade.contains(filters['bairro']);
-      }
+      // if (filters['bairro'] != null && filters['bairro'].isNotEmpty) {
+      //   matches &= acontecimento.infoCobrade.contains(filters['bairro']);
+      // }
 
       return matches;
     }).toList();

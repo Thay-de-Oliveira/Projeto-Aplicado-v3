@@ -1,21 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:projetoaplicado/app/home/atendimentos/historico/tela-atend-hist-detalhes.dart';
-import 'package:projetoaplicado/backend/controllers/cidadaoController.dart';
-import 'package:projetoaplicado/backend/models/acontecimentoModel.dart';
 import 'package:projetoaplicado/backend/models/atendimentoModel.dart';
-import 'package:projetoaplicado/backend/models/cidadaoModel.dart';
 
 class AtendimentoCard extends StatelessWidget {
   final AtendimentosModel atendimento;
-  final CidadaoController cidadaoController = Get.put(CidadaoController());
 
   AtendimentoCard({Key? key, required this.atendimento}) : super(key: key);
-
-  Future<CidadaoModel> _fetchCidadao() async {
-    await cidadaoController.getCidadaoByCpf(atendimento.cidadaoResponsavel);
-    return cidadaoController.listCidadaoObs.first;
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -81,142 +71,15 @@ class AtendimentoCard extends StatelessWidget {
             Positioned(
               left: 9,
               top: 31,
-              child: FutureBuilder<CidadaoModel>(
-                future: _fetchCidadao(),
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return CircularProgressIndicator();
-                  } else if (snapshot.hasError) {
-                    return Text("Erro ao carregar endereço");
-                  } else if (!snapshot.hasData) {
-                    return Text("Endereço não encontrado");
-                  } else {
-                    return DataAcontecimentoInfo(
-                      dataAcontecimento: atendimento.dataSolicitacao,
-                      nProtocolo: atendimento.nProtocolo,
-                      endereco:
-                          '${snapshot.data!.bairro}, ${snapshot.data!.cidade} - ${snapshot.data!.estado}',
-                    );
-                  }
-                },
+              child: DataAcontecimentoInfo(
+                dataAcontecimento: atendimento.dataSolicitacao,
+                nProtocolo: atendimento.nProtocolo,
+                endereco: '${atendimento.rua}, Bairro ${atendimento.bairro}',
+                atendente: atendimento.atendenteResponsavel,
               ),
             ),
           ],
         ),
-      ),
-    );
-  }
-}
-
-class TempoIcone extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: 23,
-      height: 9,
-      child: Row(
-        children: [
-          Container(
-            width: 9,
-            height: 9,
-            decoration: const BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage("assets/icon-card-tempo.png"),
-                fit: BoxFit.cover,
-              ),
-            ),
-          ),
-          const SizedBox(width: 4),
-          const Text(
-            '10d',
-            style: TextStyle(
-              color: Color(0xFF082778),
-              fontSize: 8,
-              fontFamily: 'Roboto',
-              fontWeight: FontWeight.w400,
-              height: 0,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class ComentariosIcone extends StatelessWidget {
-  final int comentarios;
-
-  const ComentariosIcone({Key? key, required this.comentarios})
-      : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: 20,
-      height: 9,
-      child: Row(
-        children: [
-          Container(
-            width: 9,
-            height: 9,
-            decoration: const BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage("assets/imagens/icon-card-comentario.png"),
-                fit: BoxFit.cover,
-              ),
-            ),
-          ),
-          const SizedBox(width: 4),
-          Text(
-            '$comentarios',
-            style: const TextStyle(
-              color: Color(0xFF082778),
-              fontSize: 8,
-              fontFamily: 'Roboto',
-              fontWeight: FontWeight.w400,
-              height: 0,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class VencimentoIcone extends StatelessWidget {
-  final String vencimento;
-
-  const VencimentoIcone({Key? key, required this.vencimento}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: 77,
-      height: 8,
-      child: Row(
-        children: [
-          Container(
-            width: 8,
-            height: 8,
-            decoration: const BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage("assets/imagens/icon-card-vencimento.png"),
-                fit: BoxFit.cover,
-              ),
-            ),
-          ),
-          const SizedBox(width: 4),
-          Text(
-            'Venc.: $vencimento',
-            style: const TextStyle(
-              color: Color(0xFF082778),
-              fontSize: 8,
-              fontFamily: 'Roboto',
-              fontWeight: FontWeight.w400,
-              height: 0,
-            ),
-          ),
-        ],
       ),
     );
   }
@@ -262,12 +125,14 @@ class DataAcontecimentoInfo extends StatelessWidget {
   final String dataAcontecimento;
   final String nProtocolo;
   final String endereco;
+  final String atendente;
 
   const DataAcontecimentoInfo({
     Key? key,
     required this.dataAcontecimento,
     required this.nProtocolo,
     required this.endereco,
+    required this.atendente,
   }) : super(key: key);
 
   @override
@@ -313,6 +178,16 @@ class DataAcontecimentoInfo extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 4),
+          Text(
+            'Atendente: $atendente',
+            style: TextStyle(
+              color: Colors.black.withOpacity(0.85),
+              fontSize: 12,
+              fontFamily: 'Roboto',
+              fontWeight: FontWeight.w400,
+              height: 0,
+            ),
+          ),
         ],
       ),
     );

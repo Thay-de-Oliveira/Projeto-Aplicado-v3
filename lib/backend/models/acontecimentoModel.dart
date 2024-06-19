@@ -5,9 +5,15 @@ class AcontecimentoModel {
   final String subgrupo;
   final String tipo;
   final String subtipo;
-  final String infoCobrade;
+  final String? infoCobrade;
   final DateTime dataHora;
   final String? numeroProtocolo;
+  final String cidadaoResponsavel;
+  final String cep;
+  final String rua;
+  final String bairro;
+  final String cidade;
+  final String estado;
   bool? pendente;
 
   AcontecimentoModel({
@@ -17,9 +23,15 @@ class AcontecimentoModel {
     required this.subgrupo,
     required this.tipo,
     required this.subtipo,
-    required this.infoCobrade,
+    this.infoCobrade,
     required this.dataHora,
     this.numeroProtocolo,
+    required this.cidadaoResponsavel,
+    required this.cep,
+    required this.rua,
+    required this.bairro,
+    required this.cidade,
+    required this.estado,
     this.pendente,
   });
 
@@ -34,6 +46,12 @@ class AcontecimentoModel {
       infoCobrade: json['infoCobrade'],
       dataHora: DateTime.parse(json['dataHora']),
       numeroProtocolo: json['numeroProtocolo'],
+      cidadaoResponsavel: json['cidadaoResponsavel'],
+      cep: json['cep'],
+      rua: json['rua'],
+      bairro: json['bairro'],
+      cidade: json['cidade'],
+      estado: json['estado'],
       pendente: json['pendente'] as bool?,
     );
   }
@@ -48,6 +66,12 @@ class AcontecimentoModel {
         'infoCobrade': infoCobrade,
         'dataHora': dataHora.toIso8601String(),
         'numeroProtocolo': numeroProtocolo,
+        'cidadaoResponsavel': cidadaoResponsavel,
+        'cep': cep,
+        'rua': rua,
+        'bairro': bairro,
+        'cidade': cidade,
+        'estado': estado,
         'pendente': pendente,
       };
 }

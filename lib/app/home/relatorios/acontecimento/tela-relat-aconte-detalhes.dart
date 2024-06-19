@@ -61,7 +61,7 @@ class DetalhesRelatorioAcontecimento extends StatelessWidget {
                         _buildDetailRow('assets/imagens/icon-padrao-acontecimento.png', 'Subgrupo:', acontecimento.subgrupo),
                         _buildDetailRow('assets/imagens/icon-padrao-acontecimento.png', 'Tipo:', acontecimento.tipo),
                         _buildDetailRow('assets/imagens/icon-padrao-acontecimento.png', 'Subtipo:', acontecimento.subtipo),
-                        _buildDetailRow('assets/imagens/icon-padrao-acontecimento.png', 'COBRADE:', acontecimento.infoCobrade),
+                        _buildDetailRow('assets/imagens/icon-padrao-acontecimento.png', 'COBRADE:', acontecimento.infoCobrade!),
                         _buildDetailRow('assets/imagens/icon-data-vistoria.png', 'Data:', DateFormat('dd/MM/yyyy').format(acontecimento.dataHora)),
                         _buildDetailRow('assets/imagens/icon-hora.png', 'Horário aproximado:', DateFormat('HH:mm').format(acontecimento.dataHora)),
                       ],

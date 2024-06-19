@@ -1,10 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:projetoaplicado/app/app-state.dart';
 import 'package:projetoaplicado/app/home/atendimentos/cadastro/tela-atendimento-forms.dart';
 import 'package:projetoaplicado/app/home/tela-inicio.dart';
 import 'package:projetoaplicado/backend/controllers/acontecimentoController.dart';
+import 'package:projetoaplicado/backend/controllers/cepController.dart';
 import 'package:projetoaplicado/backend/models/acontecimentoModel.dart';
+import 'package:projetoaplicado/backend/models/cidadaoModel.dart';
+import 'package:projetoaplicado/backend/services/cidadaoService.dart';
 import 'package:provider/provider.dart';
+import 'package:intl/intl.dart';
 
 import '../../components/globais/barra-superior.dart';
 import '../../components/globais/menu-inferior.dart';
@@ -27,6 +33,16 @@ class AcontecimentosForms extends StatefulWidget {
 class _FormularioAcontecimentoState extends State<AcontecimentosForms> {
   final AcontecimentoController _acontecimentoController = AcontecimentoController();
 
+  final TextEditingController _cpfResponsavelController = TextEditingController();
+  final TextEditingController _cidadaoResponsavelController = TextEditingController();
+
+  final TextEditingController _cepController = TextEditingController();
+  final TextEditingController _ruaController = TextEditingController();
+  final TextEditingController _bairroController = TextEditingController();
+  final TextEditingController _cidadeController = TextEditingController();
+  final TextEditingController _estadoController = TextEditingController();
+  final CepController _cepControllerInstance = CepController();
+
   String? _selectedClasseAcontecimento;
   String? _selectedGrupo;
   String? _selectedSubGrupo;
@@ -37,11 +53,82 @@ class _FormularioAcontecimentoState extends State<AcontecimentosForms> {
   final DateTime dataAtual = DateTime.now();
   bool _isSaving = false;
 
+  @override
+  void initState() {
+    super.initState();
+    _cepController.addListener(() {
+    String cep = _cepController.text;
+      if (cep.length != 8) {
+        limparCamposEndereco();
+      }
+    });
+  }
+
+  void buscarCep() async {
+    String cep = _cepController.text;
+    if (cep.length == 8) {
+      var dadosCep = await _cepControllerInstance.buscarCep(cep);
+      if (dadosCep != null) {
+        setState(() {
+          _ruaController.text = dadosCep['logradouro'];
+          _bairroController.text = dadosCep['bairro'];
+          _cidadeController.text = dadosCep['localidade'];
+          _estadoController.text = dadosCep['uf'];
+        });
+      } else {
+        _exibirMensagem('CEP não encontrado.');
+      }
+    }
+  }
+
+  void limparCamposEndereco() {
+    setState(() {
+      _ruaController.clear();
+      _bairroController.clear();
+      _cidadeController.clear();
+      _estadoController.clear();
+    });
+  }
+
+  List<CidadaoModel> getFilteredCidadaoList(
+      String query, List<CidadaoModel> cidadaoList) {
+    if (query.isEmpty) {
+      return [];
+    }
+
+    List<CidadaoModel> matches = [];
+
+    matches.addAll(cidadaoList);
+
+    return matches;
+  }
+
   InputDecoration _customInputDecoration(String labelText) {
     return InputDecoration(
       labelText: labelText,
-      border: const OutlineInputBorder(),
-      contentPadding: const EdgeInsets.all(10.0),
+      labelStyle: const TextStyle(fontSize: 16), //Tamanho da fonte dos campos
+      border: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(10.0), //Borda arredondada
+      ),
+      enabledBorder: OutlineInputBorder(
+        borderSide:
+        const BorderSide(color: Colors.grey), //Cor da borda quando inativo
+        borderRadius: BorderRadius.circular(10.0),
+      ),
+      focusedBorder: OutlineInputBorder(
+        borderSide:
+        const BorderSide(color: Colors.blue), //Cor da borda quando ativo
+        borderRadius: BorderRadius.circular(10.0),
+      ),
+    );
+  }
+
+  void _exibirMensagem(String mensagem) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(mensagem),
+        duration: const Duration(seconds: 3),
+      ),
     );
   }
 
@@ -51,7 +138,13 @@ class _FormularioAcontecimentoState extends State<AcontecimentosForms> {
         _selectedSubGrupo == null ||
         _selectedTipo == null ||
         _selectedSubTipo == null ||
-        _selectedCobradeAutomatico == null) {
+        _selectedCobradeAutomatico == null ||
+        _cepController.text.isEmpty ||
+        _ruaController.text.isEmpty ||
+        _bairroController.text.isEmpty ||
+        _cidadeController.text.isEmpty ||
+        _estadoController.text.isEmpty ||
+        _cidadaoResponsavelController.text.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('Por favor, preencha todos os campos.'),
@@ -61,7 +154,7 @@ class _FormularioAcontecimentoState extends State<AcontecimentosForms> {
     }
 
     setState(() {
-      _isSaving = true; // Desativa o botão ao iniciar o salvamento
+      _isSaving = true;
     });
 
     try {
@@ -74,6 +167,12 @@ class _FormularioAcontecimentoState extends State<AcontecimentosForms> {
         infoCobrade: _selectedCobradeAutomatico!,
         dataHora: DateTime.now(),
         pendente: true,
+        cidadaoResponsavel: _cidadaoResponsavelController.text,
+        cep: _cepController.text,
+        rua: _ruaController.text,
+        bairro: _bairroController.text,
+        cidade: _cidadeController.text,
+        estado: _estadoController.text,
       );
 
       var response = await _acontecimentoController.post(acontecimento);
@@ -90,9 +189,79 @@ class _FormularioAcontecimentoState extends State<AcontecimentosForms> {
       }
     } finally {
       setState(() {
-        _isSaving = false; // Reativa o botão após a conclusão do salvamento
+        _isSaving = false;
       });
     }
+  }
+
+    Widget _buildAddressFields() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Row(
+          children: [
+            Expanded(
+              child: Stack(
+                alignment: Alignment.centerRight,
+                children: [
+                  TextFormField(
+                    controller: _cepController,
+                    decoration: _customInputDecoration('CEP:').copyWith(
+                      counterText: '',
+                    ),
+                    keyboardType: TextInputType.number,
+                    maxLength: 8,
+                    onChanged: (value) {
+                      if (value.length == 8) {
+                        buscarCep();
+                      }
+                      setState(() {});
+                    },
+                    inputFormatters: [
+                      FilteringTextInputFormatter.digitsOnly,
+                    ],
+                  ),
+                  Positioned(
+                    right: 10,
+                    bottom: 5,
+                    child: Text(
+                      '${_cepController.text.length}/8',
+                      style: const TextStyle(
+                        fontSize: 12,
+                        color: Colors.grey,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: 16),
+
+        _buildNonEditableField(_ruaController, 'Rua:'),
+        _buildNonEditableField(_bairroController, 'Bairro:'),
+        _buildNonEditableField(_cidadeController, 'Cidade:'),
+        _buildNonEditableField(_estadoController, 'Estado:'),
+      ],
+    );
+  }
+
+  Widget _buildNonEditableField(TextEditingController controller, String label) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        TextFormField(
+          controller: controller,
+          decoration: _customInputDecoration(label).copyWith(
+            fillColor: Colors.grey[200],
+            filled: true,
+          ),
+          enabled: false,
+        ),
+        const SizedBox(height: 16),
+      ],
+    );
   }
 
   // Opções para a classe de acontecimento
@@ -525,241 +694,318 @@ class _FormularioAcontecimentoState extends State<AcontecimentosForms> {
           Expanded(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start, // Alinhar no topo
-                children: <Widget>[
-                  SizedBox(height: 30),
-                  // Campo "Classe de acontecimento"
-                  DropdownButtonFormField<String>(
-                    value: _selectedClasseAcontecimento,
-                    items: classeOptions.map((String option) {
-                      return DropdownMenuItem<String>(
-                        value: option,
-                        child: Text(option),
-                      );
-                    }).toList(),
-                    onChanged: (String? newValue) {
-                      setState(() {
-                        _selectedClasseAcontecimento = newValue!;
-                        _selectedGrupo = null;
-                        _selectedSubGrupo = null;
-                        _selectedTipo = null;
-                        _selectedSubTipo = null;
-                        _selectedCobradeAutomatico = null;
-                      });
-                    },
-                    decoration: _customInputDecoration('Classe de acontecimento:'),
-                  ),
-
-                  const SizedBox(height: 30), // Espaçamento de 30 pixels
-
-                  // Campo "Grupo" (dependente da classe de acontecimento)
-                  if (_selectedClasseAcontecimento != null)
-                    DropdownButtonFormField<String>(
-                      value: _selectedGrupo,
-                      items: grupoOptions[_selectedClasseAcontecimento!]
-                              ?.map((String option) {
+              child: SingleChildScrollView(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start, // Alinhar no topo
+                  children: <Widget>[
+                    SizedBox(height: 30),
+                    // Campo "Classe de acontecimento"
+                    Column(
+                      children: [
+                        DropdownButtonFormField<String>(
+                          value: _selectedClasseAcontecimento,
+                          items: classeOptions.map((String option) {
                             return DropdownMenuItem<String>(
                               value: option,
                               child: Text(option),
                             );
-                          }).toList() ??
-                          [],
-                      onChanged: (String? newValue) {
-                        setState(() {
-                          _selectedGrupo = newValue;
-                          _selectedSubGrupo = null;
-                          _selectedTipo = null;
-                          _selectedSubTipo = null;
-                          _selectedCobradeAutomatico = null;
-                        });
-                      },
-                      decoration: _customInputDecoration('Grupo:'),
-                    ),
-
-                  const SizedBox(height: 30), // Espaçamento de 30 pixels
-
-                  // Campo "Subgrupo" (dependente do grupo)
-                  if (_selectedGrupo != null)
-                    DropdownButtonFormField<String>(
-                      value: _selectedSubGrupo,
-                      items: subGrupoOptions[_selectedGrupo!]
-                              ?.map((String option) {
-                            return DropdownMenuItem<String>(
-                              value: option,
-                              child: Text(option),
-                            );
-                          }).toList() ??
-                          [],
-                      onChanged: (String? newValue) {
-                        setState(() {
-                          _selectedSubGrupo = newValue;
-                          _selectedTipo = null;
-                          _selectedSubTipo = null;
-                          _selectedCobradeAutomatico = null;
-                        });
-                      },
-                      decoration: _customInputDecoration('Subgrupo:'),
-                    ),
-
-                  const SizedBox(height: 30), // Espaçamento de 30 pixels
-
-                  // Campo "Tipo" (dependente do subgrupo)
-                  if (_selectedSubGrupo != null)
-                    DropdownButtonFormField<String>(
-                      value: _selectedTipo,
-                      items: tipoOptions[_selectedSubGrupo!]?.map((String option) {
-                            return DropdownMenuItem<String>(
-                              value: option,
-                              child: Text(option),
-                            );
-                          }).toList() ??
-                          [],
-                      onChanged: (String? newValue) {
-                        setState(() {
-                          _selectedTipo = newValue;
-                          _selectedSubTipo = null;
-                          _selectedCobradeAutomatico = null;
-                        });
-
-                        // Verificar se deve preencher automaticamente
-                        if (_selectedTipo != null &&
-                            valoresAutomaticosTipo.containsKey(_selectedTipo)) {
-                          setState(() {
-                            _selectedSubTipo = valoresAutomaticosTipo[_selectedTipo]!['SubTipo'];
-                            _selectedCobradeAutomatico = valoresAutomaticosTipo[_selectedTipo]!['Cobrade'];
-                          });
-                        }
-                      },
-                      decoration: _customInputDecoration('Tipo:'),
-                    ),
-
-                  const SizedBox(height: 30), // Espaçamento de 30 pixels
-
-                  // Campo "Subtipo" (dependente do tipo)
-                  if (_selectedTipo != null)
-                    DropdownButtonFormField<String>(
-                      value: _selectedSubTipo,
-                      items: subTipoOptions[_selectedTipo!]?.map((String option) {
-                            return DropdownMenuItem<String>(
-                              value: option,
-                              child: Text(option),
-                            );
-                          }).toList() ??
-                          [],
-                      onChanged: (String? newValue) {
-                        setState(() {
-                          _selectedSubTipo = newValue;
-
-                          // Verificar se deve preencher automaticamente
-                          if (_selectedSubTipo != null &&
-                              valoresAutomaticosTipo.containsKey(_selectedSubTipo)) {
+                          }).toList(),
+                          onChanged: (String? newValue) {
                             setState(() {
-                              _selectedCobradeAutomatico =
-                                  valoresAutomaticosTipo[_selectedSubTipo]!['Cobrade'];
+                              _selectedClasseAcontecimento = newValue!;
+                              _selectedGrupo = null;
+                              _selectedSubGrupo = null;
+                              _selectedTipo = null;
+                              _selectedSubTipo = null;
+                              _selectedCobradeAutomatico = null;
                             });
-                          }
+                          },
+                          decoration: _customInputDecoration('Classe de acontecimento:'),
+                        ),
+                        const SizedBox(height: 20), // Espaçamento de 30 pixels
+                      ],
+                    ),
+
+                    // Campo "Grupo" (dependente da classe de acontecimento)
+                    if (_selectedClasseAcontecimento != null)
+                      Column(
+                        children: [
+                          DropdownButtonFormField<String>(
+                            value: _selectedGrupo,
+                            items: grupoOptions[_selectedClasseAcontecimento!]
+                                    ?.map((String option) {
+                                  return DropdownMenuItem<String>(
+                                    value: option,
+                                    child: Text(option),
+                                  );
+                                }).toList() ?? [],
+                            onChanged: (String? newValue) {
+                              setState(() {
+                                _selectedGrupo = newValue;
+                                _selectedSubGrupo = null;
+                                _selectedTipo = null;
+                                _selectedSubTipo = null;
+                                _selectedCobradeAutomatico = null;
+                              });
+                            },
+                            decoration: _customInputDecoration('Grupo:'),
+                          ),
+                          const SizedBox(height: 20), // Espaçamento de 30 pixels
+                        ],
+                      ),
+
+                    // Campo "Subgrupo" (dependente do grupo)
+                    if (_selectedGrupo != null)
+                      Column(
+                        children: [
+                          DropdownButtonFormField<String>(
+                            value: _selectedSubGrupo,
+                            items: subGrupoOptions[_selectedGrupo!]
+                                    ?.map((String option) {
+                                  return DropdownMenuItem<String>(
+                                    value: option,
+                                    child: Text(option),
+                                  );
+                                }).toList() ?? [],
+                            onChanged: (String? newValue) {
+                              setState(() {
+                                _selectedSubGrupo = newValue;
+                                _selectedTipo = null;
+                                _selectedSubTipo = null;
+                                _selectedCobradeAutomatico = null;
+                              });
+                            },
+                            decoration: _customInputDecoration('Subgrupo:'),
+                          ),
+                          const SizedBox(height: 20), // Espaçamento de 30 pixels
+                        ],
+                      ),
+
+                    // Campo "Tipo" (dependente do subgrupo)
+                    if (_selectedSubGrupo != null)
+                      Column(
+                        children: [
+                          DropdownButtonFormField<String>(
+                            value: _selectedTipo,
+                            items: tipoOptions[_selectedSubGrupo!]?.map((String option) {
+                              return DropdownMenuItem<String>(
+                                value: option,
+                                child: Text(option),
+                              );
+                            }).toList() ?? [],
+                            onChanged: (String? newValue) {
+                              setState(() {
+                                _selectedTipo = newValue;
+                                _selectedSubTipo = null;
+                                _selectedCobradeAutomatico = null;
+                              });
+
+                              // Verificar se deve preencher automaticamente
+                              if (_selectedTipo != null &&
+                                  valoresAutomaticosTipo.containsKey(_selectedTipo)) {
+                                setState(() {
+                                  _selectedSubTipo = valoresAutomaticosTipo[_selectedTipo]!['SubTipo'];
+                                  _selectedCobradeAutomatico = valoresAutomaticosTipo[_selectedTipo]!['Cobrade'];
+                                });
+                              }
+                            },
+                            decoration: _customInputDecoration('Tipo:'),
+                          ),
+                          const SizedBox(height: 20), // Espaçamento de 30 pixels
+                        ],
+                      ),
+
+                    // Campo "Subtipo" (dependente do tipo)
+                    if (_selectedTipo != null)
+                      Column(
+                        children: [
+                          DropdownButtonFormField<String>(
+                            value: _selectedSubTipo,
+                            items: subTipoOptions[_selectedTipo!]?.map((String option) {
+                              return DropdownMenuItem<String>(
+                                value: option,
+                                child: Text(option),
+                              );
+                            }).toList() ?? [],
+                            onChanged: (String? newValue) {
+                              setState(() {
+                                _selectedSubTipo = newValue;
+
+                                // Verificar se deve preencher automaticamente
+                                if (_selectedSubTipo != null &&
+                                    valoresAutomaticosTipo.containsKey(_selectedSubTipo)) {
+                                  setState(() {
+                                    _selectedCobradeAutomatico =
+                                        valoresAutomaticosTipo[_selectedSubTipo]!['Cobrade'];
+                                  });
+                                }
+                              });
+                            },
+                            decoration: _customInputDecoration('Subtipo:'),
+                          ),
+                          const SizedBox(height: 20), // Espaçamento de 30 pixels
+                        ],
+                      ),
+
+                    // Campo "Cobrade" preenchido automaticamente
+                    if (_selectedCobradeAutomatico != null)
+                      Column(
+                        children: [
+                          TextFormField(
+                            initialValue: _selectedCobradeAutomatico,
+                            readOnly: true,
+                            decoration: _customInputDecoration('Info Cobrade:'),
+                          ),
+                          const SizedBox(height: 20), // Espaçamento de 30 pixels
+                        ],
+                      ),
+
+                    TypeAheadField<CidadaoModel>(
+                      controller: _cidadaoResponsavelController, // Este controller agora só para exibir o nome
+                      debounceDuration: const Duration(milliseconds: 300),
+                      suggestionsCallback: (search) async {
+                        if (search.isEmpty) {
+                          return [];
+                        }
+
+                        var cidadaoService = CidadaoService();
+                        var cidadaoList = await cidadaoService.fetchListCidadao(searchTerm: search);
+
+                        return getFilteredCidadaoList(search, cidadaoList);
+                      },
+                      builder: (context, controller, focusNode) {
+                        return TextField(
+                          controller: _cidadaoResponsavelController,
+                          focusNode: focusNode,
+                          autofocus: false,
+                          decoration: _customInputDecoration("Cidadão que relatou o acontecimento:"),
+                          onChanged: (text) async {
+                            if (text.isEmpty) {
+                              SuggestionsController.of<CidadaoModel>(context).suggestions = [];
+                              return;
+                            }
+
+                            var cidadaoService = CidadaoService();
+                            var cidadaoList = await cidadaoService.fetchListCidadao(searchTerm: text);
+
+                            // Filtra a lista com base na consulta
+                            var filteredList = getFilteredCidadaoList(text, cidadaoList);
+
+                            // Atualiza as sugestões
+                            SuggestionsController.of<CidadaoModel>(context).suggestions = filteredList;
+                          },
+                        );
+                      },
+                      itemBuilder: (context, cidadao) {
+                        return ListTile(
+                          title: Text(cidadao.name),
+                          subtitle: Text('CPF: ${cidadao.cpf}'),
+                        );
+                      },
+                      onSelected: (CidadaoModel cidadao) {
+                        setState(() {
+                          _cidadaoResponsavelController.text = cidadao.name;
+                          _cpfResponsavelController.text = cidadao.cpf;
                         });
                       },
-                      decoration: _customInputDecoration('Subtipo:'),
                     ),
 
-                  const SizedBox(height: 30), // Espaçamento de 30 pixels
+                    const SizedBox(height: 20),
 
-                  // Campo "Cobrade" preenchido automaticamente
-                  if (_selectedCobradeAutomatico != null)
-                    TextFormField(
-                      initialValue: _selectedCobradeAutomatico,
-                      readOnly: true,
-                      decoration: _customInputDecoration('Info Cobrade:'),
-                    ),
+                    _buildAddressFields(),
 
-                  const SizedBox(height: 30),
-
-                  if (dataAtual != null) // Verifica se a data não é nula
-                    TextFormField(
-                      initialValue: dataAtual.toString(),
-                      readOnly: true,
-                      decoration: _customInputDecoration('Data e Hora:'),
-                    ),
-
-                  const SizedBox(height: 20),
-
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      // Botão Salvar
-                      InkWell(
-                        onTap: _isSaving ? null : () async {
-                          var response = await _salvar();
-                          
-                          if (response == "Acontecimento criado com sucesso.") {
-                            appState.atualizarTela('inicio');
-                            await Navigator.of(context).pushReplacementNamed('/tela-inicio');
-                          }
-                        },
-                        child: Container(
-                          width: 80,
-                          height: 28.61,
-                          decoration: ShapeDecoration(
-                            color: const Color(0xFF30BD4F),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(5),
+                    if (dataAtual != null) // Verifica se a data não é nula
+                      Column(
+                        children: [
+                          TextFormField(
+                            initialValue: DateFormat('dd/MM/yyyy HH:mm').format(dataAtual).toString(),
+                            readOnly: true,
+                            decoration: _customInputDecoration("Data e hora:").copyWith(
+                              fillColor: Colors.grey[200],
+                              filled: true,
                             ),
+                            enabled: false,
                           ),
-                          child: const Center(
-                            child: Text(
-                              'Salvar',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 16,
-                                fontFamily: 'Roboto',
-                                fontWeight: FontWeight.w600,
-                                letterSpacing: 0.64,
+                          const SizedBox(height: 20),
+                        ],
+                      ),
+
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        // Botão Salvar
+                        InkWell(
+                          onTap: _isSaving ? null : () async {
+                            var response = await _salvar();
+                            
+                            if (response == "Acontecimento criado com sucesso.") {
+                              appState.atualizarTela('inicio');
+                              await Navigator.of(context).pushReplacementNamed('/tela-inicio');
+                            }
+                          },
+                          child: Container(
+                            width: 80,
+                            height: 28.61,
+                            decoration: ShapeDecoration(
+                              color: const Color(0xFF30BD4F),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(5),
+                              ),
+                            ),
+                            child: const Center(
+                              child: Text(
+                                'Salvar',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 16,
+                                  fontFamily: 'Roboto',
+                                  fontWeight: FontWeight.w600,
+                                  letterSpacing: 0.64,
+                                ),
                               ),
                             ),
                           ),
                         ),
-                      ),
 
-                      const SizedBox(width: 10), // Adiciona um espaçamento entre os botões
+                        const SizedBox(width: 10), // Adiciona um espaçamento entre os botões
 
-                      // Botão Cancelar
-                      InkWell(
-                        onTap: () {
-                          // Navega de volta para a tela Home
-                          Navigator.of(context).pushReplacement(
-                            MaterialPageRoute(
-                              builder: (context) => const Home(title: ''),
+                        // Botão Cancelar
+                        InkWell(
+                          onTap: () {
+                            // Navega de volta para a tela Home
+                            Navigator.of(context).pushReplacement(
+                              MaterialPageRoute(
+                                builder: (context) => const Home(title: ''),
+                              ),
+                            );
+                          },
+                          child: Container(
+                            width: 80,
+                            height: 28.61,
+                            decoration: ShapeDecoration(
+                              color: const Color(0xFFEC6F64),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(5),
+                              ),
                             ),
-                          );
-                        },
-                        child: Container(
-                          width: 80,
-                          height: 28.61,
-                          decoration: ShapeDecoration(
-                            color: const Color(0xFFEC6F64),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(5),
-                            ),
-                          ),
-                          child: const Center(
-                            child: Text(
-                              'Cancelar',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 16,
-                                fontFamily: 'Roboto',
-                                fontWeight: FontWeight.w600,
-                                letterSpacing: 0.64,
+                            child: const Center(
+                              child: Text(
+                                'Cancelar',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 16,
+                                  fontFamily: 'Roboto',
+                                  fontWeight: FontWeight.w600,
+                                  letterSpacing: 0.64,
+                                ),
                               ),
                             ),
                           ),
                         ),
-                      ),
-                    ],
-                  ),
-                ],
+                      ],
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
@@ -769,5 +1015,3 @@ class _FormularioAcontecimentoState extends State<AcontecimentosForms> {
     );
   }
 }
-
-class _selecteddataAtual {}

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:maps_launcher/maps_launcher.dart';
 import 'package:projetoaplicado/app/home/atendimentos/cadastro/tela-atendimento-forms.dart';
 import 'package:projetoaplicado/backend/models/acontecimentoModel.dart';
 import '../../../components/globais/barra-superior.dart';
@@ -62,14 +63,16 @@ class DetalhesAtendimentoPendente extends StatelessWidget {
                         _buildDetailRow('assets/imagens/icon-padrao-acontecimento.png', 'Classe:', acontecimento.classe),
                         _buildDetailRow('assets/imagens/icon-padrao-acontecimento.png', 'Grupo:', acontecimento.grupo),
                         _buildDetailRow('assets/imagens/icon-padrao-acontecimento.png', 'Subgrupo:', acontecimento.subgrupo),
-                        _buildDetailRow('assets/imagens/icon-data-vistoria.png', 'Data:', DateFormat('dd/MM/yyyy').format(acontecimento.dataHora)),
+                        _buildDetailRow('assets/imagens/icon-padrao-acontecimento.png', 'Endereço:', '${acontecimento.rua}, Bairro ${acontecimento.bairro}'),
+                        _buildDetailRow('assets/imagens/icon-data-vistoria.png', 'Local:', DateFormat('dd/MM/yyyy').format(acontecimento.dataHora)),
                         _buildDetailRow('assets/imagens/icon-hora.png', 'Horário aproximado:', DateFormat('HH:mm').format(acontecimento.dataHora)),
                         const SizedBox(height: 10),
                         // Botão de localização
                         _buildButton(
                           context,
                           onTap: () {
-                            // MapsLauncher.launchQuery(endereco);
+                              String endereco = '${acontecimento.rua}, ${acontecimento.bairro}, ${acontecimento.cidade} - ${acontecimento.estado}, ${acontecimento.cep}';
+                              MapsLauncher.launchQuery(endereco);
                           },
                           iconData: Icons.location_on,
                           text: 'Localização do acontecimento',

@@ -206,7 +206,7 @@ class _DetalheHistorico extends State<DetalheHistorico> {
                                       _buildInfoRow(
                                           'assets/imagens/icon-cobrade.png',
                                           'COBRADE:',
-                                          _acontecimento!.infoCobrade,
+                                          _acontecimento!.infoCobrade!,
                                           Colors.blue),
                                     ] else ...[
                                       const Text(
@@ -269,7 +269,7 @@ class _DetalheHistorico extends State<DetalheHistorico> {
                                     _buildInfoRow(
                                         'assets/imagens/icon-endereco.png',
                                         'Endereço:',
-                                        '${cidadao?.bairro}, ${cidadao?.cidade} - ${cidadao?.estado}',
+                                        '${widget.atendimento.bairro}, ${widget.atendimento.cidade} - ${widget.atendimento.estado}',
                                         Colors.green),
                                   ],
                                 ),
@@ -395,42 +395,41 @@ class _DetalheHistorico extends State<DetalheHistorico> {
                                 ),
 
                               // Botão com localização
-                              if (cidadao != null)
-                                Center(
-                                  child: Container(
-                                    width: MediaQuery.of(context).size.width * 0.9,
-                                    child: Card(
-                                      color: Colors.white,
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(10),
-                                      ),
-                                      child: InkWell(
-                                        onTap: () {
-                                          String endereco = '${cidadao!.rua}, ${cidadao!.bairro}, ${cidadao!.cidade} - ${cidadao!.estado}, ${cidadao!.cep}';
-                                          MapsLauncher.launchQuery(endereco);
-                                        },
-                                        child: const Padding(
-                                          padding: EdgeInsets.all(16),
-                                          child: Row(
-                                            children: <Widget>[
-                                              Icon(Icons.location_on, color: Color(0xFF2987C0)),
-                                              SizedBox(width: 10),
-                                              Text(
-                                                'Localização do acontecimento',
-                                                style: TextStyle(
-                                                  fontSize: 16,
-                                                  color: Colors.black
-                                                ),
+                              Center(
+                                child: Container(
+                                  width: MediaQuery.of(context).size.width * 0.9,
+                                  child: Card(
+                                    color: Colors.white,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                    child: InkWell(
+                                      onTap: () {
+                                        String endereco = '${widget.atendimento.rua}, ${widget.atendimento.bairro}, ${widget.atendimento.cidade} - ${widget.atendimento.estado}, ${widget.atendimento.cep}';
+                                        MapsLauncher.launchQuery(endereco);
+                                      },
+                                      child: const Padding(
+                                        padding: EdgeInsets.all(16),
+                                        child: Row(
+                                          children: <Widget>[
+                                            Icon(Icons.location_on, color: Color(0xFF2987C0)),
+                                            SizedBox(width: 10),
+                                            Text(
+                                              'Localização do acontecimento',
+                                              style: TextStyle(
+                                                fontSize: 16,
+                                                color: Colors.black
                                               ),
-                                            ],
-                                          ),
+                                            ),
+                                          ],
                                         ),
                                       ),
-                                      elevation: 4,
-                                      margin: const EdgeInsets.all(10),
                                     ),
+                                    elevation: 4,
+                                    margin: const EdgeInsets.all(10),
                                   ),
-                                )
+                                ),
+                              )
                             ],
                           ),
                         ),
