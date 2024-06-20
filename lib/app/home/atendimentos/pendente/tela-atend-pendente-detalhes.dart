@@ -14,8 +14,6 @@ class DetalhesAtendimentoPendente extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double screenWidth = MediaQuery.of(context).size.width;
-
     return Scaffold(
       appBar: null,
       body: CustomScrollView(
@@ -26,76 +24,51 @@ class DetalhesAtendimentoPendente extends StatelessWidget {
             snap: false,
             expandedHeight: 50,
             flexibleSpace: BarraSuperior(context),
+            automaticallyImplyLeading: false,
           ),
           SliverList(
             delegate: SliverChildListDelegate(
               [
                 const SizedBox(height: 20),
-                Center(
-                  child: Container(
-                    width: screenWidth * 0.9,
-                    padding: const EdgeInsets.all(16),
-                    decoration: ShapeDecoration(
-                      color: Colors.white,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      shadows: const [
-                        BoxShadow(
-                          color: Color(0x3F2F2F2F),
-                          blurRadius: 1,
-                          offset: Offset(1, 1),
-                          spreadRadius: 0,
-                        ),
-                      ],
+                _buildSection(
+                  context,
+                  'Dados do acontecimento',
+                  [
+                    _buildDetailRow('assets/imagens/icon-padrao-acontecimento.png', 'Atendimento Realizado:', (acontecimento.pendente != null && acontecimento.pendente == true) ? 'Não' : 'Sim'),
+                    _buildDetailRow('assets/imagens/icon-padrao-acontecimento.png', 'Protocolo:', acontecimento.numeroProtocolo!),
+                    _buildDetailRow('assets/imagens/icon-padrao-acontecimento.png', 'Endereço:', '${acontecimento.rua}, Bairro ${acontecimento.bairro}'),
+                    _buildDetailRow('assets/imagens/icon-data-vistoria.png', 'Data:', DateFormat('dd/MM/yyyy').format(acontecimento.dataHora)),
+                    _buildDetailRow('assets/imagens/icon-hora.png', 'Horário aproximado:', DateFormat('HH:mm').format(acontecimento.dataHora)),
+                  ],
+                ),
+                _buildActionSection(
+                  context,
+                  [
+                    _buildButton(
+                      context,
+                      onTap: () {
+                        String endereco = '${acontecimento.rua}, ${acontecimento.bairro}, ${acontecimento.cidade} - ${acontecimento.estado}, ${acontecimento.cep}';
+                        MapsLauncher.launchQuery(endereco);
+                      },
+                      iconData: Icons.location_on,
+                      text: 'Localização do acontecimento',
                     ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Text('Dados do acontecimento', style: TextStyle(color: Colors.black, fontSize: 14, fontFamily: 'Roboto', fontWeight: FontWeight.w500)),
-                        const SizedBox(height: 16),
-                        _buildDetailRow(
-                          'assets/imagens/icon-padrao-acontecimento.png', 
-                          'Atendimento Realizado:', 
-                          (acontecimento.pendente != null && acontecimento.pendente == true) ? 'Não' : 'Sim'
-                        ),
-                        _buildDetailRow('assets/imagens/icon-padrao-acontecimento.png', 'Protocolo:', acontecimento.numeroProtocolo!),
-                        _buildDetailRow('assets/imagens/icon-padrao-acontecimento.png', 'Classe:', acontecimento.classe),
-                        _buildDetailRow('assets/imagens/icon-padrao-acontecimento.png', 'Grupo:', acontecimento.grupo),
-                        _buildDetailRow('assets/imagens/icon-padrao-acontecimento.png', 'Subgrupo:', acontecimento.subgrupo),
-                        _buildDetailRow('assets/imagens/icon-padrao-acontecimento.png', 'Endereço:', '${acontecimento.rua}, Bairro ${acontecimento.bairro}'),
-                        _buildDetailRow('assets/imagens/icon-data-vistoria.png', 'Local:', DateFormat('dd/MM/yyyy').format(acontecimento.dataHora)),
-                        _buildDetailRow('assets/imagens/icon-hora.png', 'Horário aproximado:', DateFormat('HH:mm').format(acontecimento.dataHora)),
-                        const SizedBox(height: 10),
-                        // Botão de localização
-                        _buildButton(
+                    _buildButton(
+                      context,
+                      onTap: () {
+                        Navigator.push(
                           context,
-                          onTap: () {
-                              String endereco = '${acontecimento.rua}, ${acontecimento.bairro}, ${acontecimento.cidade} - ${acontecimento.estado}, ${acontecimento.cep}';
-                              MapsLauncher.launchQuery(endereco);
-                          },
-                          iconData: Icons.location_on,
-                          text: 'Localização do acontecimento',
-                        ),
-                        // Botão para realizar atendimento
-                        _buildButton(
-                          context,
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => AtendimentoForms(
-                                  numeroProtocolo: acontecimento.numeroProtocolo,
-                                ),
-                              ),
-                            );
-                          },
-                          iconData: Icons.arrow_back,
-                          text: 'Realizar atendimento',
-                        ),
-                      ],
+                          MaterialPageRoute(
+                            builder: (context) => AtendimentoForms(
+                              numeroProtocolo: acontecimento.numeroProtocolo,
+                            ),
+                          ),
+                        );
+                      },
+                      iconData: Icons.arrow_back,
+                      text: 'Realizar atendimento',
                     ),
-                  ),
+                  ],
                 ),
                 const SizedBox(height: 15),
               ],
@@ -106,6 +79,73 @@ class DetalhesAtendimentoPendente extends StatelessWidget {
       bottomNavigationBar: MenuInferior(),
     );
   }
+
+  Widget _buildSection(BuildContext context, String sectionTitle, List<Widget> details) {
+    return Container(
+      width: MediaQuery.of(context).size.width * 0.9,
+      margin: const EdgeInsets.all(10),  // Espaçamento uniforme nas bordas
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(10),
+        boxShadow: const [
+          BoxShadow(
+            color: Color(0x20000000),
+            blurRadius: 5,
+            offset: Offset(0, 2),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            sectionTitle,
+            style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+          ),
+          const SizedBox(height: 10),
+          ...details,
+        ],
+      ),
+    );
+  }
+
+  Widget _buildActionSection(BuildContext context, List<Widget> actions) {
+    return Column(
+      children: actions,
+    );
+  }
+
+  Widget _buildButton(BuildContext context, {required VoidCallback onTap, required IconData iconData, required String text}) {
+    return Card(
+      color: Colors.white,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: InkWell(
+        onTap: onTap,
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Row(
+            children: <Widget>[
+              Icon(iconData, color: Color(0xFF2987C0)),
+              const SizedBox(width: 10),
+              Text(
+                text,
+                style: const TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+      elevation: 4,
+      margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+    );
+  }
+}
 
   Widget _buildDetailRow(String iconPath, String title, String value) {
     return Padding(
@@ -155,34 +195,3 @@ class DetalhesAtendimentoPendente extends StatelessWidget {
       ),
     );
   }
-
-  Widget _buildButton(BuildContext context, {required VoidCallback onTap, required IconData iconData, required String text}) {
-    return Card(
-      color: Colors.white,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(10),
-      ),
-      child: InkWell(
-        onTap: onTap,
-        child: Padding(
-          padding: const EdgeInsets.all(16),
-          child: Row(
-            children: <Widget>[
-              Icon(iconData, color: Color(0xFF2987C0)),
-              const SizedBox(width: 10),
-              Text(
-                text,
-                style: const TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-      elevation: 4,
-      margin: const EdgeInsets.all(7),
-    );
-  }
-}

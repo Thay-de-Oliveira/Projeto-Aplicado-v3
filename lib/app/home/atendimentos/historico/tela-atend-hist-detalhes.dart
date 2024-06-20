@@ -134,302 +134,115 @@ class _DetalheHistorico extends State<DetalheHistorico> {
                     Expanded(
                       child: SingleChildScrollView(
                         child: Padding(
-                          padding: const EdgeInsets.all(10.0),
+                          padding: const EdgeInsets.all(5.0),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              // Seção de Documentos
-                              const Text(
-                                'Documentos',
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 14,
-                                  fontFamily: 'Roboto',
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              ),
                               const SizedBox(height: 10),
                               _buildDocumentRow(context),
-                              const SizedBox(height: 20),
+                              const SizedBox(height: 10),
 
-                              // Seção de Dados da Ocorrência
-                              const Text(
+                              _buildSection(
+                                context,
                                 'Dados da ocorrência',
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 14,
-                                  fontFamily: 'Roboto',
-                                  fontWeight: FontWeight.w500,
-                                ),
+                                [
+                                  _buildInfoRow(
+                                      'assets/imagens/icon-numero-protocolo.png',
+                                      'N° do Protocolo:',
+                                      widget.atendimento.nProtocolo,
+                                      const Color(0xFFCFDDF2)),
+                                  const SizedBox(height: 8),
+                                  _buildInfoRow(
+                                      'assets/imagens/icon-subgrupo.png',
+                                      'Subgrupo:',
+                                      _acontecimento!.subgrupo,
+                                      const Color(0xFFCFDDF2)),
+                                  const SizedBox(height: 8),
+                                  _buildInfoRow('assets/imagens/icon-tipo.png',
+                                      'Tipo:', _acontecimento!.tipo, const Color(0xFFCFDDF2)),
+                                  const SizedBox(height: 8),
+                                  _buildInfoRow(
+                                      'assets/imagens/icon-evento.png',
+                                      'Evento:',
+                                      '${_acontecimento!.tipo} ${_acontecimento!.subtipo}',
+                                      const Color(0xFFCFDDF2)),
+                                  const SizedBox(height: 8),
+                                  _buildInfoRow(
+                                      'assets/imagens/icon-cobrade.png',
+                                      'COBRADE:',
+                                      _acontecimento!.infoCobrade!,
+                                      const Color(0xFFCFDDF2)),
+                                ],
                               ),
-                              const SizedBox(height: 16),
-                              Container(
-                                width: double.infinity,
-                                padding: const EdgeInsets.all(10),
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(10),
-                                  boxShadow: const [
-                                    BoxShadow(
-                                      color: Color(0x3F2F2F2F),
-                                      blurRadius: 1,
-                                      offset: Offset(1, 1),
-                                      spreadRadius: 0,
-                                    )
-                                  ],
-                                ),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    if (_acontecimento != null) ...[
-                                      _buildInfoRow(
-                                          'assets/imagens/icon-numero-protocolo.png',
-                                          'N° do Protocolo:',
-                                          widget.atendimento.nProtocolo,
-                                          Colors.blue),
-                                      const SizedBox(height: 8),
-                                      _buildInfoRow(
-                                          'assets/imagens/icon-subgrupo.png',
-                                          'Subgrupo:',
-                                          _acontecimento!.subgrupo,
-                                          Colors.blue),
-                                      const SizedBox(height: 8),
-                                      _buildInfoRow('assets/imagens/icon-tipo.png',
-                                          'Tipo:', _acontecimento!.tipo, Colors.blue),
-                                      const SizedBox(height: 8),
-                                      _buildInfoRow(
-                                          'assets/imagens/icon-evento.png',
-                                          'Evento:',
-                                          '${_acontecimento!.tipo} ${_acontecimento!.subtipo}',
-                                          Colors.blue),
-                                      const SizedBox(height: 8),
-                                      _buildInfoRow(
-                                          'assets/imagens/icon-cobrade.png',
-                                          'COBRADE:',
-                                          _acontecimento!.infoCobrade!,
-                                          Colors.blue),
-                                    ] else ...[
-                                      const Text(
-                                        'Não foi possível carregar os dados da ocorrência.',
-                                        style: TextStyle(color: Colors.red),
-                                      ),
-                                    ],
-                                  ],
-                                ),
-                              ),
-                              const SizedBox(height: 20),
 
-                              // Seção de Atendimento
-                              const Text(
-                                'Atendimento',
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 14,
-                                  fontFamily: 'Roboto',
-                                  fontWeight: FontWeight.w600,
-                                ),
+                              _buildSection(
+                                context,
+                                'Dados do atendimento',
+                                [
+                                  _buildInfoRow(
+                                      'assets/imagens/icon-atendente-nome.png',
+                                      'Nome do atendente:',
+                                      widget.atendimento.atendenteResponsavel,
+                                      const Color(0xFF8CD79C)),
+                                  const SizedBox(height: 8),
+                                  _buildInfoRow(
+                                      'assets/imagens/icon-data-vistoria.png',
+                                      'Data da vistoria:',
+                                      widget.atendimento.dataVistoria,
+                                      const Color(0xFF8CD79C)),
+                                  const SizedBox(height: 8),
+                                  _buildInfoRow(
+                                      'assets/imagens/icon-ocorrencia.png',
+                                      'Ocorrência:',
+                                      widget.atendimento.nProtocolo,
+                                      const Color(0xFF8CD79C)),
+                                  const SizedBox(height: 8),
+                                  _buildInfoRow(
+                                      'assets/imagens/icon-endereco.png',
+                                      'Endereço:',
+                                      '${widget.atendimento.bairro}, ${widget.atendimento.cidade} - ${widget.atendimento.estado}',
+                                      const Color(0xFF8CD79C)),
+                                ],
                               ),
-                              const SizedBox(height: 16),
-                              Container(
-                                width: double.infinity,
-                                padding: const EdgeInsets.all(10),
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(10),
-                                  boxShadow: const [
-                                    BoxShadow(
-                                      color: Color(0x3F2F2F2F),
-                                      blurRadius: 1,
-                                      offset: Offset(1, 1),
-                                      spreadRadius: 0,
-                                    )
-                                  ],
-                                ),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    _buildInfoRow(
-                                        'assets/imagens/icon-atendente-nome.png',
-                                        'Nome do atendente:',
-                                        widget.atendimento.atendenteResponsavel,
-                                        Colors.green),
-                                    const SizedBox(height: 8),
-                                    _buildInfoRow(
-                                        'assets/imagens/icon-data-vistoria.png',
-                                        'Data da vistoria:',
-                                        widget.atendimento.dataVistoria,
-                                        Colors.green),
-                                    const SizedBox(height: 8),
-                                    _buildInfoRow(
-                                        'assets/imagens/icon-ocorrencia.png',
-                                        'Ocorrência:',
-                                        widget.atendimento.nProtocolo,
-                                        Colors.green),
-                                    const SizedBox(height: 8),
-                                    _buildInfoRow(
-                                        'assets/imagens/icon-endereco.png',
-                                        'Endereço:',
-                                        '${widget.atendimento.bairro}, ${widget.atendimento.cidade} - ${widget.atendimento.estado}',
-                                        Colors.green),
-                                  ],
-                                ),
-                              ),
-                              const SizedBox(height: 20),
 
-                              // Seção de Família/Cidadãos
-                              const Text(
-                                'Família/Cidadãos',
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 14,
-                                  fontFamily: 'Roboto',
-                                  fontWeight: FontWeight.w600,
-                                ),
+                              _buildSection(
+                                context,
+                                'Dados do cidadão',
+                                [
+                                  _buildInfoRow(
+                                      'assets/imagens/icon-nome-solicitante.png',
+                                      'Nome do solicitante:',
+                                      cidadao?.name ?? '',
+                                      const Color(0xFFF08D86)),
+                                  const SizedBox(height: 8),
+                                  _buildInfoRow(
+                                      'assets/imagens/icon-cpf.png',
+                                      'CPF do solicitante:',
+                                      cidadao?.cpf ?? '',
+                                      const Color(0xFFF08D86)),
+                                  const SizedBox(height: 8),
+                                  _buildInfoRow(
+                                      'assets/imagens/icon-rg.png',
+                                      'RG do solicitante:',
+                                      cidadao?.rg ?? '',
+                                      const Color(0xFFF08D86)),
+                                  const SizedBox(height: 8),
+                                  _buildInfoRow(
+                                      'assets/imagens/icon-telefone.png',
+                                      'Telefone do solicitante:',
+                                      cidadao?.telefone ?? '',
+                                      const Color(0xFFF08D86)),
+                                  const SizedBox(height: 8),
+                                  _buildInfoRow(
+                                      'assets/imagens/icon-pessoas-imovel.png',
+                                      'Número de pessoas no imóvel:',
+                                      cidadao?.numPessoasNaCasa.toString() ?? '',
+                                      const Color(0xFFF08D86)),
+                                ],
                               ),
-                              const SizedBox(height: 16),
-                              Container(
-                                width: double.infinity,
-                                padding: const EdgeInsets.all(10),
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(10),
-                                  boxShadow: const [
-                                    BoxShadow(
-                                      color: Color(0x3F2F2F2F),
-                                      blurRadius: 1,
-                                      offset: Offset(1, 1),
-                                      spreadRadius: 0,
-                                    )
-                                  ],
-                                ),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    _buildInfoRow(
-                                        'assets/imagens/icon-nome-solicitante.png',
-                                        'Nome do solicitante:',
-                                        cidadao?.name ?? '',
-                                        Colors.red),
-                                    const SizedBox(height: 8),
-                                    _buildInfoRow(
-                                        'assets/imagens/icon-cpf.png',
-                                        'CPF do solicitante:',
-                                        cidadao?.cpf ?? '',
-                                        Colors.red),
-                                    const SizedBox(height: 8),
-                                    _buildInfoRow(
-                                        'assets/imagens/icon-rg.png',
-                                        'RG do solicitante:',
-                                        cidadao?.rg ?? '',
-                                        Colors.red),
-                                    const SizedBox(height: 8),
-                                    _buildInfoRow(
-                                        'assets/imagens/icon-telefone.png',
-                                        'Telefone do solicitante:',
-                                        cidadao?.telefone ?? '',
-                                        Colors.red),
-                                    const SizedBox(height: 8),
-                                    _buildInfoRow(
-                                        'assets/imagens/icon-pessoas-imovel.png',
-                                        'Número de pessoas no imóvel:',
-                                        cidadao?.numPessoasNaCasa.toString() ?? '',
-                                        Colors.red),
-                                  ],
-                                ),
-                              ),
-                              const SizedBox(height: 20),
 
-                              // Seção de Registro fotográfico
-                              if (widget.atendimento.imagesUrls != null &&
-                                  widget.atendimento.imagesUrls!.isNotEmpty)
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    const Text(
-                                      'Registro fotográfico',
-                                      style: TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 14,
-                                        fontFamily: 'Roboto',
-                                        fontWeight: FontWeight.w500,
-                                      ),
-                                    ),
-                                    const SizedBox(height: 10),
-                                    CarouselSlider(
-                                      options: CarouselOptions(
-                                        height: 182,
-                                        enlargeCenterPage: true,
-                                        autoPlay: true,
-                                        aspectRatio: 16 / 9,
-                                        autoPlayCurve: Curves.fastOutSlowIn,
-                                        enableInfiniteScroll: true,
-                                        autoPlayAnimationDuration:
-                                            const Duration(milliseconds: 800),
-                                        viewportFraction: 0.8,
-                                      ),
-                                      items:
-                                          widget.atendimento.imagesUrls!.map((item) {
-                                        return Builder(
-                                          builder: (BuildContext context) {
-                                            return Container(
-                                              width:
-                                                  MediaQuery.of(context).size.width,
-                                              margin: const EdgeInsets.symmetric(
-                                                  horizontal: 5.0),
-                                              decoration: BoxDecoration(
-                                                color: Colors.amber,
-                                                borderRadius:
-                                                    BorderRadius.circular(8.0),
-                                              ),
-                                              child: Image.network(
-                                                item,
-                                                fit: BoxFit.cover,
-                                              ),
-                                            );
-                                          },
-                                        );
-                                      }).toList(),
-                                    ),
-                                    const SizedBox(height: 20), // Adicionado aqui
-                                  ],
-                                ),
+                              _buildPhotoSection(widget.atendimento.imagesUrls)
 
-                              // Botão com localização
-                              Center(
-                                child: Container(
-                                  width: MediaQuery.of(context).size.width * 0.9,
-                                  child: Card(
-                                    color: Colors.white,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(10),
-                                    ),
-                                    child: InkWell(
-                                      onTap: () {
-                                        String endereco = '${widget.atendimento.rua}, ${widget.atendimento.bairro}, ${widget.atendimento.cidade} - ${widget.atendimento.estado}, ${widget.atendimento.cep}';
-                                        MapsLauncher.launchQuery(endereco);
-                                      },
-                                      child: const Padding(
-                                        padding: EdgeInsets.all(16),
-                                        child: Row(
-                                          children: <Widget>[
-                                            Icon(Icons.location_on, color: Color(0xFF2987C0)),
-                                            SizedBox(width: 10),
-                                            Text(
-                                              'Localização do acontecimento',
-                                              style: TextStyle(
-                                                fontSize: 16,
-                                                color: Colors.black
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                    elevation: 4,
-                                    margin: const EdgeInsets.all(10),
-                                  ),
-                                ),
-                              )
                             ],
                           ),
                         ),
@@ -597,6 +410,97 @@ class _DetalheHistorico extends State<DetalheHistorico> {
           ),
         );
       }).toList(),
+    );
+  }
+
+  Widget _buildSection(BuildContext context, String sectionTitle, List<Widget> details) {
+    return Container(
+      width: double.infinity,
+      margin: const EdgeInsets.symmetric(horizontal: 5, vertical: 10),
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(10),
+        boxShadow: const [
+          BoxShadow(
+            color: Color(0x20000000),
+            blurRadius: 5,
+            offset: Offset(0, 2),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            sectionTitle,
+            style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+          ),
+          const SizedBox(height: 10),
+          ...details,
+        ],
+      ),
+    );
+  }
+
+  Widget _buildPhotoSection(List<String>? imagesUrls) {
+    if (imagesUrls == null || imagesUrls.isEmpty) {
+      return SizedBox.shrink();
+    }
+
+    return Card(
+      elevation: 4,
+      color: Colors.white,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(8.0),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text(
+              'Registro fotográfico',
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 10),
+            CarouselSlider(
+              options: CarouselOptions(
+                height: 182,
+                enlargeCenterPage: true,
+                autoPlay: true,
+                aspectRatio: 16 / 9,
+                autoPlayCurve: Curves.fastOutSlowIn,
+                enableInfiniteScroll: true,
+                autoPlayAnimationDuration: const Duration(milliseconds: 800),
+                viewportFraction: 0.8,
+              ),
+              items: imagesUrls.map((item) {
+                return Builder(
+                  builder: (BuildContext context) {
+                    return Container(
+                      width: MediaQuery.of(context).size.width,
+                      margin: const EdgeInsets.symmetric(horizontal: 5.0),
+                      decoration: BoxDecoration(
+                        color: Colors.amber,
+                        borderRadius: BorderRadius.circular(8.0),
+                      ),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(8.0),
+                        child: Image.network(
+                          item,
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    );
+                  },
+                );
+              }).toList(),
+            ),
+            const SizedBox(height: 10),
+          ],
+        ),
+      ),
     );
   }
 }

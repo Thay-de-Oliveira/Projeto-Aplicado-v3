@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:projetoaplicado/app/home/relatorios/atendimento/tela-relatorio-atend-detalhes.dart';
-import 'package:projetoaplicado/backend/controllers/cidadaoController.dart';
 import 'package:projetoaplicado/backend/controllers/relatorioAtendimentoController.dart';
 import 'package:projetoaplicado/backend/models/atendimentoModel.dart';
-import 'package:projetoaplicado/backend/models/cidadaoModel.dart';
 
 class AtendimentoCardRelatorio extends StatefulWidget {
   final AtendimentosModel atendimento;
@@ -18,7 +15,6 @@ class AtendimentoCardRelatorio extends StatefulWidget {
 
 class _AtendimentoCardRelatorioState extends State<AtendimentoCardRelatorio> {
   final RelatorioAtendimentoController _relatorioController = RelatorioAtendimentoController();
-  final CidadaoController cidadaoController = Get.put(CidadaoController());
   bool _isGeneratingReport = false;
 
   Future<void> _visualizarRelatorio(BuildContext context) async {
@@ -52,18 +48,6 @@ class _AtendimentoCardRelatorioState extends State<AtendimentoCardRelatorio> {
     return 'https://drive.google.com/uc?export=download&id=$fileId';
   }
 
-  Future<CidadaoModel?> _fetchCidadaoModel() async {
-    try {
-      await cidadaoController.getCidadaoByCpf(widget.atendimento.cidadaoResponsavel);
-      return cidadaoController.listCidadaoObs.isNotEmpty
-          ? cidadaoController.listCidadaoObs.first
-          : null;
-    } catch (e) {
-      print('Erro ao carregar cidadão: $e');
-      return null;
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -94,58 +78,44 @@ class _AtendimentoCardRelatorioState extends State<AtendimentoCardRelatorio> {
                 ),
               ),
             ),
-            if (!_isGeneratingReport) ...[
-              Positioned(
-                left: 9,
-                top: 15,
-                child: SizedBox(
-                  width: 189,
-                  height: 21,
-                  child: Text(
-                    widget.atendimento.tipoAtendimento,
-                    style: const TextStyle(
-                      color: Colors.black,
-                      fontSize: 16,
-                      fontFamily: 'Roboto',
-                      fontWeight: FontWeight.w700,
-                      height: 0,
-                    ),
+            Positioned(
+              left: 9,
+              top: 15,
+              child: SizedBox(
+                width: 189,
+                height: 21,
+                child: Text(
+                  widget.atendimento.tipoAtendimento,
+                  style: const TextStyle(
+                    color: Colors.black,
+                    fontSize: 16,
+                    fontFamily: 'Roboto',
+                    fontWeight: FontWeight.w700,
+                    height: 0,
                   ),
                 ),
               ),
-              Positioned(
-                left: 9,
-                top: 31,
-                child: FutureBuilder<CidadaoModel?>(
-                  future: _fetchCidadaoModel(),
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return CircularProgressIndicator();
-                    } else if (snapshot.hasError) {
-                      return Text("Erro ao carregar endereço");
-                    } else if (!snapshot.hasData || snapshot.data == null) {
-                      return Text("Endereço não encontrado");
-                    } else {
-                      return DataAcontecimentoInfo(
-                        dataAcontecimento: widget.atendimento.dataSolicitacao,
-                        nProtocolo: widget.atendimento.nProtocolo,
-                        endereco: '${snapshot.data!.bairro}, ${snapshot.data!.cidade} - ${snapshot.data!.estado}',
-                      );
-                    }
-                  },
-                ),
+            ),
+            Positioned(
+              left: 9,
+              top: 31,
+              child: DataAcontecimentoInfo(
+                dataAcontecimento: widget.atendimento.dataSolicitacao,
+                nProtocolo: widget.atendimento.nProtocolo,
+                endereco: '${widget.atendimento.rua}, Bairro ${widget.atendimento.bairro}',
+                atendente: widget.atendimento.atendenteResponsavel,
               ),
-              Positioned(
-                left: 208,
-                top: 89,
-                child: GerarRelatorioAtendimentoButton(
-                  onTap: () => _visualizarRelatorio(context),
-                  text: widget.atendimento.pdfUrl != null && widget.atendimento.pdfUrl!.isNotEmpty
-                      ? 'Visualizar Relatório'
-                      : 'Gerar Relatório',
-                ),
+            ),
+            Positioned(
+              left: 208,
+              top: 89,
+              child: GerarRelatorioAtendimentoButton(
+                onTap: () => _visualizarRelatorio(context),
+                text: widget.atendimento.pdfUrl != null && widget.atendimento.pdfUrl!.isNotEmpty
+                    ? 'Visualizar Relatório'
+                    : 'Gerar Relatório',
               ),
-            ],
+            ),
             if (_isGeneratingReport)
               Positioned.fill(
                 child: Container(
@@ -215,12 +185,14 @@ class DataAcontecimentoInfo extends StatelessWidget {
   final String dataAcontecimento;
   final String nProtocolo;
   final String endereco;
+  final String atendente;
 
   const DataAcontecimentoInfo({
     Key? key,
     required this.dataAcontecimento,
     required this.nProtocolo,
     required this.endereco,
+    required this.atendente,
   }) : super(key: key);
 
   @override
@@ -266,6 +238,16 @@ class DataAcontecimentoInfo extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 4),
+          Text(
+            'Atendente: $atendente',
+            style: TextStyle(
+              color: Colors.black.withOpacity(0.85),
+              fontSize: 12,
+              fontFamily: 'Roboto',
+              fontWeight: FontWeight.w400,
+              height: 0,
+            ),
+          ),
         ],
       ),
     );

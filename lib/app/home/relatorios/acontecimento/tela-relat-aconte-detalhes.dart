@@ -11,8 +11,6 @@ class DetalhesRelatorioAcontecimento extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double screenWidth = MediaQuery.of(context).size.width;
-
     return Scaffold(
       appBar: null,
       body: CustomScrollView(
@@ -28,45 +26,38 @@ class DetalhesRelatorioAcontecimento extends StatelessWidget {
             delegate: SliverChildListDelegate(
               [
                 const SizedBox(height: 20),
-                Center(
-                  child: Container(
-                    width: screenWidth * 0.9,
-                    padding: const EdgeInsets.all(16),
-                    decoration: ShapeDecoration(
-                      color: Colors.white,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      shadows: [
-                        const BoxShadow(
-                          color: Color(0x3F2F2F2F),
-                          blurRadius: 1,
-                          offset: Offset(1, 1),
-                          spreadRadius: 0,
-                        ),
-                      ],
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Text('Dados do acontecimento', style: TextStyle(color: Colors.black, fontSize: 14, fontFamily: 'Roboto', fontWeight: FontWeight.w500)),
-                        const SizedBox(height: 16),
-                        _buildDetailRow(
-                          'assets/imagens/icon-padrao-acontecimento.png', 
-                          'Atendimento Realizado:', 
-                          (acontecimento.pendente != null && acontecimento.pendente == true) ? 'Não' : 'Sim'
-                        ),
-                        _buildDetailRow('assets/imagens/icon-padrao-acontecimento.png', 'Classe:', acontecimento.classe),
-                        _buildDetailRow('assets/imagens/icon-padrao-acontecimento.png', 'Grupo:', acontecimento.grupo),
-                        _buildDetailRow('assets/imagens/icon-padrao-acontecimento.png', 'Subgrupo:', acontecimento.subgrupo),
-                        _buildDetailRow('assets/imagens/icon-padrao-acontecimento.png', 'Tipo:', acontecimento.tipo),
-                        _buildDetailRow('assets/imagens/icon-padrao-acontecimento.png', 'Subtipo:', acontecimento.subtipo),
-                        _buildDetailRow('assets/imagens/icon-padrao-acontecimento.png', 'COBRADE:', acontecimento.infoCobrade!),
-                        _buildDetailRow('assets/imagens/icon-data-vistoria.png', 'Data:', DateFormat('dd/MM/yyyy').format(acontecimento.dataHora)),
-                        _buildDetailRow('assets/imagens/icon-hora.png', 'Horário aproximado:', DateFormat('HH:mm').format(acontecimento.dataHora)),
-                      ],
-                    ),
-                  ),
+                _buildSection(
+                  context,
+                  'Informações do Atendimento',
+                  [
+                    _buildDetailRow('assets/imagens/icon-padrao-acontecimento.png', 'Atendimento Realizado:', (acontecimento.pendente != null && acontecimento.pendente == true) ? 'Não' : 'Sim'),
+                    _buildDetailRow('assets/imagens/icon-padrao-acontecimento.png', 'Protocolo:', acontecimento.numeroProtocolo!),
+                    _buildDetailRow('assets/imagens/icon-data-vistoria.png', 'Data:', DateFormat('dd/MM/yyyy').format(acontecimento.dataHora)),
+                    _buildDetailRow('assets/imagens/icon-hora.png', 'Horário aproximado:', DateFormat('HH:mm').format(acontecimento.dataHora)),
+                    _buildDetailRow('assets/imagens/icon-padrao-acontecimento.png', 'Cidadão solicitante:', acontecimento.cidadaoResponsavel),
+                  ],
+                ),
+                _buildSection(
+                  context,
+                  'Endereço do Acontecimento',
+                  [
+                    _buildDetailRow('assets/imagens/icon-padrao-acontecimento.png', 'Cep:', acontecimento.cep),
+                    _buildDetailRow('assets/imagens/icon-padrao-acontecimento.png', 'Endereço:', '${acontecimento.rua}, Bairro ${acontecimento.bairro}'),
+                    _buildDetailRow('assets/imagens/icon-padrao-acontecimento.png', 'Cidade:', acontecimento.cidade),
+                    _buildDetailRow('assets/imagens/icon-padrao-acontecimento.png', 'Estado:', acontecimento.estado),
+                  ],
+                ),
+                _buildSection(
+                  context,
+                  'Dados Adicionais',
+                  [
+                    _buildDetailRow('assets/imagens/icon-padrao-acontecimento.png', 'Classe:', acontecimento.classe),
+                    _buildDetailRow('assets/imagens/icon-padrao-acontecimento.png', 'Grupo:', acontecimento.grupo),
+                    _buildDetailRow('assets/imagens/icon-padrao-acontecimento.png', 'Subgrupo:', acontecimento.subgrupo),
+                    _buildDetailRow('assets/imagens/icon-padrao-acontecimento.png', 'Tipo:', acontecimento.tipo),
+                    _buildDetailRow('assets/imagens/icon-padrao-acontecimento.png', 'Subtipo:', acontecimento.subtipo),
+                    _buildDetailRow('assets/imagens/icon-padrao-acontecimento.png', 'COBRADE:', acontecimento.infoCobrade!),
+                  ],
                 ),
                 const SizedBox(height: 15),
               ],
@@ -122,6 +113,36 @@ class DetalhesRelatorioAcontecimento extends StatelessWidget {
               ],
             ),
           ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildSection(BuildContext context, String sectionTitle, List<Widget> details) {
+    return Container(
+      width: MediaQuery.of(context).size.width * 0.9,
+      margin: const EdgeInsets.all(10),  // Adicionado espaçamento uniforme
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(10),
+        boxShadow: const [
+          BoxShadow(
+            color: Color(0x20000000),
+            blurRadius: 5,
+            offset: Offset(0, 2),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            sectionTitle,
+            style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+          ),
+          const SizedBox(height: 10),
+          ...details,
         ],
       ),
     );

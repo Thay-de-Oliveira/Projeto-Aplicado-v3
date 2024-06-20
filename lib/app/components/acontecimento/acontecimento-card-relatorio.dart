@@ -72,8 +72,9 @@ class AcontecimentoCardRelatorio extends StatelessWidget {
               top: 31,
               child: DataHoraInfo(
                 dataHora: acontecimento.dataHora,
-                numeroProtocolo:
-                    acontecimento.numeroProtocolo ?? "Sem Protocolo",
+                numeroProtocolo: acontecimento.numeroProtocolo ?? "Sem Protocolo",
+                rua: acontecimento.rua,
+                bairro: acontecimento.bairro,
               ),
             ),
             Positioned(
@@ -127,11 +128,15 @@ class VisualizarAcontecimentoButton extends StatelessWidget {
 class DataHoraInfo extends StatelessWidget {
   final DateTime dataHora;
   final String numeroProtocolo;
+  final String rua;
+  final String bairro;
 
   const DataHoraInfo({
     Key? key,
     required this.dataHora,
     required this.numeroProtocolo,
+    required this.rua,
+    required this.bairro,
   }) : super(key: key);
 
   @override
@@ -148,6 +153,17 @@ class DataHoraInfo extends StatelessWidget {
             'N° do protocolo: ' '$numeroProtocolo',
             style: const TextStyle(
               color: Colors.black,
+              fontSize: 12,
+              fontFamily: 'Roboto',
+              fontWeight: FontWeight.w400,
+              height: 0,
+            ),
+          ),
+          const SizedBox(height: 4),
+          Text(
+            'Endereço: ''$rua' ', Bairro ''$bairro',
+            style: TextStyle(
+              color: Colors.black.withOpacity(0.85),
               fontSize: 12,
               fontFamily: 'Roboto',
               fontWeight: FontWeight.w400,
