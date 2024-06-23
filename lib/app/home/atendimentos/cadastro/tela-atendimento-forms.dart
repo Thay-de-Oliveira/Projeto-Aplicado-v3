@@ -699,7 +699,7 @@ class _AtendimentoFormsState extends State<AtendimentoForms> {
                             enabled: false,
                           ),
 
-                          const SizedBox(height: 20),
+                          const SizedBox(height: 30),
 
                           //Campo "Tipo de atendimento"
                           DropdownButtonFormField<String>(
@@ -717,7 +717,7 @@ class _AtendimentoFormsState extends State<AtendimentoForms> {
                             _customInputDecoration('Tipo de atendimento:'),
                           ),
 
-                          const SizedBox(height: 20),
+                          const SizedBox(height: 30),
 
                           //Campo "Canal da solicitação"
                           DropdownButtonFormField<String>(
@@ -735,7 +735,7 @@ class _AtendimentoFormsState extends State<AtendimentoForms> {
                                 'Canal da solicitação:'), // Aplicar estilo personalizado
                           ),
 
-                          const SizedBox(height: 20),
+                          const SizedBox(height: 30),
 
                           TypeAheadField<CidadaoModel>(
                             controller:
@@ -795,7 +795,7 @@ class _AtendimentoFormsState extends State<AtendimentoForms> {
                             },
                           ),
 
-                          const SizedBox(height: 20),
+                          const SizedBox(height: 30),
 
                           //Campos lado a lado "Vistoria"
                           Row(
@@ -828,14 +828,14 @@ class _AtendimentoFormsState extends State<AtendimentoForms> {
                                 ),
                               ),
                             ],
-                            
                           ),
+
+                          const SizedBox(height: 20),
 
                           Visibility(
                             visible: _selectedVistoriaRealizada == 'Sim',
                             child: Column(
                               children: [
-                                const SizedBox(height: 20),
                                 Row(
                                   children: [
                                     Expanded(
@@ -859,7 +859,7 @@ class _AtendimentoFormsState extends State<AtendimentoForms> {
                                     ),
                                   ],
                                 ),
-                                const SizedBox(height: 20),
+                                const SizedBox(height: 30),
                                 Row(
                                   children: [
                                     Expanded(
@@ -881,7 +881,7 @@ class _AtendimentoFormsState extends State<AtendimentoForms> {
                             ),
                           ),
 
-                          const SizedBox(height: 20),
+                          const SizedBox(height: 30),
 
                           //Campos lado a lado "Datas"
                           Row(
@@ -902,32 +902,29 @@ class _AtendimentoFormsState extends State<AtendimentoForms> {
                             ],
                           ),
 
-                          const SizedBox(height: 20),
+                          const SizedBox(height: 30),
 
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
-                              TextFormField(
-                                decoration: InputDecoration(
-                                  labelText: 'Registro da vistoria',
-                                  labelStyle: const TextStyle(fontSize: 16),
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(10.0),
+                              Container(
+                                padding: const EdgeInsets.symmetric(
+                                    vertical: 15, horizontal: 10),
+                                decoration: BoxDecoration(
+                                  border: Border.all(
+                                    color: Colors.grey,
                                   ),
-                                  enabledBorder: OutlineInputBorder(
-                                    borderSide:
-                                    const BorderSide(color: Colors.grey),
-                                    borderRadius: BorderRadius.circular(10.0),
-                                  ),
-                                  focusedBorder: OutlineInputBorder(
-                                    borderSide:
-                                    const BorderSide(color: Colors.blue),
-                                    borderRadius: BorderRadius.circular(10.0),
-                                  ),
-                                  suffixIcon: Padding(
-                                    padding: const EdgeInsets.only(right: 16.0),
-                                    child: Row(
-                                      mainAxisSize: MainAxisSize.min,
+                                  borderRadius: BorderRadius.circular(10.0),
+                                ),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      'Registro da vistoria',
+                                      style: const TextStyle(fontSize: 16),
+                                    ),
+                                    Row(
                                       children: [
                                         GestureDetector(
                                           onTap: () => setState(() {
@@ -944,19 +941,17 @@ class _AtendimentoFormsState extends State<AtendimentoForms> {
                                         ),
                                       ],
                                     ),
-                                  ),
+                                  ],
                                 ),
                               ),
-                              const SizedBox(
-                                  height:
-                                  8), // Espaço entre o campo e as miniaturas
+                              const SizedBox(height: 8),
                               _imagensController.imageFiles.isEmpty
                                   ? Container()
-                                  : _buildImagePreviews(), // Ajuste para verificar se a lista do controlador está vazia
+                                  : _buildImagePreviews(),
                             ],
                           ),
 
-                          const SizedBox(height: 20),
+                          const SizedBox(height: 30),
 
                           //Campo "Será entregue itens de assistencia humanitaria"
                           DropdownButtonFormField<String>(
@@ -979,7 +974,7 @@ class _AtendimentoFormsState extends State<AtendimentoForms> {
                             ),
                           ),
 
-                          const SizedBox(height: 20),
+                          const SizedBox(height: 30),
 
                           //Campo CHECKLIST "Quais itens foram entregues?"
                           Visibility(
@@ -1002,6 +997,8 @@ class _AtendimentoFormsState extends State<AtendimentoForms> {
 
                           _buildAddressFields(),
 
+                          const SizedBox(height: 20),
+
                           //Campo de texto longo "Observações"
                           TextField(
                             controller: _observacoesController,
@@ -1013,7 +1010,6 @@ class _AtendimentoFormsState extends State<AtendimentoForms> {
                           const SizedBox(height: 20),
 
                           Align(
-                            // SALVAR + CANCELAR
                             alignment: Alignment.centerRight,
                             child: Row(
                               mainAxisSize: MainAxisSize.min,
@@ -1046,7 +1042,7 @@ class _AtendimentoFormsState extends State<AtendimentoForms> {
                                   ),
                                 ),
 
-                                const SizedBox(width: 16), // Espaçamento entre os botões
+                                const SizedBox(width: 16),
 
                                 // Botão "Cancelar"
                                 InkWell(
@@ -1054,7 +1050,7 @@ class _AtendimentoFormsState extends State<AtendimentoForms> {
                                     Navigator.of(context).pushReplacement(
                                       MaterialPageRoute(
                                         builder: (context) =>
-                                        const Home(title: ''),
+                                            const Home(title: ''),
                                       ),
                                     );
                                   },
