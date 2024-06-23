@@ -383,7 +383,7 @@ class _AtendimentoFormsState extends State<AtendimentoForms> {
   String? _selectedEntregarItens = 'Selecionar';
 
   //Lista de itens entregues
-  bool mostrarItensEntregues = true;
+  bool mostrarItensEntregues = false;
 
   List<String> tipoAtendimentoOptions = [
     'Selecionar atendimento',
@@ -699,7 +699,7 @@ class _AtendimentoFormsState extends State<AtendimentoForms> {
                             enabled: false,
                           ),
 
-                          const SizedBox(height: 30),
+                          const SizedBox(height: 20),
 
                           //Campo "Tipo de atendimento"
                           DropdownButtonFormField<String>(
@@ -717,7 +717,7 @@ class _AtendimentoFormsState extends State<AtendimentoForms> {
                             _customInputDecoration('Tipo de atendimento:'),
                           ),
 
-                          const SizedBox(height: 30),
+                          const SizedBox(height: 20),
 
                           //Campo "Canal da solicitação"
                           DropdownButtonFormField<String>(
@@ -735,7 +735,7 @@ class _AtendimentoFormsState extends State<AtendimentoForms> {
                                 'Canal da solicitação:'), // Aplicar estilo personalizado
                           ),
 
-                          const SizedBox(height: 30),
+                          const SizedBox(height: 20),
 
                           TypeAheadField<CidadaoModel>(
                             controller:
@@ -795,7 +795,7 @@ class _AtendimentoFormsState extends State<AtendimentoForms> {
                             },
                           ),
 
-                          const SizedBox(height: 30),
+                          const SizedBox(height: 20),
 
                           //Campos lado a lado "Vistoria"
                           Row(
@@ -830,12 +830,11 @@ class _AtendimentoFormsState extends State<AtendimentoForms> {
                             ],
                           ),
 
-                          const SizedBox(height: 20),
-
                           Visibility(
                             visible: _selectedVistoriaRealizada == 'Sim',
                             child: Column(
                               children: [
+                                const SizedBox(height: 20),
                                 Row(
                                   children: [
                                     Expanded(
@@ -859,7 +858,7 @@ class _AtendimentoFormsState extends State<AtendimentoForms> {
                                     ),
                                   ],
                                 ),
-                                const SizedBox(height: 30),
+                                const SizedBox(height: 20),
                                 Row(
                                   children: [
                                     Expanded(
@@ -881,7 +880,7 @@ class _AtendimentoFormsState extends State<AtendimentoForms> {
                             ),
                           ),
 
-                          const SizedBox(height: 30),
+                          const SizedBox(height: 20),
 
                           //Campos lado a lado "Datas"
                           Row(
@@ -902,7 +901,7 @@ class _AtendimentoFormsState extends State<AtendimentoForms> {
                             ],
                           ),
 
-                          const SizedBox(height: 30),
+                          const SizedBox(height: 20),
 
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -951,7 +950,7 @@ class _AtendimentoFormsState extends State<AtendimentoForms> {
                             ],
                           ),
 
-                          const SizedBox(height: 30),
+                          const SizedBox(height: 20),
 
                           //Campo "Será entregue itens de assistencia humanitaria"
                           DropdownButtonFormField<String>(
@@ -966,6 +965,7 @@ class _AtendimentoFormsState extends State<AtendimentoForms> {
                               if (entragarItensOptions.contains(newValue)) {
                                 setState(() {
                                   _selectedEntregarItens = newValue;
+                                  mostrarItensEntregues = newValue == 'Sim';
                                 });
                               }
                             },
@@ -974,7 +974,7 @@ class _AtendimentoFormsState extends State<AtendimentoForms> {
                             ),
                           ),
 
-                          const SizedBox(height: 30),
+                          const SizedBox(height: 20),
 
                           //Campo CHECKLIST "Quais itens foram entregues?"
                           Visibility(
@@ -996,8 +996,6 @@ class _AtendimentoFormsState extends State<AtendimentoForms> {
                           const SizedBox(height: 20),
 
                           _buildAddressFields(),
-
-                          const SizedBox(height: 20),
 
                           //Campo de texto longo "Observações"
                           TextField(
