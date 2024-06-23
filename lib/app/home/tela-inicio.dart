@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:projetoaplicado/app/app-state.dart';
 import 'package:projetoaplicado/app/home/atendimentos/cadastro/tela-atendimento-forms.dart';
-import 'package:projetoaplicado/app/home/cidadaos/tela-cadastro-cidadao.dart';
+import 'package:projetoaplicado/app/home/cidadaos/tela-forms-cidadao.dart';
 import 'package:projetoaplicado/app/home/relatorios/acontecimento/tela-relatorios-acontecimento.dart';
 import 'package:projetoaplicado/app/home/acontecimentos/tela-acontecimentos-forms.dart';
 import '../components/globais/barra-superior.dart';
