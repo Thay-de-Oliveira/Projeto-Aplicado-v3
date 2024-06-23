@@ -19,4 +19,20 @@ class RelatorioAtendimentoService {
       throw Exception('Erro ao gerar relatório');
     }
   }
+
+  // Gerar relatorio de recibo
+  Future<String> gerarRelatorioRecibo(String nProtocolo) async {
+    final response = await http.post(
+      Uri.parse('$baseUrl/gerar-relatorio-recibo'),
+      headers: {'Content-Type': 'application/json'},
+      body: json.encode({'n_protocolo': nProtocolo}),
+    );
+
+    if (response.statusCode == 200) {
+      final data = json.decode(response.body);
+      return data['url'];
+    } else {
+      throw Exception('Erro ao gerar relatório');
+    }
+  }
 }

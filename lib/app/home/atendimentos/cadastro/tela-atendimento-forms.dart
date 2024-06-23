@@ -156,7 +156,6 @@ class _AtendimentoFormsState extends State<AtendimentoForms> {
           _selectedTipoAtendimento == 'Selecionar atendimento' ||
           _selectedCanalAtendimento == 'Selecionar canal de atendimento' ||
           _selectedVistoriaRealizada == 'Selecionar' ||
-          _selectedTipoRealizada == 'Selecionar' ||
           _dataSolicitacaoController.text.isEmpty ||
           (_selectedVistoriaRealizada == 'Sim' && _dataVistoriaController.text.isEmpty) ||
           _selectedEntregarItens == 'Selecionar') {

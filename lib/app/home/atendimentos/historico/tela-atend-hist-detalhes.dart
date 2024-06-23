@@ -188,7 +188,7 @@ class _DetalheHistorico extends State<DetalheHistorico> {
                                   _buildInfoRow(
                                       'assets/imagens/icon-data-vistoria.png',
                                       'Data da vistoria:',
-                                      widget.atendimento.dataVistoria,
+                                      widget.atendimento.dataVistoria ?? 'Vistoria não realizada',
                                       const Color(0xFF8CD79C)),
                                   const SizedBox(height: 8),
                                   _buildInfoRow(

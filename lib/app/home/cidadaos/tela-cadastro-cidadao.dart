@@ -237,7 +237,7 @@ class _CadastroCidadaoState extends State<CadastroCidadao> {
         GestureDetector(
           child: Ink(
             decoration: ShapeDecoration(
-              color: !isCadastro ? const Color(0xFFBBD8F0) : Colors.white,
+              color: !isCadastro ? Color(0xFFBBD8F0) : Colors.white,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(10),
               ),

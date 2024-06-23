@@ -75,7 +75,12 @@ class AtendimentoService {
     // Adiciona os campos do formulário
     Map<String, dynamic> atendimentoData = atendimento.toJson();
     atendimentoData.forEach((key, value) {
-        request.fields[key] = value.toString();
+        if (value is List) {
+            // Serializa a lista para JSON antes de adicioná-la
+            request.fields[key] = jsonEncode(value);
+        } else {
+            request.fields[key] = value.toString();
+        }
     });
 
     // Adiciona cada arquivo de imagem à requisição

@@ -7,11 +7,12 @@ class AtendimentosModel {
   final bool vistoriaRealizada;
   final String? tipoVistoria;
   final String dataSolicitacao;
-  final String dataVistoria;
+  final String? dataVistoria;
   final bool entregueItensAjuda;
   final List<String> materiaisEntregues;
   final String? observacoes;
   final String? pdfUrl;
+  final String? pdfReciboUrl;
   final String atendenteResponsavel;
   final String cep;
   final String rua;
@@ -30,11 +31,12 @@ class AtendimentosModel {
     required this.vistoriaRealizada,
     this.tipoVistoria,
     required this.dataSolicitacao,
-    required this.dataVistoria,
+    this.dataVistoria,
     required this.entregueItensAjuda,
     required this.materiaisEntregues,
     this.observacoes,
     this.pdfUrl,
+    this.pdfReciboUrl,
     required this.atendenteResponsavel,
     required this.cep,
     required this.rua,
@@ -60,6 +62,7 @@ class AtendimentosModel {
       materiaisEntregues: List<String>.from(json['materiaisEntregues']),
       observacoes: json['observacoes'],
       pdfUrl: json['pdfUrl'],
+      pdfReciboUrl: json['pdfReciboUrl'],
       atendenteResponsavel: json['atendenteResponsavel'],
       cep: json['cep'],
       rua: json['rua'],
@@ -85,6 +88,7 @@ class AtendimentosModel {
         'materiaisEntregues': materiaisEntregues,
         'observacoes': observacoes,
         'pdfUrl': pdfUrl,
+        'pdfReciboUrl': pdfReciboUrl,
         'atendenteResponsavel': atendenteResponsavel,
         'cep': cep,
         'rua': rua,

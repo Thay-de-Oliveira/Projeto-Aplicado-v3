@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:projetoaplicado/app/home/relatorios/atendimento/tela-relatorio-atend-detalhes.dart';
+import 'package:projetoaplicado/app/home/relatorios/recibos/tela-relatorio-recibo-detalhes.dart';
 import 'package:projetoaplicado/backend/services/relatorioAtendimentoService.dart';
 
 class RelatorioAtendimentoController {
@@ -21,9 +22,33 @@ class RelatorioAtendimentoController {
     }
   }
 
+  Future<void> gerarRelatorioRecibo(BuildContext context, String nProtocolo) async {
+    try {
+      final pdfReciboUrl = await _relatorioService.gerarRelatorioRecibo(nProtocolo);
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => DetalhesRelatorioRecibo(pdfReciboUrl: pdfReciboUrl),
+        ),
+      );
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Erro ao gerar relatório: $e')),
+      );
+    }
+  }
+
   Future<String> gerarRelatorioUrl(String nProtocolo) async {
     try {
       return await _relatorioService.gerarRelatorio(nProtocolo);
+    } catch (e) {
+      throw Exception('Erro ao gerar relatório: $e');
+    }
+  }
+
+  Future<String> gerarRelatorioReciboUrl(String nProtocolo) async {
+    try {
+      return await _relatorioService.gerarRelatorioRecibo(nProtocolo);
     } catch (e) {
       throw Exception('Erro ao gerar relatório: $e');
     }
