@@ -256,7 +256,7 @@ class _CadastroCidadaoState extends State<CadastroCidadao> {
                   Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => DadosCidadao()));
+                          builder: (context) => HistoricoCidadao()));
                 }
               },
               child: Container(
