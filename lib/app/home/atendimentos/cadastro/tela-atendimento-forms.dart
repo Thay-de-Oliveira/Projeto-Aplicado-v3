@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:projetoaplicado/app/home/tela-inicio.dart';
+
 import 'package:projetoaplicado/backend/controllers/acontecimentoController.dart';
 import 'package:projetoaplicado/backend/controllers/atendimentoController.dart';
 import 'package:projetoaplicado/backend/controllers/cepController.dart';
@@ -16,8 +17,10 @@ import 'package:projetoaplicado/backend/models/cidadaoModel.dart';
 import 'package:projetoaplicado/backend/models/usuarioModel.dart';
 import 'package:projetoaplicado/backend/services/cidadaoService.dart';
 import 'package:get/get.dart';
+
 import '../../../components/globais/barra-superior.dart';
 import '../../../components/globais/menu-inferior.dart';
+
 import '../pendente/tela-atend-pendente.dart';
 import '../historico/tela-atend-historico.dart';
 
@@ -405,21 +408,21 @@ class _AtendimentoFormsState extends State<AtendimentoForms> {
   List<String> entragarItensOptions = ['Selecionar', 'Sim', 'Não'];
 
   InputDecoration _customInputDecoration(String labelText) {
-  return InputDecoration(
-    labelText: labelText,
-    labelStyle: const TextStyle(fontSize: 16, color: Color.fromARGB(255, 127, 127, 128)), // Cor do texto dos campos
-    border: OutlineInputBorder(
-      borderRadius: BorderRadius.circular(10.0), // Borda arredondada
-    ),
-    enabledBorder: OutlineInputBorder(
-      borderSide: const BorderSide(color: Colors.grey), // Cor da borda quando inativo
-      borderRadius: BorderRadius.circular(10.0),
-    ),
-    focusedBorder: OutlineInputBorder(
-      borderSide: const BorderSide(color: Color(0xFF1B7CB3)), // Cor da borda quando ativo
-      borderRadius: BorderRadius.circular(10.0),
-    ),
-    floatingLabelStyle: const TextStyle(color: Color(0xFF1B7CB3)), // Cor do texto do rótulo quando focado
+    return InputDecoration(
+      labelText: labelText,
+      labelStyle: const TextStyle(fontSize: 16, color: Color.fromARGB(255, 127, 127, 128)), // Cor do texto dos campos
+      border: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(10.0), // Borda arredondada
+      ),
+      enabledBorder: OutlineInputBorder(
+        borderSide: const BorderSide(color: Colors.grey), // Cor da borda quando inativo
+        borderRadius: BorderRadius.circular(10.0),
+      ),
+      focusedBorder: OutlineInputBorder(
+        borderSide: const BorderSide(color: Color(0xFF1B7CB3)), // Cor da borda quando ativo
+        borderRadius: BorderRadius.circular(10.0),
+      ),
+      floatingLabelStyle: const TextStyle(color: Color(0xFF1B7CB3)), // Cor do texto do rótulo quando focado
     );
   }
 
@@ -442,7 +445,8 @@ class _AtendimentoFormsState extends State<AtendimentoForms> {
                       builder: (BuildContext context) {
                         return AlertDialog(
                           content: Image.file(
-                              File(_imagensController.imageFiles[index].path)),
+                            File(_imagensController.imageFiles[index].path),
+                          ),
                         );
                       },
                     );
@@ -532,9 +536,11 @@ class _AtendimentoFormsState extends State<AtendimentoForms> {
                           child: InkWell(
                             onTap: () {
                               Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => AtendimentoForms()));
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => AtendimentoForms(),
+                                ),
+                              );
                             },
                             child: Container(
                               width: 90,
@@ -547,11 +553,12 @@ class _AtendimentoFormsState extends State<AtendimentoForms> {
                                     width: 30,
                                     height: 30,
                                     child: Image.asset(
-                                        'assets/imagens/icon-cadastro.png'),
+                                      'assets/imagens/icon-cadastro.png',
+                                    ),
                                   ),
                                   const SizedBox(
-                                      height:
-                                      5.0), //Espaço entre o ícone e o texto
+                                    height: 5.0,
+                                  ), //Espaço entre o ícone e o texto
                                   const Text(
                                     'Cadastro',
                                     style: TextStyle(
@@ -588,10 +595,11 @@ class _AtendimentoFormsState extends State<AtendimentoForms> {
                           child: InkWell(
                             onTap: () {
                               Navigator.pushReplacement(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          AtendimentoPendente()));
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => AtendimentoPendente(),
+                                ),
+                              );
                             },
                             child: Container(
                               width: 90,
@@ -604,11 +612,12 @@ class _AtendimentoFormsState extends State<AtendimentoForms> {
                                     width: 30,
                                     height: 30,
                                     child: Image.asset(
-                                        'assets/imagens/icon-pendente.png'),
+                                      'assets/imagens/icon-pendente.png',
+                                    ),
                                   ),
                                   const SizedBox(
-                                      height:
-                                      5.0), //Espaço entre o ícone e o texto
+                                    height: 5.0,
+                                  ), //Espaço entre o ícone e o texto
                                   const Text(
                                     'Pendente',
                                     style: TextStyle(
@@ -645,10 +654,12 @@ class _AtendimentoFormsState extends State<AtendimentoForms> {
                           child: InkWell(
                             onTap: () {
                               Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          HistoricoAtendimento()));
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      HistoricoAtendimento(),
+                                ),
+                              );
                             },
                             child: Container(
                               width: 90,
@@ -661,11 +672,12 @@ class _AtendimentoFormsState extends State<AtendimentoForms> {
                                     width: 30,
                                     height: 30,
                                     child: Image.asset(
-                                        'assets/imagens/icon-historico.png'),
+                                      'assets/imagens/icon-historico.png',
+                                    ),
                                   ),
                                   const SizedBox(
-                                      height:
-                                      5.0), //Espaço entre o ícone e o texto
+                                    height: 5.0,
+                                  ), //Espaço entre o ícone e o texto
                                   const Text(
                                     'Histórico',
                                     style: TextStyle(
@@ -691,9 +703,11 @@ class _AtendimentoFormsState extends State<AtendimentoForms> {
                           //Campo "Número do protocolo de acontecimento"
                           TextFormField(
                             controller: TextEditingController(
-                                text: _selectedNumeroProtocoloAtendimento),
+                              text: _selectedNumeroProtocoloAtendimento,
+                            ),
                             decoration: _customInputDecoration(
-                                'Número do protocolo de acontecimento:'),
+                              'Número do protocolo de acontecimento:',
+                            ),
                             enabled: false,
                           ),
 
@@ -712,7 +726,7 @@ class _AtendimentoFormsState extends State<AtendimentoForms> {
                               _selectedTipoAtendimento = newValue!;
                             },
                             decoration:
-                            _customInputDecoration('Tipo de atendimento:'),
+                                _customInputDecoration('Tipo de atendimento:'),
                           ),
 
                           const SizedBox(height: 20),
@@ -741,7 +755,9 @@ class _AtendimentoFormsState extends State<AtendimentoForms> {
                               Expanded(
                                 child: GestureDetector(
                                   onTap: () => _selectDate(
-                                      context, _dataSolicitacaoController),
+                                    context, 
+                                    _dataSolicitacaoController,
+                                  ),
                                   child: AbsorbPointer(
                                     child: TextFormField(
                                       controller: _dataSolicitacaoController,
@@ -758,8 +774,9 @@ class _AtendimentoFormsState extends State<AtendimentoForms> {
 
                           TypeAheadField<CidadaoModel>(
                             controller:
-                            _cidadaoResponsavelController, // Este controller agora só para exibir o nome
-                            debounceDuration: const Duration(milliseconds: 300),
+                                _cidadaoResponsavelController, // Este controller agora só para exibir o nome
+                            debounceDuration:
+                                const Duration(milliseconds: 300),
                             suggestionsCallback: (search) async {
                               if (search.isEmpty) {
                                 return [];
@@ -769,7 +786,8 @@ class _AtendimentoFormsState extends State<AtendimentoForms> {
                               var cidadaoList = await cidadaoService
                                   .fetchListCidadao(searchTerm: search);
 
-                              return getFilteredCidadaoList(search, cidadaoList);
+                              return getFilteredCidadaoList(
+                                  search, cidadaoList);
                             },
                             builder: (context, controller, focusNode) {
                               return TextField(
@@ -781,7 +799,7 @@ class _AtendimentoFormsState extends State<AtendimentoForms> {
                                 onChanged: (text) async {
                                   if (text.isEmpty) {
                                     SuggestionsController.of<CidadaoModel>(
-                                        context)
+                                            context)
                                         .suggestions = [];
                                     return;
                                   }
@@ -792,7 +810,7 @@ class _AtendimentoFormsState extends State<AtendimentoForms> {
 
                                   // Filtra a lista com base na consulta
                                   var filteredList =
-                                  getFilteredCidadaoList(text, cidadaoList);
+                                      getFilteredCidadaoList(text, cidadaoList);
 
                                   // Atualiza as sugestões
                                   SuggestionsController.of<CidadaoModel>(context)
@@ -808,7 +826,8 @@ class _AtendimentoFormsState extends State<AtendimentoForms> {
                             },
                             onSelected: (CidadaoModel cidadao) {
                               setState(() {
-                                _cidadaoResponsavelController.text = cidadao.name;
+                                _cidadaoResponsavelController.text =
+                                    cidadao.name;
                                 _cpfResponsavelController.text = cidadao.cpf;
                               });
                             },
@@ -843,7 +862,7 @@ class _AtendimentoFormsState extends State<AtendimentoForms> {
                                     });
                                   },
                                   decoration: _customInputDecoration(
-                                      'Vistoria realizada?'), 
+                                      'Vistoria realizada?'),
                                 ),
                               ),
                             ],
@@ -872,7 +891,7 @@ class _AtendimentoFormsState extends State<AtendimentoForms> {
                                           });
                                         },
                                         decoration: _customInputDecoration(
-                                            'Tipo de vistoria:'), 
+                                            'Tipo de vistoria:'),
                                       ),
                                     ),
                                   ],
@@ -883,10 +902,13 @@ class _AtendimentoFormsState extends State<AtendimentoForms> {
                                     Expanded(
                                       child: GestureDetector(
                                         onTap: () => _selectDate(
-                                            context, _dataVistoriaController),
+                                          context,
+                                          _dataVistoriaController,
+                                        ),
                                         child: AbsorbPointer(
                                           child: TextFormField(
-                                            controller: _dataVistoriaController,
+                                            controller:
+                                                _dataVistoriaController,
                                             decoration: _customInputDecoration(
                                                 'Data da vistoria:'),
                                           ),
@@ -1011,29 +1033,18 @@ class _AtendimentoFormsState extends State<AtendimentoForms> {
                               mainAxisSize: MainAxisSize.min,
                               children: [
                                 // Botão "Salvar"
-                                InkWell(
-                                  onTap: () {
+                                ElevatedButton(
+                                  onPressed: () {
                                     _salvarAtendimento();
                                   },
-                                  child: Container(
-                                    width: 65,
-                                    height: 28.61,
-                                    decoration: BoxDecoration(
-                                      color: const Color(0xFF30BD4F),
-                                      borderRadius: BorderRadius.circular(5),
-                                    ),
-                                    child: const Center(
-                                      child: Text(
-                                        'Salvar',
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 16,
-                                          fontFamily: 'Roboto',
-                                          fontWeight: FontWeight.w600,
-                                          height: 0,
-                                          letterSpacing: 0.64,
-                                        ),
-                                      ),
+                                  child: Text(
+                                    'Salvar',
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: Colors.blue,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(8.0),
                                     ),
                                   ),
                                 ),
@@ -1041,8 +1052,8 @@ class _AtendimentoFormsState extends State<AtendimentoForms> {
                                 const SizedBox(width: 16),
 
                                 // Botão "Cancelar"
-                                InkWell(
-                                  onTap: () {
+                                ElevatedButton(
+                                  onPressed: () {
                                     Navigator.of(context).pushReplacement(
                                       MaterialPageRoute(
                                         builder: (context) =>
@@ -1050,25 +1061,14 @@ class _AtendimentoFormsState extends State<AtendimentoForms> {
                                       ),
                                     );
                                   },
-                                  child: Container(
-                                    width: 75,
-                                    height: 28.61,
-                                    decoration: BoxDecoration(
-                                      color: const Color(0xFFEC6F64),
-                                      borderRadius: BorderRadius.circular(5),
-                                    ),
-                                    child: const Center(
-                                      child: Text(
-                                        'Cancelar',
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 16,
-                                          fontFamily: 'Roboto',
-                                          fontWeight: FontWeight.w600,
-                                          height: 0,
-                                          letterSpacing: 0.64,
-                                        ),
-                                      ),
+                                  child: Text(
+                                    'Cancelar',
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: Colors.grey,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(8.0),
                                     ),
                                   ),
                                 ),

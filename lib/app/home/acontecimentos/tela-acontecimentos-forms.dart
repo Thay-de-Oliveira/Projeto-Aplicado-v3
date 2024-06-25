@@ -4,6 +4,7 @@ import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:projetoaplicado/app/app-state.dart';
 import 'package:projetoaplicado/app/home/atendimentos/cadastro/tela-atendimento-forms.dart';
 import 'package:projetoaplicado/app/home/tela-inicio.dart';
+
 import 'package:projetoaplicado/backend/controllers/acontecimentoController.dart';
 import 'package:projetoaplicado/backend/controllers/cepController.dart';
 import 'package:projetoaplicado/backend/models/acontecimentoModel.dart';
@@ -933,8 +934,8 @@ class _FormularioAcontecimentoState extends State<AcontecimentosForms> {
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
                         // Botão Salvar
-                        InkWell(
-                          onTap: _isSaving ? null : () async {
+                        ElevatedButton(
+                          onPressed: _isSaving ? null : () async {
                             var response = await _salvar();
                             
                             if (response == "Acontecimento criado com sucesso.") {
@@ -942,35 +943,23 @@ class _FormularioAcontecimentoState extends State<AcontecimentosForms> {
                               await Navigator.of(context).pushReplacementNamed('/tela-inicio');
                             }
                           },
-                          child: Container(
-                            width: 80,
-                            height: 28.61,
-                            decoration: ShapeDecoration(
-                              color: const Color(0xFF30BD4F),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(5),
-                              ),
-                            ),
-                            child: const Center(
-                              child: Text(
-                                'Salvar',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 16,
-                                  fontFamily: 'Roboto',
-                                  fontWeight: FontWeight.w600,
-                                  letterSpacing: 0.64,
-                                ),
-                              ),
+                          child: Text(
+                            'Salvar',
+                            style: TextStyle(color: Colors.white),
+                          ),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.blue,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8.0),
                             ),
                           ),
                         ),
 
-                        const SizedBox(width: 10), // Adiciona um espaçamento entre os botões
+                        const SizedBox(width: 16), // Adiciona um espaçamento entre os botões
 
                         // Botão Cancelar
-                        InkWell(
-                          onTap: () {
+                        ElevatedButton(
+                          onPressed: () {
                             // Navega de volta para a tela Home
                             Navigator.of(context).pushReplacement(
                               MaterialPageRoute(
@@ -978,26 +967,14 @@ class _FormularioAcontecimentoState extends State<AcontecimentosForms> {
                               ),
                             );
                           },
-                          child: Container(
-                            width: 80,
-                            height: 28.61,
-                            decoration: ShapeDecoration(
-                              color: const Color(0xFFEC6F64),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(5),
-                              ),
-                            ),
-                            child: const Center(
-                              child: Text(
-                                'Cancelar',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 16,
-                                  fontFamily: 'Roboto',
-                                  fontWeight: FontWeight.w600,
-                                  letterSpacing: 0.64,
-                                ),
-                              ),
+                          child: Text(
+                            'Cancelar',
+                            style: TextStyle(color: Colors.white),
+                          ),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.grey,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8.0),
                             ),
                           ),
                         ),

@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:projetoaplicado/app/home/cidadaos/tela-cidadaos-cadastrados.dart';
 import 'package:projetoaplicado/app/home/tela-inicio.dart';
+
 import '../../../backend/models/cidadaoModel.dart';
 import '../../../backend/controllers/cidadaoController.dart';
 import '../../../backend/controllers/cepController.dart';
+
 import '../../components/globais/barra-superior.dart';
 import '../../components/globais/menu-inferior.dart';
 
@@ -479,19 +481,15 @@ class _CadastroCidadaoState extends State<CadastroCidadao> {
                                         await salvarCidadao();
                                       },
                                 style: ElevatedButton.styleFrom(
-                                  backgroundColor: const Color(0xFF30BD4F),
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(5),
+                                    backgroundColor: Colors.blue,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(8.0),
+                                    ),
                                   ),
-                                ),
                                 child: Text(
                                   _isSaving ? 'Salvando...' : 'Salvar',
                                   style: const TextStyle(
                                     color: Colors.white,
-                                    fontSize: 16,
-                                    fontFamily: 'Roboto',
-                                    fontWeight: FontWeight.w600,
-                                    letterSpacing: 0.64,
                                   ),
                                 ),
                               ),
@@ -504,22 +502,16 @@ class _CadastroCidadaoState extends State<CadastroCidadao> {
                                     ),
                                   );
                                 },
-                                style: TextButton.styleFrom(
-                                  backgroundColor: const Color(0xFFEC6F64),
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(5),
+                                style: ElevatedButton.styleFrom(
+                                    backgroundColor: Colors.grey,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(8.0),
+                                    ),
                                   ),
-                                ),
-                                child: const Text(
-                                  'Cancelar',
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 16,
-                                    fontFamily: 'Roboto',
-                                    fontWeight: FontWeight.w600,
-                                    letterSpacing: 0.64,
+                                child: Text(
+                                    'Cancelar',
+                                    style: TextStyle(color: Colors.white),
                                   ),
-                                ),
                               ),
                             ],
                           ),
