@@ -16,21 +16,21 @@ class CadastroCidadao extends StatefulWidget {
 InputDecoration _customInputDecoration(String labelText) {
   return InputDecoration(
     labelText: labelText,
-    labelStyle: const TextStyle(fontSize: 16),
+    labelStyle: const TextStyle(fontSize: 16, color: Color.fromARGB(255, 127, 127, 128)), // Cor do texto dos campos
     border: OutlineInputBorder(
-      borderRadius: BorderRadius.circular(10.0),
+      borderRadius: BorderRadius.circular(10.0), // Borda arredondada
     ),
     enabledBorder: OutlineInputBorder(
-      borderSide: const BorderSide(color: Colors.grey),
+      borderSide: const BorderSide(color: Colors.grey), // Cor da borda quando inativo
       borderRadius: BorderRadius.circular(10.0),
     ),
     focusedBorder: OutlineInputBorder(
-      borderSide: const BorderSide(color: Colors.blue),
+      borderSide: const BorderSide(color: Color(0xFF1B7CB3)), // Cor da borda quando ativo
       borderRadius: BorderRadius.circular(10.0),
     ),
-    counter: const Offstage(),
-  );
-}
+    floatingLabelStyle: const TextStyle(color: Color(0xFF1B7CB3)), // Cor do texto do rótulo quando focado
+    );
+  }
 
 class _CadastroCidadaoState extends State<CadastroCidadao> {
   final TextEditingController nomeController = TextEditingController();

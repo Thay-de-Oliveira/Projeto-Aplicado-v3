@@ -36,8 +36,8 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-
       theme: ThemeData(
+        primaryColor: Color(0xFF1B7CB3),
         buttonTheme: ButtonThemeData(
           buttonColor: Color(0xFF1B7CB3),
         ),
@@ -50,12 +50,35 @@ class MyApp extends StatelessWidget {
           focusedBorder: OutlineInputBorder(
             borderSide: BorderSide(color: Color(0xFF1B7CB3)),
           ),
+          enabledBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: Colors.grey),
+          ),
+          labelStyle: TextStyle(
+            color: Color(0xFF1B7CB3),
+          ),
+          floatingLabelStyle: TextStyle(
+            color: Color(0xFF1B7CB3),
+          ),
         ),
         progressIndicatorTheme: ProgressIndicatorThemeData(
           color: Color(0xFF1B7CB3),
         ),
+        dropdownMenuTheme: DropdownMenuThemeData(
+          inputDecorationTheme: InputDecorationTheme(
+            fillColor: Colors.white,
+            filled: true,
+            focusedBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: Color(0xFF1B7CB3)),
+            ),
+            enabledBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: Colors.grey),
+            ),
+            labelStyle: TextStyle(
+              color: Color(0xFF1B7CB3),
+            ),
+          ),
+        ),
       ),
-
       initialRoute: '/', // Rota inicial
       routes: {
         '/': (context) => LoginApp(), // Login
