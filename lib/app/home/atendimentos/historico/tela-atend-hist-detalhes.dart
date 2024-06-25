@@ -124,6 +124,7 @@ class _DetalheHistorico extends State<DetalheHistorico> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: null,
+      backgroundColor: Color.fromARGB(255, 249, 250, 252),
       body: isLoading
           ? const Center(child: CircularProgressIndicator())
           : Stack(

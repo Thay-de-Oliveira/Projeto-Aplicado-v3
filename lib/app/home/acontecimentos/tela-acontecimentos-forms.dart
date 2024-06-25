@@ -687,7 +687,7 @@ class _FormularioAcontecimentoState extends State<AcontecimentosForms> {
     var appState = Provider.of<AppState>(context, listen: false);
     return Scaffold(
       appBar: null,
-      backgroundColor: Colors.white,
+      backgroundColor: Color.fromARGB(255, 249, 250, 252),
       body: Column(
         children: [
           BarraSuperior(context),

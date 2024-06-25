@@ -54,6 +54,7 @@ class _RelatorioAtendimentoState extends State<RelatorioAtendimento> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: null,
+      backgroundColor: Color.fromARGB(255, 249, 250, 252),
       body: RefreshIndicator(
         onRefresh: () async {
           await _loadAtendimentos(); // Função de atualização ao puxar para cima

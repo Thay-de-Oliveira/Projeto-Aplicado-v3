@@ -168,7 +168,7 @@ class _DetalhesRelatorioReciboState extends State<DetalhesRelatorioRecibo> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[200],
+      backgroundColor: Color.fromARGB(255, 249, 250, 252),
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(57),
         child: BarraSuperior(

@@ -52,9 +52,11 @@ class _RelatorioReciboState extends State<RelatorioRecibo> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: null,
+      backgroundColor: Color.fromARGB(255, 249, 250, 252),
       body: CustomScrollView(
         slivers: <Widget>[
           SliverAppBar(
+            automaticallyImplyLeading: false,  // Adicionado para remover o botão de voltar preto
             floating: true,
             pinned: true,
             snap: false,

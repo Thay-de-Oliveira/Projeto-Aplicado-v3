@@ -493,6 +493,7 @@ class _AtendimentoFormsState extends State<AtendimentoForms> {
 
     return Scaffold(
       appBar: null,
+      backgroundColor: Color.fromARGB(255, 249, 250, 252),
       body: GestureDetector(
         onTap: () {
           FocusScope.of(context).unfocus();

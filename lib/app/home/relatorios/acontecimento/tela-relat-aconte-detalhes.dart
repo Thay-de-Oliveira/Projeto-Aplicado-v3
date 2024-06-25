@@ -13,6 +13,7 @@ class DetalhesRelatorioAcontecimento extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: null,
+      backgroundColor: Color.fromARGB(255, 249, 250, 252),
       body: CustomScrollView(
         slivers: <Widget>[
           SliverAppBar(

@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:projetoaplicado/app/home/cidadaos/tela-forms-cidadao.dart';
-import 'package:projetoaplicado/app/home/cidadaos/tela-cidadaos-cadastrados.dart';
-import 'package:projetoaplicado/app/home/cidadaos/tela-detalhes-cidadao.dart';
+import 'package:projetoaplicado/app/home/cidadaos/cadastro/tela-forms-cidadao.dart';
+import 'package:projetoaplicado/app/home/cidadaos/historico/tela-cidadaos-cadastrados.dart';
+import 'package:projetoaplicado/app/home/cidadaos/historico/tela-detalhes-cidadao.dart';
 import 'package:projetoaplicado/app/home/tela-inicio.dart';
-import '../../../backend/models/cidadaoModel.dart';
-import '../../../backend/controllers/cidadaoController.dart';
-import '../../../backend/controllers/cepController.dart';
-import '../../components/globais/barra-superior.dart';
-import '../../components/globais/menu-inferior.dart';
+import '../../../../backend/models/cidadaoModel.dart';
+import '../../../../backend/controllers/cidadaoController.dart';
+import '../../../../backend/controllers/cepController.dart';
+import '../../../components/globais/barra-superior.dart';
+import '../../../components/globais/menu-inferior.dart';
 
 class HistoricoCidadao extends StatefulWidget {
   @override
@@ -214,6 +214,7 @@ class _HistoricoCidadaoState extends State<HistoricoCidadao> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: null,
+      backgroundColor: Color.fromARGB(255, 249, 250, 252),
       body: CustomScrollView(
         slivers: <Widget>[
           SliverAppBar(
