@@ -3,18 +3,34 @@ import 'package:flutter/material.dart';
 class FiltroAcontecimento extends StatefulWidget {
   final List<String> subgrupos;
   final Function(Map<String, dynamic>) onSave;
+  final DateTime? initialDataInicio;
+  final DateTime? initialDataFim;
 
-  FiltroAcontecimento({required this.subgrupos, required this.onSave});
+  FiltroAcontecimento({
+    required this.subgrupos,
+    required this.onSave,
+    this.initialDataInicio,
+    this.initialDataFim,
+  });
 
   @override
   _FiltroAcontecimentoState createState() => _FiltroAcontecimentoState();
 }
 
 class _FiltroAcontecimentoState extends State<FiltroAcontecimento> {
-  String? selectedSubgroup;
-  TextEditingController protocoloController = TextEditingController();
-  TextEditingController bairroController = TextEditingController();
   DateTimeRange? selectedDateRange;
+  String? errorMessage;
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.initialDataInicio != null && widget.initialDataFim != null) {
+      selectedDateRange = DateTimeRange(
+        start: widget.initialDataInicio!,
+        end: widget.initialDataFim!,
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -37,29 +53,10 @@ class _FiltroAcontecimentoState extends State<FiltroAcontecimento> {
               ),
               const Divider(color: Colors.grey),
               const SizedBox(height: 10),
-              DropdownButtonFormField<String>(
-                decoration: _customInputDecoration('Subgrupo'),
-                items: widget.subgrupos.map((String subgroup) {
-                  return DropdownMenuItem<String>(
-                    value: subgroup,
-                    child: Text(subgroup),
-                  );
-                }).toList(),
-                onChanged: (value) {
-                  setState(() {
-                    selectedSubgroup = value;
-                  });
-                },
-              ),
-              const SizedBox(height: 10),
-              TextField(
-                controller: protocoloController,
-                decoration: _customInputDecoration('Número do protocolo'),
-              ),
               const SizedBox(height: 10),
               GestureDetector(
                 onTap: () async {
-                  selectedDateRange = await showDateRangePicker(
+                  DateTimeRange? picked = await showDateRangePicker(
                     context: context,
                     firstDate: DateTime.now().subtract(Duration(days: 30)),
                     lastDate: DateTime.now(),
@@ -81,24 +78,41 @@ class _FiltroAcontecimentoState extends State<FiltroAcontecimento> {
                         child: child!,
                       );
                     },
+                    initialDateRange: selectedDateRange,
                   );
-                  setState(() {});
+
+                  if (picked != null) {
+                    final daysDifference = picked.end.difference(picked.start).inDays;
+
+                    if (daysDifference > 31) {
+                      setState(() {
+                        errorMessage = 'O intervalo não pode exceder 31 dias.';
+                      });
+                    } else {
+                      setState(() {
+                        selectedDateRange = picked;
+                        errorMessage = null;
+                      });
+                    }
+                  }
                 },
                 child: AbsorbPointer(
                   child: TextField(
                     decoration: _customInputDecoration(
                       selectedDateRange == null
-                          ? 'Selecionar período (máx 15 dias)'
-                          : 'Período: ${selectedDateRange?.start.toIso8601String().split('T').first} - ${selectedDateRange?.end.toIso8601String().split('T').first}',
+                          ? 'Selecionar período (máx 31 dias)'
+                          : '${selectedDateRange?.start.toIso8601String().split('T').first} a ${selectedDateRange?.end.toIso8601String().split('T').first}',
                     ),
                   ),
                 ),
               ),
-              const SizedBox(height: 10),
-              TextField(
-                controller: bairroController,
-                decoration: _customInputDecoration('Bairro'),
-              ),
+              if (errorMessage != null) ...[
+                const SizedBox(height: 10),
+                Text(
+                  errorMessage!,
+                  style: TextStyle(color: Colors.red),
+                ),
+              ],
               const SizedBox(height: 20),
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
@@ -121,15 +135,25 @@ class _FiltroAcontecimentoState extends State<FiltroAcontecimento> {
                   const SizedBox(width: 10),
                   ElevatedButton(
                     onPressed: () {
-                      Map<String, dynamic> filters = {
-                        'subgrupo': selectedSubgroup,
-                        'protocolo': protocoloController.text.isEmpty ? null : protocoloController.text,
-                        'dataInicio': selectedDateRange?.start,
-                        'dataFim': selectedDateRange?.end,
-                        'bairro': bairroController.text.isEmpty ? null : bairroController.text,
-                      };
-                      widget.onSave(filters);
-                      Navigator.of(context).pop();
+                      if (selectedDateRange != null) {
+                        final daysDifference = selectedDateRange!.end.difference(selectedDateRange!.start).inDays;
+
+                        if (daysDifference > 31) {
+                          setState(() {
+                            errorMessage = 'O intervalo não pode exceder 31 dias.';
+                          });
+                        } else {
+                          Map<String, dynamic> filters = {
+                            'dataInicio': selectedDateRange?.start,
+                            'dataFim': selectedDateRange?.end,
+                          };
+                          widget.onSave(filters);
+                          Navigator.of(context).pop();
+                        }
+                      } else {
+                        widget.onSave({});
+                        Navigator.of(context).pop();
+                      }
                     },
                     child: Text(
                       'Salvar',

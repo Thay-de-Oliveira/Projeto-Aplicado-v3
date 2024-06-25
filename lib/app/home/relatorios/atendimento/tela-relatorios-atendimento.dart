@@ -235,10 +235,10 @@ class _RelatorioAtendimentoState extends State<RelatorioAtendimento> {
                     ],
                   ),
                   SizedBox(height: 25),
-                  SearchFilterBar(
-                    onSearch: _onSearch,
-                    onFilter: _showFilterDialog, // Chamar a função para mostrar o filtro
-                  ),
+                  // SearchFilterBar(
+                  //   onSearch: _onSearch,
+                  //   onFilter: _showFilterDialog, // Chamar a função para mostrar o filtro
+                  // ),
                   SizedBox(height: 25),
                   // Lista de Cards de Atendimento
                   Center(

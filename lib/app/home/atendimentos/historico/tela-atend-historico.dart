@@ -45,7 +45,7 @@ class _HistoricoAtendimentoState extends State<HistoricoAtendimento> {
           tiposAtendimento: atendimentoController.listAtendimentoObs.map((a) => a.tipoAtendimento).toSet().toList(),
           onSave: (filters) {
             atendimentoController.filterAtendimentoHistorico(filters);
-            acontecimentoController.filterAtendimentoAcontecimentoHistorico(filters);
+            //acontecimentoController.filterAtendimentoAcontecimentoHistorico(filters);
           },
         );
       },
@@ -144,10 +144,10 @@ class _HistoricoAtendimentoState extends State<HistoricoAtendimento> {
                     ],
                   ),
                   SizedBox(height: 25),
-                  SearchFilterBar(
-                    onSearch: _onSearch,
-                    onFilter: _showFilterDialog,
-                  ),
+                  // SearchFilterBar(
+                  //   onSearch: _onSearch,
+                  //   onFilter: _showFilterDialog,
+                  // ),
                   SizedBox(height: 25),
                   Center(
                     child: Container(

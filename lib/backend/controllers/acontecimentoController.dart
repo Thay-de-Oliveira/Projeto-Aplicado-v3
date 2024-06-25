@@ -80,56 +80,29 @@ class AcontecimentoController extends GetxController {
     }
   }
 
-  void searchByWord(String query) {
-    var filteredList = listAcontecimentoObs.where((acontecimento) {
-      var searchString = '${acontecimento.classe} ${acontecimento.grupo} ${acontecimento.subgrupo} ${acontecimento.tipo} ${acontecimento.subtipo} ${acontecimento.infoCobrade} ${acontecimento.numeroProtocolo ?? ''}'.toLowerCase();
-      return searchString.contains(query.toLowerCase());
-    }).toList();
-    listAcontecimentoObs.value = filteredList;
-  }
-
-  void filterAcontecimentoPendente(Map<String, dynamic> filters) {
-    var filteredList = listAcontecimentoObs.where((acontecimento) {
-      bool matches = true;
-
-      if (filters['subgrupo'] != null && filters['subgrupo'].isNotEmpty) {
-        matches &= acontecimento.subgrupo == filters['subgrupo'];
-      }
-      if (filters['protocolo'] != null && filters['protocolo'].isNotEmpty) {
-        matches &= acontecimento.numeroProtocolo?.contains(filters['protocolo']) ?? false;
-      }
-      if (filters['dataInicio'] != null && filters['dataFim'] != null) {
-        matches &= acontecimento.dataHora.isAfter(filters['dataInicio']) &&
-                   acontecimento.dataHora.isBefore(filters['dataFim']);
-      }
-      // if (filters['bairro'] != null && filters['bairro'].isNotEmpty) {
-      //   matches &= acontecimento.infoCobrade.contains(filters['bairro']);
-      // }
-
-      return matches;
-    }).toList();
-
-    listAcontecimentoObs.value = filteredList;
-  }
-
-  void filterAtendimentoAcontecimentoHistorico(Map<String, dynamic> filters) {
-    var filteredList = listAcontecimentoObs.where((acontecimento) {
-      bool matches = true;
-
-      if (filters['subgrupo'] != null && filters['subgrupo'].isNotEmpty) {
-        matches &= acontecimento.subgrupo == filters['subgrupo'];
-      }
-      if (filters['protocolo'] != null && filters['protocolo'].isNotEmpty) {
-        matches &= acontecimento.numeroProtocolo?.contains(filters['protocolo']) ?? false;
-      }
-      if (filters['dataInicio'] != null && filters['dataFim'] != null) {
-        matches &= acontecimento.dataHora.isAfter(filters['dataInicio']) &&
-                   acontecimento.dataHora.isBefore(filters['dataFim']);
-      }
-
-      return matches;
-    }).toList();
-
-    listAcontecimentoObs.value = filteredList;
+  // Método para pesquisa avançada
+  Future<void> searchAcontecimentos({
+    required String term,
+    String? dataInicio,
+    String? dataFim,
+    int limit = 10,
+    int page = 1,
+  }) async {
+    isLoading.value = true;
+    try {
+      var list = await acontecimentoService.searchAcontecimentos(
+        term: term,
+        dataInicio: dataInicio,
+        dataFim: dataFim,
+        limit: limit,
+        page: page,
+      );
+      listAcontecimentoObs.value = list;
+    } catch (e) {
+      print('Erro ao buscar acontecimentos: $e');
+    } finally {
+      isLoading.value = false;
+      update();
+    }
   }
 }

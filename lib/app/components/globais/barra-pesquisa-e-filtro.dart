@@ -1,15 +1,18 @@
 import 'package:flutter/material.dart';
 
 class SearchFilterBar extends StatelessWidget {
+  final TextEditingController searchController;
   final Function(String) onSearch;
   final Function() onFilter;
 
-  SearchFilterBar({required this.onSearch, required this.onFilter});
+  SearchFilterBar({
+    required this.searchController,
+    required this.onSearch,
+    required this.onFilter,
+  });
 
   @override
   Widget build(BuildContext context) {
-    TextEditingController searchController = TextEditingController();
-
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20.0),
       child: Row(
@@ -110,12 +113,17 @@ class SearchFilterBar extends StatelessWidget {
                   filled: true,
                   fillColor: Colors.white,
                   contentPadding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
-                  suffixIcon: Icon(
-                    Icons.search,
-                    color: Color(0xFF979797),
+                  suffixIcon: IconButton(
+                    icon: Icon(
+                      Icons.search,
+                      color: Color(0xFF979797),
+                    ),
+                    onPressed: () {
+                      onSearch(searchController.text);
+                    },
                   ),
                 ),
-                onChanged: (value) {
+                onSubmitted: (value) {
                   onSearch(value);
                 },
               ),

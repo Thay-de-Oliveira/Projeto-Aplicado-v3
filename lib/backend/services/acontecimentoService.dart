@@ -36,8 +36,6 @@ class AcontecimentoService {
     }
   }
 
-
-
   Future<bool> deleteAcontecimento(String id) async {
     final response = await http.delete(Uri.parse('$baseUrl/acontecimentos/$id'));
 
@@ -81,6 +79,38 @@ class AcontecimentoService {
       return AcontecimentoModel.fromJson(retorno);
     } else {
       throw Exception('Falha ao criar acontecimento');
+    }
+  }
+
+  // Método para pesquisa avançada
+  Future<List<AcontecimentoModel>> searchAcontecimentos({
+    required String term,
+    String? dataInicio,
+    String? dataFim,
+    int limit = 10,
+    int page = 1,
+  }) async {
+    String url = '$baseUrl/acontecimentos/search?term=$term&limit=$limit&page=$page';
+
+    if (dataInicio != null && dataInicio.isNotEmpty) {
+      url += '&dataInicio=$dataInicio';
+    }
+
+    if (dataFim != null && dataFim.isNotEmpty) {
+      url += '&dataFim=$dataFim';
+    }
+
+    final response = await http.get(Uri.parse(url));
+
+    if (response.statusCode == 200) {
+      var list = json.decode(response.body);
+      List<AcontecimentoModel> listAcontecimentoModel = [];
+      for (var item in list['data']) {
+        listAcontecimentoModel.add(AcontecimentoModel.fromJson(item));
+      }
+      return listAcontecimentoModel;
+    } else {
+      throw Exception('Falha ao carregar lista de acontecimentos');
     }
   }
 }

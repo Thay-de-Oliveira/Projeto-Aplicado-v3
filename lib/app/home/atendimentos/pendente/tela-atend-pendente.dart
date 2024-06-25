@@ -4,12 +4,10 @@ import 'package:get/get.dart';
 import 'package:projetoaplicado/app/components/acontecimento/acontecimento-card.dart';
 import 'package:projetoaplicado/backend/controllers/acontecimentoController.dart';
 import 'package:projetoaplicado/backend/models/acontecimentoModel.dart';
-
 import '../../../components/globais/barra-pesquisa-e-filtro.dart';
 import '../../../components/globais/barra-superior.dart';
 import '../../../components/globais/filtro-acontecimento.dart';
 import '../../../components/globais/menu-inferior.dart';
-
 import '../historico/tela-atend-historico.dart';
 import '../cadastro/tela-atendimento-forms.dart';
 
@@ -20,6 +18,10 @@ class AtendimentoPendente extends StatefulWidget {
 
 class _AtendimentoPendenteState extends State<AtendimentoPendente> {
   final AcontecimentoController acontecimentoController = Get.put(AcontecimentoController());
+  final TextEditingController searchController = TextEditingController();
+  String _searchTerm = '';
+  DateTime? _dataInicio;
+  DateTime? _dataFim;
 
   @override
   void initState() {
@@ -28,11 +30,32 @@ class _AtendimentoPendenteState extends State<AtendimentoPendente> {
   }
 
   Future<void> _loadAcontecimentos() async {
-    await acontecimentoController.listAcontecimento();
+    DateTime now = DateTime.now();
+    DateTime tenDaysAgo = now.subtract(Duration(days: 10));
+    setState(() {
+      _dataInicio = tenDaysAgo;
+      _dataFim = now;
+    });
+    await acontecimentoController.searchAcontecimentos(
+      term: _searchTerm,
+      dataInicio: _dataInicio?.toIso8601String().split('T').first,
+      dataFim: _dataFim?.toIso8601String().split('T').first,
+      limit: 10,
+      page: 1,
+    );
   }
 
   void _onSearch(String query) {
-    acontecimentoController.searchByWord(query);
+    setState(() {
+      _searchTerm = query;
+    });
+    acontecimentoController.searchAcontecimentos(
+      term: query,
+      dataInicio: _dataInicio?.toIso8601String().split('T').first,
+      dataFim: _dataFim?.toIso8601String().split('T').first,
+      limit: 10,
+      page: 1,
+    );
   }
 
   void _showFilterDialog() {
@@ -41,8 +64,20 @@ class _AtendimentoPendenteState extends State<AtendimentoPendente> {
       builder: (BuildContext context) {
         return FiltroAcontecimento(
           subgrupos: acontecimentoController.listAcontecimentoObs.map((a) => a.subgrupo).toSet().toList(),
+          initialDataInicio: _dataInicio,
+          initialDataFim: _dataFim,
           onSave: (filters) {
-            acontecimentoController.filterAcontecimentoPendente(filters);
+            setState(() {
+              _dataInicio = filters['dataInicio'];
+              _dataFim = filters['dataFim'];
+            });
+            acontecimentoController.searchAcontecimentos(
+              term: _searchTerm,
+              dataInicio: _dataInicio?.toIso8601String().split('T').first,
+              dataFim: _dataFim?.toIso8601String().split('T').first,
+              limit: 10,
+              page: 1,
+            );
           },
         );
       },
@@ -55,9 +90,7 @@ class _AtendimentoPendenteState extends State<AtendimentoPendente> {
       appBar: null,
       backgroundColor: Color.fromARGB(255, 249, 250, 252),
       body: RefreshIndicator(
-        onRefresh: () async {
-          await _loadAcontecimentos();
-        },
+        onRefresh: _loadAcontecimentos,
         child: CustomScrollView(
           slivers: <Widget>[
             SliverAppBar(
@@ -96,8 +129,7 @@ class _AtendimentoPendenteState extends State<AtendimentoPendente> {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) =>
-                                          AtendimentoForms()));
+                                      builder: (context) => AtendimentoForms()));
                             },
                             child: Container(
                               width: 90,
@@ -108,8 +140,7 @@ class _AtendimentoPendenteState extends State<AtendimentoPendente> {
                                   Container(
                                     width: 30,
                                     height: 30,
-                                    child: Image.asset(
-                                        'assets/imagens/icon-cadastro.png'),
+                                    child: Image.asset('assets/imagens/icon-cadastro.png'),
                                   ),
                                   SizedBox(height: 5.0),
                                   Text(
@@ -142,12 +173,7 @@ class _AtendimentoPendenteState extends State<AtendimentoPendente> {
                             ],
                           ),
                           child: InkWell(
-                            onTap: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => AtendimentoPendente()));
-                            },
+                            onTap: () {},
                             child: Container(
                               width: 90,
                               height: 80,
@@ -157,8 +183,7 @@ class _AtendimentoPendenteState extends State<AtendimentoPendente> {
                                   Container(
                                     width: 30,
                                     height: 30,
-                                    child: Image.asset(
-                                        'assets/imagens/icon-pendente-ativo.png'),
+                                    child: Image.asset('assets/imagens/icon-pendente-ativo.png'),
                                   ),
                                   SizedBox(height: 5.0),
                                   Text(
@@ -195,8 +220,7 @@ class _AtendimentoPendenteState extends State<AtendimentoPendente> {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) =>
-                                          HistoricoAtendimento()));
+                                      builder: (context) => HistoricoAtendimento()));
                             },
                             child: Container(
                               width: 90,
@@ -207,8 +231,7 @@ class _AtendimentoPendenteState extends State<AtendimentoPendente> {
                                   Container(
                                     width: 30,
                                     height: 30,
-                                    child: Image.asset(
-                                        'assets/imagens/icon-historico.png'),
+                                    child: Image.asset('assets/imagens/icon-historico.png'),
                                   ),
                                   SizedBox(height: 5.0),
                                   Text(
@@ -231,7 +254,14 @@ class _AtendimentoPendenteState extends State<AtendimentoPendente> {
                     children: [
                       Expanded(
                         child: SearchFilterBar(
-                          onSearch: _onSearch,
+                          searchController: searchController,
+                          onSearch: (query) {
+                            if (query.isEmpty) {
+                              _onSearch('');
+                            } else {
+                              _onSearch(query);
+                            }
+                          },
                           onFilter: _showFilterDialog,
                         ),
                       ),
@@ -241,21 +271,41 @@ class _AtendimentoPendenteState extends State<AtendimentoPendente> {
                   Center(
                     child: Container(
                       width: 330,
-                      child: Obx(() {
-                        var pendentes = acontecimentoController.listAcontecimentoObs
-                            .where((acontecimento) => acontecimento.pendente == true)
-                            .toList();
+                      child: FutureBuilder(
+                        future: _loadAcontecimentos(),
+                        builder: (context, snapshot) {
+                          switch (snapshot.connectionState) {
+                            case ConnectionState.none:
+                            case ConnectionState.waiting:
+                              return Center(
+                                child: CircularProgressIndicator(),
+                              );
+                            case ConnectionState.done:
+                              if (snapshot.hasError) {
+                                return Center(
+                                  child: Text('Erro ao carregar acontecimentos'),
+                                );
+                              } else {
+                                var pendentes = acontecimentoController.listAcontecimentoObs
+                                    .where((acontecimento) => acontecimento.pendente == true)
+                                    .toList()
+                                    ..sort((a, b) => b.dataHora.compareTo(a.dataHora));
 
-                        return ListView.builder(
-                          shrinkWrap: true,
-                          physics: NeverScrollableScrollPhysics(),
-                          itemCount: pendentes.length,
-                          itemBuilder: (context, index) {
-                            AcontecimentoModel acontecimento = pendentes[index];
-                            return AcontecimentoCard(acontecimento: acontecimento);
-                          },
-                        );
-                      }),
+                                return ListView.builder(
+                                  shrinkWrap: true,
+                                  physics: NeverScrollableScrollPhysics(),
+                                  itemCount: pendentes.length,
+                                  itemBuilder: (context, index) {
+                                    AcontecimentoModel acontecimento = pendentes[index];
+                                    return AcontecimentoCard(acontecimento: acontecimento);
+                                  },
+                                );
+                              }
+                            default:
+                              return SizedBox();
+                          }
+                        },
+                      ),
                     ),
                   ),
                   SizedBox(height: 25),

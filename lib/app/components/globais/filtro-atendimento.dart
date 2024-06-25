@@ -12,12 +12,7 @@ class FiltroAtendimento extends StatefulWidget {
 }
 
 class _FiltroAtendimentoState extends State<FiltroAtendimento> {
-  String? selectedSubgroup;
-  String? selectedTipoAtendimento;
   String? selectedItensAssistencia;
-  TextEditingController protocoloController = TextEditingController();
-  TextEditingController bairroController = TextEditingController();
-  TextEditingController atendenteController = TextEditingController();
   DateTimeRange? selectedDateRange;
 
   @override
@@ -40,46 +35,6 @@ class _FiltroAtendimentoState extends State<FiltroAtendimento> {
                 ),
               ),
               const Divider(color: Colors.grey),
-              const SizedBox(height: 10),
-              DropdownButtonFormField<String>(
-                decoration: _customInputDecoration('Tipo de Atendimento'),
-                items: widget.tiposAtendimento.map((String tipo) {
-                  return DropdownMenuItem<String>(
-                    value: tipo,
-                    child: Text(tipo),
-                  );
-                }).toList(),
-                onChanged: (value) {
-                  setState(() {
-                    selectedTipoAtendimento = value;
-                  });
-                },
-              ),
-              const SizedBox(height: 10),
-              TextField(
-                controller: atendenteController,
-                decoration: _customInputDecoration('Atendente'),
-              ),
-              const SizedBox(height: 10),
-              DropdownButtonFormField<String>(
-                decoration: _customInputDecoration('Subgrupo'),
-                items: widget.subgrupos.map((String subgroup) {
-                  return DropdownMenuItem<String>(
-                    value: subgroup,
-                    child: Text(subgroup),
-                  );
-                }).toList(),
-                onChanged: (value) {
-                  setState(() {
-                    selectedSubgroup = value;
-                  });
-                },
-              ),
-              const SizedBox(height: 10),
-              TextField(
-                controller: protocoloController,
-                decoration: _customInputDecoration('Número do protocolo'),
-              ),
               const SizedBox(height: 10),
               GestureDetector(
                 onTap: () async {
@@ -119,11 +74,6 @@ class _FiltroAtendimentoState extends State<FiltroAtendimento> {
                 ),
               ),
               const SizedBox(height: 10),
-              TextField(
-                controller: bairroController,
-                decoration: _customInputDecoration('Bairro'),
-              ),
-              const SizedBox(height: 10),
               DropdownButtonFormField<String>(
                 decoration: _customInputDecoration('Entrega de itens assistência humanitária'),
                 items: ['Sim', 'Não'].map((String value) {
@@ -161,13 +111,8 @@ class _FiltroAtendimentoState extends State<FiltroAtendimento> {
                   ElevatedButton(
                     onPressed: () {
                       Map<String, dynamic> filters = {
-                        'subgrupo': selectedSubgroup,
-                        'protocolo': protocoloController.text.isEmpty ? null : protocoloController.text,
                         'dataInicio': selectedDateRange?.start,
                         'dataFim': selectedDateRange?.end,
-                        'bairro': bairroController.text.isEmpty ? null : bairroController.text,
-                        'tipoAtendimento': selectedTipoAtendimento,
-                        'atendente': atendenteController.text.isEmpty ? null : atendenteController.text,
                         'itensAssistencia': selectedItensAssistencia == 'Sim',
                       };
                       widget.onSave(filters);

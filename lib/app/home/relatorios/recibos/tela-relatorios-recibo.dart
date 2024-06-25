@@ -242,10 +242,10 @@ class _RelatorioReciboState extends State<RelatorioRecibo> {
                   ],
                 ),
                 SizedBox(height: 20),
-                SearchFilterBar(
-                  onSearch: _onSearch,
-                  onFilter: _showFilterDialog,
-                ),
+                // SearchFilterBar(
+                //   onSearch: _onSearch,
+                //   onFilter: _showFilterDialog,
+                // ),
                 SizedBox(height: 25),
                   // Lista de Cards de Atendimento
                 Center(
