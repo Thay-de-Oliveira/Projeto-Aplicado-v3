@@ -735,6 +735,27 @@ class _AtendimentoFormsState extends State<AtendimentoForms> {
 
                           const SizedBox(height: 20),
 
+                          //Campos lado a lado "Datas"
+                          Row(
+                            children: [
+                              Expanded(
+                                child: GestureDetector(
+                                  onTap: () => _selectDate(
+                                      context, _dataSolicitacaoController),
+                                  child: AbsorbPointer(
+                                    child: TextFormField(
+                                      controller: _dataSolicitacaoController,
+                                      decoration: _customInputDecoration(
+                                          'Data da solicitação:'),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+
+                          const SizedBox(height: 20),
+
                           TypeAheadField<CidadaoModel>(
                             controller:
                             _cidadaoResponsavelController, // Este controller agora só para exibir o nome
@@ -876,27 +897,6 @@ class _AtendimentoFormsState extends State<AtendimentoForms> {
                                 ),
                               ],
                             ),
-                          ),
-
-                          const SizedBox(height: 20),
-
-                          //Campos lado a lado "Datas"
-                          Row(
-                            children: [
-                              Expanded(
-                                child: GestureDetector(
-                                  onTap: () => _selectDate(
-                                      context, _dataSolicitacaoController),
-                                  child: AbsorbPointer(
-                                    child: TextFormField(
-                                      controller: _dataSolicitacaoController,
-                                      decoration: _customInputDecoration(
-                                          'Data da solicitação:'),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ],
                           ),
 
                           const SizedBox(height: 20),
