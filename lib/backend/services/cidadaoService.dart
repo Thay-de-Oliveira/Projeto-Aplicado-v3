@@ -90,4 +90,36 @@ class CidadaoService {
       throw Exception('Erro ao conectar ao servidor: $e');
     }
   }
+
+  //Pesquisa
+  Future<List<CidadaoModel>> searchCidadaos({
+    required String term,
+    String? dataInicio,
+    String? dataFim,
+    int limit = 10,
+    int page = 1,
+  }) async {
+    String url = '$baseUrl/cidadaos/search?term=$term&limit=$limit&page=$page';
+
+    if (dataInicio != null && dataInicio.isNotEmpty) {
+      url += '&dataInicio=$dataInicio';
+    }
+
+    if (dataFim != null && dataFim.isNotEmpty) {
+      url += '&dataFim=$dataFim';
+    }
+
+    final response = await http.get(Uri.parse(url));
+
+    if (response.statusCode == 200) {
+      var list = json.decode(response.body);
+      List<CidadaoModel> listCidadaoModel = [];
+      for (var item in list['data']) {
+        listCidadaoModel.add(CidadaoModel.fromJson(item));
+      }
+      return listCidadaoModel;
+    } else {
+      throw Exception('Falha ao carregar lista de cidadãos');
+    }
+  }
 }

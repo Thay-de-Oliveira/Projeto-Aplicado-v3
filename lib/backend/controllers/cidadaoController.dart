@@ -69,4 +69,30 @@ class CidadaoController extends GetxController {
       isLoading(false);
     }
   }
+
+  //Pesquisa
+  Future<void> searchCidadaos({
+    required String term,
+    String? dataInicio,
+    String? dataFim,
+    int limit = 10,
+    int page = 1,
+  }) async {
+    isLoading.value = true;
+    try {
+      var list = await cidadaoService.searchCidadaos(
+        term: term,
+        dataInicio: dataInicio,
+        dataFim: dataFim,
+        limit: limit,
+        page: page,
+      );
+      listCidadaoObs.value = list;
+    } catch (e) {
+      print('Erro ao buscar cidadão: $e');
+    } finally {
+      isLoading.value = false;
+      update();
+    }
+  }
 }
