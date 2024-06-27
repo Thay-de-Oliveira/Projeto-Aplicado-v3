@@ -104,7 +104,7 @@ class CidadaoCard extends StatelessWidget {
                             'Informações',
                             style: TextStyle(
                               color: Colors.black,
-                              fontSize: 10,
+                              fontSize: 11,
                               fontFamily: 'Roboto',
                               fontWeight: FontWeight.w600,
                               height: 1,

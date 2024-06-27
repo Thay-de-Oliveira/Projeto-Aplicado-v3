@@ -78,7 +78,7 @@ class RealizarAtendimentoButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 116,
+      width: 136,
       height: 35,
       decoration: BoxDecoration(
         color: const Color(0xFFCFDDF2),
@@ -86,7 +86,7 @@ class RealizarAtendimentoButton extends StatelessWidget {
       ),
       child: InkWell(
         child: Container(
-          width: 115,
+          width: 135,
           height: 35,
           decoration: BoxDecoration(
             color: Colors.transparent,
@@ -97,7 +97,7 @@ class RealizarAtendimentoButton extends StatelessWidget {
               'Realizar Atendimento',
               style: TextStyle(
                 color: Colors.black,
-                fontSize: 10,
+                fontSize: 11,
                 fontFamily: 'Roboto',
                 fontWeight: FontWeight.w600,
                 height: 1,

@@ -77,7 +77,7 @@ class VisualizarAcontecimentoButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 135,
+      width: 155,
       height: 35,
       decoration: BoxDecoration(
         color: const Color(0xFFCFDDF2),
@@ -85,7 +85,7 @@ class VisualizarAcontecimentoButton extends StatelessWidget {
       ),
       child: InkWell(
         child: Container(
-          width: 150,
+          width: 180,
           height: 35,
           decoration: BoxDecoration(
             color: Colors.transparent,
@@ -96,7 +96,7 @@ class VisualizarAcontecimentoButton extends StatelessWidget {
               'Visualizar Acontecimento',
               style: TextStyle(
                 color: Colors.black,
-                fontSize: 10,
+                fontSize: 11,
                 fontFamily: 'Roboto',
                 fontWeight: FontWeight.w600,
                 height: 1,
