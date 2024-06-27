@@ -23,39 +23,28 @@ class AcontecimentoCard extends StatelessWidget {
           ),
         );
       },
-      child: Container(
-        margin: const EdgeInsets.only(bottom: 11),
-        width: 330,
-        height: 120,
-        child: Stack(
-          children: [
-            Positioned(
-              left: 0,
-              top: 0,
-              child: Container(
-                width: 330,
-                height: 113,
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(5),
-                  boxShadow: const [
-                    BoxShadow(
-                      color: Color(0x3F2F2F2F),
-                      blurRadius: 1,
-                      offset: Offset(1, 1),
-                      spreadRadius: 0,
-                    ),
-                  ],
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          return Container(
+            margin: const EdgeInsets.only(bottom: 11),
+            padding: EdgeInsets.all(8),
+            width: constraints.maxWidth,
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(5),
+              boxShadow: const [
+                BoxShadow(
+                  color: Color(0x3F2F2F2F),
+                  blurRadius: 1,
+                  offset: Offset(1, 1),
+                  spreadRadius: 0,
                 ),
-              ),
+              ],
             ),
-            Positioned(
-              left: 9,
-              top: 15,
-              child: SizedBox(
-                width: 250,
-                height: 21,
-                child: Text(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
                   acontecimento.subgrupo,
                   style: const TextStyle(
                     color: Colors.black,
@@ -65,25 +54,21 @@ class AcontecimentoCard extends StatelessWidget {
                     height: 0,
                   ),
                 ),
-              ),
+                const SizedBox(height: 4),
+                DataHoraInfo(
+                  dataHora: acontecimento.dataHora,
+                  numeroProtocolo: acontecimento.numeroProtocolo ?? "Sem Protocolo",
+                  rua: acontecimento.rua,
+                  bairro: acontecimento.bairro,
+                ),
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: RealizarAtendimentoButton(),
+                ),
+              ],
             ),
-            Positioned(
-              left: 9,
-              top: 31,
-              child: DataHoraInfo(
-                dataHora: acontecimento.dataHora,
-                numeroProtocolo: acontecimento.numeroProtocolo ?? "Sem Protocolo",
-                rua: acontecimento.rua,
-                bairro: acontecimento.bairro,
-              ),
-            ),
-            Positioned(
-              left: 208,
-              top: 89,
-              child: RealizarAtendimentoButton(),
-            ),
-          ],
-        ),
+          );
+        },
       ),
     );
   }
@@ -94,7 +79,7 @@ class RealizarAtendimentoButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: 116,
-      height: 17,
+      height: 35,
       decoration: BoxDecoration(
         color: const Color(0xFFCFDDF2),
         borderRadius: BorderRadius.circular(4),
@@ -143,8 +128,6 @@ class DataHoraInfo extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.only(bottom: 11),
-      width: 251,
-      height: 72,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -159,7 +142,7 @@ class DataHoraInfo extends StatelessWidget {
               height: 0,
             ),
           ),
-          const SizedBox(height: 4),
+          const SizedBox(height: 8),
           Text(
             'Endereço: ''$rua' ', Bairro ''$bairro',
             style: TextStyle(
@@ -170,7 +153,7 @@ class DataHoraInfo extends StatelessWidget {
               height: 0,
             ),
           ),
-          const SizedBox(height: 4),
+          const SizedBox(height: 8),
           Text(
             'Data do acontecimento: ${DateFormat('dd/MM/yyyy').format(dataHora)}',
             style: TextStyle(
