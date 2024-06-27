@@ -34,10 +34,10 @@ class AcontecimentoCard extends StatelessWidget {
               borderRadius: BorderRadius.circular(5),
               boxShadow: const [
                 BoxShadow(
-                  color: Color(0x3F2F2F2F),
-                  blurRadius: 1,
-                  offset: Offset(1, 1),
-                  spreadRadius: 0,
+                  color: Color.fromARGB(62, 133, 133, 133),
+                  blurRadius: 2, // Aumenta a área de desfoque da sombra
+                  offset: Offset(2, 2), // Ajusta a posição da sombra
+                  spreadRadius: 2, // Aumenta a área de propagação da sombra
                 ),
               ],
             ),

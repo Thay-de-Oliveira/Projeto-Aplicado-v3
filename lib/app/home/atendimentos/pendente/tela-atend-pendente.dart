@@ -202,7 +202,12 @@ class _AtendimentoPendenteState extends State<AtendimentoPendente> {
                                 itemCount: pendentes.length,
                                 itemBuilder: (context, index) {
                                   AcontecimentoModel acontecimento = pendentes[index];
-                                  return AcontecimentoCard(acontecimento: acontecimento);
+                                  return Column(
+                                    children: [
+                                      AcontecimentoCard(acontecimento: acontecimento),
+                                      SizedBox(height: 12), //Espaçamento entre cards
+                                    ],
+                                  );
                                 },
                               );
                             }),
