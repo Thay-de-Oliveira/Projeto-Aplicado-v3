@@ -19,40 +19,29 @@ class AtendimentoCard extends StatelessWidget {
           ),
         );
       },
-      child: Container(
-        margin: EdgeInsets.only(bottom: 11),
-        width: 330,
-        height: 120,
-        child: Stack(
-          children: [
-            Positioned(
-              left: 0,
-              top: 0,
-              child: Container(
-                width: 330,
-                height: 113,
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(5),
-                  boxShadow: const [
-                    BoxShadow(
-                      color: Color(0x3F2F2F2F),
-                      blurRadius: 1,
-                      offset: Offset(1, 1),
-                      spreadRadius: 0,
-                    ),
-                  ],
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          return Container(
+            margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 03),
+            padding: const EdgeInsets.fromLTRB(8, 12, 8, 8), // Ajuste aqui o padding superior para aumentar o espaçamento
+            width: constraints.maxWidth,
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(5),
+              boxShadow: const [
+                BoxShadow(
+                  color: Color.fromARGB(62, 133, 133, 133),
+                  blurRadius: 2, // Aumenta a área de desfoque da sombra
+                  offset: Offset(2, 2), // Ajusta a posição da sombra
+                  spreadRadius: 2, // Aumenta a área de propagação da sombra
                 ),
-              ),
+              ],
             ),
-            Positioned(
-              left: 9,
-              top: 15,
-              child: SizedBox(
-                width: 189,
-                height: 21,
-                child: Text(
-                  atendimento.tipoAtendimento,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Atendimento: ${atendimento.tipoAtendimento}',
                   style: const TextStyle(
                     color: Colors.black,
                     fontSize: 16,
@@ -61,61 +50,97 @@ class AtendimentoCard extends StatelessWidget {
                     height: 0,
                   ),
                 ),
-              ),
+                const SizedBox(height: 8),
+                Text(
+                  'N° do protocolo: ${atendimento.nProtocolo}',
+                  style: TextStyle(
+                    color: Colors.black.withOpacity(0.85),
+                    fontSize: 12,
+                    fontFamily: 'Roboto',
+                    fontWeight: FontWeight.w400,
+                    height: 0,
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  'Data do atendimento: ${atendimento.dataSolicitacao}',
+                  style: TextStyle(
+                    color: Colors.black.withOpacity(0.85),
+                    fontSize: 12,
+                    fontFamily: 'Roboto',
+                    fontWeight: FontWeight.w400,
+                    height: 0,
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  'Endereço: ${atendimento.rua}, Bairro ${atendimento.bairro}',
+                  style: TextStyle(
+                    color: Colors.black.withOpacity(0.85),
+                    fontSize: 12,
+                    fontFamily: 'Roboto',
+                    fontWeight: FontWeight.w400,
+                    height: 0,
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  'Atendente: ${atendimento.atendenteResponsavel}',
+                  style: TextStyle(
+                    color: Colors.black.withOpacity(0.85),
+                    fontSize: 12,
+                    fontFamily: 'Roboto',
+                    fontWeight: FontWeight.w400,
+                    height: 0,
+                  ),
+                ),
+                const SizedBox(height: 10), // Aumenta o espaçamento entre o texto e o botão
+                Align(
+                  alignment: Alignment.bottomRight,
+                  child: Container(
+                    width: 136,
+                    height: 35,
+                    decoration: BoxDecoration(
+                      color: const Color(0xFFCFDDF2),
+                      borderRadius: BorderRadius.circular(4),
+                    ),
+                    child: InkWell(
+                      onTap: () {
+                        // Implementar ação de visualização do atendimento
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => DetalheHistorico(atendimento: atendimento),
+                          ),
+                        );
+                      },
+                      child: Container(
+                        width: 135,
+                        height: 35,
+                        decoration: BoxDecoration(
+                          color: Colors.transparent,
+                          borderRadius: BorderRadius.circular(5),
+                        ),
+                        child: const Center(
+                          child: Text(
+                            'Visualizar Atendimento',
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 11,
+                              fontFamily: 'Roboto',
+                              fontWeight: FontWeight.w600,
+                              height: 1,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
             ),
-            Positioned(
-              left: 208,
-              top: 89,
-              child: RealizarAtendimentoButton(),
-            ),
-            Positioned(
-              left: 9,
-              top: 31,
-              child: DataAcontecimentoInfo(
-                dataAcontecimento: atendimento.dataSolicitacao,
-                nProtocolo: atendimento.nProtocolo,
-                endereco: '${atendimento.rua}, Bairro ${atendimento.bairro}',
-                atendente: atendimento.atendenteResponsavel,
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class RealizarAtendimentoButton extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: 116,
-      height: 17,
-      decoration: BoxDecoration(
-        color: const Color(0xFFCFDDF2),
-        borderRadius: BorderRadius.circular(4),
-      ),
-      child: InkWell(
-        child: Container(
-          width: 115,
-          height: 35,
-          decoration: BoxDecoration(
-            color: Colors.transparent,
-            borderRadius: BorderRadius.circular(5),
-          ),
-          child: const Center(
-            child: Text(
-              'Visualizar Atendimento',
-              style: TextStyle(
-                color: Colors.black,
-                fontSize: 10,
-                fontFamily: 'Roboto',
-                fontWeight: FontWeight.w600,
-                height: 1,
-              ),
-            ),
-          ),
-        ),
+          );
+        },
       ),
     );
   }
@@ -138,15 +163,13 @@ class DataAcontecimentoInfo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(bottom: 11),
-      width: 251,
-      height: 72,
+      margin: const EdgeInsets.only(bottom: 11),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const SizedBox(height: 4),
           Text(
-            'N° do protocolo: ' '$nProtocolo',
+            'N° do protocolo: $nProtocolo',
             style: const TextStyle(
               color: Colors.black,
               fontSize: 12,
@@ -155,9 +178,9 @@ class DataAcontecimentoInfo extends StatelessWidget {
               height: 0,
             ),
           ),
-          const SizedBox(height: 4),
+          const SizedBox(height: 8),
           Text(
-            'Data do acontecimento: $dataAcontecimento',
+            'Data do atendimento: $dataAcontecimento',
             style: TextStyle(
               color: Colors.black.withOpacity(0.85),
               fontSize: 12,
@@ -166,7 +189,7 @@ class DataAcontecimentoInfo extends StatelessWidget {
               height: 0,
             ),
           ),
-          const SizedBox(height: 4),
+          const SizedBox(height: 8),
           Text(
             'Endereço: $endereco',
             style: TextStyle(
@@ -177,7 +200,7 @@ class DataAcontecimentoInfo extends StatelessWidget {
               height: 0,
             ),
           ),
-          const SizedBox(height: 4),
+          const SizedBox(height: 8),
           Text(
             'Atendente: $atendente',
             style: TextStyle(

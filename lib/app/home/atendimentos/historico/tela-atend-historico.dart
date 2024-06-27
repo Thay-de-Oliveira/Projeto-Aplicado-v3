@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:projetoaplicado/app/components/atendimento/atendimento-card.dart';
+import 'package:projetoaplicado/app/components/acontecimento/acontecimento-card.dart';
 import 'package:projetoaplicado/backend/controllers/atendimentoController.dart';
 import 'package:projetoaplicado/backend/controllers/acontecimentoController.dart';
 import 'package:projetoaplicado/backend/models/atendimentoModel.dart';
+import 'package:projetoaplicado/backend/models/acontecimentoModel.dart';
 
 import '../../../components/globais/barra-superior.dart';
 import '../../../components/globais/menu-inferior.dart';
@@ -200,9 +202,11 @@ class _HistoricoAtendimentoState extends State<HistoricoAtendimento> {
                                 itemCount: historico.length,
                                 itemBuilder: (context, index) {
                                   AtendimentosModel atendimento = historico[index];
-                                  return Padding(
-                                    padding: const EdgeInsets.symmetric(vertical: 0.0),
-                                    child: AtendimentoCard(atendimento: atendimento),
+                                  return Column(
+                                    children: [
+                                      AtendimentoCard(atendimento: atendimento),
+                                      SizedBox(height: 12), //Espaçamento entre cards
+                                    ],
                                   );
                                 },
                               );

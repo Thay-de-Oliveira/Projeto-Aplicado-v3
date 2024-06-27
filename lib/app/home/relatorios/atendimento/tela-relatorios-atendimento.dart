@@ -281,7 +281,12 @@ class _RelatorioAtendimentoState extends State<RelatorioAtendimento> {
                                 physics: NeverScrollableScrollPhysics(),
                                 itemCount: atendimentos.length,
                                 itemBuilder: (context, index) {
-                                  return AtendimentoCardRelatorio(atendimento: atendimentos[index]);
+                                  return Column(
+                                    children: [
+                                      AtendimentoCardRelatorio(atendimento: atendimentos[index]),
+                                      SizedBox(height: 12), // Espaçamento entre os cards
+                                    ],
+                                  );
                                 },
                               );
                             }),
