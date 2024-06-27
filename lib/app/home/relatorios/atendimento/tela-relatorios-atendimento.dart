@@ -1,16 +1,14 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:projetoaplicado/app/components/atendimento/atendimento-card-relatorio.dart';
-import 'package:projetoaplicado/app/components/atendimento/atendimento-card.dart';
 import 'package:projetoaplicado/app/home/relatorios/acontecimento/tela-relatorios-acontecimento.dart';
 import 'package:projetoaplicado/app/home/relatorios/recibos/tela-relatorios-recibo.dart';
 import 'package:projetoaplicado/backend/controllers/atendimentoController.dart';
-import 'package:projetoaplicado/backend/models/atendimentoModel.dart';
-
 import '../../../components/globais/barra-superior.dart';
 import '../../../components/globais/menu-inferior.dart';
 import '../../../components/globais/barra-pesquisa-e-filtro.dart';
-import '../../../components/globais/filtro-atendimento.dart'; 
+import '../../../components/globais/filtro-atendimento.dart';
 
 class RelatorioAtendimento extends StatefulWidget {
   @override
@@ -19,20 +17,45 @@ class RelatorioAtendimento extends StatefulWidget {
 
 class _RelatorioAtendimentoState extends State<RelatorioAtendimento> {
   final AtendimentoController atendimentoController = Get.put(AtendimentoController());
+  final TextEditingController searchController = TextEditingController();
+  String _searchTerm = '';
+  DateTime? _dataInicio;
+  DateTime? _dataFim;
+  bool? _itensAssistencia;
+  bool _isLoading = false;
 
   @override
   void initState() {
     super.initState();
+    DateTime now = DateTime.now();
+    DateTime tenDaysAgo = now.subtract(Duration(days: 10));
+    _dataInicio = tenDaysAgo;
+    _dataFim = now;
     _loadAtendimentos();
   }
 
-  void _onSearch(String query) {
-    atendimentoController.searchByWord(query);
+  Future<void> _loadAtendimentos() async {
+    setState(() {
+      _isLoading = true;
+    });
+    await atendimentoController.searchAtendimentos(
+      term: _searchTerm,
+      dataInicio: _dataInicio?.toIso8601String().split('T').first,
+      dataFim: _dataFim?.toIso8601String().split('T').first,
+      entregueItensAjuda: _itensAssistencia,
+      limit: 10,
+      page: 1,
+    );
+    setState(() {
+      _isLoading = false;
+    });
   }
 
-  Future<void> _loadAtendimentos() async {
-    await atendimentoController.listAtendimento();
-    atendimentoController.listAtendimentoObs;
+  void _onSearch(String query) {
+    setState(() {
+      _searchTerm = query;
+    });
+    _loadAtendimentos();
   }
 
   void _showFilterDialog() {
@@ -42,12 +65,26 @@ class _RelatorioAtendimentoState extends State<RelatorioAtendimento> {
         return FiltroAtendimento(
           subgrupos: atendimentoController.listAtendimentoObs.map((a) => a.tipoAtendimento).toSet().toList(),
           tiposAtendimento: atendimentoController.listAtendimentoObs.map((a) => a.tipoAtendimento).toSet().toList(),
+          initialDataInicio: _dataInicio,
+          initialDataFim: _dataFim,
+          initialItensAssistencia: _itensAssistencia,
           onSave: (filters) {
-            atendimentoController.filterAtendimentoHistorico(filters);
+            setState(() {
+              _dataInicio = filters['dataInicio'];
+              _dataFim = filters['dataFim'];
+              _itensAssistencia = filters['itensAssistencia'];
+            });
+            _loadAtendimentos();
           },
         );
       },
     );
+  }
+
+  @override
+  void dispose() {
+    searchController.dispose();
+    super.dispose();
   }
 
   @override
@@ -56,9 +93,7 @@ class _RelatorioAtendimentoState extends State<RelatorioAtendimento> {
       appBar: null,
       backgroundColor: Color.fromARGB(255, 249, 250, 252),
       body: RefreshIndicator(
-        onRefresh: () async {
-          await _loadAtendimentos(); // Função de atualização ao puxar para cima
-        },
+        onRefresh: _loadAtendimentos,
         child: CustomScrollView(
           slivers: <Widget>[
             SliverAppBar(
@@ -76,17 +111,14 @@ class _RelatorioAtendimentoState extends State<RelatorioAtendimento> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      // Botão ACONTECIMENTO
                       GestureDetector(
                         child: Ink(
                           decoration: ShapeDecoration(
-                            // Estilo
                             color: Color(0xffffffff),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10),
                             ),
                             shadows: [
-                              // Sombras
                               BoxShadow(
                                 color: Color(0x3F000000),
                                 blurRadius: 2,
@@ -109,7 +141,6 @@ class _RelatorioAtendimentoState extends State<RelatorioAtendimento> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: <Widget>[
                                   Container(
-                                    // Icone
                                     width: 30,
                                     height: 30,
                                     child: Image.asset('assets/imagens/icon-acontecimento-inativo.png'),
@@ -128,17 +159,14 @@ class _RelatorioAtendimentoState extends State<RelatorioAtendimento> {
                           ),
                         ),
                       ),
-                      // Botão ATENDIMENTO
                       GestureDetector(
                         child: Ink(
                           decoration: ShapeDecoration(
-                            // Estilo
                             color: Color(0xFFBBD8F0),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10),
                             ),
                             shadows: [
-                              // Sombras
                               BoxShadow(
                                 color: Color(0x3F000000),
                                 blurRadius: 2,
@@ -148,12 +176,7 @@ class _RelatorioAtendimentoState extends State<RelatorioAtendimento> {
                             ],
                           ),
                           child: InkWell(
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(builder: (context) => RelatorioAtendimento()),
-                              );
-                            },
+                            onTap: () {},
                             child: Container(
                               width: 90,
                               height: 80,
@@ -161,7 +184,6 @@ class _RelatorioAtendimentoState extends State<RelatorioAtendimento> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: <Widget>[
                                   Container(
-                                    // Icone
                                     width: 30,
                                     height: 30,
                                     child: Image.asset('assets/imagens/icon-atendimento-ativo.png'),
@@ -180,17 +202,14 @@ class _RelatorioAtendimentoState extends State<RelatorioAtendimento> {
                           ),
                         ),
                       ),
-                      // Botão RECIBOS
                       GestureDetector(
                         child: Ink(
                           decoration: ShapeDecoration(
-                            // Estilo
                             color: Color(0xffffffff),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10),
                             ),
                             shadows: [
-                              // Sombras
                               BoxShadow(
                                 color: Color(0x3F000000),
                                 blurRadius: 2,
@@ -213,7 +232,6 @@ class _RelatorioAtendimentoState extends State<RelatorioAtendimento> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: <Widget>[
                                   Container(
-                                    // Icone
                                     width: 30,
                                     height: 30,
                                     child: Image.asset('assets/imagens/icon-recibos-inativo.png'),
@@ -235,53 +253,40 @@ class _RelatorioAtendimentoState extends State<RelatorioAtendimento> {
                     ],
                   ),
                   SizedBox(height: 25),
-                  // SearchFilterBar(
-                  //   onSearch: _onSearch,
-                  //   onFilter: _showFilterDialog, // Chamar a função para mostrar o filtro
-                  // ),
+                  SearchFilterBar(
+                    searchController: searchController,
+                    onSearch: (query) {
+                      if (query.isEmpty) {
+                        _onSearch('');
+                      } else {
+                        _onSearch(query);
+                      }
+                    },
+                    onFilter: _showFilterDialog,
+                  ),
                   SizedBox(height: 25),
-                  // Lista de Cards de Atendimento
                   Center(
                     child: Container(
                       width: 330,
-                      child: FutureBuilder(
-                        future: atendimentoController.listAtendimento(),
-                        builder: (context, snapshot) {
-                          switch (snapshot.connectionState) {
-                            case ConnectionState.none:
-                            case ConnectionState.waiting:
-                              return Center(
-                                child: CircularProgressIndicator(),
-                              );
-                            case ConnectionState.done:
-                              if (snapshot.hasError) {
-                                return Center(
-                                  child: Text('Erro ao carregar atendimentos'),
-                                );
-                              } else {
-                                // Filtrar os atendimentos pendentes
-                                var pendentes = atendimentoController.listAtendimentoObs
-                                    .where((atendimento) => atendimento.pendente == true)
-                                    .toList();
+                      child: _isLoading
+                          ? Center(child: CircularProgressIndicator())
+                          : Obx(() {
+                              var atendimentos = atendimentoController.listAtendimentoObs
+                                  .where((atendimento) => atendimento.pendente == true)
+                                  .toList()
+                                  ..sort((a, b) => b.dataSolicitacao.compareTo(a.dataSolicitacao));
 
-                                return ListView.builder(
-                                  shrinkWrap: true,
-                                  physics: NeverScrollableScrollPhysics(),
-                                  itemCount: pendentes.length,
-                                  itemBuilder: (context, index) {
-                                    AtendimentosModel atendimento = pendentes[index];
-                                    return AtendimentoCardRelatorio(atendimento: atendimento);
-                                  },
-                                );
-                              }
-                            default:
-                              return SizedBox();
-                          }
-                        },
-                      ),
+                              return ListView.builder(
+                                shrinkWrap: true,
+                                physics: NeverScrollableScrollPhysics(),
+                                itemCount: atendimentos.length,
+                                itemBuilder: (context, index) {
+                                  return AtendimentoCardRelatorio(atendimento: atendimentos[index]);
+                                },
+                              );
+                            }),
                     ),
                   ),
-                  // Fim da Lista de Cards
                   SizedBox(height: 25),
                 ],
               ),

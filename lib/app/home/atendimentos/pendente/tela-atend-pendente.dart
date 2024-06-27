@@ -22,19 +22,21 @@ class _AtendimentoPendenteState extends State<AtendimentoPendente> {
   String _searchTerm = '';
   DateTime? _dataInicio;
   DateTime? _dataFim;
+  bool _isLoading = false;
 
   @override
   void initState() {
     super.initState();
+    DateTime now = DateTime.now();
+    DateTime tenDaysAgo = now.subtract(Duration(days: 10));
+    _dataInicio = tenDaysAgo;
+    _dataFim = now;
     _loadAcontecimentos();
   }
 
   Future<void> _loadAcontecimentos() async {
-    DateTime now = DateTime.now();
-    DateTime tenDaysAgo = now.subtract(Duration(days: 10));
     setState(() {
-      _dataInicio = tenDaysAgo;
-      _dataFim = now;
+      _isLoading = true;
     });
     await acontecimentoController.searchAcontecimentos(
       term: _searchTerm,
@@ -43,19 +45,16 @@ class _AtendimentoPendenteState extends State<AtendimentoPendente> {
       limit: 10,
       page: 1,
     );
+    setState(() {
+      _isLoading = false;
+    });
   }
 
   void _onSearch(String query) {
     setState(() {
       _searchTerm = query;
     });
-    acontecimentoController.searchAcontecimentos(
-      term: query,
-      dataInicio: _dataInicio?.toIso8601String().split('T').first,
-      dataFim: _dataFim?.toIso8601String().split('T').first,
-      limit: 10,
-      page: 1,
-    );
+    _loadAcontecimentos();
   }
 
   void _showFilterDialog() {
@@ -71,17 +70,17 @@ class _AtendimentoPendenteState extends State<AtendimentoPendente> {
               _dataInicio = filters['dataInicio'];
               _dataFim = filters['dataFim'];
             });
-            acontecimentoController.searchAcontecimentos(
-              term: _searchTerm,
-              dataInicio: _dataInicio?.toIso8601String().split('T').first,
-              dataFim: _dataFim?.toIso8601String().split('T').first,
-              limit: 10,
-              page: 1,
-            );
+            _loadAcontecimentos();
           },
         );
       },
     );
+  }
+
+  @override
+  void dispose() {
+    searchController.dispose();
+    super.dispose();
   }
 
   @override
@@ -109,51 +108,10 @@ class _AtendimentoPendenteState extends State<AtendimentoPendente> {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       GestureDetector(
-                        child: Ink(
-                          decoration: ShapeDecoration(
-                            color: Color(0xffffffff),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            shadows: [
-                              BoxShadow(
-                                color: Color(0x3F000000),
-                                blurRadius: 2,
-                                offset: Offset(2, 2),
-                                spreadRadius: 0,
-                              )
-                            ],
-                          ),
-                          child: InkWell(
-                            onTap: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => AtendimentoForms()));
-                            },
-                            child: Container(
-                              width: 90,
-                              height: 80,
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: <Widget>[
-                                  Container(
-                                    width: 30,
-                                    height: 30,
-                                    child: Image.asset('assets/imagens/icon-cadastro.png'),
-                                  ),
-                                  SizedBox(height: 5.0),
-                                  Text(
-                                    'Cadastro',
-                                    style: TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.normal,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
+                        child: buildMenuButton(
+                          'Cadastro',
+                          'assets/imagens/icon-cadastro.png',
+                          AtendimentoForms(),
                         ),
                       ),
                       GestureDetector(
@@ -200,51 +158,10 @@ class _AtendimentoPendenteState extends State<AtendimentoPendente> {
                         ),
                       ),
                       GestureDetector(
-                        child: Ink(
-                          decoration: ShapeDecoration(
-                            color: Color(0xffffffff),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            shadows: [
-                              BoxShadow(
-                                color: Color(0x3F000000),
-                                blurRadius: 2,
-                                offset: Offset(2, 2),
-                                spreadRadius: 0,
-                              )
-                            ],
-                          ),
-                          child: InkWell(
-                            onTap: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => HistoricoAtendimento()));
-                            },
-                            child: Container(
-                              width: 90,
-                              height: 80,
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: <Widget>[
-                                  Container(
-                                    width: 30,
-                                    height: 30,
-                                    child: Image.asset('assets/imagens/icon-historico.png'),
-                                  ),
-                                  SizedBox(height: 5.0),
-                                  Text(
-                                    'Histórico',
-                                    style: TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.normal,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
+                        child: buildMenuButton(
+                          'Histórico',
+                          'assets/imagens/icon-historico.png',
+                          HistoricoAtendimento(),
                         ),
                       ),
                     ],
@@ -271,41 +188,24 @@ class _AtendimentoPendenteState extends State<AtendimentoPendente> {
                   Center(
                     child: Container(
                       width: 330,
-                      child: FutureBuilder(
-                        future: _loadAcontecimentos(),
-                        builder: (context, snapshot) {
-                          switch (snapshot.connectionState) {
-                            case ConnectionState.none:
-                            case ConnectionState.waiting:
-                              return Center(
-                                child: CircularProgressIndicator(),
-                              );
-                            case ConnectionState.done:
-                              if (snapshot.hasError) {
-                                return Center(
-                                  child: Text('Erro ao carregar acontecimentos'),
-                                );
-                              } else {
-                                var pendentes = acontecimentoController.listAcontecimentoObs
-                                    .where((acontecimento) => acontecimento.pendente == true)
-                                    .toList()
-                                    ..sort((a, b) => b.dataHora.compareTo(a.dataHora));
+                      child: _isLoading
+                          ? Center(child: CircularProgressIndicator())
+                          : Obx(() {
+                              var pendentes = acontecimentoController.listAcontecimentoObs
+                                  .where((acontecimento) => acontecimento.pendente == true)
+                                  .toList()
+                                  ..sort((a, b) => b.dataHora.compareTo(a.dataHora));
 
-                                return ListView.builder(
-                                  shrinkWrap: true,
-                                  physics: NeverScrollableScrollPhysics(),
-                                  itemCount: pendentes.length,
-                                  itemBuilder: (context, index) {
-                                    AcontecimentoModel acontecimento = pendentes[index];
-                                    return AcontecimentoCard(acontecimento: acontecimento);
-                                  },
-                                );
-                              }
-                            default:
-                              return SizedBox();
-                          }
-                        },
-                      ),
+                              return ListView.builder(
+                                shrinkWrap: true,
+                                physics: NeverScrollableScrollPhysics(),
+                                itemCount: pendentes.length,
+                                itemBuilder: (context, index) {
+                                  AcontecimentoModel acontecimento = pendentes[index];
+                                  return AcontecimentoCard(acontecimento: acontecimento);
+                                },
+                              );
+                            }),
                     ),
                   ),
                   SizedBox(height: 25),
@@ -316,6 +216,52 @@ class _AtendimentoPendenteState extends State<AtendimentoPendente> {
         ),
       ),
       bottomNavigationBar: MenuInferior(),
+    );
+  }
+
+  Widget buildMenuButton(String text, String imagePath, Widget destination) {
+    return Ink(
+      decoration: ShapeDecoration(
+        color: Color(0xffffffff),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10),
+        ),
+        shadows: [
+          BoxShadow(
+            color: Color(0x3F000000),
+            blurRadius: 2,
+            offset: Offset(2, 2),
+            spreadRadius: 0,
+          )
+        ],
+      ),
+      child: InkWell(
+        onTap: () {
+          Navigator.push(context, MaterialPageRoute(builder: (context) => destination));
+        },
+        child: Container(
+          width: 90,
+          height: 80,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Container(
+                width: 30,
+                height: 30,
+                child: Image.asset(imagePath),
+              ),
+              SizedBox(height: 5.0),
+              Text(
+                text,
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.normal,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }

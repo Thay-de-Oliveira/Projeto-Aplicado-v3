@@ -9,7 +9,6 @@ import '../../../components/globais/barra-superior.dart';
 import '../../../components/globais/menu-inferior.dart';
 import '../../../components/globais/barra-pesquisa-e-filtro.dart';
 import '../../../components/globais/filtro-atendimento.dart';
-
 import '../pendente/tela-atend-pendente.dart';
 import '../cadastro/tela-atendimento-forms.dart';
 
@@ -21,19 +20,45 @@ class HistoricoAtendimento extends StatefulWidget {
 class _HistoricoAtendimentoState extends State<HistoricoAtendimento> {
   final AtendimentoController atendimentoController = Get.put(AtendimentoController());
   final AcontecimentoController acontecimentoController = Get.put(AcontecimentoController());
+  final TextEditingController searchController = TextEditingController();
+  String _searchTerm = '';
+  DateTime? _dataInicio;
+  DateTime? _dataFim;
+  bool? _itensAssistencia;
+  bool _isLoading = false;
 
   @override
   void initState() {
     super.initState();
+    DateTime now = DateTime.now();
+    DateTime tenDaysAgo = now.subtract(Duration(days: 10));
+    _dataInicio = tenDaysAgo;
+    _dataFim = now;
     _loadAtendimentos();
   }
 
   Future<void> _loadAtendimentos() async {
-    await atendimentoController.listAtendimento();
+    setState(() {
+      _isLoading = true;
+    });
+    await atendimentoController.searchAtendimentos(
+      term: _searchTerm,
+      dataInicio: _dataInicio?.toIso8601String().split('T').first,
+      dataFim: _dataFim?.toIso8601String().split('T').first,
+      entregueItensAjuda: _itensAssistencia,
+      limit: 10,
+      page: 1,
+    );
+    setState(() {
+      _isLoading = false;
+    });
   }
 
   void _onSearch(String query) {
-    atendimentoController.searchByWord(query);
+    setState(() {
+      _searchTerm = query;
+    });
+    _loadAtendimentos();
   }
 
   void _showFilterDialog() {
@@ -41,15 +66,28 @@ class _HistoricoAtendimentoState extends State<HistoricoAtendimento> {
       context: context,
       builder: (BuildContext context) {
         return FiltroAtendimento(
-          subgrupos: acontecimentoController.listAcontecimentoObs.map((a) => a.subgrupo).toSet().toList(),
+          subgrupos: atendimentoController.listAtendimentoObs.map((a) => a.tipoAtendimento).toSet().toList(),
           tiposAtendimento: atendimentoController.listAtendimentoObs.map((a) => a.tipoAtendimento).toSet().toList(),
+          initialDataInicio: _dataInicio,
+          initialDataFim: _dataFim,
+          initialItensAssistencia: _itensAssistencia,
           onSave: (filters) {
-            atendimentoController.filterAtendimentoHistorico(filters);
-            //acontecimentoController.filterAtendimentoAcontecimentoHistorico(filters);
+            setState(() {
+              _dataInicio = filters['dataInicio'];
+              _dataFim = filters['dataFim'];
+              _itensAssistencia = filters['itensAssistencia'];
+            });
+            _loadAtendimentos();
           },
         );
       },
     );
+  }
+
+  @override
+  void dispose() {
+    searchController.dispose();
+    super.dispose();
   }
 
   @override
@@ -58,9 +96,7 @@ class _HistoricoAtendimentoState extends State<HistoricoAtendimento> {
       appBar: null,
       backgroundColor: Color.fromARGB(255, 249, 250, 252),
       body: RefreshIndicator(
-        onRefresh: () async {
-          await _loadAtendimentos();
-        },
+        onRefresh: _loadAtendimentos,
         child: CustomScrollView(
           slivers: <Widget>[
             SliverAppBar(
@@ -109,12 +145,7 @@ class _HistoricoAtendimentoState extends State<HistoricoAtendimento> {
                             ],
                           ),
                           child: InkWell(
-                            onTap: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => HistoricoAtendimento()));
-                            },
+                            onTap: () {},
                             child: Container(
                               width: 90,
                               height: 80,
@@ -124,8 +155,7 @@ class _HistoricoAtendimentoState extends State<HistoricoAtendimento> {
                                   Container(
                                     width: 30,
                                     height: 30,
-                                    child: Image.asset(
-                                        'assets/imagens/icon-historico-ativo.png'),
+                                    child: Image.asset('assets/imagens/icon-historico-ativo.png'),
                                   ),
                                   SizedBox(height: 5.0),
                                   Text(
@@ -144,30 +174,39 @@ class _HistoricoAtendimentoState extends State<HistoricoAtendimento> {
                     ],
                   ),
                   SizedBox(height: 25),
-                  // SearchFilterBar(
-                  //   onSearch: _onSearch,
-                  //   onFilter: _showFilterDialog,
-                  // ),
+                  SearchFilterBar(
+                    searchController: searchController,
+                    onSearch: (query) {
+                      if (query.isEmpty) {
+                        _onSearch('');
+                      } else {
+                        _onSearch(query);
+                      }
+                    },
+                    onFilter: _showFilterDialog,
+                  ),
                   SizedBox(height: 25),
                   Center(
                     child: Container(
                       width: 330,
-                      child: Obx(() {
-                        var historico = atendimentoController.listAtendimentoObs.toList();
+                      child: _isLoading
+                          ? Center(child: CircularProgressIndicator())
+                          : Obx(() {
+                              var historico = atendimentoController.listAtendimentoObs.toList();
 
-                        return ListView.builder(
-                          shrinkWrap: true,
-                          physics: NeverScrollableScrollPhysics(),
-                          itemCount: historico.length,
-                          itemBuilder: (context, index) {
-                            AtendimentosModel atendimento = historico[index];
-                            return Padding(
-                              padding: const EdgeInsets.symmetric(vertical: 0.0),
-                              child: AtendimentoCard(atendimento: atendimento),
-                            );
-                          },
-                        );
-                      }),
+                              return ListView.builder(
+                                shrinkWrap: true,
+                                physics: NeverScrollableScrollPhysics(),
+                                itemCount: historico.length,
+                                itemBuilder: (context, index) {
+                                  AtendimentosModel atendimento = historico[index];
+                                  return Padding(
+                                    padding: const EdgeInsets.symmetric(vertical: 0.0),
+                                    child: AtendimentoCard(atendimento: atendimento),
+                                  );
+                                },
+                              );
+                            }),
                     ),
                   ),
                   SizedBox(height: 25),

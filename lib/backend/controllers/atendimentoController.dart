@@ -70,41 +70,29 @@ class AtendimentoController extends GetxController {
     }
   }
 
-  void searchByWord(String query) {
-    var filteredList = listAtendimentoObs.where((atendimento) {
-      var searchString = '${atendimento.nProtocolo} ${atendimento.tipoAtendimento} ${atendimento.canalAtendimento} ${atendimento.cidadaoResponsavel} ${atendimento.tipoVistoria ?? ''} ${atendimento.observacoes ?? ''}'.toLowerCase();
-      return searchString.contains(query.toLowerCase());
-    }).toList();
-    listAtendimentoObs.value = filteredList;
-  }
-
-  void filterAtendimentoHistorico(Map<String, dynamic> filters) {
-    var filteredList = listAtendimentoObs.where((atendimento) {
-      bool matches = true;
-
-      if (filters['tipoAtendimento'] != null && filters['tipoAtendimento'].isNotEmpty) {
-        matches &= atendimento.tipoAtendimento.contains(filters['tipoAtendimento']);
-      }
-      if (filters['atendente'] != null && filters['atendente'].isNotEmpty) {
-        matches &= atendimento.atendenteResponsavel.contains(filters['atendente']);
-      }
-      if (filters['protocolo'] != null && filters['protocolo'].isNotEmpty) {
-        matches &= atendimento.nProtocolo.contains(filters['protocolo']);
-      }
-      if (filters['dataInicio'] != null && filters['dataFim'] != null) {
-        matches &= DateTime.parse(atendimento.dataSolicitacao).isAfter(filters['dataInicio']) &&
-                   DateTime.parse(atendimento.dataSolicitacao).isBefore(filters['dataFim']);
-      }
-      if (filters['bairro'] != null && filters['bairro'].isNotEmpty) {
-        matches &= atendimento.cidadaoResponsavel.contains(filters['bairro']);
-      }
-      if (filters['itensAssistencia'] != null) {
-        matches &= atendimento.entregueItensAjuda == filters['itensAssistencia'];
-      }
-
-      return matches;
-    }).toList();
-
-    listAtendimentoObs.value = filteredList;
+  Future<void> searchAtendimentos({
+    String? term,
+    String? dataInicio,
+    String? dataFim,
+    bool? entregueItensAjuda,
+    int limit = 10,
+    int page = 1,
+  }) async {
+    isLoading(true);
+    try {
+      var atendimentos = await atendimentoService.searchAtendimentos(
+        term: term,
+        dataInicio: dataInicio,
+        dataFim: dataFim,
+        entregueItensAjuda: entregueItensAjuda,
+        limit: limit,
+        page: page,
+      );
+      listAtendimentoObs.assignAll(atendimentos);
+    } catch (e) {
+      Get.snackbar('Erro', 'Falha ao buscar atendimentos');
+    } finally {
+      isLoading(false);
+    }
   }
 }
