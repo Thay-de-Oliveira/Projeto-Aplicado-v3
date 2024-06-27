@@ -274,7 +274,12 @@ class _RelatorioAcontecimentoState extends State<RelatorioAcontecimento> {
                                 physics: NeverScrollableScrollPhysics(),
                                 itemCount: acontecimentos.length,
                                 itemBuilder: (context, index) {
-                                  return AcontecimentoCardRelatorio(acontecimento: acontecimentos[index]);
+                                  return Column(
+                                    children: [
+                                      AcontecimentoCardRelatorio(acontecimento: acontecimentos[index]),
+                                      SizedBox(height: 12), //Espaçamento entre cards
+                                    ],
+                                  );
                                 },
                               );
                             }),
