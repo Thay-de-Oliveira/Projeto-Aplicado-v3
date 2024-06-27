@@ -1033,25 +1033,6 @@ class _AtendimentoFormsState extends State<AtendimentoForms> {
                             child: Row(
                               mainAxisSize: MainAxisSize.min,
                               children: [
-                                // Botão "Salvar"
-                                ElevatedButton(
-                                  onPressed: () {
-                                    _salvarAtendimento();
-                                  },
-                                  child: Text(
-                                    'Salvar',
-                                    style: TextStyle(color: Colors.white),
-                                  ),
-                                  style: ElevatedButton.styleFrom(
-                                    backgroundColor: Colors.blue,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(8.0),
-                                    ),
-                                  ),
-                                ),
-
-                                const SizedBox(width: 16),
-
                                 // Botão "Cancelar"
                                 ElevatedButton(
                                   onPressed: () {
@@ -1068,6 +1049,25 @@ class _AtendimentoFormsState extends State<AtendimentoForms> {
                                   ),
                                   style: ElevatedButton.styleFrom(
                                     backgroundColor: Colors.grey,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(8.0),
+                                    ),
+                                  ),
+                                ),
+
+                                const SizedBox(width: 16),
+
+                                // Botão "Salvar"
+                                ElevatedButton(
+                                  onPressed: () {
+                                    _salvarAtendimento();
+                                  },
+                                  child: Text(
+                                    'Salvar',
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: Colors.blue,
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(8.0),
                                     ),

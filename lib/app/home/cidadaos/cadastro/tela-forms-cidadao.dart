@@ -475,26 +475,6 @@ class _CadastroCidadaoState extends State<CadastroCidadao> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: [
-                              ElevatedButton(
-                                onPressed: _isSaving
-                                    ? null
-                                    : () async {
-                                        await salvarCidadao();
-                                      },
-                                style: ElevatedButton.styleFrom(
-                                    backgroundColor: Colors.blue,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(8.0),
-                                    ),
-                                  ),
-                                child: Text(
-                                  _isSaving ? 'Salvando...' : 'Salvar',
-                                  style: const TextStyle(
-                                    color: Colors.white,
-                                  ),
-                                ),
-                              ),
-                              const SizedBox(width: 10),
                               TextButton(
                                 onPressed: () {
                                   Navigator.of(context).pushReplacement(
@@ -513,6 +493,26 @@ class _CadastroCidadaoState extends State<CadastroCidadao> {
                                     'Cancelar',
                                     style: TextStyle(color: Colors.white),
                                   ),
+                              ),
+                              const SizedBox(width: 10),
+                              ElevatedButton(
+                                onPressed: _isSaving
+                                    ? null
+                                    : () async {
+                                        await salvarCidadao();
+                                      },
+                                style: ElevatedButton.styleFrom(
+                                    backgroundColor: Colors.blue,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(8.0),
+                                    ),
+                                  ),
+                                child: Text(
+                                  _isSaving ? 'Salvando...' : 'Salvar',
+                                  style: const TextStyle(
+                                    color: Colors.white,
+                                  ),
+                                ),
                               ),
                             ],
                           ),

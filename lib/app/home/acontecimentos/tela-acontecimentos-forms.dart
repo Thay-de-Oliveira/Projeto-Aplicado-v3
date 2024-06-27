@@ -933,30 +933,6 @@ class _FormularioAcontecimentoState extends State<AcontecimentosForms> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
-                        // Botão Salvar
-                        ElevatedButton(
-                          onPressed: _isSaving ? null : () async {
-                            var response = await _salvar();
-                            
-                            if (response == "Acontecimento criado com sucesso.") {
-                              appState.atualizarTela('inicio');
-                              await Navigator.of(context).pushReplacementNamed('/tela-inicio');
-                            }
-                          },
-                          child: Text(
-                            'Salvar',
-                            style: TextStyle(color: Colors.white),
-                          ),
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.blue,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8.0),
-                            ),
-                          ),
-                        ),
-
-                        const SizedBox(width: 16), // Adiciona um espaçamento entre os botões
-
                         // Botão Cancelar
                         ElevatedButton(
                           onPressed: () {
@@ -973,6 +949,30 @@ class _FormularioAcontecimentoState extends State<AcontecimentosForms> {
                           ),
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.grey,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8.0),
+                            ),
+                          ),
+                        ),
+
+                        const SizedBox(width: 16), // Adiciona um espaçamento entre os botões
+
+                        // Botão Salvar
+                        ElevatedButton(
+                          onPressed: _isSaving ? null : () async {
+                            var response = await _salvar();
+                            
+                            if (response == "Acontecimento criado com sucesso.") {
+                              appState.atualizarTela('inicio');
+                              await Navigator.of(context).pushReplacementNamed('/tela-inicio');
+                            }
+                          },
+                          child: Text(
+                            'Salvar',
+                            style: TextStyle(color: Colors.white),
+                          ),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.blue,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(8.0),
                             ),
