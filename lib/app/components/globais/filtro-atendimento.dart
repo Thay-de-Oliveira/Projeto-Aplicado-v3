@@ -4,8 +4,18 @@ class FiltroAtendimento extends StatefulWidget {
   final List<String> subgrupos;
   final List<String> tiposAtendimento;
   final Function(Map<String, dynamic>) onSave;
+  final DateTime? initialDataInicio;
+  final DateTime? initialDataFim;
+  final bool? initialItensAssistencia;
 
-  FiltroAtendimento({required this.subgrupos, required this.tiposAtendimento, required this.onSave});
+  FiltroAtendimento({
+    required this.subgrupos,
+    required this.tiposAtendimento,
+    required this.onSave,
+    this.initialDataInicio,
+    this.initialDataFim,
+    this.initialItensAssistencia,
+  });
 
   @override
   _FiltroAtendimentoState createState() => _FiltroAtendimentoState();
@@ -14,6 +24,20 @@ class FiltroAtendimento extends StatefulWidget {
 class _FiltroAtendimentoState extends State<FiltroAtendimento> {
   String? selectedItensAssistencia;
   DateTimeRange? selectedDateRange;
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.initialDataInicio != null && widget.initialDataFim != null) {
+      selectedDateRange = DateTimeRange(
+        start: widget.initialDataInicio!,
+        end: widget.initialDataFim!,
+      );
+    }
+    if (widget.initialItensAssistencia != null && widget.initialItensAssistencia != 'Ambos') {
+      selectedItensAssistencia = widget.initialItensAssistencia! ? 'Sim' : 'Não';
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -67,7 +91,7 @@ class _FiltroAtendimentoState extends State<FiltroAtendimento> {
                   child: TextField(
                     decoration: _customInputDecoration(
                       selectedDateRange == null
-                          ? 'Selecione período para filtrar (máx 15 dias)'
+                          ? 'Selecione período para filtrar (máx 31 dias)'
                           : 'Período: ${selectedDateRange?.start.toIso8601String().split('T').first} - ${selectedDateRange?.end.toIso8601String().split('T').first}',
                     ),
                   ),
@@ -76,7 +100,8 @@ class _FiltroAtendimentoState extends State<FiltroAtendimento> {
               const SizedBox(height: 10),
               DropdownButtonFormField<String>(
                 decoration: _customInputDecoration('Entrega de itens assistência humanitária'),
-                items: ['Sim', 'Não'].map((String value) {
+                value: selectedItensAssistencia,
+                items: ['Ambos', 'Sim', 'Não'].map((String value) {
                   return DropdownMenuItem<String>(
                     value: value,
                     child: Text(value),
@@ -113,7 +138,7 @@ class _FiltroAtendimentoState extends State<FiltroAtendimento> {
                       Map<String, dynamic> filters = {
                         'dataInicio': selectedDateRange?.start,
                         'dataFim': selectedDateRange?.end,
-                        'itensAssistencia': selectedItensAssistencia == 'Sim',
+                        'itensAssistencia': selectedItensAssistencia == 'Sim' ? true : selectedItensAssistencia == 'Não' ? false : null,
                       };
                       widget.onSave(filters);
                       Navigator.of(context).pop();

@@ -29,24 +29,24 @@ class _RelatorioReciboState extends State<RelatorioRecibo> {
     atendimentoController.listAtendimentoObs;
   }
 
-  void _onSearch(String query) {
-    atendimentoController.searchByWord(query);
-  }
+  // void _onSearch(String query) {
+  //   atendimentoController.searchByWord(query);
+  // }
 
-  void _showFilterDialog() {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return FiltroAtendimento(
-          subgrupos: atendimentoController.listAtendimentoObs.map((a) => a.tipoAtendimento).toSet().toList(),
-          tiposAtendimento: atendimentoController.listAtendimentoObs.map((a) => a.tipoAtendimento).toSet().toList(),
-          onSave: (filters) {
-            atendimentoController.filterAtendimentoHistorico(filters);
-          },
-        );
-      },
-    );
-  }
+  // void _showFilterDialog() {
+  //   showDialog(
+  //     context: context,
+  //     builder: (BuildContext context) {
+  //       return FiltroAtendimento(
+  //         subgrupos: atendimentoController.listAtendimentoObs.map((a) => a.tipoAtendimento).toSet().toList(),
+  //         tiposAtendimento: atendimentoController.listAtendimentoObs.map((a) => a.tipoAtendimento).toSet().toList(),
+  //         // onSave: (filters) {
+  //         //   atendimentoController.filterAtendimentoHistorico(filters);
+  //         // },
+  //       );
+  //     },
+  //   );
+  // }
 
   @override
   Widget build(BuildContext context) {

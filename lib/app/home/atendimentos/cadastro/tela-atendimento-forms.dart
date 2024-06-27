@@ -44,7 +44,6 @@ class Item {
 class _AtendimentoFormsState extends State<AtendimentoForms> {
   final UserController userController = Get.find<UserController>();
   late ImagensController _imagensController;
-  List<AcontecimentoModel> listAcontecimento = [];
   List<CidadaoModel> suggestions = [];
   List<Item> items = [];
 
@@ -53,7 +52,6 @@ class _AtendimentoFormsState extends State<AtendimentoForms> {
   final TextEditingController _cpfResponsavelController = TextEditingController();
   final TextEditingController _cidadaoResponsavelController = TextEditingController();
   final TextEditingController _atendenteResponsavelController = TextEditingController();
-  final AcontecimentoController _acontecimentoController = AcontecimentoController();
   final AtendimentoController _atendimentoController = AtendimentoController();
   final CidadaoController cidadaoController = CidadaoController.cidadaoController;
   final TextEditingController _dataSolicitacaoController = TextEditingController();
@@ -69,7 +67,6 @@ class _AtendimentoFormsState extends State<AtendimentoForms> {
   @override
   void initState() {
     super.initState();
-    _carregarAcontecimentos();
     _carregarUsuario();
     if (widget.numeroProtocolo != null) {
       _selectedNumeroProtocoloAtendimento = widget.numeroProtocolo!;
@@ -100,22 +97,11 @@ class _AtendimentoFormsState extends State<AtendimentoForms> {
     setState(() {});
   }
 
-  void _carregarAcontecimentos() async {
-    listAcontecimento = await _acontecimentoController.listAcontecimento();
-    setState(() {});
-  }
-
   void _carregarUsuario() {
     UserModel? user = userController.currentUser;
     if (user != null) {
       _atendenteResponsavelController.text = user.username;
     }
-  }
-
-  AcontecimentoModel? findAcontecimentoByProtocolo(String numeroProtocolo) {
-    return listAcontecimento.firstWhere(
-      (acontecimento) => acontecimento.numeroProtocolo == numeroProtocolo,
-    );
   }
 
   List<CidadaoModel> getFilteredCidadaoList(

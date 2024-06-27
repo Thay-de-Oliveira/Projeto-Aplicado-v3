@@ -4,7 +4,6 @@ import 'package:projetoaplicado/app/home/relatorios/recibos/tela-relatorios-reci
 import 'package:get/get.dart';
 import 'package:projetoaplicado/app/components/acontecimento/acontecimento-card-relatorio.dart';
 import 'package:projetoaplicado/backend/controllers/acontecimentoController.dart';
-
 import '../../../components/globais/barra-superior.dart';
 import '../../../components/globais/menu-inferior.dart';
 import '../../../components/globais/barra-pesquisa-e-filtro.dart';
@@ -21,19 +20,21 @@ class _RelatorioAcontecimentoState extends State<RelatorioAcontecimento> {
   String _searchTerm = '';
   DateTime? _dataInicio;
   DateTime? _dataFim;
+  bool _isLoading = false;
 
   @override
   void initState() {
     super.initState();
+    DateTime now = DateTime.now();
+    DateTime tenDaysAgo = now.subtract(Duration(days: 10));
+    _dataInicio = tenDaysAgo;
+    _dataFim = now;
     _loadAcontecimentos();
   }
 
   Future<void> _loadAcontecimentos() async {
-    DateTime now = DateTime.now();
-    DateTime tenDaysAgo = now.subtract(Duration(days: 10));
     setState(() {
-      _dataInicio = tenDaysAgo;
-      _dataFim = now;
+      _isLoading = true;
     });
     await acontecimentoController.searchAcontecimentos(
       term: _searchTerm,
@@ -42,19 +43,16 @@ class _RelatorioAcontecimentoState extends State<RelatorioAcontecimento> {
       limit: 10,
       page: 1,
     );
+    setState(() {
+      _isLoading = false;
+    });
   }
 
   void _onSearch(String query) {
     setState(() {
       _searchTerm = query;
     });
-    acontecimentoController.searchAcontecimentos(
-      term: query,
-      dataInicio: _dataInicio?.toIso8601String().split('T').first,
-      dataFim: _dataFim?.toIso8601String().split('T').first,
-      limit: 10,
-      page: 1,
-    );
+    _loadAcontecimentos();
   }
 
   void _showFilterDialog() {
@@ -70,17 +68,17 @@ class _RelatorioAcontecimentoState extends State<RelatorioAcontecimento> {
               _dataInicio = filters['dataInicio'];
               _dataFim = filters['dataFim'];
             });
-            acontecimentoController.searchAcontecimentos(
-              term: _searchTerm,
-              dataInicio: _dataInicio?.toIso8601String().split('T').first,
-              dataFim: _dataFim?.toIso8601String().split('T').first,
-              limit: 10,
-              page: 1,
-            );
+            _loadAcontecimentos();
           },
         );
       },
     );
+  }
+
+  @override
+  void dispose() {
+    searchController.dispose();
+    super.dispose();
   }
 
   @override
@@ -124,8 +122,7 @@ class _RelatorioAcontecimentoState extends State<RelatorioAcontecimento> {
                             ],
                           ),
                           child: InkWell(
-                            onTap: () {
-                            },
+                            onTap: () {},
                             child: Container(
                               width: 110,
                               height: 80,
@@ -170,9 +167,9 @@ class _RelatorioAcontecimentoState extends State<RelatorioAcontecimento> {
                           child: InkWell(
                             onTap: () {
                               Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => RelatorioAtendimento()));
+                                context,
+                                MaterialPageRoute(builder: (context) => RelatorioAtendimento()),
+                              );
                             },
                             child: Container(
                               width: 90,
@@ -218,9 +215,9 @@ class _RelatorioAcontecimentoState extends State<RelatorioAcontecimento> {
                           child: InkWell(
                             onTap: () {
                               Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => RelatorioRecibo()));
+                                context,
+                                MaterialPageRoute(builder: (context) => RelatorioRecibo()),
+                              );
                             },
                             child: Container(
                               width: 90,
@@ -265,42 +262,25 @@ class _RelatorioAcontecimentoState extends State<RelatorioAcontecimento> {
                   Center(
                     child: Container(
                       width: 330,
-                      child: FutureBuilder(
-                        future: _loadAcontecimentos(),
-                        builder: (context, snapshot) {
-                          switch (snapshot.connectionState) {
-                            case ConnectionState.none:
-                            case ConnectionState.waiting:
-                              return Center(
-                                child: CircularProgressIndicator(),
-                              );
-                            case ConnectionState.done:
-                              if (snapshot.hasError) {
-                                return Center(
-                                  child: Text('Erro ao carregar atendimentos'),
-                                );
-                              } else {
-                                var acontecimentos = acontecimentoController.listAcontecimentoObs
-                                    .where((acontecimento) => acontecimento.pendente == false)
-                                    .toList()
-                                    ..sort((a, b) => b.dataHora.compareTo(a.dataHora));
+                      child: _isLoading
+                          ? Center(child: CircularProgressIndicator())
+                          : Obx(() {
+                              var acontecimentos = acontecimentoController.listAcontecimentoObs
+                                  .toList()
+                                  ..sort((a, b) => b.dataHora.compareTo(a.dataHora));
 
-                                return ListView.builder(
-                                  shrinkWrap: true,
-                                  physics: NeverScrollableScrollPhysics(),
-                                  itemCount: acontecimentos.length,
-                                  itemBuilder: (context, index) {
-                                    return AcontecimentoCardRelatorio(acontecimento: acontecimentos[index]);
-                                  },
-                                );
-                              }
-                            default:
-                              return SizedBox();
-                          }
-                        },
-                      ),
+                              return ListView.builder(
+                                shrinkWrap: true,
+                                physics: NeverScrollableScrollPhysics(),
+                                itemCount: acontecimentos.length,
+                                itemBuilder: (context, index) {
+                                  return AcontecimentoCardRelatorio(acontecimento: acontecimentos[index]);
+                                },
+                              );
+                            }),
                     ),
                   ),
+                  SizedBox(height: 25),
                 ],
               ),
             ),

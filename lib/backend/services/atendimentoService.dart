@@ -107,4 +107,42 @@ class AtendimentoService {
         throw Exception('Erro ao enviar dados: $e');
     }
   }
+
+  Future<List<AtendimentosModel>> searchAtendimentos({
+    String? term,
+    String? dataInicio,
+    String? dataFim,
+    bool? entregueItensAjuda,
+    int limit = 10,
+    int page = 1,
+  }) async {
+    var queryParams = {
+      'term': term,
+      'dataInicio': dataInicio,
+      'dataFim': dataFim,
+      'limit': limit.toString(),
+      'page': page.toString(),
+    };
+
+    if (entregueItensAjuda != null) {
+      queryParams['entregueItensAjuda'] = entregueItensAjuda.toString();
+    }
+
+    queryParams.removeWhere((key, value) => value == null || value.isEmpty);
+
+    final uri = Uri.parse('$baseUrl/search').replace(queryParameters: queryParams);
+    final response = await http.get(uri);
+
+    if (response.statusCode == 200) {
+      var list = json.decode(response.body)['data'];
+      List<AtendimentosModel> listAtendimentoModel = [];
+      for (var item in list) {
+        listAtendimentoModel.add(AtendimentosModel.fromJson(item));
+      }
+
+      return listAtendimentoModel;
+    } else {
+      throw Exception('Falha ao buscar atendimentos');
+    }
+  }
 }
