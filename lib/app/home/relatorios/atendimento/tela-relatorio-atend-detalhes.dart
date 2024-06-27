@@ -103,7 +103,7 @@ class _DetalhesRelatorioAtendimentoState extends State<DetalhesRelatorioAtendime
 
   Future<void> _loadPdf() async {
     try {
-      final file = await _downloadFile(widget.pdfUrl, 'relatorio.pdf');
+      final file = await _downloadFile(widget.pdfUrl, 'relatorio_atendimento.pdf');
       setState(() {
         _localFilePath = file.path;
         _isLoading = false;
@@ -131,7 +131,7 @@ class _DetalhesRelatorioAtendimentoState extends State<DetalhesRelatorioAtendime
     final status = await Permission.storage.request();
     if (status.isGranted) {
       final directory = await getExternalStorageDirectory();
-      final filePath = '${directory?.path}/relatorio.pdf';
+      final filePath = '${directory?.path}/relatorio_atendimento.pdf';
       final file = File(_localFilePath!);
       final newFile = await file.copy(filePath!);
       ScaffoldMessenger.of(context).showSnackBar(
