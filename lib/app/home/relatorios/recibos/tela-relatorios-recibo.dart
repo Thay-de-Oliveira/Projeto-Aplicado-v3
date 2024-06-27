@@ -277,7 +277,12 @@ class _RelatorioReciboState extends State<RelatorioRecibo> {
                                 itemCount: AtendimentosComItensEntregues.length,
                                 itemBuilder: (context, index) {
                                   AtendimentosModel atendimento = AtendimentosComItensEntregues[index];
-                                  return ReciboCardRelatorio(atendimento: atendimento);
+                                  return Column(
+                                    children: [
+                                      ReciboCardRelatorio(atendimento: atendimento),
+                                      SizedBox(height: 12), // Espaçamento entre os cards
+                                    ],
+                                  );
                                 },
                               );
                             }

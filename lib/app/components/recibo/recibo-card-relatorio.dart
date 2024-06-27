@@ -52,39 +52,28 @@ class _ReciboCardRelatorioState extends State<ReciboCardRelatorio> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () => _visualizarRelatorio(context),
-      child: Container(
-        margin: const EdgeInsets.only(bottom: 11),
-        width: 330,
-        height: 120,
-        child: Stack(
-          children: [
-            Positioned(
-              left: 0,
-              top: 0,
-              child: Container(
-                width: 330,
-                height: 113,
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(5),
-                  boxShadow: const [
-                    BoxShadow(
-                      color: Color(0x3F2F2F2F),
-                      blurRadius: 1,
-                      offset: Offset(1, 1),
-                      spreadRadius: 0,
-                    ),
-                  ],
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          return Container(
+            margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 03),
+            padding: const EdgeInsets.fromLTRB(8, 12, 8, 8),
+            width: constraints.maxWidth,
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(5),
+              boxShadow: const [
+                BoxShadow(
+                  color: Color.fromARGB(62, 133, 133, 133),
+                  blurRadius: 2,
+                  offset: Offset(2, 2),
+                  spreadRadius: 2,
                 ),
-              ),
+              ],
             ),
-            Positioned(
-              left: 9,
-              top: 15,
-              child: SizedBox(
-                width: 189,
-                height: 21,
-                child: Text(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
                   widget.atendimento.tipoAtendimento,
                   style: const TextStyle(
                     color: Colors.black,
@@ -94,88 +83,70 @@ class _ReciboCardRelatorioState extends State<ReciboCardRelatorio> {
                     height: 0,
                   ),
                 ),
-              ),
-            ),
-            Positioned(
-              left: 9,
-              top: 31,
-              child: DataAcontecimentoInfo(
-                dataAcontecimento: widget.atendimento.dataSolicitacao,
-                nProtocolo: widget.atendimento.nProtocolo,
-                endereco: '${widget.atendimento.rua}, Bairro ${widget.atendimento.bairro}',
-                atendente: widget.atendimento.atendenteResponsavel,
-              ),
-            ),
-            Positioned(
-              left: 208,
-              top: 89,
-              child: GerarRelatorioReciboButton(
-                onTap: () => _visualizarRelatorio(context),
-                text: widget.atendimento.pdfReciboUrl != null && widget.atendimento.pdfReciboUrl!.isNotEmpty
-                    ? 'Visualizar Relatório'
-                    : 'Gerar Relatório',
-              ),
-            ),
-            if (_isGeneratingReport)
-              Positioned.fill(
-                child: Container(
-                  color: Colors.white.withOpacity(0.8),
-                  child: Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        CircularProgressIndicator(),
-                        SizedBox(height: 10),
-                        Text('Gerando relatório...'),
-                      ],
+                const SizedBox(height: 8),
+                DataAcontecimentoInfo(
+                  dataAcontecimento: widget.atendimento.dataSolicitacao,
+                  nProtocolo: widget.atendimento.nProtocolo,
+                  endereco: '${widget.atendimento.rua}, Bairro ${widget.atendimento.bairro}',
+                  atendente: widget.atendimento.atendenteResponsavel,
+                ),
+                const SizedBox(height: 12),
+                Align(
+                  alignment: Alignment.bottomRight,
+                  child: Container(
+                    width: 116,
+                    height: 35,
+                    decoration: BoxDecoration(
+                      color: const Color(0xFFCFDDF2),
+                      borderRadius: BorderRadius.circular(4),
+                    ),
+                    child: InkWell(
+                      onTap: () => _visualizarRelatorio(context),
+                      child: Container(
+                        width: 115,
+                        height: 35,
+                        decoration: BoxDecoration(
+                          color: Colors.transparent,
+                          borderRadius: BorderRadius.circular(5),
+                        ),
+                        child: Center(
+                          child: Text(
+                            widget.atendimento.pdfReciboUrl != null && widget.atendimento.pdfReciboUrl!.isNotEmpty
+                                ? 'Visualizar Relatório'
+                                : 'Gerar Relatório',
+                            style: const TextStyle(
+                              color: Colors.black,
+                              fontSize: 11,
+                              fontFamily: 'Roboto',
+                              fontWeight: FontWeight.w600,
+                              height: 1,
+                            ),
+                          ),
+                        ),
+                      ),
                     ),
                   ),
                 ),
-              ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class GerarRelatorioReciboButton extends StatelessWidget {
-  final VoidCallback onTap;
-  final String text;
-
-  const GerarRelatorioReciboButton({Key? key, required this.onTap, required this.text}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: 116,
-      height: 17,
-      decoration: BoxDecoration(
-        color: const Color(0xFFCFDDF2),
-        borderRadius: BorderRadius.circular(4),
-      ),
-      child: InkWell(
-        onTap: onTap,
-        child: Container(
-          width: 115,
-          height: 35,
-          decoration: BoxDecoration(
-            color: Colors.transparent,
-            borderRadius: BorderRadius.circular(5),
-          ),
-          child: Center(
-            child: Text(
-              text,
-              style: const TextStyle(
-                color: Colors.black,
-                fontSize: 10,
-                fontFamily: 'Roboto',
-                fontWeight: FontWeight.w600,
-                height: 1,
-              ),
+                if (_isGeneratingReport)
+                  Positioned.fill(
+                    child: Container(
+                      color: Colors.white.withOpacity(0.8),
+                      child: Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            CircularProgressIndicator(),
+                            SizedBox(height: 10),
+                            Text('Gerando relatório...'),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+              ],
             ),
-          ),
-        ),
+          );
+        },
       ),
     );
   }
@@ -215,7 +186,7 @@ class DataAcontecimentoInfo extends StatelessWidget {
               height: 0,
             ),
           ),
-          const SizedBox(height: 4),
+          const SizedBox(height: 8),
           Text(
             'Data do acontecimento: $dataAcontecimento',
             style: TextStyle(
@@ -226,7 +197,7 @@ class DataAcontecimentoInfo extends StatelessWidget {
               height: 0,
             ),
           ),
-          const SizedBox(height: 4),
+          const SizedBox(height: 8),
           Text(
             'Endereço: $endereco',
             style: TextStyle(
@@ -237,7 +208,7 @@ class DataAcontecimentoInfo extends StatelessWidget {
               height: 0,
             ),
           ),
-          const SizedBox(height: 4),
+          const SizedBox(height: 8),
           Text(
             'Atendente: $atendente',
             style: TextStyle(
