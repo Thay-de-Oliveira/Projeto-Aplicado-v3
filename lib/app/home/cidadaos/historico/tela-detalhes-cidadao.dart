@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:projetoaplicado/app/components/globais/barra-superior.dart';
 import 'package:projetoaplicado/app/components/globais/menu-inferior.dart';
+import 'package:projetoaplicado/backend/models/cidadaoModel.dart';
 
 class DetalhesCidadao extends StatelessWidget {
+  final CidadaoModel? cidadao; // Adicionei o parâmetro cidadao para obter os dados
+
+  DetalhesCidadao({this.cidadao});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -41,41 +46,39 @@ class DetalhesCidadao extends StatelessWidget {
                             ),
                           ],
                         ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Padding(
-                              padding: const EdgeInsets.only(bottom: 16.0),
-                              child: Text(
-                                'Dados do Cidadão',
-                                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                              ),
-                            ),
-                            InfoRow(
-                              label: 'Nome do solicitante:',
-                              value: 'Lucas da Silva',
-                              iconPath: 'assets/imagens/icon-nome-solicitante.png',
-                            ),
-                            InfoRow(
-                              label: 'CPF do solicitante:',
-                              value: '123456789-10',
-                              iconPath: 'assets/imagens/icon-cpf.png',
-                            ),
-                            InfoRow(
-                              label: 'RG do solicitante:',
-                              value: '01234567891',
-                              iconPath: 'assets/imagens/icon-rg.png',
-                            ),
-                            InfoRow(
-                              label: 'Telefone do solicitante:',
-                              value: '49 98888-0888',
-                              iconPath: 'assets/imagens/icon-telefone.png',
-                            ),
-                            InfoRow(
-                              label: 'Número de pessoas no imóvel:',
-                              value: '03',
-                              iconPath: 'assets/imagens/icon-pessoas-imovel.png',
-                            ),
+                        child: _buildSection(
+                          context,
+                          'Dados do cidadão',
+                          [
+                            _buildInfoRow(
+                                'assets/imagens/icon-nome-solicitante.png',
+                                'Nome do solicitante:',
+                                cidadao?.name ?? '',
+                                const Color(0xFFF08D86)),
+                            const SizedBox(height: 15),
+                            _buildInfoRow(
+                                'assets/imagens/icon-cpf.png',
+                                'CPF do solicitante:',
+                                cidadao?.cpf ?? '',
+                                const Color(0xFFF08D86)),
+                            const SizedBox(height: 15),
+                            _buildInfoRow(
+                                'assets/imagens/icon-rg.png',
+                                'RG do solicitante:',
+                                cidadao?.rg ?? '',
+                                const Color(0xFFF08D86)),
+                            const SizedBox(height: 15),
+                            _buildInfoRow(
+                                'assets/imagens/icon-telefone.png',
+                                'Telefone do solicitante:',
+                                cidadao?.telefone ?? '',
+                                const Color(0xFFF08D86)),
+                            const SizedBox(height: 15),
+                            _buildInfoRow(
+                                'assets/imagens/icon-pessoas-imovel.png',
+                                'Número de pessoas no imóvel:',
+                                cidadao?.numPessoasNaCasa.toString() ?? '',
+                                const Color(0xFFF08D86)),
                           ],
                         ),
                       ),
@@ -90,59 +93,57 @@ class DetalhesCidadao extends StatelessWidget {
       bottomNavigationBar: MenuInferior(),
     );
   }
-}
 
-class InfoRow extends StatelessWidget {
-  final String label;
-  final String value;
-  final String iconPath;
-
-  InfoRow({required this.label, required this.value, required this.iconPath});
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8.0),
-      child: Row(
-        children: <Widget>[
-          Container(
-            width: 24,
-            height: 24,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: Colors.red,
-            ),
-            child: Center(
-              child: Container(
-                width: 16,
-                height: 16,
-                child: Image.asset(iconPath),
-              ),
-            ),
+  Widget _buildSection(BuildContext context, String title, List<Widget> children) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Padding(
+          padding: const EdgeInsets.only(bottom: 16.0),
+          child: Text(
+            title,
+            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
           ),
-          SizedBox(width: 8),
-          Expanded(
-            child: Text.rich(
-              TextSpan(
-                text: '$label ',
-                style: TextStyle(fontWeight: FontWeight.bold),
-                children: [
-                  TextSpan(
-                    text: value,
-                    style: TextStyle(fontWeight: FontWeight.normal),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ],
-      ),
+        ),
+        ...children,
+      ],
     );
   }
-}
 
-void main() {
-  runApp(MaterialApp(
-    home: DetalhesCidadao(),
-  ));
+  Widget _buildInfoRow(String iconPath, String label, String value, Color color) {
+    return Row(
+      children: <Widget>[
+        Container(
+          width: 24,
+          height: 24,
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            color: color,
+          ),
+          child: Center(
+            child: Container(
+              width: 16,
+              height: 16,
+              child: Image.asset(iconPath),
+            ),
+          ),
+        ),
+        SizedBox(width: 8),
+        Expanded(
+          child: Text.rich(
+            TextSpan(
+              text: '$label ',
+              style: TextStyle(fontWeight: FontWeight.bold),
+              children: [
+                TextSpan(
+                  text: value,
+                  style: TextStyle(fontWeight: FontWeight.normal),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
+  }
 }
