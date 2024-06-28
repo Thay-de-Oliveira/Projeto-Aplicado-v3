@@ -42,6 +42,7 @@ class DetalhesAtendimentoPendente extends StatelessWidget {
                     _buildDetailRow('assets/imagens/icon-hora.png', 'Horário aproximado:', DateFormat('HH:mm').format(acontecimento.dataHora)),
                   ],
                 ),
+                const SizedBox(height: 20),
                 _buildActionSection(
                   context,
                   [
@@ -54,6 +55,7 @@ class DetalhesAtendimentoPendente extends StatelessWidget {
                       iconData: Icons.location_on,
                       text: 'Localização do acontecimento',
                     ),
+                    const SizedBox(height: 20),
                     _buildButton(
                       context,
                       onTap: () {
