@@ -4,7 +4,7 @@ import 'package:projetoaplicado/app/components/globais/menu-inferior.dart';
 import 'package:projetoaplicado/backend/models/cidadaoModel.dart';
 
 class DetalhesCidadao extends StatelessWidget {
-  final CidadaoModel? cidadao; // Adicionei o parâmetro cidadao para obter os dados
+  final CidadaoModel? cidadao;
 
   DetalhesCidadao({this.cidadao});
 
@@ -110,30 +110,33 @@ class DetalhesCidadao extends StatelessWidget {
     );
   }
 
+  //Layout Circulo + icones
   Widget _buildInfoRow(String iconPath, String label, String value, Color color) {
     return Row(
       children: <Widget>[
         Container(
-          width: 24,
-          height: 24,
+          //Círculo vermelho
+          width: 28, 
+          height: 28,
           decoration: BoxDecoration(
             shape: BoxShape.circle,
             color: color,
           ),
           child: Center(
             child: Container(
-              width: 16,
-              height: 16,
+              //Ícones
+              width: 18, 
+              height: 18, 
               child: Image.asset(iconPath),
             ),
           ),
         ),
-        SizedBox(width: 8),
+        SizedBox(width: 10),
         Expanded(
           child: Text.rich(
             TextSpan(
               text: '$label ',
-              style: TextStyle(fontWeight: FontWeight.bold),
+              style: TextStyle(fontWeight: FontWeight.normal),
               children: [
                 TextSpan(
                   text: value,
