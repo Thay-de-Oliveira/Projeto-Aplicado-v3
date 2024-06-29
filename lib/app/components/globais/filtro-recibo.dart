@@ -1,17 +1,34 @@
 import 'package:flutter/material.dart';
 
-class FiltroCidadao extends StatefulWidget {
-  final List<String> name;
+class FiltroRecibo extends StatefulWidget {
   final Function(Map<String, dynamic>) onSave;
+  final DateTime? initialDataInicio;
+  final DateTime? initialDataFim;
 
-  FiltroCidadao({required this.name, required this.onSave});
+  FiltroRecibo({
+    required this.onSave,
+    this.initialDataInicio,
+    this.initialDataFim,
+  });
 
   @override
-  _FiltroCidadaoState createState() => _FiltroCidadaoState();
+  _FiltroReciboState createState() => _FiltroReciboState();
 }
 
-class _FiltroCidadaoState extends State<FiltroCidadao> {
+class _FiltroReciboState extends State<FiltroRecibo> {
+  String? selectedItensAssistencia;
   DateTimeRange? selectedDateRange;
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.initialDataInicio != null && widget.initialDataFim != null) {
+      selectedDateRange = DateTimeRange(
+        start: widget.initialDataInicio!,
+        end: widget.initialDataFim!,
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -65,7 +82,7 @@ class _FiltroCidadaoState extends State<FiltroCidadao> {
                   child: TextField(
                     decoration: _customInputDecoration(
                       selectedDateRange == null
-                          ? 'Selecione período para filtrar (máx 15 dias)'
+                          ? 'Selecione período para filtrar (máx 31 dias)'
                           : 'Período: ${selectedDateRange?.start.toIso8601String().split('T').first} - ${selectedDateRange?.end.toIso8601String().split('T').first}',
                     ),
                   ),
@@ -96,6 +113,7 @@ class _FiltroCidadaoState extends State<FiltroCidadao> {
                       Map<String, dynamic> filters = {
                         'dataInicio': selectedDateRange?.start,
                         'dataFim': selectedDateRange?.end,
+                        'itensAssistencia': selectedItensAssistencia == 'Sim' ? true : selectedItensAssistencia == 'Não' ? false : null,
                       };
                       widget.onSave(filters);
                       Navigator.of(context).pop();

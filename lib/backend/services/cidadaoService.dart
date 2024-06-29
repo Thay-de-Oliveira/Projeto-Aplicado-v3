@@ -5,7 +5,6 @@ import 'package:projetoaplicado/backend/models/cidadaoModel.dart';
 class CidadaoService {
   String baseUrl = "https://web-production-0b75.up.railway.app";
 
-  // Método adaptado para buscar cidadãos por nome ou CPF, parcial ou completo
   Future<List<CidadaoModel>> fetchListCidadao({String? searchTerm}) async {
     final query = searchTerm?.isEmpty ?? true ? '.' : searchTerm;
     final response = await http.get(Uri.parse('$baseUrl/cidadaos/search?query=$query'));
@@ -22,7 +21,6 @@ class CidadaoService {
     }
   }
 
-  // Criar cidadão
   Future<CidadaoModel> postCidadao(CidadaoModel cidadao) async {
     final response = await http.post(
       Uri.parse('$baseUrl/cidadaos'),
@@ -41,7 +39,6 @@ class CidadaoService {
     }
   }
 
-  // Buscar cidadão por CPF
   Future<CidadaoModel> getCidadaoByCpf(String cpf) async {
     final response = await http.get(Uri.parse('$baseUrl/cidadaos/cpf/$cpf'));
 
@@ -52,7 +49,6 @@ class CidadaoService {
     }
   }
 
-  // Atualizar cidadão por CPF
   Future<CidadaoModel> updateCidadaoByCpf(String cpf, CidadaoModel cidadao) async {
     final response = await http.put(
       Uri.parse('$baseUrl/cidadaos/cpf/$cpf'),
@@ -70,7 +66,6 @@ class CidadaoService {
     }
   }
 
-  // Deletar cidadão por CPF
   Future<bool> deleteCidadaoByCpf(String cpf) async {
     try {
       final response = await http.delete(Uri.parse('$baseUrl/cidadaos/cpf/$cpf'));
@@ -91,15 +86,13 @@ class CidadaoService {
     }
   }
 
-  //Pesquisa
+  // Pesquisa com intervalo de datas
   Future<List<CidadaoModel>> searchCidadaos({
-    required String term,
+    required String query,
     String? dataInicio,
     String? dataFim,
-    int limit = 10,
-    int page = 1,
   }) async {
-    String url = '$baseUrl/cidadaos/search?term=$term&limit=$limit&page=$page';
+    String url = '$baseUrl/cidadaos/search?query=$query';
 
     if (dataInicio != null && dataInicio.isNotEmpty) {
       url += '&dataInicio=$dataInicio';
@@ -114,7 +107,7 @@ class CidadaoService {
     if (response.statusCode == 200) {
       var list = json.decode(response.body);
       List<CidadaoModel> listCidadaoModel = [];
-      for (var item in list['data']) {
+      for (var item in list) {
         listCidadaoModel.add(CidadaoModel.fromJson(item));
       }
       return listCidadaoModel;

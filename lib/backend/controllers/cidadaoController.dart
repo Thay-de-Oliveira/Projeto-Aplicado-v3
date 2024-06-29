@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:projetoaplicado/backend/models/cidadaoModel.dart';
 import 'package:projetoaplicado/backend/services/cidadaoService.dart';
 
@@ -70,24 +71,42 @@ class CidadaoController extends GetxController {
     }
   }
 
-  //Pesquisa
+  // Pesquisa com filtro por nome, CPF e intervalo de datas
   Future<void> searchCidadaos({
-    required String term,
+    required String query,
     String? dataInicio,
     String? dataFim,
     int limit = 10,
-    int page = 1,
   }) async {
     isLoading.value = true;
     try {
-      var list = await cidadaoService.searchCidadaos(
-        term: term,
-        dataInicio: dataInicio,
-        dataFim: dataFim,
-        limit: limit,
-        page: page,
-      );
-      listCidadaoObs.value = list;
+      Set<CidadaoModel> uniqueCidadaos = {};
+      DateTime newDataInicio = DateFormat('yyyy-MM-dd').parse(dataInicio!);
+      DateTime newDataFim = DateFormat('yyyy-MM-dd').parse(dataFim!);
+      DateTime limitDate = DateTime(DateTime.now().year, 1, 1);
+
+      while (uniqueCidadaos.length < limit && newDataInicio.isAfter(limitDate)) {
+        var list = await cidadaoService.searchCidadaos(
+          query: query,
+          dataInicio: DateFormat('yyyy-MM-dd').format(newDataInicio),
+          dataFim: DateFormat('yyyy-MM-dd').format(newDataFim),
+        );
+
+        uniqueCidadaos.addAll(list);
+
+        if (uniqueCidadaos.length >= limit) {
+          break;
+        }
+
+        newDataFim = newDataInicio.subtract(Duration(days: 1));
+        newDataInicio = newDataInicio.subtract(Duration(days: 60));
+
+        if (newDataInicio.isBefore(limitDate)) {
+          newDataInicio = limitDate;
+        }
+      }
+
+      listCidadaoObs.value = uniqueCidadaos.take(limit).toList();
     } catch (e) {
       print('Erro ao buscar cidadão: $e');
     } finally {
