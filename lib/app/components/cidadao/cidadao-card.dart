@@ -11,11 +11,10 @@ class CidadaoCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        // Direcionar para a tela de detalhes do cidadão
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => DetalhesCidadao(),
+            builder: (context) => DetalhesCidadao(cidadao: cidadao),
           ),
         );
       },
@@ -84,11 +83,11 @@ class CidadaoCard extends StatelessWidget {
                     ),
                     child: InkWell(
                       onTap: () {
-                        // Implementar ação de informações
+                        // Passando a instância cidadao para a tela de detalhes
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => DetalhesCidadao(),
+                            builder: (context) => DetalhesCidadao(cidadao: cidadao),
                           ),
                         );
                       },

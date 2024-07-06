@@ -79,6 +79,42 @@ class DetalhesCidadao extends StatelessWidget {
                                 'Número de pessoas no imóvel:',
                                 cidadao?.numPessoasNaCasa.toString() ?? '',
                                 const Color(0xFFF08D86)),
+                            const SizedBox(height: 15),
+                            _buildInfoRow(
+                                'assets/imagens/icon-pessoas-imovel.png',
+                                'CEP:',
+                                cidadao?.cep ?? '',
+                                const Color(0xFFF08D86)),
+                            const SizedBox(height: 15),
+                            _buildInfoRow(
+                                'assets/imagens/icon-pessoas-imovel.png',
+                                'Rua:',
+                                cidadao?.rua ?? '',
+                                const Color(0xFFF08D86)),
+                            const SizedBox(height: 15),
+                            _buildInfoRow(
+                                'assets/imagens/icon-pessoas-imovel.png',
+                                'Bairro:',
+                                cidadao?.bairro ?? '',
+                                const Color(0xFFF08D86)),
+                            const SizedBox(height: 15),
+                            _buildInfoRow(
+                                'assets/imagens/icon-pessoas-imovel.png',
+                                'Cidade:',
+                                cidadao?.cidade ?? '',
+                                const Color(0xFFF08D86)),
+                            const SizedBox(height: 15),
+                            _buildInfoRow(
+                                'assets/imagens/icon-pessoas-imovel.png',
+                                'Estado:',
+                                cidadao?.estado ?? '',
+                                const Color(0xFFF08D86)),
+                            const SizedBox(height: 15),
+                            _buildInfoRow(
+                                'assets/imagens/icon-pessoas-imovel.png',
+                                'Número da casa:',
+                                cidadao?.numeroCasa.toString() ?? '',
+                                const Color(0xFFF08D86)),
                           ],
                         ),
                       ),
@@ -110,13 +146,11 @@ class DetalhesCidadao extends StatelessWidget {
     );
   }
 
-  //Layout Circulo + icones
   Widget _buildInfoRow(String iconPath, String label, String value, Color color) {
     return Row(
       children: <Widget>[
         Container(
-          //Círculo vermelho
-          width: 28, 
+          width: 28,
           height: 28,
           decoration: BoxDecoration(
             shape: BoxShape.circle,
@@ -124,9 +158,8 @@ class DetalhesCidadao extends StatelessWidget {
           ),
           child: Center(
             child: Container(
-              //Ícones
-              width: 18, 
-              height: 18, 
+              width: 18,
+              height: 18,
               child: Image.asset(iconPath),
             ),
           ),

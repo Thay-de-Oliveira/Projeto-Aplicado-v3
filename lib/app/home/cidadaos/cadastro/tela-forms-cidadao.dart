@@ -18,21 +18,21 @@ class CadastroCidadao extends StatefulWidget {
 InputDecoration _customInputDecoration(String labelText) {
   return InputDecoration(
     labelText: labelText,
-    labelStyle: const TextStyle(fontSize: 16, color: Color.fromARGB(255, 127, 127, 128)), // Cor do texto dos campos
+    labelStyle: const TextStyle(fontSize: 16, color: Color.fromARGB(255, 127, 127, 128)),
     border: OutlineInputBorder(
-      borderRadius: BorderRadius.circular(10.0), // Borda arredondada
+      borderRadius: BorderRadius.circular(10.0),
     ),
     enabledBorder: OutlineInputBorder(
-      borderSide: const BorderSide(color: Colors.grey), // Cor da borda quando inativo
+      borderSide: const BorderSide(color: Colors.grey),
       borderRadius: BorderRadius.circular(10.0),
     ),
     focusedBorder: OutlineInputBorder(
-      borderSide: const BorderSide(color: Color(0xFF1B7CB3)), // Cor da borda quando ativo
+      borderSide: const BorderSide(color: Color(0xFF1B7CB3)),
       borderRadius: BorderRadius.circular(10.0),
     ),
-    floatingLabelStyle: const TextStyle(color: Color(0xFF1B7CB3)), // Cor do texto do rótulo quando focado
-    );
-  }
+    floatingLabelStyle: const TextStyle(color: Color(0xFF1B7CB3)),
+  );
+}
 
 class _CadastroCidadaoState extends State<CadastroCidadao> {
   final TextEditingController nomeController = TextEditingController();
@@ -93,34 +93,6 @@ class _CadastroCidadaoState extends State<CadastroCidadao> {
       return false;
     }
 
-    if (cpf.split('').every((c) => c == cpf[0])) {
-      return false;
-    }
-
-    int soma = 0;
-    for (int i = 0; i < 9; i++) {
-      soma += int.parse(cpf[i]) * (10 - i);
-    }
-    int primeiroDigitoVerificador = (soma * 10) % 11;
-    if (primeiroDigitoVerificador == 10 || primeiroDigitoVerificador == 11) {
-      primeiroDigitoVerificador = 0;
-    }
-    if (int.parse(cpf[9]) != primeiroDigitoVerificador) {
-      return false;
-    }
-
-    soma = 0;
-    for (int i = 0; i < 10; i++) {
-      soma += int.parse(cpf[i]) * (11 - i);
-    }
-    int segundoDigitoVerificador = (soma * 10) % 11;
-    if (segundoDigitoVerificador == 10 || segundoDigitoVerificador == 11) {
-      segundoDigitoVerificador = 0;
-    }
-    if (int.parse(cpf[10]) != segundoDigitoVerificador) {
-      return false;
-    }
-
     return true;
   }
 
@@ -146,7 +118,7 @@ class _CadastroCidadaoState extends State<CadastroCidadao> {
     }
 
     setState(() {
-      _isSaving = true; // Desativa o botão ao iniciar o salvamento
+      _isSaving = true;
     });
 
     try {
@@ -187,7 +159,7 @@ class _CadastroCidadaoState extends State<CadastroCidadao> {
   }
 
   Widget buttonBar() {
-    bool isCadastro = true; // Altere para 'false' quando estiver na tela de Histórico
+    bool isCadastro = true;
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -301,15 +273,9 @@ class _CadastroCidadaoState extends State<CadastroCidadao> {
     });
     cpfController.addListener(() {
       String cpf = cpfController.text;
-      if (cpf.length != 11) {
-        setState(() {
-          _isCpfValid = validarCpf(cpf);
-        });
-      } else {
-        setState(() {
-          _isCpfValid = true;
-        });
-      }
+      setState(() {
+        _isCpfValid = validarCpf(cpf);
+      });
     });
   }
 
@@ -332,7 +298,7 @@ class _CadastroCidadaoState extends State<CadastroCidadao> {
             delegate: SliverChildListDelegate(
               [
                 const SizedBox(height: 20),
-                buttonBar(), // Substitua a imagem pelo menu
+                buttonBar(),
                 const SizedBox(height: 10),
                 Center(
                   child: Padding(
@@ -351,26 +317,33 @@ class _CadastroCidadaoState extends State<CadastroCidadao> {
                               child: Stack(
                                 alignment: Alignment.centerRight,
                                 children: [
-                                  TextFormField(
-                                    controller: cpfController,
-                                    decoration: _customInputDecoration('Cadastro de Pessoa Física (CPF):').copyWith(
-                                      errorText: _isCpfValid ? null : 'CPF inválido',
-                                    ),
-                                    keyboardType: TextInputType.number,
-                                    maxLength: 11,
-                                    inputFormatters: [
-                                      FilteringTextInputFormatter.digitsOnly,
-                                    ],
-                                  ),
-                                  Positioned(
-                                    right: 10,
-                                    bottom: 10,
-                                    child: Text(
-                                      '${cpfController.text.length}/11',
-                                      style: const TextStyle(
-                                        fontSize: 12,
-                                        color: Colors.grey,
-                                      ),
+                                  Expanded(
+                                    child: Stack(
+                                      alignment: Alignment.centerRight,
+                                      children: [
+                                        TextFormField(
+                                          controller: cpfController,
+                                          decoration: _customInputDecoration('Cadastro de Pessoa Física (CPF):').copyWith(
+                                            counterText: '',
+                                          ),
+                                          keyboardType: TextInputType.number,
+                                          maxLength: 11,
+                                          inputFormatters: [
+                                            FilteringTextInputFormatter.digitsOnly,
+                                          ],
+                                        ),
+                                        Positioned(
+                                          right: 10,
+                                          bottom: 10,
+                                          child: Text(
+                                            '${cpfController.text.length}/11',
+                                            style: const TextStyle(
+                                              fontSize: 12,
+                                              color: Colors.grey,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                   ),
                                 ],
@@ -385,7 +358,7 @@ class _CadastroCidadaoState extends State<CadastroCidadao> {
                             counterText: '',
                           ),
                           keyboardType: TextInputType.number,
-                          maxLength: 7,
+                          maxLength: 9,
                         ),
                         const SizedBox(height: 30),
                         Row(

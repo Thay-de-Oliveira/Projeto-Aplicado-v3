@@ -63,7 +63,7 @@ class _HomeState extends State<Home> {
                   SizedBox(height: 25),
                   buildMenuCard(
                     context,
-                    'Cadastro de Cidadão',
+                    'Cidadãos',
                     'assets/imagens/cadastro-icone.png',
                     Colors.orangeAccent,
                     CadastroCidadao(),
