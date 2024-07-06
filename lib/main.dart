@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:get/get.dart';
+import 'package:http/http.dart' as http;
 
 import 'app/components/globais/menu-inferior.dart';
 import 'app/components/globais/barra-superior.dart';
@@ -14,11 +16,13 @@ import 'app/login/tela-login.dart';
 import 'app/home/tela-mapa.dart';
 import 'app/home/tela-usuario.dart';
 
+import 'backend/services/usuarioService.dart';
+import 'backend/services/acontecimentoService.dart';
+import 'backend/controllers/acontecimentoController.dart';
 import 'controllerBinding.dart';
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized(); 
-  ControllerBinding().dependencies();
+  WidgetsFlutterBinding.ensureInitialized();
 
   runApp(
     MultiProvider(
@@ -32,10 +36,11 @@ void main() async {
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
-  
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return GetMaterialApp(
+      initialBinding: ControllerBinding(), // Configurar o binding aqui
       theme: ThemeData(
         primaryColor: Color(0xFF1B7CB3),
         buttonTheme: ButtonThemeData(
@@ -82,11 +87,9 @@ class MyApp extends StatelessWidget {
       initialRoute: '/', // Rota inicial
       routes: {
         '/': (context) => LoginApp(), // Login
-        '/tela-cadastro': (context) => CadastroApp(),
+        //'/tela-cadastro': (context) => CadastroApp(),
         '/tela-login': (context) => LoginApp(),
-        '/tela-inicio': (context) => const Home(
-              title: '',
-            ),
+        '/tela-inicio': (context) => const Home(title: ''),
         '/tela-mapa': (context) => Mapa(),
         '/tela-usuario': (context) => Perfil(),
         '/tela-atendimento-forms': (context) => AtendimentoForms(),

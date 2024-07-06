@@ -3,10 +3,13 @@ import 'package:http/http.dart' as http;
 import 'package:projetoaplicado/backend/models/acontecimentoModel.dart';
 
 class AcontecimentoService {
-  String baseUrl = "https://web-production-0b75.up.railway.app";
+  final String baseUrl;
+  final http.Client client;
+
+  AcontecimentoService(this.client, {this.baseUrl = "https://web-production-0b75.up.railway.app"});
 
   Future<List<AcontecimentoModel>> fetchListAcontecimento() async {
-    final response = await http.get(Uri.parse('$baseUrl/acontecimentos'));
+    final response = await client.get(Uri.parse('$baseUrl/acontecimentos'));
 
     if (response.statusCode == 200) {
       var list = json.decode(response.body);
@@ -22,7 +25,7 @@ class AcontecimentoService {
   }
 
   Future<AcontecimentoModel> fetchAcontecimentoByProtocolo(String numeroProtocolo) async {
-    final response = await http.get(Uri.parse('$baseUrl/acontecimentos/protocolo/$numeroProtocolo'));
+    final response = await client.get(Uri.parse('$baseUrl/acontecimentos/protocolo/$numeroProtocolo'));
 
     if (response.statusCode == 200) {
       var list = json.decode(response.body);
@@ -37,7 +40,7 @@ class AcontecimentoService {
   }
 
   Future<bool> deleteAcontecimento(String id) async {
-    final response = await http.delete(Uri.parse('$baseUrl/acontecimentos/$id'));
+    final response = await client.delete(Uri.parse('$baseUrl/acontecimentos/$id'));
 
     if (response.statusCode == 200) {
       return true;
@@ -47,7 +50,7 @@ class AcontecimentoService {
   }
 
   Future<AcontecimentoModel> editAcontecimento(AcontecimentoModel acontecimento) async {
-    final response = await http.put(
+    final response = await client.put(
       Uri.parse('$baseUrl/acontecimentos/${acontecimento.id}'),
       body: json.encode(acontecimento.toJson()),
       headers: {
@@ -65,7 +68,7 @@ class AcontecimentoService {
   }
 
   Future<AcontecimentoModel> postAcontecimento(AcontecimentoModel acontecimento) async {
-    final response = await http.post(
+    final response = await client.post(
       Uri.parse('$baseUrl/acontecimentos'),
       body: json.encode(acontecimento.toJson()),
       headers: {
@@ -100,7 +103,7 @@ class AcontecimentoService {
       url += '&dataFim=$dataFim';
     }
 
-    final response = await http.get(Uri.parse(url));
+    final response = await client.get(Uri.parse(url));
 
     if (response.statusCode == 200) {
       var list = json.decode(response.body);

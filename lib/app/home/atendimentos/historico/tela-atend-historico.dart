@@ -20,8 +20,8 @@ class HistoricoAtendimento extends StatefulWidget {
 }
 
 class _HistoricoAtendimentoState extends State<HistoricoAtendimento> {
-  final AtendimentoController atendimentoController = Get.put(AtendimentoController());
-  final AcontecimentoController acontecimentoController = Get.put(AcontecimentoController());
+  final AtendimentoController atendimentoController = Get.find<AtendimentoController>();
+  final AcontecimentoController acontecimentoController = Get.find<AcontecimentoController>();
   final TextEditingController searchController = TextEditingController();
   String _searchTerm = '';
   DateTime? _dataInicio;
@@ -32,10 +32,10 @@ class _HistoricoAtendimentoState extends State<HistoricoAtendimento> {
   @override
   void initState() {
     super.initState();
-    DateTime now = DateTime.now();
-    DateTime tenDaysAgo = now.subtract(Duration(days: 10));
-    _dataInicio = tenDaysAgo;
-    _dataFim = now;
+    // DateTime now = DateTime.now();
+    // DateTime tenDaysAgo = now.subtract(Duration(days: 10));
+    // _dataInicio = tenDaysAgo;
+    // _dataFim = now;
     _loadAtendimentos();
   }
 

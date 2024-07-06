@@ -26,10 +26,10 @@ class DetalheHistorico extends StatefulWidget {
 }
 
 class _DetalheHistorico extends State<DetalheHistorico> {
-  final RelatorioAtendimentoController _relatorioController = RelatorioAtendimentoController();
-  AtendimentoController atendimentoController = Get.put(AtendimentoController());
-  AcontecimentoController acontecimentoController = Get.put(AcontecimentoController());
-  CidadaoController cidadaoController = Get.put(CidadaoController());
+  final RelatorioAtendimentoController _relatorioController = Get.find<RelatorioAtendimentoController>();
+  AtendimentoController atendimentoController = Get.find<AtendimentoController>();
+  AcontecimentoController acontecimentoController = Get.find<AcontecimentoController>();
+  CidadaoController cidadaoController = Get.find<CidadaoController>();
 
   bool isPendente = false;
   bool isLoading = true;

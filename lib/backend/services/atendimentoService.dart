@@ -1,17 +1,20 @@
-import 'package:mime/mime.dart';
 import 'dart:convert';
 import 'dart:io';
 import 'package:http/http.dart' as http;
-import 'package:projetoaplicado/backend/models/atendimentoModel.dart';
+import 'package:mime/mime.dart';
 import 'package:path/path.dart';
 import 'package:http_parser/http_parser.dart';
+import 'package:projetoaplicado/backend/models/atendimentoModel.dart';
 
 class AtendimentoService {
-  String baseUrl = "https://web-production-0b75.up.railway.app/atendimentos";
+  final String baseUrl;
+  final http.Client client;
+
+  AtendimentoService(this.client, {this.baseUrl = "https://web-production-0b75.up.railway.app/atendimentos"});
 
   Future<List<AtendimentosModel>> fetchListAtendimento() async {
     try {
-      final response = await http.get(Uri.parse(baseUrl));
+      final response = await client.get(Uri.parse(baseUrl));
 
       if (response.statusCode == 200) {
         var list = json.decode(response.body);
@@ -30,7 +33,7 @@ class AtendimentoService {
   }
 
   Future<AtendimentosModel> getAtendimentoById(String id) async {
-    final response = await http.get(Uri.parse('$baseUrl/atendimento/$id'));
+    final response = await client.get(Uri.parse('$baseUrl/atendimento/$id'));
 
     if (response.statusCode == 200) {
       var atendimento = json.decode(response.body);
@@ -41,7 +44,7 @@ class AtendimentoService {
   }
 
   Future<bool> deleteAtendimento(String id) async {
-    final response = await http.delete(Uri.parse('$baseUrl/$id'));
+    final response = await client.delete(Uri.parse('$baseUrl/$id'));
 
     if (response.statusCode == 200) {
       return true;
@@ -51,7 +54,7 @@ class AtendimentoService {
   }
 
   Future<AtendimentosModel> editAtendimento(AtendimentosModel atendimento) async {
-    final response = await http.put(
+    final response = await client.put(
       Uri.parse('$baseUrl/atualiza_atendimento/${atendimento.id}'),
       body: json.encode(atendimento.toJson()),
       headers: {
@@ -75,36 +78,40 @@ class AtendimentoService {
     // Adiciona os campos do formulário
     Map<String, dynamic> atendimentoData = atendimento.toJson();
     atendimentoData.forEach((key, value) {
-        if (value is List) {
-            // Serializa a lista para JSON antes de adicioná-la
-            request.fields[key] = jsonEncode(value);
-        } else {
-            request.fields[key] = value.toString();
-        }
+      if (value is List) {
+        request.fields[key] = jsonEncode(value);
+      } else {
+        request.fields[key] = value.toString();
+      }
     });
 
     // Adiciona cada arquivo de imagem à requisição
     for (var file in imageFiles) {
-        var stream = http.ByteStream(file.openRead());
-        var length = await file.length();
-        var mimeType = lookupMimeType(file.path) ?? 'application/octet-stream'; // Garante um fallback
-        var multipartFile = http.MultipartFile('Files', stream, length,
-            filename: basename(file.path),
-            contentType: MediaType.parse(mimeType));
-        request.files.add(multipartFile);
+      var stream = http.ByteStream(file.openRead());
+      var length = await file.length();
+      var mimeType = lookupMimeType(file.path) ?? 'application/octet-stream';
+      var multipartFile = http.MultipartFile(
+        'Files',
+        stream,
+        length,
+        filename: basename(file.path),
+        contentType: MediaType.parse(mimeType),
+      );
+      request.files.add(multipartFile);
     }
 
     try {
-        var response = await request.send();
-        if (response.statusCode == 200 || response.statusCode == 201) {
-            String responseBody = await response.stream.bytesToString();
-            return responseBody;
-        } else {
-            String responseBody = await response.stream.bytesToString();
-            throw Exception('Falha ao criar atendimento: $responseBody');
-        }
+      // Use o CustomHttpClient para enviar a requisição
+      var response = await client.send(request);
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        String responseBody = await response.stream.bytesToString();
+        return responseBody;
+      } else {
+        String responseBody = await response.stream.bytesToString();
+        throw Exception('Falha ao criar atendimento: $responseBody');
+      }
     } catch (e) {
-        throw Exception('Erro ao enviar dados: $e');
+      throw Exception('Erro ao enviar dados: $e');
     }
   }
 
@@ -131,7 +138,7 @@ class AtendimentoService {
     queryParams.removeWhere((key, value) => value == null || value.isEmpty);
 
     final uri = Uri.parse('$baseUrl/search').replace(queryParameters: queryParams);
-    final response = await http.get(uri);
+    final response = await client.get(uri);
 
     if (response.statusCode == 200) {
       var list = json.decode(response.body)['data'];

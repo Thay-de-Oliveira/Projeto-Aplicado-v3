@@ -2,11 +2,14 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 class RelatorioAtendimentoService {
+  final http.Client client;
   String baseUrl = "https://web-production-0b75.up.railway.app/relatorios";
+
+  RelatorioAtendimentoService({required this.client});
 
   // Gerar relatorio de atendimento
   Future<String> gerarRelatorio(String nProtocolo) async {
-    final response = await http.post(
+    final response = await client.post(
       Uri.parse('$baseUrl/gerar-relatorio-atendimento'),
       headers: {'Content-Type': 'application/json'},
       body: json.encode({'n_protocolo': nProtocolo}),
@@ -22,7 +25,7 @@ class RelatorioAtendimentoService {
 
   // Gerar relatorio de recibo
   Future<String> gerarRelatorioRecibo(String nProtocolo) async {
-    final response = await http.post(
+    final response = await client.post(
       Uri.parse('$baseUrl/gerar-relatorio-recibo'),
       headers: {'Content-Type': 'application/json'},
       body: json.encode({'n_protocolo': nProtocolo}),

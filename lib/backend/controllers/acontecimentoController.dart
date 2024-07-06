@@ -3,11 +3,13 @@ import 'package:projetoaplicado/backend/models/acontecimentoModel.dart';
 import 'package:projetoaplicado/backend/services/acontecimentoService.dart';
 
 class AcontecimentoController extends GetxController {
-  AcontecimentoService acontecimentoService = AcontecimentoService();
+  late AcontecimentoService acontecimentoService;
   var isLoading = false.obs;
   var listAcontecimentoObs = <AcontecimentoModel>[].obs;
 
   static AcontecimentoController get acontecimentoController => Get.find();
+
+  AcontecimentoController({required this.acontecimentoService});
 
   Future<dynamic> listAcontecimento() async {
     isLoading.value = true;

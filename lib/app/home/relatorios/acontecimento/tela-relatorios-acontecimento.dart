@@ -15,7 +15,7 @@ class RelatorioAcontecimento extends StatefulWidget {
 }
 
 class _RelatorioAcontecimentoState extends State<RelatorioAcontecimento> {
-  final AcontecimentoController acontecimentoController = Get.put(AcontecimentoController());
+  final AcontecimentoController acontecimentoController = Get.find<AcontecimentoController>();
   final TextEditingController searchController = TextEditingController();
   String _searchTerm = '';
   DateTime? _dataInicio;

@@ -4,11 +4,13 @@ import 'package:projetoaplicado/backend/models/cidadaoModel.dart';
 import 'package:projetoaplicado/backend/services/cidadaoService.dart';
 
 class CidadaoController extends GetxController {
-  CidadaoService cidadaoService = CidadaoService();
+  late CidadaoService cidadaoService;
   var isLoading = false.obs;
   var listCidadaoObs = <CidadaoModel>[].obs;
 
   static CidadaoController get cidadaoController => Get.find();
+
+  CidadaoController({required this.cidadaoService});
 
   Future<dynamic> post(CidadaoModel cidadao) async {
     isLoading.value = true;
@@ -71,7 +73,6 @@ class CidadaoController extends GetxController {
     }
   }
 
-  // Pesquisa com filtro por nome, CPF e intervalo de datas
   Future<void> searchCidadaos({
     required String query,
     String? dataInicio,

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:projetoaplicado/backend/controllers/usuarioController.dart';
 
 class LoginApp extends StatefulWidget {
@@ -10,7 +11,7 @@ class _LoginAppState extends State<LoginApp> {
   TextEditingController _usernameController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
 
-  final UserController _userController = UserController.userController;
+  final UserController _userController =  Get.find<UserController>();
 
   @override
   Widget build(BuildContext context) {

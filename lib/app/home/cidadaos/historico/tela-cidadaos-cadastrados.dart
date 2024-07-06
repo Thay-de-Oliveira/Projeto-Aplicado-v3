@@ -14,7 +14,7 @@ class HistoricoCidadao extends StatefulWidget {
 }
 
 class _HistoricoCidadaoState extends State<HistoricoCidadao> {
-  final CidadaoController cidadaoController = Get.put(CidadaoController());
+  final CidadaoController cidadaoController = Get.find<CidadaoController>();
   final TextEditingController searchController = TextEditingController();
   String _searchTerm = '';
   DateTime? _dataInicio;

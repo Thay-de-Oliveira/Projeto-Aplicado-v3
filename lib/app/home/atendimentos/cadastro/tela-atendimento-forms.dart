@@ -42,17 +42,16 @@ class Item {
 }
 
 class _AtendimentoFormsState extends State<AtendimentoForms> {
+  final CidadaoController _cidadaoController = Get.find<CidadaoController>();
   final UserController userController = Get.find<UserController>();
+
   late ImagensController _imagensController;
   List<CidadaoModel> suggestions = [];
   List<Item> items = [];
 
-  CidadaoService cidadaoService = CidadaoService();
-
   final TextEditingController _cpfResponsavelController = TextEditingController();
   final TextEditingController _cidadaoResponsavelController = TextEditingController();
   final TextEditingController _atendenteResponsavelController = TextEditingController();
-  final AtendimentoController _atendimentoController = AtendimentoController();
   final CidadaoController cidadaoController = CidadaoController.cidadaoController;
   final TextEditingController _dataSolicitacaoController = TextEditingController();
   final TextEditingController _dataVistoriaController = TextEditingController();
@@ -200,7 +199,7 @@ class _AtendimentoFormsState extends State<AtendimentoForms> {
           .map((xFile) => File(xFile.path))
           .toList();
 
-      var resposta = await _atendimentoController.post(novoAtendimento, imageFiles);
+      var resposta = await AtendimentoController.atendimentoController.post(novoAtendimento, imageFiles);
 
       // Fechar o indicador de carregamento
       Navigator.of(context).pop();
@@ -769,9 +768,8 @@ class _AtendimentoFormsState extends State<AtendimentoForms> {
                                 return [];
                               }
 
-                              var cidadaoService = CidadaoService();
-                              var cidadaoList = await cidadaoService
-                                  .fetchListCidadao(searchTerm: search);
+                            await _cidadaoController.fetchCidadaoByQuery(search);
+                            var cidadaoList = _cidadaoController.listCidadaoObs;
 
                               return getFilteredCidadaoList(
                                   search, cidadaoList);
@@ -791,9 +789,8 @@ class _AtendimentoFormsState extends State<AtendimentoForms> {
                                     return;
                                   }
 
-                                  var cidadaoService = CidadaoService();
-                                  var cidadaoList = await cidadaoService
-                                      .fetchListCidadao(searchTerm: text);
+                                  await _cidadaoController.fetchCidadaoByQuery(text);
+                                  var cidadaoList = _cidadaoController.listCidadaoObs;
 
                                   // Filtra a lista com base na consulta
                                   var filteredList =

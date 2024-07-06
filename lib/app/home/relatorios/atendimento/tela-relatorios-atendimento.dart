@@ -16,7 +16,7 @@ class RelatorioAtendimento extends StatefulWidget {
 }
 
 class _RelatorioAtendimentoState extends State<RelatorioAtendimento> {
-  final AtendimentoController atendimentoController = Get.put(AtendimentoController());
+  final AtendimentoController atendimentoController = Get.find<AtendimentoController>();
   final TextEditingController searchController = TextEditingController();
   String _searchTerm = '';
   DateTime? _dataInicio;
@@ -27,10 +27,10 @@ class _RelatorioAtendimentoState extends State<RelatorioAtendimento> {
   @override
   void initState() {
     super.initState();
-    DateTime now = DateTime.now();
-    DateTime tenDaysAgo = now.subtract(Duration(days: 10));
-    _dataInicio = tenDaysAgo;
-    _dataFim = now;
+    // DateTime now = DateTime.now();
+    // DateTime tenDaysAgo = now.subtract(Duration(days: 10));
+    // _dataInicio = tenDaysAgo;
+    // _dataFim = now;
     _loadAtendimentos();
   }
 

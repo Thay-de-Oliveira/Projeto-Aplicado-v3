@@ -17,7 +17,7 @@ class AtendimentoPendente extends StatefulWidget {
 }
 
 class _AtendimentoPendenteState extends State<AtendimentoPendente> {
-  final AcontecimentoController acontecimentoController = Get.put(AcontecimentoController());
+  final AcontecimentoController acontecimentoController = Get.find<AcontecimentoController>();
   final TextEditingController searchController = TextEditingController();
   String _searchTerm = '';
   DateTime? _dataInicio;

@@ -17,7 +17,7 @@ class RelatorioRecibo extends StatefulWidget {
 }
 
 class _RelatorioReciboState extends State<RelatorioRecibo> {
-  final AtendimentoController atendimentoController = Get.put(AtendimentoController());
+  final AtendimentoController atendimentoController = Get.find<AtendimentoController>();
   final TextEditingController searchController = TextEditingController();
   String _searchTerm = '';
   DateTime? _dataInicio;

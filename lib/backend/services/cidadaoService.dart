@@ -3,11 +3,14 @@ import 'package:http/http.dart' as http;
 import 'package:projetoaplicado/backend/models/cidadaoModel.dart';
 
 class CidadaoService {
-  String baseUrl = "https://web-production-0b75.up.railway.app";
+  final String baseUrl;
+  final http.Client client;
+
+  CidadaoService(this.client, {this.baseUrl = "https://web-production-0b75.up.railway.app"});
 
   Future<List<CidadaoModel>> fetchListCidadao({String? searchTerm}) async {
     final query = searchTerm?.isEmpty ?? true ? '.' : searchTerm;
-    final response = await http.get(Uri.parse('$baseUrl/cidadaos/search?query=$query'));
+    final response = await client.get(Uri.parse('$baseUrl/cidadaos/search?query=$query'));
 
     if (response.statusCode == 200) {
       var list = json.decode(response.body);
@@ -22,7 +25,7 @@ class CidadaoService {
   }
 
   Future<CidadaoModel> postCidadao(CidadaoModel cidadao) async {
-    final response = await http.post(
+    final response = await client.post(
       Uri.parse('$baseUrl/cidadaos'),
       body: json.encode(cidadao.toJson()),
       headers: {
@@ -40,7 +43,7 @@ class CidadaoService {
   }
 
   Future<CidadaoModel> getCidadaoByCpf(String cpf) async {
-    final response = await http.get(Uri.parse('$baseUrl/cidadaos/cpf/$cpf'));
+    final response = await client.get(Uri.parse('$baseUrl/cidadaos/cpf/$cpf'));
 
     if (response.statusCode == 200) {
       return CidadaoModel.fromJson(json.decode(response.body));
@@ -50,7 +53,7 @@ class CidadaoService {
   }
 
   Future<CidadaoModel> updateCidadaoByCpf(String cpf, CidadaoModel cidadao) async {
-    final response = await http.put(
+    final response = await client.put(
       Uri.parse('$baseUrl/cidadaos/cpf/$cpf'),
       headers: {
         "Content-Type": "application/json",
@@ -68,7 +71,7 @@ class CidadaoService {
 
   Future<bool> deleteCidadaoByCpf(String cpf) async {
     try {
-      final response = await http.delete(Uri.parse('$baseUrl/cidadaos/cpf/$cpf'));
+      final response = await client.delete(Uri.parse('$baseUrl/cidadaos/cpf/$cpf'));
 
       if (response.statusCode == 200) {
         return true;
@@ -86,7 +89,6 @@ class CidadaoService {
     }
   }
 
-  // Pesquisa com intervalo de datas
   Future<List<CidadaoModel>> searchCidadaos({
     required String query,
     String? dataInicio,
@@ -102,7 +104,7 @@ class CidadaoService {
       url += '&dataFim=$dataFim';
     }
 
-    final response = await http.get(Uri.parse(url));
+    final response = await client.get(Uri.parse(url));
 
     if (response.statusCode == 200) {
       var list = json.decode(response.body);

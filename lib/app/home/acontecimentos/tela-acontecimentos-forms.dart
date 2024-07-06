@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
+import 'package:get/get.dart';
 import 'package:projetoaplicado/app/app-state.dart';
 import 'package:projetoaplicado/app/home/atendimentos/cadastro/tela-atendimento-forms.dart';
 import 'package:projetoaplicado/app/home/tela-inicio.dart';
 
 import 'package:projetoaplicado/backend/controllers/acontecimentoController.dart';
 import 'package:projetoaplicado/backend/controllers/cepController.dart';
+import 'package:projetoaplicado/backend/controllers/cidadaoController.dart';
 import 'package:projetoaplicado/backend/models/acontecimentoModel.dart';
 import 'package:projetoaplicado/backend/models/cidadaoModel.dart';
 import 'package:projetoaplicado/backend/services/cidadaoService.dart';
@@ -32,7 +34,9 @@ class AcontecimentosForms extends StatefulWidget {
 }
 
 class _FormularioAcontecimentoState extends State<AcontecimentosForms> {
-  final AcontecimentoController _acontecimentoController = AcontecimentoController();
+  final AcontecimentoController _acontecimentoController = Get.find<AcontecimentoController>();
+  final CidadaoController _cidadaoController = Get.find<CidadaoController>();
+
 
   final TextEditingController _cpfResponsavelController = TextEditingController();
   final TextEditingController _cidadaoResponsavelController = TextEditingController();
@@ -868,8 +872,8 @@ class _FormularioAcontecimentoState extends State<AcontecimentosForms> {
                           return [];
                         }
 
-                        var cidadaoService = CidadaoService();
-                        var cidadaoList = await cidadaoService.fetchListCidadao(searchTerm: search);
+                        await _cidadaoController.fetchCidadaoByQuery(search);
+                        var cidadaoList = _cidadaoController.listCidadaoObs;
 
                         return getFilteredCidadaoList(search, cidadaoList);
                       },
@@ -885,8 +889,8 @@ class _FormularioAcontecimentoState extends State<AcontecimentosForms> {
                               return;
                             }
 
-                            var cidadaoService = CidadaoService();
-                            var cidadaoList = await cidadaoService.fetchListCidadao(searchTerm: text);
+                            await _cidadaoController.fetchCidadaoByQuery(text);
+                            var cidadaoList = _cidadaoController.listCidadaoObs;
 
                             // Filtra a lista com base na consulta
                             var filteredList = getFilteredCidadaoList(text, cidadaoList);

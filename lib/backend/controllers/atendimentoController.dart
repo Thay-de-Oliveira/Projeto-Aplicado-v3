@@ -4,11 +4,13 @@ import 'package:projetoaplicado/backend/models/atendimentoModel.dart';
 import 'package:projetoaplicado/backend/services/atendimentoService.dart';
 
 class AtendimentoController extends GetxController {
-  AtendimentoService atendimentoService = AtendimentoService();
+  late AtendimentoService atendimentoService;
   var isLoading = false.obs;
   var listAtendimentoObs = <AtendimentosModel>[].obs;
 
   static AtendimentoController get atendimentoController => Get.find();
+
+  AtendimentoController({required this.atendimentoService});
 
   Future<dynamic> listAtendimento() async {
     isLoading.value = true;

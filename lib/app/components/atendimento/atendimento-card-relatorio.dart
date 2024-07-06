@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:projetoaplicado/app/home/relatorios/atendimento/tela-relatorio-atend-detalhes.dart';
 import 'package:projetoaplicado/backend/controllers/relatorioAtendimentoController.dart';
 import 'package:projetoaplicado/backend/models/atendimentoModel.dart';
@@ -14,7 +15,7 @@ class AtendimentoCardRelatorio extends StatefulWidget {
 }
 
 class _AtendimentoCardRelatorioState extends State<AtendimentoCardRelatorio> {
-  final RelatorioAtendimentoController _relatorioController = RelatorioAtendimentoController();
+  final RelatorioAtendimentoController _relatorioController = Get.find<RelatorioAtendimentoController>();
   bool _isGeneratingReport = false;
 
   Future<void> _visualizarRelatorio(BuildContext context) async {
