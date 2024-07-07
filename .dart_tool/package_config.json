@@ -272,6 +272,42 @@
       "languageVersion": "3.2"
     },
     {
+      "name": "flutter_secure_storage",
+      "rootUri": "file:///C:/Users/Thain%C3%A1/AppData/Local/Pub/Cache/hosted/pub.dev/flutter_secure_storage-5.1.2",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
+      "name": "flutter_secure_storage_linux",
+      "rootUri": "file:///C:/Users/Thain%C3%A1/AppData/Local/Pub/Cache/hosted/pub.dev/flutter_secure_storage_linux-1.2.1",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
+      "name": "flutter_secure_storage_macos",
+      "rootUri": "file:///C:/Users/Thain%C3%A1/AppData/Local/Pub/Cache/hosted/pub.dev/flutter_secure_storage_macos-1.1.2",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
+      "name": "flutter_secure_storage_platform_interface",
+      "rootUri": "file:///C:/Users/Thain%C3%A1/AppData/Local/Pub/Cache/hosted/pub.dev/flutter_secure_storage_platform_interface-1.1.2",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
+      "name": "flutter_secure_storage_web",
+      "rootUri": "file:///C:/Users/Thain%C3%A1/AppData/Local/Pub/Cache/hosted/pub.dev/flutter_secure_storage_web-1.2.1",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
+      "name": "flutter_secure_storage_windows",
+      "rootUri": "file:///C:/Users/Thain%C3%A1/AppData/Local/Pub/Cache/hosted/pub.dev/flutter_secure_storage_windows-1.1.3",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
       "name": "flutter_test",
       "rootUri": "file:///C:/flutter/packages/flutter_test",
       "packageUri": "lib/",
@@ -950,7 +986,7 @@
       "languageVersion": "2.17"
     }
   ],
-  "generated": "2024-06-16T17:34:04.985873Z",
+  "generated": "2024-07-07T03:33:08.364070Z",
   "generator": "pub",
   "generatorVersion": "3.3.3"
 }

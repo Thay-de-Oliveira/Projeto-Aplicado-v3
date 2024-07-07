@@ -9,6 +9,7 @@
 import 'package:camera_web/camera_web.dart';
 import 'package:device_info_plus/src/device_info_plus_web.dart';
 import 'package:flutter_keyboard_visibility_web/flutter_keyboard_visibility_web.dart';
+import 'package:flutter_secure_storage_web/flutter_secure_storage_web.dart';
 import 'package:google_maps_flutter_web/google_maps_flutter_web.dart';
 import 'package:image_picker_for_web/image_picker_for_web.dart';
 import 'package:maps_launcher/maps_launcher_web.dart';
@@ -23,6 +24,7 @@ void registerPlugins([final Registrar? pluginRegistrar]) {
   CameraPlugin.registerWith(registrar);
   DeviceInfoPlusWebPlugin.registerWith(registrar);
   FlutterKeyboardVisibilityPlugin.registerWith(registrar);
+  FlutterSecureStorageWeb.registerWith(registrar);
   GoogleMapsPlugin.registerWith(registrar);
   ImagePickerPlugin.registerWith(registrar);
   MapsLauncherWeb.registerWith(registrar);
