@@ -17,10 +17,10 @@ class ControllerBinding implements Bindings {
   void dependencies() {
     final httpClient = http.Client();
     
-    // Primeiro instanciar UserService sem passar CustomHttpClient
+    // Primeiro instanciar UserService com o httpClient padrão
     final userService = UserService(httpClient);
 
-    // Inicializa CustomHttpClient passando o UserService corretamente
+    // Inicializa CustomHttpClient passando o UserService
     final customHttpClient = CustomHttpClient(httpClient, userService);
 
     // Configurar UserService com customHttpClient

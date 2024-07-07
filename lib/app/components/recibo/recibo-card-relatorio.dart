@@ -91,7 +91,7 @@ class _ReciboCardRelatorioState extends State<ReciboCardRelatorio> {
                   endereco: '${widget.atendimento.rua}, Bairro ${widget.atendimento.bairro}',
                   atendente: widget.atendimento.atendenteResponsavel,
                 ),
-                const SizedBox(height: 12),
+                const SizedBox(height: 10),
                 Align(
                   alignment: Alignment.bottomRight,
                   child: Container(
@@ -170,9 +170,7 @@ class DataAcontecimentoInfo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(bottom: 11),
-      width: 251,
-      height: 72,
+      margin: const EdgeInsets.only(bottom: 11),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

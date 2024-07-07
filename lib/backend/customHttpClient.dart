@@ -11,26 +11,28 @@ class CustomHttpClient extends http.BaseClient {
 
   @override
   Future<http.StreamedResponse> send(http.BaseRequest request) async {
-    final accessToken = await storage.read(key: 'accessToken');
-    if (accessToken != null) {
-      request.headers['Authorization'] = accessToken;
+    await _ensureTokenIsValid();
+    return _sendWithToken(request, await _authService.getAccessToken());
+  }
+
+  Future<void> _ensureTokenIsValid() async {
+    final expiryDate = await _authService.getExpiryDate();
+    if (expiryDate != null && expiryDate.isBefore(DateTime.now())) {
+      await _authService.refreshAccessToken();
+    } else {
+      print('Token is valid.');
+    }
+  }
+
+  Future<http.StreamedResponse> _sendWithToken(http.BaseRequest request, String? token) async {
+    if (token != null) {
+      request.headers['Authorization'] = token;
     }
 
-    final response = await _inner.send(request);
-
-    if (response.statusCode == 401) {
-      try {
-        await _authService.refreshAccessToken();
-        final newAccessToken = await storage.read(key: 'accessToken');
-        if (newAccessToken != null) {
-          request.headers['Authorization'] = newAccessToken;
-          return _inner.send(request);
-        }
-      } catch (e) {
-        await _authService.logoutUser();
-      }
+    try {
+      return await _inner.send(request);
+    } catch (e) {
+      throw Exception('Failed to send request: $e');
     }
-
-    return response;
   }
 }

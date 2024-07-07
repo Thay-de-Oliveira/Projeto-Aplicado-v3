@@ -11,13 +11,11 @@ class UserController extends GetxController {
 
   Future<String> loginUser(String email, String password) async {
     isLoading.value = true;
-    UserModel? user;
     String message = '';
 
     try {
-      user = await userService.loginUser(email, password);
-      if (user != null) {
-        currentUser = user;
+      currentUser = await userService.loginUser(email, password);
+      if (currentUser != null) {
         message = "Login bem sucedido!";
       } else {
         message = "Usuário ou senha incorretos";
