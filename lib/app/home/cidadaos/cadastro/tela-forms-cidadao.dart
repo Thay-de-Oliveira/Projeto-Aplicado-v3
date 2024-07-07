@@ -18,21 +18,22 @@ class CadastroCidadao extends StatefulWidget {
 InputDecoration _customInputDecoration(String labelText) {
   return InputDecoration(
     labelText: labelText,
-    labelStyle: const TextStyle(fontSize: 16, color: Color.fromARGB(255, 127, 127, 128)),
+    labelStyle: const TextStyle(fontSize: 16, color: Color.fromARGB(255, 127, 127, 128)), // Cor do texto dos campos
     border: OutlineInputBorder(
-      borderRadius: BorderRadius.circular(10.0),
+      borderRadius: BorderRadius.circular(10.0), // Borda arredondada
     ),
     enabledBorder: OutlineInputBorder(
-      borderSide: const BorderSide(color: Colors.grey),
+      borderSide: const BorderSide(color: Colors.grey), // Cor da borda quando inativo
       borderRadius: BorderRadius.circular(10.0),
     ),
     focusedBorder: OutlineInputBorder(
-      borderSide: const BorderSide(color: Color(0xFF1B7CB3)),
+      borderSide: const BorderSide(color: Color(0xFF1B7CB3)), // Cor da borda quando ativo
       borderRadius: BorderRadius.circular(10.0),
     ),
-    floatingLabelStyle: const TextStyle(color: Color(0xFF1B7CB3)),
-  );
-}
+    floatingLabelStyle: const TextStyle(color: Color(0xFF1B7CB3)), // Cor do texto do rótulo quando focado
+    counterText: '', // Remove o contador duplicado
+    );
+  }
 
 class _CadastroCidadaoState extends State<CadastroCidadao> {
   final TextEditingController nomeController = TextEditingController();
@@ -93,6 +94,34 @@ class _CadastroCidadaoState extends State<CadastroCidadao> {
       return false;
     }
 
+    if (cpf.split('').every((c) => c == cpf[0])) {
+      return false;
+    }
+
+    int soma = 0;
+    for (int i = 0; i < 9; i++) {
+      soma += int.parse(cpf[i]) * (10 - i);
+    }
+    int primeiroDigitoVerificador = (soma * 10) % 11;
+    if (primeiroDigitoVerificador == 10 || primeiroDigitoVerificador == 11) {
+      primeiroDigitoVerificador = 0;
+    }
+    if (int.parse(cpf[9]) != primeiroDigitoVerificador) {
+      return false;
+    }
+
+    soma = 0;
+    for (int i = 0; i < 10; i++) {
+      soma += int.parse(cpf[i]) * (11 - i);
+    }
+    int segundoDigitoVerificador = (soma * 10) % 11;
+    if (segundoDigitoVerificador == 10 || segundoDigitoVerificador == 11) {
+      segundoDigitoVerificador = 0;
+    }
+    if (int.parse(cpf[10]) != segundoDigitoVerificador) {
+      return false;
+    }
+
     return true;
   }
 
@@ -118,7 +147,7 @@ class _CadastroCidadaoState extends State<CadastroCidadao> {
     }
 
     setState(() {
-      _isSaving = true;
+      _isSaving = true; // Desativa o botão ao iniciar o salvamento
     });
 
     try {
@@ -159,7 +188,7 @@ class _CadastroCidadaoState extends State<CadastroCidadao> {
   }
 
   Widget buttonBar() {
-    bool isCadastro = true;
+    bool isCadastro = true; // Altere para 'false' quando estiver na tela de Histórico
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -273,9 +302,15 @@ class _CadastroCidadaoState extends State<CadastroCidadao> {
     });
     cpfController.addListener(() {
       String cpf = cpfController.text;
-      setState(() {
-        _isCpfValid = validarCpf(cpf);
-      });
+      if (cpf.length != 11) {
+        setState(() {
+          _isCpfValid = validarCpf(cpf);
+        });
+      } else {
+        setState(() {
+          _isCpfValid = true;
+        });
+      }
     });
   }
 
@@ -298,7 +333,7 @@ class _CadastroCidadaoState extends State<CadastroCidadao> {
             delegate: SliverChildListDelegate(
               [
                 const SizedBox(height: 20),
-                buttonBar(),
+                buttonBar(), // Substitua a imagem pelo menu
                 const SizedBox(height: 10),
                 Center(
                   child: Padding(
@@ -311,42 +346,29 @@ class _CadastroCidadaoState extends State<CadastroCidadao> {
                           decoration: _customInputDecoration('Nome completo:'),
                         ),
                         const SizedBox(height: 30),
-                        Row(
+                        Stack(
+                          alignment: Alignment.centerRight,
                           children: [
-                            Expanded(
-                              child: Stack(
-                                alignment: Alignment.centerRight,
-                                children: [
-                                  Expanded(
-                                    child: Stack(
-                                      alignment: Alignment.centerRight,
-                                      children: [
-                                        TextFormField(
-                                          controller: cpfController,
-                                          decoration: _customInputDecoration('Cadastro de Pessoa Física (CPF):').copyWith(
-                                            counterText: '',
-                                          ),
-                                          keyboardType: TextInputType.number,
-                                          maxLength: 11,
-                                          inputFormatters: [
-                                            FilteringTextInputFormatter.digitsOnly,
-                                          ],
-                                        ),
-                                        Positioned(
-                                          right: 10,
-                                          bottom: 10,
-                                          child: Text(
-                                            '${cpfController.text.length}/11',
-                                            style: const TextStyle(
-                                              fontSize: 12,
-                                              color: Colors.grey,
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ],
+                            TextFormField(
+                              controller: cpfController,
+                              decoration: _customInputDecoration('Cadastro de Pessoa Física (CPF):').copyWith(
+                                errorText: _isCpfValid ? null : 'CPF inválido',
+                              ),
+                              keyboardType: TextInputType.number,
+                              maxLength: 11,
+                              inputFormatters: [
+                                FilteringTextInputFormatter.digitsOnly,
+                              ],
+                            ),
+                            Positioned(
+                              right: 10,
+                              bottom: 10,
+                              child: Text(
+                                '${cpfController.text.length}/11',
+                                style: const TextStyle(
+                                  fontSize: 12,
+                                  color: Colors.grey,
+                                ),
                               ),
                             ),
                           ],
@@ -358,43 +380,27 @@ class _CadastroCidadaoState extends State<CadastroCidadao> {
                             counterText: '',
                           ),
                           keyboardType: TextInputType.number,
-                          maxLength: 9,
+                          maxLength: 7,
                         ),
                         const SizedBox(height: 30),
                         Row(
                           children: [
                             Expanded(
-                              child: Stack(
-                                alignment: Alignment.centerRight,
-                                children: [
-                                  TextFormField(
-                                    controller: cepController,
-                                    decoration: _customInputDecoration('CEP:').copyWith(
-                                      counterText: '',
-                                    ),
-                                    keyboardType: TextInputType.number,
-                                    maxLength: 8,
-                                    onChanged: (value) {
-                                      if (value.length == 8) {
-                                        buscarCep();
-                                      }
-                                      setState(() {});
-                                    },
-                                    inputFormatters: [
-                                      FilteringTextInputFormatter.digitsOnly,
-                                    ],
-                                  ),
-                                  Positioned(
-                                    right: 10,
-                                    bottom: 10,
-                                    child: Text(
-                                      '${cepController.text.length}/8',
-                                      style: const TextStyle(
-                                        fontSize: 12,
-                                        color: Colors.grey,
-                                      ),
-                                    ),
-                                  ),
+                              child: TextFormField(
+                                controller: cepController,
+                                decoration: _customInputDecoration('CEP:').copyWith(
+                                  counterText: '',
+                                ),
+                                keyboardType: TextInputType.number,
+                                maxLength: 8,
+                                onChanged: (value) {
+                                  if (value.length == 8) {
+                                    buscarCep();
+                                  }
+                                  setState(() {});
+                                },
+                                inputFormatters: [
+                                  FilteringTextInputFormatter.digitsOnly,
                                 ],
                               ),
                             ),
