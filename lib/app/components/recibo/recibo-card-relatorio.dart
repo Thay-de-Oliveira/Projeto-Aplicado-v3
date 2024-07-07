@@ -7,8 +7,7 @@ import 'package:projetoaplicado/backend/models/atendimentoModel.dart';
 class ReciboCardRelatorio extends StatefulWidget {
   final AtendimentosModel atendimento;
 
-  ReciboCardRelatorio({Key? key, required this.atendimento})
-      : super(key: key);
+  ReciboCardRelatorio({Key? key, required this.atendimento}) : super(key: key);
 
   @override
   _ReciboCardRelatorioState createState() => _ReciboCardRelatorioState();
@@ -56,7 +55,7 @@ class _ReciboCardRelatorioState extends State<ReciboCardRelatorio> {
       child: LayoutBuilder(
         builder: (context, constraints) {
           return Container(
-            margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 03),
+            margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 3),
             padding: const EdgeInsets.fromLTRB(8, 12, 8, 8),
             width: constraints.maxWidth,
             decoration: BoxDecoration(
@@ -71,62 +70,66 @@ class _ReciboCardRelatorioState extends State<ReciboCardRelatorio> {
                 ),
               ],
             ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+            child: Stack(
               children: [
-                Text(
-                  widget.atendimento.tipoAtendimento,
-                  style: const TextStyle(
-                    color: Colors.black,
-                    fontSize: 16,
-                    fontFamily: 'Roboto',
-                    fontWeight: FontWeight.w700,
-                    height: 0,
-                  ),
-                ),
-                const SizedBox(height: 8),
-                DataAcontecimentoInfo(
-                  dataAcontecimento: widget.atendimento.dataSolicitacao,
-                  nProtocolo: widget.atendimento.nProtocolo,
-                  endereco: '${widget.atendimento.rua}, Bairro ${widget.atendimento.bairro}',
-                  atendente: widget.atendimento.atendenteResponsavel,
-                ),
-                const SizedBox(height: 10),
-                Align(
-                  alignment: Alignment.bottomRight,
-                  child: Container(
-                    width: 116,
-                    height: 35,
-                    decoration: BoxDecoration(
-                      color: const Color(0xFFCFDDF2),
-                      borderRadius: BorderRadius.circular(4),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      widget.atendimento.tipoAtendimento,
+                      style: const TextStyle(
+                        color: Colors.black,
+                        fontSize: 16,
+                        fontFamily: 'Roboto',
+                        fontWeight: FontWeight.w700,
+                        height: 0,
+                      ),
                     ),
-                    child: InkWell(
-                      onTap: () => _visualizarRelatorio(context),
+                    const SizedBox(height: 8),
+                    DataAcontecimentoInfo(
+                      dataAcontecimento: widget.atendimento.dataSolicitacao,
+                      nProtocolo: widget.atendimento.nProtocolo,
+                      endereco: '${widget.atendimento.rua}, Bairro ${widget.atendimento.bairro}',
+                      atendente: widget.atendimento.atendenteResponsavel,
+                    ),
+                    const SizedBox(height: 10),
+                    Align(
+                      alignment: Alignment.bottomRight,
                       child: Container(
-                        width: 115,
+                        width: 116,
                         height: 35,
                         decoration: BoxDecoration(
-                          color: Colors.transparent,
-                          borderRadius: BorderRadius.circular(5),
+                          color: const Color(0xFFCFDDF2),
+                          borderRadius: BorderRadius.circular(4),
                         ),
-                        child: Center(
-                          child: Text(
-                            widget.atendimento.pdfReciboUrl != null && widget.atendimento.pdfReciboUrl!.isNotEmpty
-                                ? 'Visualizar Relatório'
-                                : 'Gerar Relatório',
-                            style: const TextStyle(
-                              color: Colors.black,
-                              fontSize: 11,
-                              fontFamily: 'Roboto',
-                              fontWeight: FontWeight.w600,
-                              height: 1,
+                        child: InkWell(
+                          onTap: () => _visualizarRelatorio(context),
+                          child: Container(
+                            width: 115,
+                            height: 35,
+                            decoration: BoxDecoration(
+                              color: Colors.transparent,
+                              borderRadius: BorderRadius.circular(5),
+                            ),
+                            child: Center(
+                              child: Text(
+                                widget.atendimento.pdfReciboUrl != null && widget.atendimento.pdfReciboUrl!.isNotEmpty
+                                    ? 'Visualizar Relatório'
+                                    : 'Gerar Relatório',
+                                style: const TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 11,
+                                  fontFamily: 'Roboto',
+                                  fontWeight: FontWeight.w600,
+                                  height: 1,
+                                ),
+                              ),
                             ),
                           ),
                         ),
                       ),
                     ),
-                  ),
+                  ],
                 ),
                 if (_isGeneratingReport)
                   Positioned.fill(

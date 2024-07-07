@@ -140,7 +140,7 @@ class _DetalheHistorico extends State<DetalheHistorico> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               const SizedBox(height: 10),
-                              _buildDocumentRow(context),
+                              //_buildDocumentRow(context),
                               const SizedBox(height: 10),
 
                               _buildSection(
