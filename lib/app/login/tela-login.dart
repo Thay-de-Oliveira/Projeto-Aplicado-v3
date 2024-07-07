@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:provider/provider.dart';
 import 'package:projetoaplicado/backend/controllers/usuarioController.dart';
+import 'package:projetoaplicado/app/app-state.dart';
 
 class LoginApp extends StatefulWidget {
   @override
@@ -11,7 +13,7 @@ class _LoginAppState extends State<LoginApp> {
   TextEditingController _usernameController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
 
-  final UserController _userController =  Get.find<UserController>();
+  final UserController _userController = Get.find<UserController>();
 
   @override
   Widget build(BuildContext context) {
@@ -118,15 +120,6 @@ class _LoginAppState extends State<LoginApp> {
 
                     //TEXTO "ESQUECI MINHA SENHA"
                     const SizedBox(height: 30), // Espaço entre os campos e o link "Esqueci minha senha"
-                    // TextButton(
-                    //   onPressed: () {
-                    //     print('Esqueci minha senha');
-                    //   },
-                    //   child: const Text(
-                    //     'Esqueci minha senha',
-                    //     style: TextStyle(color: Colors.white),
-                    //   ),
-                    // ),
 
                     const SizedBox(height: 5),
 
@@ -152,6 +145,7 @@ class _LoginAppState extends State<LoginApp> {
                               );
 
                               if (loginMessage == "Login bem sucedido!") {
+                                Provider.of<AppState>(context, listen: false).loadData();
                                 Navigator.of(context).pushReplacementNamed('/tela-inicio');
                               }
                             },
@@ -165,31 +159,6 @@ class _LoginAppState extends State<LoginApp> {
                               style: TextStyle(color: Colors.white, fontSize: 15),
                             ),
                           ),
-
-                          // const SizedBox(height: 30), // Espaço entre os botões
-
-                          // Row(
-                          //   mainAxisAlignment: MainAxisAlignment.center,
-                          //   mainAxisSize: MainAxisSize.max,
-                          //   children: [
-                          //     const Text(
-                          //       "Não possui uma conta?",
-                          //       style: TextStyle(color: Color(0xffffffff)),
-                          //     ),
-                          //     TextButton(
-                          //       child: const Text(
-                          //         "Cadastre-se",
-                          //         style: TextStyle(
-                          //           color: Color(0xff1d3484),
-                          //           fontWeight: FontWeight.bold, //Negrito
-                          //         ),
-                          //       ),
-                          //       onPressed: () => {
-                          //         Navigator.of(context).pushNamed("/tela-cadastro")
-                          //       },
-                          //     ),
-                          //   ],
-                          // )
                         ],
                       ),
                     )

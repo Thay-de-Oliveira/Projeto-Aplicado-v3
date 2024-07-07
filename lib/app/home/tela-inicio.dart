@@ -21,12 +21,12 @@ class _HomeState extends State<Home> {
   void initState() {
     super.initState();
     var appState = Provider.of<AppState>(context, listen: false);
-    appState.atualizarTela('inicio');
+    appState.loadData(); // Carrega os dados ao iniciar
   }
 
   @override
   Widget build(BuildContext context) {
-    var appState = Provider.of<AppState>(context, listen: false);
+    var appState = Provider.of<AppState>(context);
     double screenWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(

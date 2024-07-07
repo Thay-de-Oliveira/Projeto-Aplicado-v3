@@ -1,25 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:get/get.dart';
-import 'package:http/http.dart' as http;
-
-import 'app/components/globais/menu-inferior.dart';
-import 'app/components/globais/barra-superior.dart';
-
-import 'app/home/atendimentos/cadastro/tela-atendimento-forms.dart';
-import 'app/login/tela-cadastro.dart';
-import 'app/home/tela-inicio.dart';
 import 'app/app-state.dart';
-
-import 'app/home/tela-inicio.dart';
+import 'controllerBinding.dart';
 import 'app/login/tela-login.dart';
+import 'app/home/tela-inicio.dart';
 import 'app/home/tela-mapa.dart';
 import 'app/home/tela-usuario.dart';
-
-import 'backend/services/usuarioService.dart';
-import 'backend/services/acontecimentoService.dart';
-import 'backend/controllers/acontecimentoController.dart';
-import 'controllerBinding.dart';
+import 'app/home/atendimentos/cadastro/tela-atendimento-forms.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -40,7 +28,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-      initialBinding: ControllerBinding(), // Configurar o binding aqui
+      initialBinding: ControllerBinding(),
       theme: ThemeData(
         primaryColor: Color(0xFF1B7CB3),
         buttonTheme: ButtonThemeData(
@@ -84,10 +72,9 @@ class MyApp extends StatelessWidget {
           ),
         ),
       ),
-      initialRoute: '/', // Rota inicial
+      initialRoute: '/',
       routes: {
-        '/': (context) => LoginApp(), // Login
-        //'/tela-cadastro': (context) => CadastroApp(),
+        '/': (context) => LoginApp(),
         '/tela-login': (context) => LoginApp(),
         '/tela-inicio': (context) => const Home(title: ''),
         '/tela-mapa': (context) => Mapa(),
