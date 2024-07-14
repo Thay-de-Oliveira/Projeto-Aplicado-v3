@@ -273,8 +273,7 @@ class _RelatorioAtendimentoState extends State<RelatorioAtendimento> {
                           : Obx(() {
                               var atendimentos = atendimentoController.listAtendimentoObs
                                   .where((atendimento) => atendimento.pendente == true)
-                                  .toList()
-                                  ..sort((a, b) => b.dataSolicitacao.compareTo(a.dataSolicitacao));
+                                  .toList();
 
                               return ListView.builder(
                                 shrinkWrap: true,
