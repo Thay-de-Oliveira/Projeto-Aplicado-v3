@@ -25,10 +25,6 @@ class _RelatorioAcontecimentoState extends State<RelatorioAcontecimento> {
   @override
   void initState() {
     super.initState();
-    // DateTime now = DateTime.now();
-    // DateTime tenDaysAgo = now.subtract(Duration(days: 10));
-    // _dataInicio = tenDaysAgo;
-    // _dataFim = now;
     _loadAcontecimentos();
   }
 
@@ -172,7 +168,7 @@ class _RelatorioAcontecimentoState extends State<RelatorioAcontecimento> {
                               );
                             },
                             child: Container(
-                              width: 90,
+                              width: 110,
                               height: 80,
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
@@ -220,7 +216,7 @@ class _RelatorioAcontecimentoState extends State<RelatorioAcontecimento> {
                               );
                             },
                             child: Container(
-                              width: 90,
+                              width: 110,
                               height: 80,
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.center,

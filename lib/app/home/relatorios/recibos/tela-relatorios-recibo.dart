@@ -161,7 +161,7 @@ class _RelatorioReciboState extends State<RelatorioRecibo> {
                               );
                             },
                             child: Container(
-                              width: 90,
+                              width: 110,
                               height: 80,
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
@@ -204,7 +204,7 @@ class _RelatorioReciboState extends State<RelatorioRecibo> {
                           child: InkWell(
                             onTap: () {},
                             child: Container(
-                              width: 90,
+                              width: 110,
                               height: 80,
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.center,

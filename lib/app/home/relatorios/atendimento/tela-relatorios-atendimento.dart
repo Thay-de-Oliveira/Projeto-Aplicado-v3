@@ -27,10 +27,6 @@ class _RelatorioAtendimentoState extends State<RelatorioAtendimento> {
   @override
   void initState() {
     super.initState();
-    // DateTime now = DateTime.now();
-    // DateTime tenDaysAgo = now.subtract(Duration(days: 10));
-    // _dataInicio = tenDaysAgo;
-    // _dataFim = now;
     _loadAtendimentos();
   }
 
@@ -145,7 +141,7 @@ class _RelatorioAtendimentoState extends State<RelatorioAtendimento> {
                                     height: 30,
                                     child: Image.asset('assets/imagens/icon-acontecimento-inativo.png'),
                                   ),
-                                  SizedBox(height: 5.0), // Espaço entre o ícone e o texto
+                                  SizedBox(height: 5.0),
                                   Text(
                                     'Acontecimento',
                                     style: TextStyle(
@@ -178,7 +174,7 @@ class _RelatorioAtendimentoState extends State<RelatorioAtendimento> {
                           child: InkWell(
                             onTap: () {},
                             child: Container(
-                              width: 90,
+                              width: 110,
                               height: 80,
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
@@ -188,7 +184,7 @@ class _RelatorioAtendimentoState extends State<RelatorioAtendimento> {
                                     height: 30,
                                     child: Image.asset('assets/imagens/icon-atendimento-ativo.png'),
                                   ),
-                                  SizedBox(height: 5.0), // Espaço entre o ícone e o texto
+                                  SizedBox(height: 5.0),
                                   Text(
                                     'Atendimento',
                                     style: TextStyle(
@@ -226,7 +222,7 @@ class _RelatorioAtendimentoState extends State<RelatorioAtendimento> {
                               );
                             },
                             child: Container(
-                              width: 90,
+                              width: 110,
                               height: 80,
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
@@ -236,7 +232,7 @@ class _RelatorioAtendimentoState extends State<RelatorioAtendimento> {
                                     height: 30,
                                     child: Image.asset('assets/imagens/icon-recibos-inativo.png'),
                                   ),
-                                  SizedBox(height: 5.0), // Espaço entre o ícone e o texto
+                                  SizedBox(height: 5.0),
                                   Text(
                                     'Recibos',
                                     style: TextStyle(

@@ -1,26 +1,19 @@
-2024/07/07-11:14:33.215 1874 Reusing MANIFEST C:\Users\Gamer\AppData\Local\Temp\flutter_tools.1b5df16f\flutter_tools_chrome_device.b85dc897\Default\Site Characteristics Database/MANIFEST-000001
-2024/07/07-11:14:33.219 1874 Recovering log #84
-2024/07/07-11:14:33.219 1874 Reusing old log C:\Users\Gamer\AppData\Local\Temp\flutter_tools.1b5df16f\flutter_tools_chrome_device.b85dc897\Default\Site Characteristics Database/000084.log 
-2024/07/07-11:14:33.220 1874 Delete type=0 #3
-2024/07/07-11:14:33.220 1874 Delete type=2 #4
-2024/07/07-11:14:33.220 1874 Delete type=0 #6
-2024/07/07-11:14:33.220 1874 Delete type=2 #7
-2024/07/07-11:14:33.220 1874 Delete type=2 #8
-2024/07/07-11:14:33.220 1874 Delete type=0 #10
-2024/07/07-11:14:33.220 1874 Delete type=0 #15
-2024/07/07-11:14:33.221 1874 Delete type=2 #16
-2024/07/07-11:14:33.221 1874 Delete type=2 #18
-2024/07/07-11:14:33.221 1874 Delete type=2 #19
-2024/07/07-11:14:33.221 1874 Delete type=2 #20
-2024/07/07-11:14:33.221 1874 Delete type=0 #26
-2024/07/07-11:14:33.221 1874 Delete type=2 #27
-2024/07/07-11:14:33.221 1874 Delete type=0 #34
-2024/07/07-11:14:33.221 1874 Delete type=2 #35
-2024/07/07-11:14:33.221 1874 Delete type=2 #41
-2024/07/07-11:14:33.221 1874 Delete type=0 #49
-2024/07/07-11:14:33.221 1874 Delete type=2 #50
-2024/07/07-11:14:33.221 1874 Delete type=2 #57
-2024/07/07-11:14:33.221 1874 Delete type=0 #66
-2024/07/07-11:14:33.221 1874 Delete type=2 #67
-2024/07/07-11:14:33.221 1874 Delete type=2 #74
-2024/07/07-11:14:33.221 1874 Delete type=2 #85
+2024/07/14-14:39:42.346 4170 Reusing MANIFEST C:\Users\THAIN~1\AppData\Local\Temp\flutter_tools.92c69a8e\flutter_tools_chrome_device.60e9a9f1\Default\Site Characteristics Database/MANIFEST-000001
+2024/07/14-14:39:42.356 2f54 Compacting 14@0 + 0@1 files
+2024/07/14-14:39:42.377 2f54 Generated table #39@0: 3 keys, 262 bytes
+2024/07/14-14:39:42.377 2f54 Compacted 14@0 + 0@1 files => 262 bytes
+2024/07/14-14:39:42.382 2f54 compacted to: files[ 0 1 0 0 0 0 0 ]
+2024/07/14-14:39:42.383 2f54 Delete type=2 #4
+2024/07/14-14:39:42.383 2f54 Delete type=2 #6
+2024/07/14-14:39:42.383 2f54 Delete type=2 #11
+2024/07/14-14:39:42.383 2f54 Delete type=2 #13
+2024/07/14-14:39:42.383 2f54 Delete type=2 #14
+2024/07/14-14:39:42.383 2f54 Delete type=2 #20
+2024/07/14-14:39:42.383 2f54 Delete type=2 #22
+2024/07/14-14:39:42.383 2f54 Delete type=2 #23
+2024/07/14-14:39:42.383 2f54 Delete type=2 #24
+2024/07/14-14:39:42.384 2f54 Delete type=2 #31
+2024/07/14-14:39:42.384 2f54 Delete type=2 #32
+2024/07/14-14:39:42.384 2f54 Delete type=2 #33
+2024/07/14-14:39:42.384 2f54 Delete type=2 #34
+2024/07/14-14:39:42.384 2f54 Delete type=2 #35
