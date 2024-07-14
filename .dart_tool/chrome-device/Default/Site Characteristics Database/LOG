@@ -1,19 +1,40 @@
-2024/07/14-14:39:42.346 4170 Reusing MANIFEST C:\Users\THAIN~1\AppData\Local\Temp\flutter_tools.92c69a8e\flutter_tools_chrome_device.60e9a9f1\Default\Site Characteristics Database/MANIFEST-000001
-2024/07/14-14:39:42.356 2f54 Compacting 14@0 + 0@1 files
-2024/07/14-14:39:42.377 2f54 Generated table #39@0: 3 keys, 262 bytes
-2024/07/14-14:39:42.377 2f54 Compacted 14@0 + 0@1 files => 262 bytes
-2024/07/14-14:39:42.382 2f54 compacted to: files[ 0 1 0 0 0 0 0 ]
-2024/07/14-14:39:42.383 2f54 Delete type=2 #4
-2024/07/14-14:39:42.383 2f54 Delete type=2 #6
-2024/07/14-14:39:42.383 2f54 Delete type=2 #11
-2024/07/14-14:39:42.383 2f54 Delete type=2 #13
-2024/07/14-14:39:42.383 2f54 Delete type=2 #14
-2024/07/14-14:39:42.383 2f54 Delete type=2 #20
-2024/07/14-14:39:42.383 2f54 Delete type=2 #22
-2024/07/14-14:39:42.383 2f54 Delete type=2 #23
-2024/07/14-14:39:42.383 2f54 Delete type=2 #24
-2024/07/14-14:39:42.384 2f54 Delete type=2 #31
-2024/07/14-14:39:42.384 2f54 Delete type=2 #32
-2024/07/14-14:39:42.384 2f54 Delete type=2 #33
-2024/07/14-14:39:42.384 2f54 Delete type=2 #34
-2024/07/14-14:39:42.384 2f54 Delete type=2 #35
+2024/07/14-17:13:50.514 4b7c Reusing MANIFEST C:\Users\THAIN~1\AppData\Local\Temp\flutter_tools.249e2fc4\flutter_tools_chrome_device.b8e87459\Default\Site Characteristics Database/MANIFEST-000001
+2024/07/14-17:13:50.557 4b7c Recovering log #3
+2024/07/14-17:13:50.557 4b7c Level-0 table #41: started
+2024/07/14-17:13:50.602 4b7c Level-0 table #41: 590 bytes OK
+2024/07/14-17:13:50.603 4b7c Recovering log #6
+2024/07/14-17:13:50.603 4b7c Level-0 table #42: started
+2024/07/14-17:13:50.612 4b7c Level-0 table #42: 923 bytes OK
+2024/07/14-17:13:50.612 4b7c Recovering log #10
+2024/07/14-17:13:50.612 4b7c Level-0 table #43: started
+2024/07/14-17:13:50.625 4b7c Level-0 table #43: 3226 bytes OK
+2024/07/14-17:13:50.626 4b7c Recovering log #19
+2024/07/14-17:13:50.626 4b7c Level-0 table #44: started
+2024/07/14-17:13:50.648 4b7c Level-0 table #44: 322 bytes OK
+2024/07/14-17:13:50.648 4b7c Recovering log #30
+2024/07/14-17:13:50.648 4b7c Recovering log #38
+2024/07/14-17:13:50.648 4b7c Reusing old log C:\Users\THAIN~1\AppData\Local\Temp\flutter_tools.249e2fc4\flutter_tools_chrome_device.b8e87459\Default\Site Characteristics Database/000038.log 
+2024/07/14-17:13:50.678 4b7c Delete type=0 #3
+2024/07/14-17:13:50.679 4b7c Delete type=2 #4
+2024/07/14-17:13:50.679 4b7c Delete type=2 #6
+2024/07/14-17:13:50.679 4b7c Delete type=0 #6
+2024/07/14-17:13:50.679 4b7c Delete type=0 #10
+2024/07/14-17:13:50.679 4b7c Delete type=2 #11
+2024/07/14-17:13:50.679 4b7c Delete type=2 #13
+2024/07/14-17:13:50.679 4b7c Delete type=2 #14
+2024/07/14-17:13:50.679 4b7c Delete type=0 #19
+2024/07/14-17:13:50.679 4b7c Delete type=2 #20
+2024/07/14-17:13:50.679 4b7c Delete type=2 #22
+2024/07/14-17:13:50.679 4b7c Delete type=2 #23
+2024/07/14-17:13:50.679 4b7c Delete type=2 #24
+2024/07/14-17:13:50.679 4b7c Delete type=0 #30
+2024/07/14-17:13:50.679 4b7c Delete type=2 #31
+2024/07/14-17:13:50.683 3024 Compacting 4@0 + 1@1 files
+2024/07/14-17:13:50.698 3024 Generated table #45@0: 3 keys, 262 bytes
+2024/07/14-17:13:50.698 3024 Compacted 4@0 + 1@1 files => 262 bytes
+2024/07/14-17:13:50.708 3024 compacted to: files[ 0 1 0 0 0 0 0 ]
+2024/07/14-17:13:50.709 3024 Delete type=2 #39
+2024/07/14-17:13:50.709 3024 Delete type=2 #41
+2024/07/14-17:13:50.709 3024 Delete type=2 #42
+2024/07/14-17:13:50.710 3024 Delete type=2 #43
+2024/07/14-17:13:50.710 3024 Delete type=2 #44

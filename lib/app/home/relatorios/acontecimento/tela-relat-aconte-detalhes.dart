@@ -17,6 +17,7 @@ class DetalhesRelatorioAcontecimento extends StatelessWidget {
       body: CustomScrollView(
         slivers: <Widget>[
           SliverAppBar(
+            automaticallyImplyLeading: false, // Remove o botão de voltar preto
             floating: true,
             pinned: true,
             snap: false,

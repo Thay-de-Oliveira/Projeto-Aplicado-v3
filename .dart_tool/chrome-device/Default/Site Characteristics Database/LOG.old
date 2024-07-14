@@ -1,26 +1,19 @@
-2024/07/14-14:39:42.240 4170 Log #3: 18 ops saved to Table #32 OK
-2024/07/14-14:39:42.286 4170 Archiving C:\Users\THAIN~1\AppData\Local\Temp\flutter_tools.92c69a8e\flutter_tools_chrome_device.60e9a9f1\Default\Site Characteristics Database/000003.log: OK
-2024/07/14-14:39:42.294 4170 Log #6: 90 ops saved to Table #33 OK
-2024/07/14-14:39:42.299 4170 Archiving C:\Users\THAIN~1\AppData\Local\Temp\flutter_tools.92c69a8e\flutter_tools_chrome_device.60e9a9f1\Default\Site Characteristics Database/000006.log: OK
-2024/07/14-14:39:42.304 4170 Log #10: 228 ops saved to Table #34 OK
-2024/07/14-14:39:42.306 4170 Archiving C:\Users\THAIN~1\AppData\Local\Temp\flutter_tools.92c69a8e\flutter_tools_chrome_device.60e9a9f1\Default\Site Characteristics Database/000010.log: OK
-2024/07/14-14:39:42.322 4170 Log #19: 7 ops saved to Table #35 OK
-2024/07/14-14:39:42.324 4170 Archiving C:\Users\THAIN~1\AppData\Local\Temp\flutter_tools.92c69a8e\flutter_tools_chrome_device.60e9a9f1\Default\Site Characteristics Database/000019.log: OK
-2024/07/14-14:39:42.324 4170 Log #30: 0 ops saved to Table #36 OK
-2024/07/14-14:39:42.324 4170 Archiving C:\Users\THAIN~1\AppData\Local\Temp\flutter_tools.92c69a8e\flutter_tools_chrome_device.60e9a9f1\Default\Site Characteristics Database/000030.log: OK
-2024/07/14-14:39:42.325 4170 Table #4: 18 entries OK
-2024/07/14-14:39:42.325 4170 Table #6: 18 entries OK
-2024/07/14-14:39:42.325 4170 Table #11: 2 entries OK
-2024/07/14-14:39:42.325 4170 Table #13: 18 entries OK
-2024/07/14-14:39:42.325 4170 Table #14: 90 entries OK
-2024/07/14-14:39:42.326 4170 Table #20: 3 entries OK
-2024/07/14-14:39:42.326 4170 Table #22: 18 entries OK
-2024/07/14-14:39:42.326 4170 Table #23: 90 entries OK
-2024/07/14-14:39:42.326 4170 Table #24: 228 entries OK
-2024/07/14-14:39:42.326 4170 Table #31: 3 entries OK
-2024/07/14-14:39:42.326 4170 Table #32: 18 entries OK
-2024/07/14-14:39:42.327 4170 Table #33: 90 entries OK
-2024/07/14-14:39:42.327 4170 Table #34: 228 entries OK
-2024/07/14-14:39:42.327 4170 Table #35: 7 entries OK
-2024/07/14-14:39:42.331 4170 Archiving C:\Users\THAIN~1\AppData\Local\Temp\flutter_tools.92c69a8e\flutter_tools_chrome_device.60e9a9f1\Default\Site Characteristics Database/MANIFEST-000001: OK
-2024/07/14-14:39:42.343 4170 **** Repaired leveldb C:\Users\THAIN~1\AppData\Local\Temp\flutter_tools.92c69a8e\flutter_tools_chrome_device.60e9a9f1\Default\Site Characteristics Database; recovered 14 files; 13214 bytes. Some data may have been lost. ****
+2024/07/14-14:39:42.346 4170 Reusing MANIFEST C:\Users\THAIN~1\AppData\Local\Temp\flutter_tools.92c69a8e\flutter_tools_chrome_device.60e9a9f1\Default\Site Characteristics Database/MANIFEST-000001
+2024/07/14-14:39:42.356 2f54 Compacting 14@0 + 0@1 files
+2024/07/14-14:39:42.377 2f54 Generated table #39@0: 3 keys, 262 bytes
+2024/07/14-14:39:42.377 2f54 Compacted 14@0 + 0@1 files => 262 bytes
+2024/07/14-14:39:42.382 2f54 compacted to: files[ 0 1 0 0 0 0 0 ]
+2024/07/14-14:39:42.383 2f54 Delete type=2 #4
+2024/07/14-14:39:42.383 2f54 Delete type=2 #6
+2024/07/14-14:39:42.383 2f54 Delete type=2 #11
+2024/07/14-14:39:42.383 2f54 Delete type=2 #13
+2024/07/14-14:39:42.383 2f54 Delete type=2 #14
+2024/07/14-14:39:42.383 2f54 Delete type=2 #20
+2024/07/14-14:39:42.383 2f54 Delete type=2 #22
+2024/07/14-14:39:42.383 2f54 Delete type=2 #23
+2024/07/14-14:39:42.383 2f54 Delete type=2 #24
+2024/07/14-14:39:42.384 2f54 Delete type=2 #31
+2024/07/14-14:39:42.384 2f54 Delete type=2 #32
+2024/07/14-14:39:42.384 2f54 Delete type=2 #33
+2024/07/14-14:39:42.384 2f54 Delete type=2 #34
+2024/07/14-14:39:42.384 2f54 Delete type=2 #35
