@@ -110,7 +110,7 @@ class VisualizarAcontecimentoButton extends StatelessWidget {
 }
 
 class DataHoraInfo extends StatelessWidget {
-  final DateTime dataHora;
+  final String dataHora;
   final String numeroProtocolo;
   final String rua;
   final String bairro;
@@ -154,7 +154,7 @@ class DataHoraInfo extends StatelessWidget {
           ),
           const SizedBox(height: 8),
           Text(
-            'Data do acontecimento: ${DateFormat('dd/MM/yyyy').format(dataHora)}',
+            'Data do acontecimento: $dataHora',
             style: TextStyle(
               color: Colors.black.withOpacity(0.85),
               fontSize: 12,

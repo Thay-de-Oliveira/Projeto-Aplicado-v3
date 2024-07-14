@@ -38,8 +38,7 @@ class DetalhesAtendimentoPendente extends StatelessWidget {
                     _buildDetailRow('assets/imagens/icon-padrao-acontecimento.png', 'Atendimento Realizado:', (acontecimento.pendente != null && acontecimento.pendente == true) ? 'Não' : 'Sim'),
                     _buildDetailRow('assets/imagens/icon-padrao-acontecimento.png', 'Protocolo:', acontecimento.numeroProtocolo!),
                     _buildDetailRow('assets/imagens/icon-padrao-acontecimento.png', 'Endereço:', '${acontecimento.rua}, Bairro ${acontecimento.bairro}'),
-                    _buildDetailRow('assets/imagens/icon-data-vistoria.png', 'Data:', DateFormat('dd/MM/yyyy').format(acontecimento.dataHora)),
-                    _buildDetailRow('assets/imagens/icon-hora.png', 'Horário aproximado:', DateFormat('HH:mm').format(acontecimento.dataHora)),
+                    _buildDetailRow('assets/imagens/icon-data-vistoria.png', 'Data:', acontecimento.dataHora),
                   ],
                 ),
                 const SizedBox(height: 20),
@@ -64,6 +63,7 @@ class DetalhesAtendimentoPendente extends StatelessWidget {
                           MaterialPageRoute(
                             builder: (context) => AtendimentoForms(
                               numeroProtocolo: acontecimento.numeroProtocolo,
+                              dataSolicitacao: acontecimento.dataHora.toString(),
                             ),
                           ),
                         );

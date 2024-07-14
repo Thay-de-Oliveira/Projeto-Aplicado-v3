@@ -29,25 +29,25 @@ class MyApp extends StatelessWidget {
 
 class AcontecimentosForms extends StatefulWidget {
   @override
-  _FormularioAcontecimentoState createState() =>
-      _FormularioAcontecimentoState();
+  _FormularioAcontecimentoState createState() => _FormularioAcontecimentoState();
 }
 
 class _FormularioAcontecimentoState extends State<AcontecimentosForms> {
   final AcontecimentoController _acontecimentoController = Get.find<AcontecimentoController>();
   final CidadaoController _cidadaoController = Get.find<CidadaoController>();
 
-
-  final TextEditingController _cpfResponsavelController = TextEditingController();
-  final TextEditingController _cidadaoResponsavelController = TextEditingController();
+  final TextEditingController _cpfCidadaoResponsavelController = TextEditingController();
+  final TextEditingController _nomeCidadaoResponsavelController = TextEditingController();
 
   final TextEditingController _cepController = TextEditingController();
   final TextEditingController _ruaController = TextEditingController();
   final TextEditingController _bairroController = TextEditingController();
   final TextEditingController _cidadeController = TextEditingController();
   final TextEditingController _estadoController = TextEditingController();
+  final TextEditingController _numeroCasaController = TextEditingController();
   final CepController _cepControllerInstance = CepController();
 
+  String? _selectedCanalAtendimento;
   String? _selectedClasseAcontecimento;
   String? _selectedGrupo;
   String? _selectedSubGrupo;
@@ -148,7 +148,7 @@ class _FormularioAcontecimentoState extends State<AcontecimentosForms> {
         _bairroController.text.isEmpty ||
         _cidadeController.text.isEmpty ||
         _estadoController.text.isEmpty ||
-        _cidadaoResponsavelController.text.isEmpty) {
+        _nomeCidadaoResponsavelController.text.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('Por favor, preencha todos os campos.'),
@@ -169,14 +169,17 @@ class _FormularioAcontecimentoState extends State<AcontecimentosForms> {
         tipo: _selectedTipo!,
         subtipo: _selectedSubTipo!,
         infoCobrade: _selectedCobradeAutomatico!,
-        dataHora: DateTime.now(),
-        pendente: true,
-        cidadaoResponsavel: _cidadaoResponsavelController.text,
+        dataHora: DateFormat('dd/MM/yyyy HH:mm').format(DateTime.now()),
+        canalAtendimento: _selectedCanalAtendimento!,
+        nomeCidadaoResponsavel: _nomeCidadaoResponsavelController.text,
+        cpfCidadaoResponsavel: _cpfCidadaoResponsavelController.text,
         cep: _cepController.text,
         rua: _ruaController.text,
         bairro: _bairroController.text,
         cidade: _cidadeController.text,
         estado: _estadoController.text,
+        numeroCasa: int.tryParse(_numeroCasaController.text),
+        pendente: true,
       );
 
       var response = await _acontecimentoController.post(acontecimento);
@@ -239,6 +242,17 @@ class _FormularioAcontecimentoState extends State<AcontecimentosForms> {
                 ],
               ),
             ),
+            const SizedBox(width: 10),
+            Expanded(
+              child: TextFormField(
+                controller: _numeroCasaController,
+                decoration: _customInputDecoration('Número da casa:'),
+                keyboardType: TextInputType.number,
+                inputFormatters: [
+                  FilteringTextInputFormatter.digitsOnly,
+                ],
+              ),
+            ),
           ],
         ),
         const SizedBox(height: 16),
@@ -267,6 +281,15 @@ class _FormularioAcontecimentoState extends State<AcontecimentosForms> {
       ],
     );
   }
+
+  List<String> canalAtendimentoOptions = [
+    'Selecionar canal de atendimento',
+    'Polícia Militar - 190',
+    'Bombeiros -193',
+    'Polícia Civil - 197',
+    'Defesa Civil - 199',
+    'Outros'
+  ];
 
   // Opções para a classe de acontecimento
   List<String> classeOptions = [
@@ -702,7 +725,30 @@ class _FormularioAcontecimentoState extends State<AcontecimentosForms> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start, // Alinhar no topo
                   children: <Widget>[
+
                     SizedBox(height: 30),
+
+                    //Campo "Canal da solicitação"
+                    Column(
+                      children: [
+                        DropdownButtonFormField<String>(
+                          value: _selectedCanalAtendimento,
+                          items: canalAtendimentoOptions.map((String option) {
+                            return DropdownMenuItem<String>(
+                              value: option,
+                              child: Text(option),
+                            );
+                          }).toList(),
+                          onChanged: (String? newValue) {
+                            _selectedCanalAtendimento = newValue!;
+                          },
+                          decoration: _customInputDecoration(
+                              'Canal da solicitação:'), // Aplicar estilo personalizado
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 20),
+
                     // Campo "Classe de acontecimento"
                     Column(
                       children: [
@@ -865,7 +911,7 @@ class _FormularioAcontecimentoState extends State<AcontecimentosForms> {
                       ),
 
                     TypeAheadField<CidadaoModel>(
-                      controller: _cidadaoResponsavelController, // Este controller agora só para exibir o nome
+                      controller: _nomeCidadaoResponsavelController, // Este controller agora só para exibir o nome
                       debounceDuration: const Duration(milliseconds: 300),
                       suggestionsCallback: (search) async {
                         if (search.isEmpty) {
@@ -879,7 +925,7 @@ class _FormularioAcontecimentoState extends State<AcontecimentosForms> {
                       },
                       builder: (context, controller, focusNode) {
                         return TextField(
-                          controller: _cidadaoResponsavelController,
+                          controller: _nomeCidadaoResponsavelController,
                           focusNode: focusNode,
                           autofocus: false,
                           decoration: _customInputDecoration("Cidadão que relatou o acontecimento:"),
@@ -908,8 +954,8 @@ class _FormularioAcontecimentoState extends State<AcontecimentosForms> {
                       },
                       onSelected: (CidadaoModel cidadao) {
                         setState(() {
-                          _cidadaoResponsavelController.text = cidadao.name;
-                          _cpfResponsavelController.text = cidadao.cpf;
+                          _nomeCidadaoResponsavelController.text = cidadao.name;
+                          _cpfCidadaoResponsavelController.text = cidadao.cpf;
                         });
                       },
                     ),

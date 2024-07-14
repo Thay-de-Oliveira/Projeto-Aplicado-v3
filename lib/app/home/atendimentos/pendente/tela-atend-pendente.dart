@@ -27,10 +27,10 @@ class _AtendimentoPendenteState extends State<AtendimentoPendente> {
   @override
   void initState() {
     super.initState();
-    DateTime now = DateTime.now();
-    DateTime tenDaysAgo = now.subtract(Duration(days: 10));
-    _dataInicio = tenDaysAgo;
-    _dataFim = now;
+    // DateTime now = DateTime.now();
+    // DateTime tenDaysAgo = now.subtract(Duration(days: 10));
+    // _dataInicio = tenDaysAgo;
+    // _dataFim = now;
     _loadAcontecimentos();
   }
 

@@ -44,7 +44,7 @@ class _DetalheHistorico extends State<DetalheHistorico> {
   }
 
   Future<void> _loadData() async {
-    await _fetchCidadao(widget.atendimento.cidadaoResponsavel);
+    await _fetchCidadao(widget.atendimento.cpfCidadaoResponsavel);
     await _loadAcontecimento();
     setState(() {
       isLoading = false;
@@ -381,7 +381,7 @@ class _DetalheHistorico extends State<DetalheHistorico> {
     List<Map<String, dynamic>> documents = [
       {
         'title': 'Ocorrência',
-        'date': _acontecimento != null ? DateFormat('dd/MM/yyyy').format(_acontecimento!.dataHora) : 'Data não disponível',
+        'date': _acontecimento!.dataHora,
         'onTap': () => _visualizarRelatorio(context, 'acontecimento'),
       },
       {

@@ -2,11 +2,12 @@ class AtendimentosModel {
   final String? id;
   final String nProtocolo;
   final String tipoAtendimento;
-  final String canalAtendimento;
-  final String cidadaoResponsavel;
+  final String nomeCidadaoResponsavel;
+  final String cpfCidadaoResponsavel;
   final bool vistoriaRealizada;
   final String? tipoVistoria;
   final String dataSolicitacao;
+  final String dataAtendimento;
   final String? dataVistoria;
   final bool entregueItensAjuda;
   final List<String> materiaisEntregues;
@@ -19,6 +20,7 @@ class AtendimentosModel {
   final String bairro;
   final String cidade;
   final String estado;
+  final int? numeroCasa;
   bool pendente;
   final List<String>? imagesUrls;
 
@@ -26,11 +28,12 @@ class AtendimentosModel {
     this.id,
     required this.nProtocolo,
     required this.tipoAtendimento,
-    required this.canalAtendimento,
-    required this.cidadaoResponsavel,
+    required this.nomeCidadaoResponsavel,
+    required this.cpfCidadaoResponsavel,
     required this.vistoriaRealizada,
     this.tipoVistoria,
     required this.dataSolicitacao,
+    required this.dataAtendimento,
     this.dataVistoria,
     required this.entregueItensAjuda,
     required this.materiaisEntregues,
@@ -43,6 +46,7 @@ class AtendimentosModel {
     required this.bairro,
     required this.cidade,
     required this.estado,
+    this.numeroCasa,
     required this.pendente,
     this.imagesUrls,
   });
@@ -52,11 +56,12 @@ class AtendimentosModel {
       id: json['_id'],
       nProtocolo: json['nProtocolo'],
       tipoAtendimento: json['tipoAtendimento'],
-      canalAtendimento: json['canalAtendimento'],
-      cidadaoResponsavel: json['cidadaoResponsavel'],
+      nomeCidadaoResponsavel: json['nomeCidadaoResponsavel'],
+      cpfCidadaoResponsavel: json['cpfCidadaoResponsavel'],
       vistoriaRealizada: json['vistoriaRealizada'],
       tipoVistoria: json['tipoVistoria'],
       dataSolicitacao: json['dataSolicitacao'],
+      dataAtendimento: json['dataAtendimento'],
       dataVistoria: json['dataVistoria'],
       entregueItensAjuda: json['entregueItensAjuda'],
       materiaisEntregues: List<String>.from(json['materiaisEntregues']),
@@ -69,6 +74,7 @@ class AtendimentosModel {
       bairro: json['bairro'],
       cidade: json['cidade'],
       estado: json['estado'],
+      numeroCasa: json['numeroCasa'],
       pendente: json['pendente'],
       imagesUrls: json['imagesUrls'] != null ? List<String>.from(json['imagesUrls']) : null,
     );
@@ -78,11 +84,12 @@ class AtendimentosModel {
         '_id': id,
         'nProtocolo': nProtocolo,
         'tipoAtendimento': tipoAtendimento,
-        'canalAtendimento': canalAtendimento,
-        'cidadaoResponsavel': cidadaoResponsavel,
+        'nomeCidadaoResponsavel': nomeCidadaoResponsavel,
+        'cpfCidadaoResponsavel': cpfCidadaoResponsavel,
         'vistoriaRealizada': vistoriaRealizada,
         'tipoVistoria': tipoVistoria,
         'dataSolicitacao': dataSolicitacao,
+        'dataAtendimento': dataAtendimento,
         'dataVistoria': dataVistoria,
         'entregueItensAjuda': entregueItensAjuda,
         'materiaisEntregues': materiaisEntregues,
@@ -95,6 +102,7 @@ class AtendimentosModel {
         'bairro': bairro,
         'cidade': cidade,
         'estado': estado,
+        'numeroCasa': numeroCasa,
         'pendente': pendente,
         'imagesUrls': imagesUrls,
       };

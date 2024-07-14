@@ -33,9 +33,9 @@ class DetalhesRelatorioAcontecimento extends StatelessWidget {
                   [
                     _buildDetailRow('assets/imagens/icon-padrao-acontecimento.png', 'Atendimento Realizado:', (acontecimento.pendente != null && acontecimento.pendente == true) ? 'Não' : 'Sim'),
                     _buildDetailRow('assets/imagens/icon-padrao-acontecimento.png', 'Protocolo:', acontecimento.numeroProtocolo!),
-                    _buildDetailRow('assets/imagens/icon-data-vistoria.png', 'Data:', DateFormat('dd/MM/yyyy').format(acontecimento.dataHora)),
-                    _buildDetailRow('assets/imagens/icon-hora.png', 'Horário aproximado:', DateFormat('HH:mm').format(acontecimento.dataHora)),
-                    _buildDetailRow('assets/imagens/icon-padrao-acontecimento.png', 'Cidadão solicitante:', acontecimento.cidadaoResponsavel),
+                    _buildDetailRow('assets/imagens/icon-data-vistoria.png', 'Data:', acontecimento.dataHora),
+                    _buildDetailRow('assets/imagens/icon-padrao-acontecimento.png', 'Nome Cidadão solicitante:', acontecimento.nomeCidadaoResponsavel),
+                    _buildDetailRow('assets/imagens/icon-padrao-acontecimento.png', 'CPF Cidadão solicitante:', acontecimento.cpfCidadaoResponsavel),
                   ],
                 ),
                 _buildSection(

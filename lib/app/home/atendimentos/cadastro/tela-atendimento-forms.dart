@@ -26,8 +26,9 @@ import '../historico/tela-atend-historico.dart';
 
 class AtendimentoForms extends StatefulWidget {
   final String? numeroProtocolo;
+  final String? dataSolicitacao;
 
-  AtendimentoForms({Key? key, this.numeroProtocolo}) : super(key: key);
+  AtendimentoForms({Key? key, this.numeroProtocolo, this.dataSolicitacao}) : super(key: key);
 
   @override
   _AtendimentoFormsState createState() => _AtendimentoFormsState();
@@ -50,17 +51,20 @@ class _AtendimentoFormsState extends State<AtendimentoForms> {
   List<Item> items = [];
 
   final TextEditingController _cpfResponsavelController = TextEditingController();
-  final TextEditingController _cidadaoResponsavelController = TextEditingController();
+  final TextEditingController _nomeCidadaoResponsavelController = TextEditingController();
   final TextEditingController _atendenteResponsavelController = TextEditingController();
   final CidadaoController cidadaoController = CidadaoController.cidadaoController;
   final TextEditingController _dataSolicitacaoController = TextEditingController();
+  final TextEditingController _dataAtendimentoController = TextEditingController();
   final TextEditingController _dataVistoriaController = TextEditingController();
   final TextEditingController _observacoesController = TextEditingController();
+
   final TextEditingController _cepController = TextEditingController();
   final TextEditingController _ruaController = TextEditingController();
   final TextEditingController _bairroController = TextEditingController();
   final TextEditingController _cidadeController = TextEditingController();
   final TextEditingController _estadoController = TextEditingController();
+    final TextEditingController _numeroCasaController = TextEditingController();
   final CepController _cepControllerInstance = CepController();
 
   @override
@@ -69,6 +73,9 @@ class _AtendimentoFormsState extends State<AtendimentoForms> {
     _carregarUsuario();
     if (widget.numeroProtocolo != null) {
       _selectedNumeroProtocoloAtendimento = widget.numeroProtocolo!;
+    }
+    if (widget.dataSolicitacao != null) {
+      _dataSolicitacaoController.text = widget.dataSolicitacao!;
     }
     items = [
       Item(name: 'Água Potável'),
@@ -142,9 +149,9 @@ class _AtendimentoFormsState extends State<AtendimentoForms> {
     try {
       if (_selectedNumeroProtocoloAtendimento == null ||
           _selectedTipoAtendimento == 'Selecionar atendimento' ||
-          _selectedCanalAtendimento == 'Selecionar canal de atendimento' ||
           _selectedVistoriaRealizada == 'Selecionar' ||
           _dataSolicitacaoController.text.isEmpty ||
+          _dataAtendimentoController.text.isEmpty ||
           (_selectedVistoriaRealizada == 'Sim' && _dataVistoriaController.text.isEmpty) ||
           _selectedEntregarItens == 'Selecionar') {
         _exibirMensagem('Por favor, preencha todos os campos obrigatórios.');
@@ -175,11 +182,12 @@ class _AtendimentoFormsState extends State<AtendimentoForms> {
       AtendimentosModel novoAtendimento = AtendimentosModel(
         nProtocolo: _selectedNumeroProtocoloAtendimento!,
         tipoAtendimento: _selectedTipoAtendimento,
-        canalAtendimento: _selectedCanalAtendimento,
-        cidadaoResponsavel: _cpfResponsavelController.text,
+        nomeCidadaoResponsavel: _nomeCidadaoResponsavelController.text,
+        cpfCidadaoResponsavel: _cpfResponsavelController.text,
         vistoriaRealizada: _vistoriaRealizadaController,
         tipoVistoria: _selectedTipoRealizada,
         dataSolicitacao: _dataSolicitacaoController.text,
+        dataAtendimento: _dataAtendimentoController.text,
         dataVistoria: _dataVistoriaController.text,
         entregueItensAjuda: _selectedEntregarItens == 'Sim' ? true : false,
         materiaisEntregues: getSelectedItems(),
@@ -192,6 +200,7 @@ class _AtendimentoFormsState extends State<AtendimentoForms> {
         bairro: _bairroController.text,
         cidade: _cidadeController.text,
         estado: _estadoController.text,
+        numeroCasa: int.tryParse(_numeroCasaController.text),
       );
 
       // Converter os XFiles para Files
@@ -233,13 +242,13 @@ class _AtendimentoFormsState extends State<AtendimentoForms> {
     setState(() {
       _selectedNumeroProtocoloAtendimento = null;
       _selectedTipoAtendimento = 'Selecionar atendimento';
-      _selectedCanalAtendimento = 'Selecionar canal de atendimento';
       _selectedVistoriaRealizada = 'Selecionar';
       _selectedTipoRealizada = 'Selecionar';
       _selectedEntregarItens = 'Selecionar';
-      _cidadaoResponsavelController.clear();
+      _nomeCidadaoResponsavelController.clear();
       _cpfResponsavelController.clear();
       _dataSolicitacaoController.clear();
+      _dataAtendimentoController.clear();
       _dataVistoriaController.clear();
       _observacoesController.clear();
       _imagensController.clear();
@@ -265,7 +274,7 @@ class _AtendimentoFormsState extends State<AtendimentoForms> {
     }).toList();
   }
 
-  Widget _buildAddressFields() {
+    Widget _buildAddressFields() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -303,6 +312,17 @@ class _AtendimentoFormsState extends State<AtendimentoForms> {
                       ),
                     ),
                   ),
+                ],
+              ),
+            ),
+            const SizedBox(width: 10),
+            Expanded(
+              child: TextFormField(
+                controller: _numeroCasaController,
+                decoration: _customInputDecoration('Número da casa:'),
+                keyboardType: TextInputType.number,
+                inputFormatters: [
+                  FilteringTextInputFormatter.digitsOnly,
                 ],
               ),
             ),
@@ -363,7 +383,6 @@ class _AtendimentoFormsState extends State<AtendimentoForms> {
 
   String? _selectedNumeroProtocoloAtendimento;
   String _selectedTipoAtendimento = 'Selecionar atendimento';
-  String _selectedCanalAtendimento = 'Selecionar canal de atendimento';
   String _selectedVistoriaRealizada = 'Selecionar';
   bool _vistoriaRealizadaController = false;
   String _selectedTipoRealizada = 'Selecionar';
@@ -378,14 +397,6 @@ class _AtendimentoFormsState extends State<AtendimentoForms> {
     'Presencial - Regional',
     'Presencial - Estadual',
     'Remoto',
-    'Outros'
-  ];
-  List<String> canalAtendimentoOptions = [
-    'Selecionar canal de atendimento',
-    'Polícia Militar - 190',
-    'Bombeiros -193',
-    'Polícia Civil - 197',
-    'Defesa Civil - 199',
     'Outros'
   ];
   List<String> vistoriaRealizadaOptions = ['Selecionar', 'Sim', 'Não'];
@@ -717,24 +728,6 @@ class _AtendimentoFormsState extends State<AtendimentoForms> {
 
                           const SizedBox(height: 20),
 
-                          //Campo "Canal da solicitação"
-                          DropdownButtonFormField<String>(
-                            value: _selectedCanalAtendimento,
-                            items: canalAtendimentoOptions.map((String option) {
-                              return DropdownMenuItem<String>(
-                                value: option,
-                                child: Text(option),
-                              );
-                            }).toList(),
-                            onChanged: (String? newValue) {
-                              _selectedCanalAtendimento = newValue!;
-                            },
-                            decoration: _customInputDecoration(
-                                'Canal da solicitação:'), // Aplicar estilo personalizado
-                          ),
-
-                          const SizedBox(height: 20),
-
                           //Campos lado a lado "Datas"
                           Row(
                             children: [
@@ -742,13 +735,13 @@ class _AtendimentoFormsState extends State<AtendimentoForms> {
                                 child: GestureDetector(
                                   onTap: () => _selectDate(
                                     context, 
-                                    _dataSolicitacaoController,
+                                    _dataAtendimentoController,
                                   ),
                                   child: AbsorbPointer(
                                     child: TextFormField(
-                                      controller: _dataSolicitacaoController,
+                                      controller: _dataAtendimentoController,
                                       decoration: _customInputDecoration(
-                                          'Data da solicitação:'),
+                                          'Data do atendimento:'),
                                     ),
                                   ),
                                 ),
@@ -760,7 +753,7 @@ class _AtendimentoFormsState extends State<AtendimentoForms> {
 
                           TypeAheadField<CidadaoModel>(
                             controller:
-                                _cidadaoResponsavelController, // Este controller agora só para exibir o nome
+                                _nomeCidadaoResponsavelController, // Este controller agora só para exibir o nome
                             debounceDuration:
                                 const Duration(milliseconds: 300),
                             suggestionsCallback: (search) async {
@@ -776,7 +769,7 @@ class _AtendimentoFormsState extends State<AtendimentoForms> {
                             },
                             builder: (context, controller, focusNode) {
                               return TextField(
-                                controller: _cidadaoResponsavelController,
+                                controller: _nomeCidadaoResponsavelController,
                                 focusNode: focusNode,
                                 autofocus: false,
                                 decoration: _customInputDecoration(
@@ -810,7 +803,7 @@ class _AtendimentoFormsState extends State<AtendimentoForms> {
                             },
                             onSelected: (CidadaoModel cidadao) {
                               setState(() {
-                                _cidadaoResponsavelController.text =
+                                _nomeCidadaoResponsavelController.text =
                                     cidadao.name;
                                 _cpfResponsavelController.text = cidadao.cpf;
                               });
