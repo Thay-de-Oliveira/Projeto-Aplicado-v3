@@ -10,7 +10,7 @@ class AtendimentoService {
   final String baseUrl;
   final http.Client client;
 
-  AtendimentoService(this.client, {this.baseUrl = "https://web-production-0b75.up.railway.app/atendimentos"});
+  AtendimentoService(this.client, {this.baseUrl = "http://15.228.187.56:3000/atendimentos"});
 
   Future<List<AtendimentosModel>> fetchListAtendimento() async {
     try {

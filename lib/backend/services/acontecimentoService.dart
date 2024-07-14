@@ -6,7 +6,7 @@ class AcontecimentoService {
   final String baseUrl;
   final http.Client client;
 
-  AcontecimentoService(this.client, {this.baseUrl = "https://web-production-0b75.up.railway.app"});
+  AcontecimentoService(this.client, {this.baseUrl = "http://15.228.187.56:3000"});
 
   Future<List<AcontecimentoModel>> fetchListAcontecimento() async {
     final response = await client.get(Uri.parse('$baseUrl/acontecimentos'));

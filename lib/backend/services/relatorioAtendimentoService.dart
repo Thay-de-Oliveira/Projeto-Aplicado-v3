@@ -3,7 +3,7 @@ import 'package:http/http.dart' as http;
 
 class RelatorioAtendimentoService {
   final http.Client client;
-  String baseUrl = "https://web-production-0b75.up.railway.app/relatorios";
+  String baseUrl = "http://15.228.187.56:3000/relatorios";
 
   RelatorioAtendimentoService({required this.client});
 

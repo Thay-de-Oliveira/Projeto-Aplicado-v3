@@ -8,7 +8,7 @@ import 'package:projetoaplicado/backend/models/usuarioModel.dart';
 class UserService {
   late http.Client client;
   final storage = FlutterSecureStorage();
-  final String baseUrl = "https://web-production-0b75.up.railway.app/auth";
+  final String baseUrl = "http://15.228.187.56:3000/auth";
 
   UserService(this.client);
 
