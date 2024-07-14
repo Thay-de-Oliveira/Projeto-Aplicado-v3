@@ -8,9 +8,6 @@ class MenuInferior extends StatefulWidget {
 }
 
 class _MenuInferiorState extends State<MenuInferior> {
-  String telaAtual = 'inicio'; //Inicialmente, a tela de início está ativa
-  Color corAtiva = Colors.grey;
-
   @override
   Widget build(BuildContext context) {
     var appState = Provider.of<AppState>(context, listen: false);
@@ -48,12 +45,10 @@ class _MenuInferiorState extends State<MenuInferior> {
               ],
             ),
           ),
-
-          // INÍCIO
           InkWell(
             onTap: () {
               appState.atualizarTela('inicio');
-              Navigator.of(context).pushReplacementNamed('/tela-inicio');
+              Navigator.of(context).pushNamedAndRemoveUntil('/tela-inicio', (Route<dynamic> route) => false);
             },
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
